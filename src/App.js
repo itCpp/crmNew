@@ -1,25 +1,42 @@
-import logo from './logo.svg';
+import React from 'react'
+import Routes from './components/Routes'
+
+import axios from './utils/axios'
+import { Loader } from 'semantic-ui-react'
+
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+export default function App() {
 
-export default App;
+    const [login, setLogin] = React.useState(false);
+    const [loading, setLoading] = React.useState(true);
+
+    React.useEffect(() => {
+
+        axios.post('/checkUser').then(({ data }) => {
+
+            setLogin(true);
+
+            window.user = data.user;
+            window.access = data.access;
+            window.sip = data.sip;
+
+        }).catch(error => {
+            setLogin(false);
+        }).then(() => {
+            setLoading(false);
+        });
+
+    }, []);
+
+    if (loading) {
+        return <div className="loading-page">
+            <Loader active inline="centered" />
+        </div>
+    }
+
+    return <div id="sub-root">
+        <Routes login={login} />
+    </div>
+
+}

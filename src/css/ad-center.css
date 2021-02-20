@@ -1,0 +1,24 @@
+#root, #sub-root {
+    height: 100%;
+}
+
+.bg-dark-my {
+    background-color: #767676;
+    color: #ffffff;
+}
+
+.position-fixed-for-ad {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.tabs-selecter {
+    width: 180px;
+    min-width: 180px;
+    background-color: #ffffff;
+    min-height: 100%;
+    overflow-y: auto;
+}
