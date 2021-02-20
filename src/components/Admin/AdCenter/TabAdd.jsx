@@ -16,9 +16,11 @@ export default function TabAdd(props) {
     const [open, setOpen] = React.useState(false);
 
     const [loading, setLoading] = React.useState(false);
+    const [loadingData, setLoadingData] = React.useState(false);
     const [save, setSave] = React.useState(false);
 
     const [error, setError] = React.useState(false);
+    const [errorData, setErrorData] = React.useState(false);
     const [errors, setErrors] = React.useState({});
 
     const [formdata, setData] = React.useState({});
@@ -42,9 +44,33 @@ export default function TabAdd(props) {
             setErrors({});
             setError(false);
             setData({});
+            setPhones([]);
+            setErrorData(false);
         }
 
     }, [open]);
+
+    const edit = props.editTab;
+
+    React.useEffect(() => {
+
+        if (edit) {
+
+            setOpen(true);
+            setLoadingData(true);
+
+            axios.post('admin/getAdTab', { edit }).then(({ data }) => {
+                setData(data.tab);
+                setPhones(data.phones);
+            }).catch(error => {
+                setErrorData(axios.getError(error));
+            }).then(() => {
+                setLoadingData(false);
+            });
+
+        }
+
+    }, [edit]);
 
     React.useEffect(() => {
 
@@ -106,8 +132,8 @@ export default function TabAdd(props) {
     const phonesList = phones.map((phone, i) => <Input
         key={i}
         action={{
-            color: 'red',
-            icon: 'trash',
+            color: "red",
+            icon: "trash",
             onClick: () => removeRowPhone(i)
         }}
         fluid
@@ -132,7 +158,10 @@ export default function TabAdd(props) {
         <Modal
             open={open}
             centered={false}
-            onClose={() => setOpen(false)}
+            onClose={() => {
+                setOpen(false);
+                props.setEditTab(false);
+            }}
             onOpen={() => setOpen(true)}
             size="tiny"
             closeOnDimmerClick={false}
@@ -146,7 +175,7 @@ export default function TabAdd(props) {
             <Modal.Content>
 
                 <Form
-                    loading={loading}
+                    loading={loading || loadingData}
                 >
                     <Form.Field
                         control={() => <Input
@@ -155,6 +184,7 @@ export default function TabAdd(props) {
                             name="site"
                             value={formdata.site || ""}
                             onChange={changeData}
+                            disabled={errorData}
                         />}
                         label="Адрес сайта *"
                         placeholder="Введите адрес сайта"
@@ -168,6 +198,7 @@ export default function TabAdd(props) {
                         value={formdata.compain_id || ""}
                         onChange={changeData}
                         error={errors.compain_id || false}
+                        disabled={errorData}
                     />
                     <Form.Field
                         control={Input}
@@ -177,6 +208,7 @@ export default function TabAdd(props) {
                         value={formdata.name || ""}
                         onChange={changeData}
                         error={errors.name || false}
+                        disabled={errorData}
                     />
                     <Form.Field
                         control={Select}
@@ -200,6 +232,7 @@ export default function TabAdd(props) {
                         placeholder="Выберите площадку"
                         value={formdata.type || ""}
                         error={errors.type || false}
+                        disabled={errorData}
                     />
 
                     <div className="d-flex justify-content-between align-items-center mt-3 mb-2">
@@ -210,6 +243,7 @@ export default function TabAdd(props) {
                             primary
                             onClick={addRowPhone}
                             totle="Доабавить строку с телефоном"
+                            disabled={errorData}
                         />
                     </div>
 
@@ -217,6 +251,7 @@ export default function TabAdd(props) {
 
                 </Form>
 
+                {errorData ? <Message negative>{errorData}</Message> : null}
                 {!Object.keys(errors).length && error ? <Message negative>{error}</Message> : null}
 
             </Modal.Content>
@@ -224,18 +259,21 @@ export default function TabAdd(props) {
             <Modal.Actions>
 
                 <Button
-                    onClick={() => setOpen(false)}
+                    onClick={() => {
+                        setOpen(false);
+                        props.setEditTab(false);
+                    }}
                     content="Отмена"
                 />
 
                 <Button
                     onClick={() => setSave(true)}
                     color="green"
-                    disabled={loading}
+                    disabled={loading || errorData}
                     icon
                     labelPosition="right"
                 >
-                    Создать <Icon name="save" />
+                    {edit ? "Сохранить" : "Создать"} <Icon name="save" />
                 </Button>
 
             </Modal.Actions>

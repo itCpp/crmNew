@@ -11,6 +11,7 @@ export default function Tabs(props) {
 
     const [active, setActive] = React.useState(null);
     const [activeUpdate, setActiveUpdate] = React.useState(false);
+    const [editTab, setEditTab] = React.useState(false);
 
     React.useEffect(() => props.setActive(active), [active]);
     React.useEffect(() => {
@@ -28,6 +29,7 @@ export default function Tabs(props) {
             setActive={setActive}
             setActiveUpdate={setActiveUpdate}
             active={active}
+            setEditTab={setEditTab}
         />);
 
         const name = <TabName name={row.name} />
@@ -53,6 +55,8 @@ export default function Tabs(props) {
             setTabs={props.setTabs}
             site={props.site}
             setSites={props.setSites}
+            editTab={editTab}
+            setEditTab={setEditTab}
         />
 
         {props.loadingTabs ? <div className="loading-data">
@@ -61,7 +65,7 @@ export default function Tabs(props) {
 
         {props.errorTabs ? <Message negative size="mini">Ошибка загрузки списка плашек: {props.errorTabs}</Message> : null}
 
-        {!props.loadingTabs ? <div className="overflow-auto">
+        {!props.loadingTabs ? <div>
             {tabs}
         </div> : null}
 

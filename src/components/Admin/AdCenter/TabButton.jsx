@@ -10,23 +10,32 @@ export default function TabButton(props) {
     if (row.name)
         name = row.name;
 
-    return <Button.Group size="mini" fluid className="mb-1">
+    return <Button.Group size="mini" fluid className="mb-1" style={{ maxWidth: "100%" }}>
 
         <Button
             animated={false}
-            className="px-1"
+            className="px-2"
             onClick={() => {
                 props.setActive(row.id);
                 props.setActiveUpdate(true);
             }}
             active={props.active === row.id}
-            content={name}
-        />
+        >
+            <span style={{ textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>{name}</span>
+        </Button>
 
-        {/* <Button icon>
-            <Icon name='align center' />
-        </Button> */}
-        
+        <Button
+            icon
+            style={{ maxWidth: "24px" }}
+            onClick={e => {
+                e.currentTarget.blur();
+                props.setEditTab(row.id);
+            }}
+            className="px-1"
+        >
+            <Icon name="pencil" />
+        </Button>
+
     </Button.Group>
 
 }
