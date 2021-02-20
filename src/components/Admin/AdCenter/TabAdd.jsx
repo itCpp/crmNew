@@ -52,6 +52,8 @@ export default function TabAdd(props) {
 
             setLoading(true);
 
+            formdata.phones = phones;
+
             axios.post('admin/createAdTab', formdata).then(({ data }) => {
 
                 setErrors({});
@@ -76,6 +78,55 @@ export default function TabAdd(props) {
 
     }, [save]);
 
+    const [phones, setPhones] = React.useState([]);
+
+    const addRowPhone = () => {
+
+        let newPhones = phones.slice();
+        newPhones.push({
+            value: "",
+        });
+        setPhones(newPhones);
+
+    }
+
+    const removeRowPhone = i => {
+
+        let newPhones = [];
+        
+        phones.forEach((row, key) => {
+            if (key !== i)
+                newPhones.push(row);
+        });
+
+        setPhones(newPhones);
+
+    }
+
+    const phonesList = phones.map((phone, i) => <Input
+        key={i}
+        action={{
+            color: 'red',
+            icon: 'trash',
+            onClick: () => removeRowPhone(i)
+        }}
+        fluid
+        placeholder="Введите номер телефона"
+        onChange={e => changePhoneData(e, i)}
+        value={phone.value || ""}
+        className="my-1"
+    />);
+
+    const changePhoneData = (e, i) => {
+
+        let value = e.currentTarget.value;
+        let newPhones = phones.slice();
+
+        newPhones[i].value = value;
+        setPhones(newPhones);
+
+    }
+
     return <>
 
         <Modal
@@ -98,12 +149,15 @@ export default function TabAdd(props) {
                     loading={loading}
                 >
                     <Form.Field
-                        control={Input}
+                        control={() => <Input
+                            label="https://"
+                            placeholder="Введите адрес сайта"
+                            name="site"
+                            value={formdata.site || ""}
+                            onChange={changeData}
+                        />}
                         label="Адрес сайта *"
                         placeholder="Введите адрес сайта"
-                        name="site"
-                        value={formdata.site || ""}
-                        onChange={changeData}
                         error={errors.site || false}
                     />
                     <Form.Field
@@ -147,9 +201,23 @@ export default function TabAdd(props) {
                         value={formdata.type || ""}
                         error={errors.type || false}
                     />
+
+                    <div className="d-flex justify-content-between align-items-center mt-3 mb-2">
+                        <h3 className="my-0">Номера телефонов</h3>
+                        <Button
+                            icon="plus"
+                            size="mini"
+                            primary
+                            onClick={addRowPhone}
+                            totle="Доабавить строку с телефоном"
+                        />
+                    </div>
+
+                    {phonesList}
+
                 </Form>
 
-                {!Object.keys(errors).length && error ? <Message negative>{error}</Message> : null }
+                {!Object.keys(errors).length && error ? <Message negative>{error}</Message> : null}
 
             </Modal.Content>
 
