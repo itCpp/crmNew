@@ -8,7 +8,9 @@ import {
     Icon,
     Form,
     Input,
-    Select
+    Select,
+    Dimmer,
+    Loader
 } from 'semantic-ui-react';
 
 export default function TabAdd(props) {
@@ -46,6 +48,7 @@ export default function TabAdd(props) {
             setData({});
             setPhones([]);
             setErrorData(false);
+            setLoadingPhone(false);
         }
 
     }, [open]);
@@ -90,6 +93,7 @@ export default function TabAdd(props) {
 
                 setOpen(false);
                 props.setSites(data.sites);
+                props.setEditTab(null);
 
             }).catch(error => {
                 setErrors(axios.getErrors(error));
@@ -104,8 +108,10 @@ export default function TabAdd(props) {
 
     }, [save]);
 
+    /** Телефонные номера */
     const [phones, setPhones] = React.useState([]);
 
+    /** Добавление строки с номером телефона */
     const addRowPhone = () => {
 
         let newPhones = phones.slice();
@@ -116,33 +122,69 @@ export default function TabAdd(props) {
 
     }
 
-    const removeRowPhone = i => {
+    /** Удаление строки с номером телефона */
+    const removeRowPhone = async (i, rowPhone = null) => {
 
         let newPhones = [];
-        
-        phones.forEach((row, key) => {
-            if (key !== i)
-                newPhones.push(row);
-        });
+
+        for (let key in phones) {
+
+            if (Number(key) !== Number(i)) {
+                newPhones.push(phones[key]);
+            }
+
+            if (rowPhone !== null && Number(key) === Number(i)) {
+
+                let deleted = await removePhone(rowPhone);
+
+                if (!deleted)
+                    newPhones.push({ ...phones[key], error: true });
+
+            }
+
+        }
 
         setPhones(newPhones);
 
     }
 
+    const [loadingPhone, setLoadingPhone] = React.useState(false);
+
+    /** Запрос на удаление номера телефона */
+    const removePhone = async rowPhone => {
+
+        let deleted = false;
+        setLoadingPhone(true);
+
+        await axios.post('admin/removePhone', rowPhone).then(() => {
+            deleted = true;
+        }).catch(() => {
+            deleted = false;
+        }).then(() => {
+            setLoadingPhone(false);
+        });
+
+        return deleted;
+
+    }
+
+    /** Список номеров телефонов */
     const phonesList = phones.map((phone, i) => <Input
         key={i}
         action={{
             color: "red",
             icon: "trash",
-            onClick: () => removeRowPhone(i)
+            onClick: () => removeRowPhone(i, phone.id ? phone : null)
         }}
         fluid
         placeholder="Введите номер телефона"
         onChange={e => changePhoneData(e, i)}
         value={phone.value || ""}
         className="my-1"
+        error={phone.error ? true : false}
     />);
 
+    /** Изменение поля с номером телефона */
     const changePhoneData = (e, i) => {
 
         let value = e.currentTarget.value;
@@ -170,7 +212,7 @@ export default function TabAdd(props) {
             </Button>}
         >
 
-            <Modal.Header>Создание новой плашки</Modal.Header>
+            <Modal.Header>{edit ? 'Изменение плашки' : 'Создание новой плашки'}</Modal.Header>
 
             <Modal.Content>
 
@@ -184,7 +226,7 @@ export default function TabAdd(props) {
                             name="site"
                             value={formdata.site || ""}
                             onChange={changeData}
-                            disabled={errorData}
+                            disabled={errorData ? true : false}
                         />}
                         label="Адрес сайта *"
                         placeholder="Введите адрес сайта"
@@ -198,7 +240,7 @@ export default function TabAdd(props) {
                         value={formdata.compain_id || ""}
                         onChange={changeData}
                         error={errors.compain_id || false}
-                        disabled={errorData}
+                        disabled={errorData ? true : false}
                     />
                     <Form.Field
                         control={Input}
@@ -208,7 +250,7 @@ export default function TabAdd(props) {
                         value={formdata.name || ""}
                         onChange={changeData}
                         error={errors.name || false}
-                        disabled={errorData}
+                        disabled={errorData ? true : false}
                     />
                     <Form.Field
                         control={Select}
@@ -232,7 +274,7 @@ export default function TabAdd(props) {
                         placeholder="Выберите площадку"
                         value={formdata.type || ""}
                         error={errors.type || false}
-                        disabled={errorData}
+                        disabled={errorData ? true : false}
                     />
 
                     <div className="d-flex justify-content-between align-items-center mt-3 mb-2">
@@ -243,11 +285,16 @@ export default function TabAdd(props) {
                             primary
                             onClick={addRowPhone}
                             totle="Доабавить строку с телефоном"
-                            disabled={errorData}
+                            disabled={errorData ? true : false}
                         />
                     </div>
 
-                    {phonesList}
+                    <div className="position-relative">
+                        {phonesList}
+                        {loadingPhone ? <Dimmer active inverted>
+                            <Loader />
+                        </Dimmer> : null}
+                    </div>
 
                 </Form>
 

@@ -22,3 +22,15 @@
     min-height: 100%;
     overflow-y: auto;
 }
+
+.ui.input.error > input {
+    color: #9f3a38;
+    border-color: #e0b4b4;
+    background-color: #fff6f6;
+}
+.ui.input.error > input:active,
+.ui.input.error > input:focus {
+    color: #9f3a38;
+    border-color: #e18e8e;
+    background-color: #fff6f6;
+}

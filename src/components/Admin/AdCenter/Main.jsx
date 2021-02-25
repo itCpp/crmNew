@@ -16,7 +16,7 @@ export default function AdCenter(props) {
     const [loadingSites, setLoadingSites] = React.useState(true);
     const [errorSites, setErrorSites] = React.useState(null);
 
-    const [loadingTabs, setLoadingTabs] = React.useState(true);
+    const [loadingTabs, setLoadingTabs] = React.useState(false);
     const [errorTabs, setErrorTabs] = React.useState(null);
 
     const [sites, setSites] = React.useState([]);

@@ -65,7 +65,7 @@ export default function Tabs(props) {
 
         {props.errorTabs ? <Message negative size="mini">Ошибка загрузки списка плашек: {props.errorTabs}</Message> : null}
 
-        {!props.loadingTabs ? <div>
+        {props.tabs.length ? <div>
             {tabs}
         </div> : null}
 
