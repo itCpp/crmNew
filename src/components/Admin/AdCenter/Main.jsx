@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from './../../../utils/axios'
 
-import { Loader, Segment, Header, Message } from 'semantic-ui-react';
+import { Loader, Segment, Header } from 'semantic-ui-react';
 
 import './../../../css/ad-center.css'
 
@@ -9,7 +9,7 @@ import Tabs from './Tabs'
 import RequestsList from './RequestsList'
 import VisitList from './VisitList'
 
-export default function AdCenter(props) {
+export default function AdCenter() {
 
     const [loading, setLoading] = React.useState(false);
 
@@ -25,6 +25,8 @@ export default function AdCenter(props) {
     const [tabs, setTabs] = React.useState([]);
     const [active, setActive] = React.useState(null); // Выбранная компания
     const [activeUpdate, setActiveUpdate] = React.useState(false); // Выбранная компания
+
+    const [maxHeight, setMaxHeight] = React.useState("100%");
 
     /** Загрузка списка сайтов */
     React.useEffect(() => {
@@ -45,6 +47,9 @@ export default function AdCenter(props) {
             setLoading(false);
             setLoadingSites(false);
         });
+
+        const header = document.getElementById('header-menu');
+        setMaxHeight(`calc(100% - ${header.offsetHeight}px)`);
 
     }, []);
 
@@ -97,6 +102,27 @@ export default function AdCenter(props) {
                 </Header>
             </Segment>
         </div>
+
+    return <div className="d-flex flex-grow-1" style={{ maxHeight }}>
+
+        <Tabs
+            tabs={tabs}
+            setActive={setActive}
+            setActiveUpdate={setActiveUpdate}
+            site={site}
+            sites={sites}
+            setSite={setSite}
+            setSites={setSites}
+            loadingData={loadingSites}
+            loadingTabs={loadingTabs}
+            errorSites={errorSites}
+            errorTabs={errorTabs}
+            setTabs={setTabs}
+        />
+
+        {page}
+
+    </div>
 
     return <div className="position-fixed-for-ad">
 

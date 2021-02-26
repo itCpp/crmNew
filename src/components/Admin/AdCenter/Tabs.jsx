@@ -21,25 +21,29 @@ export default function Tabs(props) {
 
     }, [activeUpdate]);
 
-    const tabs = props.tabs.map(row => {
-
-        const rows = row.tabs.map(tab => <TabButton
-            key={tab.id}
-            row={tab}
-            setActive={setActive}
-            setActiveUpdate={setActiveUpdate}
-            active={active}
-            setEditTab={setEditTab}
-        />);
-
-        const name = <TabName name={row.name} />
-
-        return <div key={row.name} className="mb-3">
-            {name}
-            {rows}
+    const tabs = props.loadingTabs
+        ? <div className="loading-data">
+            <Loader active inline="centered" size="small" />
         </div>
+        : props.tabs.map(row => {
 
-    });
+            const rows = row.tabs.map(tab => <TabButton
+                key={tab.id}
+                row={tab}
+                setActive={setActive}
+                setActiveUpdate={setActiveUpdate}
+                active={active}
+                setEditTab={setEditTab}
+            />);
+
+            const name = <TabName name={row.name} />
+
+            return <div key={row.name} className="mb-3">
+                {name}
+                {rows}
+            </div>
+
+        });
 
     return <div className="tabs-selecter px-2 py-3">
 
@@ -59,15 +63,9 @@ export default function Tabs(props) {
             setEditTab={setEditTab}
         />
 
-        {props.loadingTabs ? <div className="loading-data">
-            <Loader active inline="centered" size="small" />
-        </div> : null}
-
         {props.errorTabs ? <Message negative size="mini">Ошибка загрузки списка плашек: {props.errorTabs}</Message> : null}
 
-        {props.tabs.length ? <div>
-            {tabs}
-        </div> : null}
+        <div>{tabs}</div>
 
     </div>
 

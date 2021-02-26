@@ -15,12 +15,12 @@ export default function VisitListRow(props) {
         <List.Icon name={icon} size="large" verticalAlign="middle" />
 
         <List.Content>
-            <List.Header as="a">{row.site}{row.page}</List.Header>
+            <List.Header><a href={`//` + row.site + row.page} target="_blank">{row.site}{row.page}</a></List.Header>
             {row.utm_term ? <List.Description><strong>Utm term</strong>{' '}{row.utm_term}</List.Description> : null}
             {row.user_agent ? <List.Description><small className="text-wrap">{row.user_agent}</small></List.Description> : null}
         </List.Content>
 
-        <List.Content className="flex-fill">
+        <List.Content className="flex-fill" style={{ paddingLeft: ".25rem" }}>
             <small className="text-nowrap">{row.date}</small>
             <div><small className="text-nowrap">{row.ip}</small></div>
         </List.Content>

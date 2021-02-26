@@ -1,5 +1,6 @@
 import React from 'react'
 import Routes from './components/Routes'
+import Header from './components/Header/Header'
 
 import axios from './utils/axios'
 import { Loader } from 'semantic-ui-react'
@@ -35,8 +36,12 @@ export default function App() {
         </div>
     }
 
-    return <div id="sub-root">
+    return <div className="d-flex flex-column" id="sub-root">
+
+        <Header />
+
         <Routes login={login} />
+        
     </div>
 
 }

@@ -220,17 +220,15 @@ export default function TabAdd(props) {
                     loading={loading || loadingData}
                 >
                     <Form.Field
-                        control={() => <Input
-                            label="https://"
-                            placeholder="Введите адрес сайта"
-                            name="site"
-                            value={formdata.site || ""}
-                            onChange={changeData}
-                            disabled={errorData ? true : false}
-                        />}
+                        control={Input}
                         label="Адрес сайта *"
                         placeholder="Введите адрес сайта"
                         error={errors.site || false}
+                        onChange={changeData}
+                        name="site"
+                        value={formdata.site || ""}
+                        placeholder="Введите адрес сайта"
+                        disabled={errorData ? true : false}
                     />
                     <Form.Field
                         control={Input}

@@ -15,7 +15,9 @@ export default function Routes(props) {
 
             {/* <Route path="/login" component={Login} /> */}
 
-            <Route path="/" component={AdCenter} />
+            <Route exact path="/" component={AdCenter} />
+            
+            <Route path="*" component={NotFound} />
 
         </Switch>
 

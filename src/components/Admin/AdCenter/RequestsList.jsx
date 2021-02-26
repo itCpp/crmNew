@@ -43,7 +43,7 @@ export default function RequestsList(props) {
             ? <Message warning size="mini">За сегодня данных еще нет</Message>
             : null
 
-    return <div className="bg-light flex-fill px-1 py-2 overflow-auto" style={{ maxWidth: "50%" }}>
+    return <div className="bg-light flex-fill px-1 py-2 overflow-auto" style={{ maxWidth: "50%", maxHeight: "100%" }}>
 
         {error ? <Segment inverted color="red" tertiary size="mini">{error}</Segment> : null}
 
