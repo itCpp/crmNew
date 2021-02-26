@@ -1,5 +1,7 @@
 import React from 'react'
 import axios from './../../../utils/axios'
+import { connect } from 'react-redux'
+import { setDateStart, setDateStop } from '../../../store/adCenter/actions'
 
 import { Loader, Segment, Header } from 'semantic-ui-react';
 
@@ -9,7 +11,7 @@ import Tabs from './Tabs'
 import RequestsList from './RequestsList'
 import VisitList from './VisitList'
 
-export default function AdCenter() {
+function AdCenter() {
 
     const [loading, setLoading] = React.useState(false);
 
@@ -125,3 +127,16 @@ export default function AdCenter() {
     </div>
 
 }
+
+const mapStateToProps = state => {
+    return {
+        dateStart: state.adCenter.dateStart,
+        dateStop: state.adCenter.dateStop,
+    }
+}
+
+const mapDispatchToProps = {
+    setDateStart, setDateStop,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AdCenter)

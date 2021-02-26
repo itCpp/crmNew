@@ -9,7 +9,7 @@ import Sites from './Sites'
 import TabName from './TabName'
 import TabButton from './TabButton'
 import TabAdd from './TabAdd'
-import Calendar from './Calendar/Calendar'
+import Calendar from './Calendar'
 
 
 
@@ -69,7 +69,12 @@ function Tabs(props) {
             setEditTab={setEditTab}
         />
 
-        {/* <Calendar /> */}
+        <Calendar
+            dateStart={props.dateStart}
+            dateStop={props.dateStop}
+            setDateStart={props.setDateStart}
+            setDateStop={props.setDateStop}
+        />
 
         {props.errorTabs ? <Message negative size="mini">Ошибка загрузки списка плашек: {props.errorTabs}</Message> : null}
 

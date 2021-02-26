@@ -16,14 +16,22 @@
 }
 
 .tabs-selecter {
-    width: 200px;
-    max-width: 200px;
-    min-width: 200px;
+    width: 220px;
+    max-width: 220px;
+    min-width: 220px;
     background-color: #ffffff;
     min-height: 100%;
     overflow-y: auto;
     flex-grow: 1;
 }
+
+.react-datepicker {
+    max-width: 206px;
+    margin: 0 auto;
+}
+.react-datepicker__month-container { max-width: 204px; }
+.react-datepicker__month { margin: .5rem 0 !important; }
+.react-datepicker__day { margin: .07rem !important; }
 
 .ui.input.error > input {
     color: #9f3a38;

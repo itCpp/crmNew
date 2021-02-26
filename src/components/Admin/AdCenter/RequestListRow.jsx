@@ -21,6 +21,7 @@ export default function RequestListRow(props) {
 
         <List.Content className="flex-fill">
             <small className="text-nowrap">{row.date}</small>
+            {row.ip && row.typeReq === "text" ? <div><small className="text-nowrap">{row.ip}</small></div> : null}
         </List.Content>
         
     </List.Item>

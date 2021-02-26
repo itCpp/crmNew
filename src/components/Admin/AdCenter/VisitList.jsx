@@ -1,10 +1,12 @@
 import React from 'react'
 import axios from './../../../utils/axios'
-import { Loader, Icon, Segment, List, Message } from 'semantic-ui-react'
+import { connect } from 'react-redux'
+
+import { Loader, Segment, List, Message } from 'semantic-ui-react'
 
 import VisitListRow from './VisitListRow'
 
-export default function VisitList(props) {
+function VisitList(props) {
 
     const active = props.active;
     const activeUpdate = props.activeUpdate;
@@ -13,6 +15,7 @@ export default function VisitList(props) {
     const [error, setError] = React.useState(null);
 
     const [rows, setRows] = React.useState([]);
+    const [page, setPage] = React.useState(1);
 
     /** Загрузка списка заявок */
     React.useEffect(() => {
@@ -23,7 +26,10 @@ export default function VisitList(props) {
             setRows([]);
 
             axios.post('admin/getAdVisites', {
-                active
+                active,
+                page,
+                start: props.dateStart,
+                stop: props.dateStop
             }).then(({ data }) => {
                 setRows(data.rows);
                 setError(null);
@@ -58,3 +64,12 @@ export default function VisitList(props) {
     </div>
 
 }
+
+const mapStateToProps = state => {
+    return {
+        dateStart: state.adCenter.dateStart,
+        dateStop: state.adCenter.dateStop,
+    }
+}
+
+export default connect(mapStateToProps)(VisitList)

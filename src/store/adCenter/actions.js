@@ -7,6 +7,6 @@ export const setDateStart = date => ({
 });
 
 export const setDateStop = date => ({
-    type: CALENDAR_START_DATE,
+    type: CALENDAR_STOP_DATE,
     payload: date
 });

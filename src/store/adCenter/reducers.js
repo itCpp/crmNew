@@ -4,7 +4,7 @@ import {
 } from './actions'
 
 const defaultState = {
-    dateStart: null,
+    dateStart: new Date(),
     dateStop: null,
 };
 
