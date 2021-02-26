@@ -124,29 +124,4 @@ export default function AdCenter() {
 
     </div>
 
-    return <div className="position-fixed-for-ad">
-
-        <div className="d-flex align-items-stretch h-100" id="content-table-ads">
-
-            <Tabs
-                tabs={tabs}
-                setActive={setActive}
-                setActiveUpdate={setActiveUpdate}
-                site={site}
-                sites={sites}
-                setSite={setSite}
-                setSites={setSites}
-                loadingData={loadingSites}
-                loadingTabs={loadingTabs}
-                errorSites={errorSites}
-                errorTabs={errorTabs}
-                setTabs={setTabs}
-            />
-
-            {page}
-
-        </div>
-
-    </div>
-
 }

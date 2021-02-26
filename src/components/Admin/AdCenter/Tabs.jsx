@@ -1,13 +1,19 @@
 import React from 'react'
 
+import { connect } from 'react-redux'
+import { setDateStart, setDateStop } from './../../../store/adCenter/actions'
+
+import { Loader, Message } from 'semantic-ui-react';
+
 import Sites from './Sites'
 import TabName from './TabName'
 import TabButton from './TabButton'
 import TabAdd from './TabAdd'
+import Calendar from './Calendar/Calendar'
 
-import { Loader, Message } from 'semantic-ui-react';
 
-export default function Tabs(props) {
+
+function Tabs(props) {
 
     const [active, setActive] = React.useState(null);
     const [activeUpdate, setActiveUpdate] = React.useState(false);
@@ -63,6 +69,8 @@ export default function Tabs(props) {
             setEditTab={setEditTab}
         />
 
+        {/* <Calendar /> */}
+
         {props.errorTabs ? <Message negative size="mini">Ошибка загрузки списка плашек: {props.errorTabs}</Message> : null}
 
         <div>{tabs}</div>
@@ -70,3 +78,16 @@ export default function Tabs(props) {
     </div>
 
 }
+
+const mapStateToProps = state => {
+    return {
+        dateStart: state.adCenter.dateStart,
+        dateStop: state.adCenter.dateStop,
+    }
+}
+
+const mapDispatchToProps = {
+    setDateStart, setDateStop,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Tabs);

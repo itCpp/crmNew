@@ -1,11 +1,11 @@
 import React from 'react'
-import Routes from './components/Routes'
-import Header from './components/Header/Header'
-
 import axios from './utils/axios'
 import { Loader } from 'semantic-ui-react'
 
 import './App.css';
+
+import Routes from './components/Routes'
+import Header from './components/Header/Header'
 
 export default function App() {
 
