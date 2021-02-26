@@ -1,4 +1,4 @@
-import { List } from 'semantic-ui-react'
+import { List, Icon } from 'semantic-ui-react'
 
 export default function RequestListRow(props) {
 
@@ -14,6 +14,7 @@ export default function RequestListRow(props) {
             <List.Header>
                 <span>id#{row.id_request}{' '}</span>
                 <span>{row.myPhone || row.company}</span>
+                {row.phone ? <span><Icon name="phone volume" style={{ margin: "0 .15rem 0 .5rem" }}/>{row.phone}</span> : null}
             </List.Header>
             {row.utm_term ? <List.Description><strong>Utm term</strong>{' '}{row.utm_term}</List.Description> : null}
         </List.Content>

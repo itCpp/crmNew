@@ -10,6 +10,10 @@ export default function TabButton(props) {
     if (row.name)
         name = row.name;
 
+    const phones = row.phones.length
+        ? row.phones.map(phone => <small className="mx-1" key={phone.id}>{phone.phone}</small>)
+        : null
+
     return <Button.Group size="mini" fluid className="mb-1" style={{ maxWidth: "100%" }}>
 
         <Button
@@ -21,7 +25,11 @@ export default function TabButton(props) {
             }}
             active={props.active === row.id}
         >
-            <span style={{ textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>{name}</span>
+            <div style={{ textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>{name}</div>
+            <div className="mt-1">
+                {row.compain_id !== name ? <small className="mx-1">{row.compain_id}</small> : null}
+                {phones}
+            </div>
         </Button>
 
         <Button
