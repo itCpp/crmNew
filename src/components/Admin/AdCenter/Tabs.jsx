@@ -72,6 +72,7 @@ function Tabs(props) {
             dateStop={props.dateStop}
             setDateStart={props.setDateStart}
             setDateStop={props.setDateStop}
+            setActiveUpdate={props.setActiveUpdate}
         />
 
         {props.errorTabs ? <Message negative size="mini">Ошибка загрузки списка плашек: {props.errorTabs}</Message> : null}

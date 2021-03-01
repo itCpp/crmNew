@@ -104,6 +104,7 @@ function AdCenter() {
                 <RequestsList
                     active={active}
                     activeUpdate={activeUpdate}
+                    setActiveUpdate={setActiveUpdate}
                     maxHeight={maxHeightContent}
                 />
 

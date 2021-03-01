@@ -1,7 +1,11 @@
 import React from 'react'
 import axios from './../../../utils/axios'
 import { connect } from 'react-redux'
-import { setCountRequestsCall, setCountRequestsText } from '../../../store/adCenter/actions'
+import {
+    setCountRequestsCall,
+    setCountRequestsText,
+    setCountRequestsLoading
+} from '../../../store/adCenter/actions'
 
 import { Loader, Segment, List, Message } from 'semantic-ui-react'
 
@@ -27,6 +31,7 @@ function RequestsList(props) {
 
             setLoading(true);
             setRows([]);
+            props.setCountRequestsLoading(true);
 
             axios.post('admin/getAdRequests', {
                 active,
@@ -34,7 +39,7 @@ function RequestsList(props) {
                 start: props.dateStart,
                 stop: props.dateStop
             }).then(({ data }) => {
-                
+
                 setRows(data.rows);
                 setError(null);
 
@@ -45,6 +50,8 @@ function RequestsList(props) {
                 setError(axios.getError(error));
             }).then(() => {
                 setLoading(false);
+                props.setCountRequestsLoading(false);
+                props.setActiveUpdate(false);
             });
 
         }
@@ -81,7 +88,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = {
-    setCountRequestsCall, setCountRequestsText,
+    setCountRequestsCall, setCountRequestsText, setCountRequestsLoading
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RequestsList)

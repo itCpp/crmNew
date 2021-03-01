@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from './../../../utils/axios'
 import { connect } from 'react-redux'
-import { setCountVisitSite } from '../../../store/adCenter/actions'
+import { setCountVisitSite, setCountVisitSiteLoading } from '../../../store/adCenter/actions'
 
 import { Loader, Segment, List, Message } from 'semantic-ui-react'
 
@@ -52,9 +52,9 @@ function VisitList(props) {
 
     // }, [process]);
 
-    const getAdVisites = (formdata) => {
+    const getAdVisites = async (formdata) => {
 
-        axios.post('admin/getAdVisites', formdata).then(({ data }) => {
+        await axios.post('admin/getAdVisites', formdata).then(({ data }) => {
 
             let newRows = rows.slice();
 
@@ -89,13 +89,16 @@ function VisitList(props) {
             setRows([]);
             setPage(1);
             setEndData(false);
+            props.setCountVisitSiteLoading(true);
 
-            getAdVisites({
+            await getAdVisites({
                 active,
                 page: 1,
                 start: props.dateStart,
                 stop: props.dateStop
             });
+
+            props.setCountVisitSiteLoading(false);
 
         }
 
@@ -152,7 +155,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = {
-    setCountVisitSite,
+    setCountVisitSite, setCountVisitSiteLoading
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(VisitList)

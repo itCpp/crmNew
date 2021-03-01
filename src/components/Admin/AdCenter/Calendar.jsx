@@ -16,8 +16,13 @@ function Calendar(props) {
         props.setDateStart(startDate);
     }, [startDate]);
 
-    React.useEffect(() => {
-        props.setDateStop(endDate);
+    React.useEffect(async () => {
+
+        await props.setDateStop(endDate);
+
+        if (endDate)
+            props.setActiveUpdate(true);
+            
     }, [endDate]);
 
     const onChange = dates => {
@@ -25,7 +30,7 @@ function Calendar(props) {
         const [start, end] = dates;
 
         setStartDate(start);
-        setEndDate(end);
+        setEndDate(end);           
         
     }
 

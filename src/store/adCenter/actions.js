@@ -12,23 +12,37 @@ export const setDateStop = date => ({
     payload: date
 });
 
+export const COUNT_REQUEST_LOADING = "COUNT_REQUEST_LOADING";
+
+export const setCountRequestsLoading = loading => ({
+    type: COUNT_REQUEST_LOADING,
+    payload: loading
+});
+
 export const COUNT_REQUESTS_CALL = "COUNT_REQUESTS_CALL";
 
-export const setCountRequestsCall = date => ({
+export const setCountRequestsCall = count => ({
     type: COUNT_REQUESTS_CALL,
-    payload: date
+    payload: count
 });
 
 export const COUNT_REQUESTS_TEXT = "COUNT_REQUESTS_TEXT";
 
-export const setCountRequestsText = date => ({
+export const setCountRequestsText = count => ({
     type: COUNT_REQUESTS_TEXT,
-    payload: date
+    payload: count
+});
+
+export const COUNT_VISIT_SITE_LOADING = "COUNT_VISIT_SITE_LOADING";
+
+export const setCountVisitSiteLoading = loading => ({
+    type: COUNT_VISIT_SITE_LOADING,
+    payload: loading
 });
 
 export const COUNT_VISIT_SITE = "COUNT_VISIT_SITE";
 
-export const setCountVisitSite = date => ({
+export const setCountVisitSite = count => ({
     type: COUNT_VISIT_SITE,
-    payload: date
+    payload: count
 });
