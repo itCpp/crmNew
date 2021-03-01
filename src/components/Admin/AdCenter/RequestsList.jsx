@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from './../../../utils/axios'
 import { connect } from 'react-redux'
+import { setCountRequestsCall, setCountRequestsText } from '../../../store/adCenter/actions'
 
 import { Loader, Segment, List, Message } from 'semantic-ui-react'
 
@@ -33,8 +34,13 @@ function RequestsList(props) {
                 start: props.dateStart,
                 stop: props.dateStop
             }).then(({ data }) => {
+                
                 setRows(data.rows);
                 setError(null);
+
+                props.setCountRequestsCall(data.countCall);
+                props.setCountRequestsText(data.countText);
+
             }).catch(error => {
                 setError(axios.getError(error));
             }).then(() => {
@@ -51,7 +57,7 @@ function RequestsList(props) {
             ? <Message warning size="mini">За сегодня данных еще нет</Message>
             : null
 
-    return <div className="bg-light flex-fill px-1 py-2 overflow-auto" style={{ maxWidth: "50%", maxHeight: "100%" }}>
+    return <div className="bg-light flex-fill px-1 py-2 overflow-auto" style={{ maxWidth: "50%", maxHeight: props.maxHeight }}>
 
         {error ? <Segment inverted color="red" tertiary size="mini">{error}</Segment> : null}
 
@@ -74,4 +80,8 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(RequestsList)
+const mapDispatchToProps = {
+    setCountRequestsCall, setCountRequestsText,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RequestsList)

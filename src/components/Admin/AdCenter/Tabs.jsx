@@ -11,8 +11,6 @@ import TabButton from './TabButton'
 import TabAdd from './TabAdd'
 import Calendar from './Calendar'
 
-
-
 function Tabs(props) {
 
     const [active, setActive] = React.useState(null);

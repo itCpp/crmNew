@@ -10,6 +10,7 @@ import './../../../css/ad-center.css'
 import Tabs from './Tabs'
 import RequestsList from './RequestsList'
 import VisitList from './VisitList'
+import Counts from './Counts'
 
 function AdCenter() {
 
@@ -29,6 +30,19 @@ function AdCenter() {
     const [activeUpdate, setActiveUpdate] = React.useState(false); // Выбранная компания
 
     const [maxHeight, setMaxHeight] = React.useState("100%");
+    const [maxHeightContent, setMaxHeightContent] = React.useState("100%");
+
+    /** Подгонка высоты элементам */
+    React.useEffect(() => {
+
+        const header = document.getElementById('header-menu');
+        setMaxHeight(`${(window.innerHeight - header.offsetHeight)}px`);
+
+        const counterHeader = document.getElementById('counter-header') || null;
+        if (counterHeader)
+            setMaxHeightContent(`${(window.innerHeight - header.offsetHeight - counterHeader.offsetHeight)}px`);
+
+    }, [active, activeUpdate]);
 
     /** Загрузка списка сайтов */
     React.useEffect(() => {
@@ -49,9 +63,6 @@ function AdCenter() {
             setLoading(false);
             setLoadingSites(false);
         });
-
-        const header = document.getElementById('header-menu');
-        setMaxHeight(`calc(100% - ${header.offsetHeight}px)`);
 
     }, []);
 
@@ -84,18 +95,25 @@ function AdCenter() {
     }
 
     const page = active
-        ? <div className="d-flex justify-content-between flex-fill align-items-stretch">
+        ? <div className="d-flex flex-fill flex-column">
 
-            <RequestsList
-                active={active}
-                activeUpdate={activeUpdate}
-            />
+            <Counts />
 
-            <VisitList
-                active={active}
-                activeUpdate={activeUpdate}
-            />
+            <div className="d-flex flex-fill justify-content-between" style={{ maxHeight }}>
 
+                <RequestsList
+                    active={active}
+                    activeUpdate={activeUpdate}
+                    maxHeight={maxHeightContent}
+                />
+
+                <VisitList
+                    active={active}
+                    activeUpdate={activeUpdate}
+                    maxHeight={maxHeightContent}
+                />
+
+            </div>
         </div>
         : <div className="text-center pt-2 px-3 flex-fill">
             <Segment placeholder className="mx-auto">
@@ -105,7 +123,7 @@ function AdCenter() {
             </Segment>
         </div>
 
-    return <div className="d-flex flex-grow-1" style={{ maxHeight }}>
+    return <div className="d-flex h-100" style={{ maxHeight }}>
 
         <Tabs
             tabs={tabs}

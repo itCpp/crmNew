@@ -44,3 +44,18 @@
     border-color: #e18e8e;
     background-color: #fff6f6;
 }
+
+.counter-header {
+    background: #ffffff;
+}
+
+.counter-header-row {
+    margin-right: 1rem;
+    display: flex;
+}
+.counter-header-row > .icon {
+    margin-left: .5rem !important;
+}
+.counter-header-row > .title-count {
+    margin-right: .5rem !important;
+}
