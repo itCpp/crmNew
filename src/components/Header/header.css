@@ -2,3 +2,11 @@
     padding: .5rem 1rem;
     background: #ffffff;
 }
+
+.header-menu-link {
+    margin-left: .5rem;
+}
+
+.header-menu-link.active {
+    font-weight: 700;
+}

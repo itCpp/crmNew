@@ -5,7 +5,6 @@ import { Loader } from 'semantic-ui-react'
 import './App.css';
 
 import Routes from './components/Routes'
-import Header from './components/Header/Header'
 
 export default function App() {
 
@@ -36,12 +35,6 @@ export default function App() {
         </div>
     }
 
-    return <div className="d-flex flex-column" id="sub-root">
-
-        <Header />
-
-        <Routes login={login} />
-        
-    </div>
+    return <Routes login={login} />
 
 }

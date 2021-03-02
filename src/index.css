@@ -30,6 +30,9 @@ code {
   padding: 1rem;
 }
 
+.for-hover-opacity { opacity: .7 !important; }
+.for-hover-opacity:hover { opacity: 1 !important; }
+
 .for-hover {
   cursor: pointer;
 }
