@@ -22,7 +22,7 @@ export default function VisitListRow(props) {
 
         <List.Content className="flex-fill" style={{ paddingLeft: ".25rem" }}>
             <small className="text-nowrap">{row.date}</small>
-            <div><small className="text-nowrap">{row.ip}</small></div>
+            <div><small className={`text-nowrap ${row.greenIp ? 'green-ip-row' : ''}`}>{row.ip}</small></div>
         </List.Content>
         
     </List.Item>

@@ -59,3 +59,9 @@
 .counter-header-row > .title-count {
     margin-right: .5rem !important;
 }
+
+.green-ip-row {
+    background-color: #daffb5;
+    font-weight: 700;
+    border-radius: .25rem;
+}

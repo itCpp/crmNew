@@ -22,7 +22,7 @@ function ReplaceRow(props) {
 
 export default withRouter(function UserRow(props) {
    
-    const user = props.user;console.log(props)
+    const user = props.user;
 
     user.username = <ReplaceRow string={user.username} search={props.search} />
     user.pin = <ReplaceRow string={user.pin} search={props.search} />

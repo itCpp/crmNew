@@ -5,6 +5,10 @@ import getDate from './../../../utils/date'
 
 function Counts(props) {
 
+    const ips = props.ips.length
+        ? props.ips.map((ip,key) => <span key={key} className="mx-1" title={ip.title}>{ip.ip}</span>)
+        : null
+
     return <div id="counter-header" className="px-3 py-2 border-bottom d-flex counter-header">
 
         {props.dateStop || props.dateStop ? <div className="counter-header-row">
@@ -26,6 +30,11 @@ function Counts(props) {
             <strong style={{ opacity: props.countVisitSiteLoading ? ".3" : "1" }}>{props.countVisitSite}</strong>
         </div>
 
+        {ips ? <div className="counter-header-row">
+            <span className="title-count">IP-адреса:</span>
+            <strong style={{ opacity: props.countVisitSiteLoading ? ".3" : "1" }}>{ips}</strong>
+        </div> : null}
+
     </div>
 
 }
@@ -39,6 +48,7 @@ const mapStateToProps = state => {
         countRequestsText: state.adCenter.countRequestsText,
         countVisitSiteLoading: state.adCenter.countVisitSiteLoading,
         countVisitSite: state.adCenter.countVisitSite,
+        ips: state.adCenter.ips,
     }
 }
 
