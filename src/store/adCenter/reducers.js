@@ -7,6 +7,8 @@ import {
     COUNT_VISIT_SITE,
     COUNT_VISIT_SITE_LOADING,
     IP_ADRESSES,
+    IP_LIST_VISITS,
+    IP_LIST_REQUESTS,
 } from './actions'
 
 const defaultState = {
@@ -18,6 +20,8 @@ const defaultState = {
     countVisitSiteLoading: false, // Идентификатор загрузки данных счетчика
     countVisitSite: 0, // Счетчик посещений сайта
     ips: [], // Список наших ip-адрес
+    ipListVisits: [], // Список ip-адресов посещений
+    ipListRequests: [], // Список ip-адресов заявок
 };
 
 export const adCenterReducer = (state = defaultState, action) => {
@@ -47,6 +51,12 @@ export const adCenterReducer = (state = defaultState, action) => {
 
         case IP_ADRESSES:
             return { ...state, ips: action.payload }
+
+        case IP_LIST_VISITS:
+            return { ...state, ipListVisits: action.payload }
+
+        case IP_LIST_REQUESTS:
+            return { ...state, ipListRequests: action.payload }
 
         default:
             return state;

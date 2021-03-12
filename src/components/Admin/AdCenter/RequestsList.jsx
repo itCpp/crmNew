@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import {
     setCountRequestsCall,
     setCountRequestsText,
-    setCountRequestsLoading
+    setCountRequestsLoading,
+    setIpListRequests
 } from '../../../store/adCenter/actions'
 
 import { Loader, Segment, List, Message } from 'semantic-ui-react'
@@ -32,6 +33,7 @@ function RequestsList(props) {
             setLoading(true);
             setRows([]);
             props.setCountRequestsLoading(true);
+            props.setIpListRequests([]);
 
             axios.post('admin/getAdRequests', {
                 active,
@@ -45,6 +47,7 @@ function RequestsList(props) {
 
                 props.setCountRequestsCall(data.countCall);
                 props.setCountRequestsText(data.countText);
+                props.setIpListRequests(data.iplist);
 
             }).catch(error => {
                 setError(axios.getError(error));
@@ -70,7 +73,7 @@ function RequestsList(props) {
 
         <List divided relaxed>
             {list}
-        </List>        
+        </List>
 
         {loading ? <div className="loading-data">
             <Loader active inline="centered" indeterminate size="small" />
@@ -80,15 +83,13 @@ function RequestsList(props) {
 
 }
 
-const mapStateToProps = state => {
-    return {
-        dateStart: state.adCenter.dateStart,
-        dateStop: state.adCenter.dateStop,
-    }
-}
+const mapStateToProps = state => ({
+    dateStart: state.adCenter.dateStart,
+    dateStop: state.adCenter.dateStop,
+})
 
 const mapDispatchToProps = {
-    setCountRequestsCall, setCountRequestsText, setCountRequestsLoading
+    setCountRequestsCall, setCountRequestsText, setCountRequestsLoading, setIpListRequests
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RequestsList)

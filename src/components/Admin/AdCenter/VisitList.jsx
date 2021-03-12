@@ -1,7 +1,12 @@
 import React from 'react'
 import axios from './../../../utils/axios'
 import { connect } from 'react-redux'
-import { setCountVisitSite, setCountVisitSiteLoading, setIpsAdresses } from '../../../store/adCenter/actions'
+import {
+    setCountVisitSite,
+    setCountVisitSiteLoading,
+    setIpsAdresses,
+    setIpListVisits
+} from '../../../store/adCenter/actions'
 
 import { Loader, Segment, List, Message } from 'semantic-ui-react'
 
@@ -72,6 +77,7 @@ function VisitList(props) {
 
             props.setCountVisitSite(data.countVisits);
             props.setIpsAdresses(data.ip);
+            props.setIpListVisits(data.iplist);
 
         }).catch(error => {
             setError(axios.getError(error));
@@ -91,6 +97,7 @@ function VisitList(props) {
             setPage(1);
             setEndData(false);
             props.setCountVisitSiteLoading(true);
+            props.setIpListVisits([]);
 
             await getAdVisites({
                 active,
@@ -151,10 +158,11 @@ function VisitList(props) {
 const mapStateToProps = state => ({
     dateStart: state.adCenter.dateStart,
     dateStop: state.adCenter.dateStop,
+    ipListRequests: state.adCenter.ipListRequests,
 });
 
 const mapDispatchToProps = {
-    setCountVisitSite, setCountVisitSiteLoading, setIpsAdresses
+    setCountVisitSite, setCountVisitSiteLoading, setIpsAdresses, setIpListVisits
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(VisitList)

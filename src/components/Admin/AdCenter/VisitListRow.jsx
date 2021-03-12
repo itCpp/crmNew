@@ -1,6 +1,7 @@
 import { List } from 'semantic-ui-react'
+import { connect } from 'react-redux'
 
-export default function VisitListRow(props) {
+function VisitListRow(props) {
 
     const row = props.row;
 
@@ -10,7 +11,13 @@ export default function VisitListRow(props) {
             ? "mobile alternate"
             : "question circle outline"
 
-    return <List.Item className="d-flex justify-content-between align-items-center px-2">
+    const color = props.ipListRequests.indexOf(row.ip) >= 0
+        ? "color-item-green"
+        : "";
+
+    return <List.Item
+        className={`d-flex justify-content-between align-items-center px-2 ${color}`}
+    >
 
         <div className="d-flex justify-content-center flex-column text-center" style={{ marginRight: ".5rem" }}>
             <div><List.Icon name={icon} size="large" style={{ margin: 0 }} /></div>
@@ -31,3 +38,9 @@ export default function VisitListRow(props) {
     </List.Item>
 
 }
+
+const mapStateToProps = state => ({
+    ipListRequests: state.adCenter.ipListRequests
+});
+
+export default connect(mapStateToProps)(VisitListRow)

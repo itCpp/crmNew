@@ -1,12 +1,17 @@
+import { connect } from 'react-redux';
 import { List, Icon } from 'semantic-ui-react'
 
-export default function RequestListRow(props) {
+function RequestListRow(props) {
 
     const row = props.row;
 
     const icon = row.typeReq === "call" ? "call" : "chat";
 
-    return <List.Item className="d-flex justify-content-center align-items-center px-2" >
+    const color = props.ipListVisits.indexOf(row.ip) >= 0
+        ? "color-item-green"
+        : "";
+
+    return <List.Item className={`d-flex justify-content-center align-items-center p-2 ${color}`}>
 
         <List.Icon name={icon} size="large" verticalAlign="middle" />
 
@@ -27,3 +32,9 @@ export default function RequestListRow(props) {
     </List.Item>
 
 }
+
+const mapStateToProps = state => ({
+    ipListVisits: state.adCenter.ipListVisits,
+})
+
+export default connect(mapStateToProps)(RequestListRow)

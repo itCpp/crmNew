@@ -45,3 +45,15 @@ export const setIpsAdresses = ips => ({
     type: IP_ADRESSES,
     payload: ips
 });
+
+export const IP_LIST_VISITS = "IP_LIST_VISITS";
+export const setIpListVisits = ips => ({
+    type: IP_LIST_VISITS,
+    payload: ips
+});
+
+export const IP_LIST_REQUESTS = "IP_LIST_REQUESTS";
+export const setIpListRequests = ips => ({
+    type: IP_LIST_REQUESTS,
+    payload: ips
+});
