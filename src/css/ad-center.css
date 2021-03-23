@@ -69,3 +69,23 @@
 .color-item-green {
     background-color: #daffb53f;
 }
+
+.counter-row {
+    display: flex;
+    max-width: 80%;
+    margin: .3rem auto;
+    padding: .25rem .5rem;
+    cursor: default;
+}
+.counter-row:hover {
+    background: #f8f8f8;
+    border-radius: .25rem;
+}
+.counter-row > * {
+    min-width: 50px;
+    text-align: center;
+}
+.counter-row-title {
+    flex-grow: 1;
+    text-align: left;
+}

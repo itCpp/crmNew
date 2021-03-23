@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { List, Icon } from 'semantic-ui-react'
+import { List, Icon, Label } from 'semantic-ui-react'
 
 function RequestListRow(props) {
 
@@ -19,7 +19,11 @@ function RequestListRow(props) {
             <List.Header>
                 <span>id#{row.id_request}{' '}</span>
                 <span>{row.myPhone || row.company}</span>
-                {row.phone ? <span><Icon name="phone volume" style={{ margin: "0 .15rem 0 .5rem" }}/>{row.phone}</span> : null}
+                {row.phone ? <span className="position-relative">
+                    <Icon name="phone volume" style={{ margin: "0 .15rem 0 .5rem" }}/>
+                    <span style={{ marginRight: ".25rem" }}>{row.phone}</span>
+                    {row.count > 1 ? <Label color="blue" size="tiny" title="Количество звонков">{row.count}</Label> : null}
+                </span> : null}
             </List.Header>
             {row.utm_term ? <List.Description><strong>Utm term</strong>{' '}{row.utm_term}</List.Description> : null}
         </List.Content>

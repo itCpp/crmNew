@@ -10,6 +10,7 @@ import TabName from './TabName'
 import TabButton from './TabButton'
 import TabAdd from './TabAdd'
 import Calendar from './Calendar'
+import ShowCounterRequests from './ShowCounterRequests'
 
 function Tabs(props) {
 
@@ -58,6 +59,8 @@ function Tabs(props) {
             loadingData={props.loadingData}
             errorSites={props.errorSites}
         />
+
+        <ShowCounterRequests site={props.site} />
 
         <TabAdd
             setTabs={props.setTabs}
