@@ -4,9 +4,7 @@ import './header.css'
 
 import MangoBalance from './MangoBalance'
 
-export default function Header(props) {
-
-    console.log(window.access)
+export default function Header() {
 
     return <div className="header-menu border-bottom" id="header-menu">
 
