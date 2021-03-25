@@ -53,11 +53,19 @@
     margin-right: 1rem;
     display: flex;
 }
+.counter-header-row-disabled {
+    opacity: .5;
+}
 .counter-header-row > .icon {
     margin-left: .5rem !important;
 }
 .counter-header-row > .title-count {
     margin-right: .5rem !important;
+}
+
+.add-coasts {
+    font-weight: 700;
+    color: #5c5cff;
 }
 
 .green-ip-row {
@@ -88,4 +96,13 @@
 .counter-row-title {
     flex-grow: 1;
     text-align: left;
+}
+
+.ad-costs-add-body > div > strong {
+    margin-right: .5rem;
+}
+
+.error-row-cost:hover {
+    border-radius: .25rem;
+    background: #f8f8f8;
 }

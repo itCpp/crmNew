@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from './../../../utils/axios'
 import { connect } from 'react-redux'
-import { setDateStart, setDateStop } from '../../../store/adCenter/actions'
+import { setDateStart, setDateStop, setActiveTab } from '../../../store/adCenter/actions'
 
 import { Loader, Segment, Header } from 'semantic-ui-react';
 
@@ -12,7 +12,7 @@ import RequestsList from './RequestsList'
 import VisitList from './VisitList'
 import Counts from './Counts'
 
-function AdCenter() {
+function AdCenter(props) {
 
     const [loading, setLoading] = React.useState(false);
 
@@ -41,6 +41,8 @@ function AdCenter() {
         const counterHeader = document.getElementById('counter-header') || null;
         if (counterHeader)
             setMaxHeightContent(`${(window.innerHeight - header.offsetHeight - counterHeader.offsetHeight)}px`);
+
+        props.setActiveTab(active);
 
     }, [active, activeUpdate]);
 
@@ -155,7 +157,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = {
-    setDateStart, setDateStop,
+    setDateStart, setDateStop, setActiveTab
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdCenter)

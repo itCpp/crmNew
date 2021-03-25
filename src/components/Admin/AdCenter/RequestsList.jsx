@@ -5,7 +5,8 @@ import {
     setCountRequestsCall,
     setCountRequestsText,
     setCountRequestsLoading,
-    setIpListRequests
+    setIpListRequests,
+    setAccessCosts
 } from '../../../store/adCenter/actions'
 
 import { Loader, Segment, List, Message } from 'semantic-ui-react'
@@ -48,6 +49,7 @@ function RequestsList(props) {
                 props.setCountRequestsCall(data.countCall);
                 props.setCountRequestsText(data.countText);
                 props.setIpListRequests(data.iplist);
+                props.setAccessCosts(data.costs);
 
             }).catch(error => {
                 setError(axios.getError(error));
@@ -89,7 +91,11 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-    setCountRequestsCall, setCountRequestsText, setCountRequestsLoading, setIpListRequests
+    setCountRequestsCall,
+    setCountRequestsText,
+    setCountRequestsLoading,
+    setIpListRequests,
+    setAccessCosts,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RequestsList)

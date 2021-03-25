@@ -9,6 +9,8 @@ import {
     IP_ADRESSES,
     IP_LIST_VISITS,
     IP_LIST_REQUESTS,
+    ACCESS_COSTS,
+    SET_ACTIVE_TAB,
 } from './actions'
 
 const defaultState = {
@@ -22,6 +24,8 @@ const defaultState = {
     ips: [], // Список наших ip-адрес
     ipListVisits: [], // Список ip-адресов посещений
     ipListRequests: [], // Список ip-адресов заявок
+    accessCosts: false, // Доступ к информации о расходах по рекламе
+    activeTab: null,
 };
 
 export const adCenterReducer = (state = defaultState, action) => {
@@ -57,6 +61,12 @@ export const adCenterReducer = (state = defaultState, action) => {
 
         case IP_LIST_REQUESTS:
             return { ...state, ipListRequests: action.payload }
+
+        case ACCESS_COSTS:
+            return { ...state, accessCosts: action.payload }
+
+        case SET_ACTIVE_TAB:
+            return { ...state, activeTab: action.payload }
 
         default:
             return state;

@@ -2,6 +2,7 @@ import { connect } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
 
 import getDate from './../../../utils/date'
+import AddCosts from './Costs/AddCosts'
 
 function Counts(props) {
 
@@ -9,7 +10,7 @@ function Counts(props) {
     //     ? props.ips.map((ip,key) => <span key={key} className="mx-1" title={ip.title}>{ip.ip}</span>)
     //     : null
 
-    return <div id="counter-header" className="px-3 py-2 border-bottom d-flex counter-header">
+    return <div id="counter-header" className="px-3 py-2 border-bottom d-flex counter-header align-items-center">
 
         {props.dateStop || props.dateStop ? <div className="counter-header-row">
             <span className="counter-header-row">Период:</span>
@@ -30,6 +31,8 @@ function Counts(props) {
             <strong style={{ opacity: props.countVisitSiteLoading ? ".3" : "1" }}>{props.countVisitSite}</strong>
         </div>
 
+        {props.accessCosts ? <AddCosts loading={props.countRequestLoading} /> : null}
+
         {/* {ips ? <div className="counter-header-row">
             <span className="title-count">IP-адреса:</span>
             <strong style={{ opacity: props.countVisitSiteLoading ? ".3" : "1" }}>{ips}</strong>
@@ -49,6 +52,7 @@ const mapStateToProps = state => {
         countVisitSiteLoading: state.adCenter.countVisitSiteLoading,
         countVisitSite: state.adCenter.countVisitSite,
         ips: state.adCenter.ips,
+        accessCosts: state.adCenter.accessCosts,
     }
 }
 

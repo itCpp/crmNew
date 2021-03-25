@@ -57,3 +57,15 @@ export const setIpListRequests = ips => ({
     type: IP_LIST_REQUESTS,
     payload: ips
 });
+
+export const ACCESS_COSTS = "ACCESS_COSTS";
+export const setAccessCosts = access => ({
+    type: ACCESS_COSTS,
+    payload: access
+});
+
+export const SET_ACTIVE_TAB = "SET_ACTIVE_TAB";
+export const setActiveTab = id => ({
+    type: SET_ACTIVE_TAB,
+    payload: id
+});
