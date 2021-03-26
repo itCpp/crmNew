@@ -1,4 +1,4 @@
-import { Icon } from 'semantic-ui-react';
+import { Icon, Popup } from 'semantic-ui-react';
 
 export default function ShowCounterCosts(props) {
 
@@ -15,17 +15,30 @@ export default function ShowCounterCosts(props) {
                         <span>{pay.name || pay.compain_id}</span>
                     </div>
                 </div>
-                <div>
-                    <b>{pay.summ}</b>
-                    <span>руб</span>
-                </div>
-                <div style={{ minWidth: "50px" }}>
-                    <b>{pay.requests}</b>
-                </div>
-                <div>
-                    <b>{pay.price}</b>
-                    <span>руб/шт</span>
-                </div>
+                <Popup
+                    size="mini"
+                    content="Потрачено (руб)"
+                    position="top center"
+                    trigger={<div>
+                        <b>{pay.summ}</b>
+                    </div>}
+                />
+                <Popup
+                    size="mini"
+                    content="Количество заявок"
+                    position="top center"
+                    trigger={<div style={{ minWidth: "50px" }}>
+                        <b>{pay.requests}</b>
+                    </div>}
+                />
+                <Popup
+                    size="mini"
+                    content="Цена одной заявки (руб/шт)"
+                    position="top center"
+                    trigger={<div>
+                        <b>{pay.price}</b>
+                    </div>}
+                />
             </div>)
             : null
 
@@ -35,17 +48,30 @@ export default function ShowCounterCosts(props) {
                     {row.icon ? <Icon name={row.icon} color={row.color} /> : null}
                     <span>{row.title}</span>
                 </div>
-                <div>
-                    <b>{row.summ}</b>
-                    <span>руб</span>
-                </div>
-                <div style={{ minWidth: "50px" }}>
-                    <b>{row.requests}</b>
-                </div>
-                <div>
-                    <b>{row.price}</b>
-                    <span>руб/шт</span>
-                </div>
+                <Popup
+                    size="mini"
+                    content="Потрачено (руб)"
+                    position="top center"
+                    trigger={<div>
+                        <b>{row.summ}</b>
+                    </div>}
+                />
+                <Popup
+                    size="mini"
+                    content="Количество заявок"
+                    position="top center"
+                    trigger={<div style={{ minWidth: "50px" }}>
+                        <b>{row.requests}</b>
+                    </div>}
+                />
+                <Popup
+                    size="mini"
+                    content="Цена одной заявки (руб/шт)"
+                    position="top center"
+                    trigger={<div>
+                        <b>{row.price}</b>
+                    </div>}
+                />
             </div>
 
             {pays}

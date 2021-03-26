@@ -57,6 +57,7 @@ function ShowCounterRequests(props) {
                     <Popup
                         size="mini"
                         content="Текстовые заявки"
+                        position="top center"
                         trigger={<div>
                             <Icon name="chat" />
                             <b>{row.text}</b>
@@ -65,6 +66,7 @@ function ShowCounterRequests(props) {
                     <Popup
                         size="mini"
                         content="Звонки"
+                        position="top center"
                         trigger={<div>
                             <Icon name="call" />
                             <b>{row.calls}</b>
@@ -73,13 +75,15 @@ function ShowCounterRequests(props) {
                     <Popup
                         size="mini"
                         content="Сумма заявок"
+                        position="top center"
                         trigger={<div>
-                            <b>{row.calls}</b>
+                            <b>{row.all}</b>
                         </div>}
                     />
                     <Popup
                         size="mini"
                         content="Посещений сайта"
+                        position="top center"
                         trigger={<div>
                             <Icon name="sign-in" />
                             <b>{row.visites}</b>
