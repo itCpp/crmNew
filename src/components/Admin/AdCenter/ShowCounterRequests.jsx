@@ -2,7 +2,7 @@ import React from 'react';
 import axios from './../../../utils/axios'
 import { connect } from 'react-redux'
 
-import { Button, Modal, Header, Icon, Placeholder } from 'semantic-ui-react';
+import { Button, Modal, Header, Icon, Placeholder, Popup } from 'semantic-ui-react';
 
 import ShowCounterCosts from './ShowCounterCosts'
 
@@ -12,6 +12,7 @@ function ShowCounterRequests(props) {
     const [error, setError] = React.useState(false);
     const [rows, setRows] = React.useState([]);
     const [costs, setCosts] = React.useState(false);
+    const [title, setTitle] = React.useState("Статистика");
 
     React.useEffect(() => {
 
@@ -20,14 +21,21 @@ function ShowCounterRequests(props) {
             setRows([]);
             setError(false);
             setCosts(false);
+            setTitle("Статистика");
 
             axios.post('admin/getCountRequests', {
                 site: props.site,
                 start: props.dateStart,
                 stop: props.dateStop
             }).then(({ data }) => {
+
                 setRows(data.counts);
                 setCosts(data.costs);
+
+                let modalTitle = "Статистика ";
+                modalTitle += data.period || data.date;
+                setTitle(modalTitle);
+
             }).catch(error => {
                 setError(axios.getError(error));
             });
@@ -46,17 +54,37 @@ function ShowCounterRequests(props) {
                         {row.icon ? <Icon name={row.icon} color={row.color} /> : null}
                         <span>{row.title}</span>
                     </div>
-                    <div>
-                        <Icon name="chat" />
-                        <b>{row.text}</b>
-                    </div>
-                    <div>
-                        <Icon name="call" />
-                        <b>{row.calls}</b>
-                    </div>
-                    <div>
-                        <b>{row.all}</b>
-                    </div>
+                    <Popup
+                        size="mini"
+                        content="Текстовые заявки"
+                        trigger={<div>
+                            <Icon name="chat" />
+                            <b>{row.text}</b>
+                        </div>}
+                    />
+                    <Popup
+                        size="mini"
+                        content="Звонки"
+                        trigger={<div>
+                            <Icon name="call" />
+                            <b>{row.calls}</b>
+                        </div>}
+                    />
+                    <Popup
+                        size="mini"
+                        content="Сумма заявок"
+                        trigger={<div>
+                            <b>{row.calls}</b>
+                        </div>}
+                    />
+                    <Popup
+                        size="mini"
+                        content="Посещений сайта"
+                        trigger={<div>
+                            <Icon name="sign-in" />
+                            <b>{row.visites}</b>
+                        </div>}
+                    />
                 </div>)}
             </div>
             : <Placeholder fluid>
@@ -84,7 +112,7 @@ function ShowCounterRequests(props) {
             size="tiny"
             centered={false}
         >
-            <Header icon="chart bar outline" content="Статистика" />
+            <Header icon="chart bar outline" content={title} />
 
             <Modal.Content className="position-relative">
                 {content}

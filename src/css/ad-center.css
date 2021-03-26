@@ -100,6 +100,12 @@
 .counter-row-cost > * > b {
     margin: 0 .34rem;
 }
+.counter-row-subcost {
+    padding-left: 1rem;
+    opacity: .6;
+    font-size: 90%;
+}
+.counter-row-subcost:hover { opacity: 1; }
 
 .counter-row-title {
     flex-grow: 1;
