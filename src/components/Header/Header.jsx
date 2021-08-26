@@ -1,30 +1,41 @@
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import './header.css'
+import { Icon } from 'semantic-ui-react';
 
-import MangoBalance from './MangoBalance'
+import './header.css';
 
 function Header(props) {
 
-    console.log(props);
+    const { user, permits } = props;
+
+    console.log(props)
 
     return <div className="header-menu border-bottom" id="header-menu">
 
         <div className="d-flex justify-content-between align-items-center">
 
             <div>
-                <b>CRM MKA</b>
 
-                <NavLink exact to="/" className="header-menu-link">AdCenter</NavLink>
-                <NavLink to="/gates" className="header-menu-link">Шлюзы</NavLink>
-                <NavLink to="/users" className="header-menu-link">Сотрудники</NavLink>
+                <b className="header-title">CRM MKA</b>
+
+                <NavLink exact to="/" className="header-menu-link text-primary" title="Главная страница">
+                    <Icon name="home" className="header-menu-icon" />
+                </NavLink>
+
+                {permits.admin_access
+                    ? <NavLink exact to="/admin" className="header-menu-link text-danger" title="Админ-панель">
+                        <Icon name="setting" className="header-menu-icon" />
+                    </NavLink>
+                    : null
+                }
 
             </div>
 
             <div>
 
-                <MangoBalance access={window.access?.admin_show_mango_balance || null} />
+                <strong>{user.pin}{' '}</strong>
+                <span>{user.name_fio}</span>
 
             </div>
 
@@ -37,6 +48,7 @@ function Header(props) {
 
 const mapStateToProps = state => ({
     user: state.main.userData,
+    permits: state.main.userPermits,
 });
 
 export default connect(mapStateToProps)(Header);
