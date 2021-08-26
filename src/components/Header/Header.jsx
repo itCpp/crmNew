@@ -9,8 +9,6 @@ function Header(props) {
 
     const { user, permits } = props;
 
-    console.log(props)
-
     return <div className="header-menu border-bottom" id="header-menu">
 
         <div className="d-flex justify-content-between align-items-center">
@@ -24,7 +22,7 @@ function Header(props) {
                 </NavLink>
 
                 {permits.admin_access
-                    ? <NavLink exact to="/admin" className="header-menu-link text-danger" title="Админ-панель">
+                    ? <NavLink to="/admin" className="header-menu-link text-danger" title="Админ-панель">
                         <Icon name="setting" className="header-menu-icon" />
                     </NavLink>
                     : null
