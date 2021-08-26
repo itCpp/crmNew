@@ -1,0 +1,33 @@
+.auth-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    padding: 1rem .5rem;
+}
+
+.auth-block {
+    width: 100%;
+    max-width: 330px;
+    
+}
+
+.auth-block-form {
+    width: 100%;
+    background: #ffffff;
+    border-radius: .5rem;
+    padding: 1rem;
+}
+
+.auth-block-form .ui.input input {
+    font-family: inherit;
+}
+
+.auth-error {
+    margin-top: 1rem;
+    padding: 0 .5rem;
+    color: lightcoral;
+    font-weight: bold;
+}

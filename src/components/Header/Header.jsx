@@ -1,20 +1,25 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import './header.css'
 
 import MangoBalance from './MangoBalance'
 
-export default function Header() {
+function Header(props) {
+
+    console.log(props);
 
     return <div className="header-menu border-bottom" id="header-menu">
 
         <div className="d-flex justify-content-between align-items-center">
 
             <div>
-                <b>Админпанель</b>
+                <b>CRM MKA</b>
 
                 <NavLink exact to="/" className="header-menu-link">AdCenter</NavLink>
+                <NavLink to="/gates" className="header-menu-link">Шлюзы</NavLink>
                 <NavLink to="/users" className="header-menu-link">Сотрудники</NavLink>
+
             </div>
 
             <div>
@@ -29,3 +34,9 @@ export default function Header() {
     </div>
 
 }
+
+const mapStateToProps = state => ({
+    user: state.main.userData,
+});
+
+export default connect(mapStateToProps)(Header);

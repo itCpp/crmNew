@@ -1,0 +1,29 @@
+.gates-menu {
+    width: 200px;
+    padding: .25rem .5rem;
+}
+
+.gates-menu-point {
+    display: block;
+    margin: .1rem auto;
+    padding: .25rem .35rem;
+    cursor: pointer;
+    color: rgba(0,0,0,.87);
+}
+.gates-menu-point:hover {
+    color: rgba(0,0,0,.87);
+    background: #f3f3f3;
+    border-radius: .25rem;
+}
+.gates-menu-point.active {
+    font-weight: 700;
+}
+
+.gates-content {
+    padding: .25rem .5rem;
+}
+
+.gates-error {
+    max-width: 500px;
+    margin: .5rem auto !important;
+}

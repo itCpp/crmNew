@@ -1,28 +1,33 @@
-import React from 'react'
-import axios from './utils/axios'
-import { Loader } from 'semantic-ui-react'
+import React from 'react';
+import axios from './utils/axios-header';
+
+import { connect } from 'react-redux';
+import { setLogin, setUserData, setUserPermits } from './store/actions';
+
+import { Loader } from 'semantic-ui-react';
 
 import './App.css';
 
-import Routes from './components/Routes'
+import Routes from './components/Routes';
 
-export default function App() {
+function App(props) {
 
-    const [login, setLogin] = React.useState(false);
+    const { login, setLogin, setUserData, setUserPermits } = props;
     const [loading, setLoading] = React.useState(true);
 
     React.useEffect(() => {
 
-        axios.post('/checkUser').then(({ data }) => {
+        axios.post('/check').then(({ data }) => {
 
             setLogin(true);
-
-            window.user = data.user;
-            window.access = data.access;
-            window.sip = data.sip;
+            setUserData(data.user);
+            setUserPermits(data.permits);
 
         }).catch(error => {
-            setLogin(false);
+
+            if (error?.response.status === 401)
+                setLogin(false);
+
         }).then(() => {
             setLoading(false);
         });
@@ -35,6 +40,18 @@ export default function App() {
         </div>
     }
 
-    return <Routes login={login} />
+    return <Routes
+        login={login}
+    />
 
 }
+
+const mapStateToProps = state => ({
+    login: state.main.login,
+});
+
+const mapDispatchToProps = {
+    setLogin, setUserData, setUserPermits
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

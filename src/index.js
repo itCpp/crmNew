@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import store from './store/store';
 
-import './css/bootstrap-utilities.css';
 import 'semantic-ui-css/semantic.min.css';
+import './css/bootstrap-utilities.css';
 import './index.css';
 
 import App from './App';
