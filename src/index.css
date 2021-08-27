@@ -54,3 +54,11 @@ code {
 .text-right {
   text-align: right !important;
 }
+
+.button-icon {
+  cursor: pointer;
+  opacity: .7 !important;
+}
+.button-icon:hover {
+  opacity: 1 !important;
+}

@@ -13,11 +13,22 @@ function AddPermit(props) {
     const [errors, setErrors] = React.useState({});
     const [formData, setFormData] = React.useState({});
 
+    const [errorEdit, setErrorEdit] = React.useState(false);
+
     React.useEffect(() => {
 
-        if (open) {
+        if (open && !edit) {
             setError(false);
+            setErrors({});
+            setErrorEdit(false);
             setLoading(false);
+            setFormData({});
+        }
+        else if (!open) {
+            setError(false);
+            setErrorEdit(false);
+            setLoading(false);
+            setErrors({});
             setFormData({});
         }
 
@@ -32,6 +43,7 @@ function AddPermit(props) {
             axios.post('dev/savePermit', formData).then(({ data }) => {
 
                 setError(false);
+                setErrors({});
                 setOpen(false);
 
                 addedPermit({ ...data.permit, new: true }, edit ? true : false);
@@ -48,6 +60,32 @@ function AddPermit(props) {
         return () => setSave(false);
 
     }, [save]);
+
+    React.useEffect(() => {
+
+        if (edit) {
+
+            setLoading(true);
+
+            axios.post('dev/getPermit', edit).then(({ data }) => {
+
+                setError(false);
+                setErrorEdit(false);
+                setErrors({});
+
+                setFormData({ ...data.permit, edit: true });
+
+            }).catch(error => {
+                error = axios.getError(error);
+                setError(error);
+                setErrorEdit(error);
+            }).then(() => {
+                setLoading(false);
+            });
+
+        }
+
+    }, [edit]);
 
     const changeData = el => {
 
@@ -70,7 +108,7 @@ function AddPermit(props) {
         closeOnEscape={false}
         closeIcon
     >
-        <Modal.Header>Новое правило</Modal.Header>
+        <Modal.Header>{edit ? "Изменить правило" : "Новое правило"}</Modal.Header>
 
         <Modal.Content>
 
@@ -78,16 +116,19 @@ function AddPermit(props) {
                 loading={loading}
             >
 
-                <Form.Input
-                    label="Наименование"
-                    placeholder="Введите наименование правила..."
-                    className="mb-1"
-                    required
-                    name="permission"
-                    value={formData.permission || ""}
-                    onChange={changeData}
-                    error={errors.permission || false}
-                />
+                {edit
+                    ? <h4 className="mb-3 text-primary">{formData.permission || "..."}</h4>
+                    : <Form.Input
+                        label="Наименование"
+                        placeholder="Введите наименование правила..."
+                        className="mb-1"
+                        required
+                        name="permission"
+                        value={formData.permission || ""}
+                        onChange={changeData}
+                        error={errors.permission || false}
+                    />
+                }
                 <div className="mb-3">
                     <small>Наименование правила необходимо указывать только латинскими буквами и без символов. Разрешено нижнее подчеркивание</small>
                 </div>
@@ -113,8 +154,9 @@ function AddPermit(props) {
         <Modal.Actions>
             <Button
                 onClick={() => setSave(true)}
-                content="Создать"
+                content={edit ? "Сохранить" : "Создать"}
                 primary
+                disabled={loading || errorEdit}
             />
         </Modal.Actions>
 

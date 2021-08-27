@@ -12,6 +12,7 @@ function Permits() {
     const [permits, setPermits] = React.useState([]);
 
     const [showAdd, setShowAdd] = React.useState(false);
+    const [edit, setEdit] = React.useState(null);
 
     React.useEffect(() => {
 
@@ -28,9 +29,33 @@ function Permits() {
 
     const addedPermit = (permit, edit = false) => {
 
+        if (edit) {
+
+            for (let i in permits)
+                if (permits[i].permission === permit.permission)
+                    permits[i] = permit;
+
+            return setPermits(permits);
+
+        }
+
         setPermits([ permit, ...permits]);
 
     }
+
+    React.useEffect(() => {
+
+        if (!showAdd)
+            setEdit(null);
+
+    }, [showAdd]);
+
+    React.useEffect(() => {
+
+        if (edit)
+            setShowAdd(true);
+
+    }, [edit]);
 
     if (loading)
         return <div className="text-center mt-4"><Loader inline active /></div>
@@ -41,7 +66,11 @@ function Permits() {
     const tbody = permits.map((permit, i) => <Table.Row key={i} positive={permit.new || false}>
         <Table.Cell><b>{permit.permission}</b></Table.Cell>
         <Table.Cell>{permit.comment}</Table.Cell>
-        <Table.Cell></Table.Cell>
+        <Table.Cell textAlign="center" className="cell-icons">
+            <Icon name="edit outline" color="blue" className="button-icon" onClick={() => setEdit(permit)} />
+            {/* <Icon name="trash" color="red" className="button-icon" /> */}
+            {/* <Icon name="search" className="button-icon" /> */}
+        </Table.Cell>
     </Table.Row>);
 
     return <div>
@@ -50,6 +79,7 @@ function Permits() {
             open={showAdd}
             setOpen={setShowAdd}
             addedPermit={addedPermit}
+            edit={edit}
         />
 
         <Header
@@ -64,7 +94,7 @@ function Permits() {
                 <Table.Row>
                     <Table.HeaderCell>Permission</Table.HeaderCell>
                     <Table.HeaderCell>Описание</Table.HeaderCell>
-                    <Table.HeaderCell>
+                    <Table.HeaderCell textAlign="center">
                         <Button
                             icon="plus"
                             size="tiny"

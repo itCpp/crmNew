@@ -54,3 +54,7 @@
     opacity: 1;
     color: rgb(165, 2, 2);
 }
+
+.cell-icons i.icon {
+    margin: 0 .1rem !important;
+}
