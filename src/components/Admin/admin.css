@@ -4,6 +4,9 @@
 }
 
 .admin-menu {
+    position: fixed;
+    top: 35px;
+    bottom: 0;
     width: 220px;
     padding: .5rem;
     background-color: rgb(82, 82, 82);
@@ -11,10 +14,13 @@
 
 .admin-content-body {
     flex-grow: 1;
-    margin-left: 1rem;
+    margin-left: 235px;
     margin-top: .5rem;
 }
 
+.admin-menu-block {
+    margin-bottom: 1rem;
+}
 .admin-menu-block > h5 {
     margin-bottom: .5rem;
     padding: 0 .2rem;

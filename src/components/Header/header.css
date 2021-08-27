@@ -6,6 +6,7 @@
 .header-menu {
     padding: .5rem 1rem;
     background: #ffffff;
+    z-index: 100;
 }
 
 .header-menu-link {
@@ -32,4 +33,5 @@
 
 .header-menu-icon {
     margin: 0 !important;
+    font-size: 120% !important;
 }

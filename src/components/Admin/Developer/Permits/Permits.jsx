@@ -84,8 +84,8 @@ function Permits() {
 
         <Header
             as="h2"
-            content="Права"
-            subheader="Добавление или удаление разрешений"
+            content="Разрешения"
+            subheader="Добавление или удаление разрешений пользотеля или роли для использования в коде API сервера"
         />
 
         <Table collapsing>

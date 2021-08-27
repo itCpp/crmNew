@@ -3,6 +3,8 @@ import { withRouter } from "react-router";
 import Roles from './Developer/Roles';
 import Permits from './Developer/Permits/Permits';
 
+import Users from './Users/Users';
+
 function AdminContent(props) {
 
     const { permits } = props;
@@ -16,6 +18,8 @@ function AdminContent(props) {
         body = <Roles />
     else if (page == "permits" && permits.dev_permits)
         body = <Permits />
+    else if (page == "users" && permits.admin_users)
+        body = <Users />
 
     return <div className="admin-content-body">
         {body}

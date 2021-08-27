@@ -162,7 +162,6 @@ function AddPermit(props) {
 
     </Modal>
 
-
 }
 
 export default AddPermit;
