@@ -64,3 +64,7 @@
 .cell-icons i.icon {
     margin: 0 .1rem !important;
 }
+
+.role-name:not(:last-child):after {
+    content: ", ";
+}

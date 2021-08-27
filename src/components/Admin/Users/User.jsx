@@ -28,6 +28,7 @@ function User(props) {
     const [save, setSave] = React.useState(false);
     const [formdata, setFormdata] = React.useState({});
     const [pin, setPin] = React.useState(null);
+    const [password, setPassword] = React.useState(false);
 
     const [callcenters, setCallcenters] = React.useState([]);
     const [callcenter, setCallcenter] = React.useState({});
@@ -49,16 +50,19 @@ function User(props) {
 
         changeValue(name, value);
 
+
     }
 
     const setOptionsSectors = data => {
+
+        data.unshift({ id: null, name: "Без сектора" });
 
         setSectors(data.map(row => ({
             key: row.id,
             text: row.name,
             value: row.id,
             onClick: () => {
-                setCallcenter({ ...callcenter, callcenter_sector_id: row.id });
+                setCallcenter({ ...sectors, callcenter_sector_id: row.id });
             },
         })));
 
@@ -71,7 +75,11 @@ function User(props) {
         axios.post('admin/getCallCenterData', { id }).then(({ data }) => {
 
             setOptionsSectors(data.sectors);
-            setPin(data.pin);
+
+            if (!user.id) {
+                setPin(data.pin);
+            }
+
             setErrorInput(false);
 
         }).catch(() => {
@@ -84,34 +92,49 @@ function User(props) {
 
     React.useEffect(() => {
 
-        axios.post('admin/getAddUserData').then(({ data }) => {
+        axios.post('admin/getAddUserData', user).then(({ data }) => {
 
             setGError(false);
+
+            data.callcenters.unshift({ id: null, name: "Без колл-центра" });
 
             setCallcenters(data.callcenters.map(row => ({
                 key: row.id,
                 text: row.name,
                 value: row.id,
                 onClick: () => {
-                    setCallcenter({ ...callcenter, callcenter_id: row.id });
+                    setCallcenter({
+                        ...callcenter,
+                        callcenter_id: row.id,
+                        callcenter_sector_id: null
+                    });
                     loadCallCenterData(row.id);
                 },
             })));
 
-            if (data.callcenter) {
+            let callcenter_id = data.callcenter || null,
+                callcenter_sector_id = data.callcenter_sector_id || null;
+
+            if (data.user) {
+                callcenter_id = data.user.callcenter_id;
+                callcenter_sector_id = callcenter_id ? data.user.callcenter_sector_id : null;
+                setPassword(true);
+            }
+
+            if (callcenter_id) {
                 for (let i in data.callcenters) {
-                    if (data.callcenters[i].id === data.callcenter) {
+                    if (data.callcenters[i].id === callcenter_id) {
                         setOptionsSectors(data.callcenters[i].sectors);
                     }
                 }
             }
 
             setCallcenter({
-                callcenter_id: data.callcenter || null,
-                callcenter_sector_id: data.callcenter_sector_id || null,
+                callcenter_id: callcenter_id,
+                callcenter_sector_id: callcenter_sector_id,
             });
 
-            setFormdata({
+            setFormdata({ ...data.user } || {
                 password: gen_password(8),
                 auth_type: "secret",
             });
@@ -132,12 +155,14 @@ function User(props) {
 
             setLoading(true);
 
-            axios.post('admin/saveUser', {
+            let request = {
                 ...formdata,
                 pin: pin,
                 ...callcenter
-            }).then(({ data }) => {
-                // setUser(null);
+            };
+
+            axios.post('admin/saveUser', request).then(({ data }) => {
+                setUser(null);
             }).catch(error => {
                 setError(axios.getError(error));
                 setErrors(axios.getErrors(error));
@@ -163,7 +188,7 @@ function User(props) {
         closeIcon
         size="small"
     >
-        <Modal.Header>Добавить сотрудника</Modal.Header>
+        <Modal.Header>{user.id ? "Изменить данные" : "Добавить сотрудника"}</Modal.Header>
 
         <Modal.Content>
 
@@ -258,26 +283,43 @@ function User(props) {
                         type="number"
                         error={errors.telegram_id || false}
                     />
-                    <Form.Input
-                        fluid
-                        label="Пароль"
-                        placeholder="Введите пароль для входа"
-                        name="password"
-                        value={formdata.password || ""}
-                        onChange={changeData}
-                        icon={{
-                            name: "undo",
-                            link: true,
-                            onClick: () => changeValue("password", gen_password(8))
-                        }}
-                        error={errors.password || false}
-                    />
+                    {!password ?
+                        <Form.Input
+                            fluid
+                            label="Пароль"
+                            placeholder="Введите пароль..."
+                            name="password"
+                            value={formdata.password || ""}
+                            onChange={changeData}
+                            icon={{
+                                name: "undo",
+                                link: true,
+                                onClick: () => changeValue("password", gen_password(8))
+                            }}
+                            error={errors.password || false}
+                        />
+                        : <div className="field">
+                            <label>Пароль</label>
+                            <div className="ui fluid input">
+                                <Button
+                                    content="Сменить пароль"
+                                    fluid
+                                    className="change-password"
+                                    onClick={() => {
+                                        setPassword(false);
+                                        changeValue("password", gen_password(8));
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    }
                     <Form.Select
                         fluid
                         label="Способ авторизации"
                         options={[
                             { key: 1, text: "По паролю", value: "secret" },
                         ]}
+                        placeholder="Выберите способ"
                         value={formdata.auth_type}
                         name="auth_type"
                         error={errors.auth_type || false}
@@ -295,7 +337,7 @@ function User(props) {
             </div>
             <Button
                 onClick={() => setSave(true)}
-                content={"Добавить"}
+                content={user.id ? "Изменить" : "Добавить"}
                 color="green"
                 disabled={loading || gError ? true : false}
             />

@@ -1,5 +1,7 @@
-import React from 'react'
-import { withRouter } from 'react-router-dom'
+import React from 'react';
+import { withRouter } from 'react-router-dom';
+
+import { Button, Icon } from 'semantic-ui-react';
 
 const reactStringReplace = require('react-string-replace');
 
@@ -21,27 +23,42 @@ function ReplaceRow(props) {
 }
 
 export default withRouter(function UserRow(props) {
-   
-    const user = props.user;
 
-    user.username = <ReplaceRow string={user.username} search={props.search} />
-    user.pin = <ReplaceRow string={user.pin} search={props.search} />
-    user.fullName = <ReplaceRow string={user.fullName} search={props.search} />
+    const { user, search } = props;
 
-    return <div className="users-item" onClick={() => {
-        props.setUser(user);
-        props.history.replace(`/users?id=${user.id}`);
-    }}>
+    if (search) {
+        user.login = <ReplaceRow string={user.login} search={search} />
+        user.pin = <ReplaceRow string={user.pin} search={search} />
+        user.name_full = <ReplaceRow string={user.name_full} search={search} />
+    }
 
-        <div className="d-flex align-items-center justify-content-between">
-            <div><b>{user.pin}</b>{' '}{user.fullName}</div>
-            <small>{user.rights}</small>
+    return <div className="users-item">
+
+        <div className="d-flex align-items-center justify-content-between user-item-header">
+            <div className="d-flex align-items-center">
+                <div className="user-pin">{user.pin}</div>
+                <div className="user-full-name">{user.name_full}</div>
+            </div>
+            <div>{user.login}</div>
         </div>
 
-        <div className="d-flex align-items-center justify-content-between">
-            <div>
-                <small>{user.username}</small>
-                {user.state !== "Работает" ? <small className="text-danger">{' '}<b>Уволен</b></small> : null}
+        {user.roles.length
+            ? <div className="mt-1"><strong>Входит в группы:</strong>{' '}{user.roles.map(role => <span key={role} className="role-name">{role}</span>)}</div>
+            : null
+        }
+
+        <div className="d-flex align-items-center justify-content-between mt-3">
+            <div className="cell-icons">
+                <Button.Group size="tiny">
+                    <Button
+                        icon="edit"
+                        primary
+                        onClick={() => {
+                            props.setUser(user);
+                            props.history.replace(`/admin/users?id=${user.id}`);
+                        }}
+                    />
+                </Button.Group>
             </div>
             <div><small>Создан {user.date}</small></div>
         </div>
