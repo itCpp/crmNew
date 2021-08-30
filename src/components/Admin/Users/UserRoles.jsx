@@ -41,6 +41,10 @@ function User(props) {
     const [userRoles, setUserRoles] = React.useState([]);
     const [changeRole, setChangeRole] = React.useState(null);
 
+    const [permits, setPermits] = React.useState([]);
+    const [userPermits, setUserPermits] = React.useState([]);
+    const [changePermit, setChangePermit] = React.useState(null);
+
     React.useEffect(() => {
 
         if (user) {
@@ -52,8 +56,11 @@ function User(props) {
                 setRoles(data.roles);
                 setUserRoles(data.user_roles);
 
+                setPermits(data.permits);
+                setUserPermits(data.user_permits);
+
             }).catch(error => {
-                
+
             }).then(() => {
                 setLoading(false);
             });
@@ -76,51 +83,110 @@ function User(props) {
             axios.post('admin/setUserRole', {
                 id: user.id,
                 role: changeRole,
-            })
-                .then(({ data }) => {
+            }).then(({ data }) => {
 
-                    let list = [...errors],
-                        index = list.indexOf(key);
+                let list = [...errors],
+                    index = list.indexOf(key);
 
-                    if (index >= 0)
+                if (index >= 0)
                     list.splice(index, 1);
-                    
-                    setErrors(list);
 
-                    let roles = [...userRoles];
-                    index = roles.indexOf(data.role);
+                setErrors(list);
 
-                    if (data.checked && index < 0)
-                        roles.push(data.role);
-                    else if (!data.checked && index >= 0)
-                        roles.splice(index, 1);
+                let roles = [...userRoles];
+                index = roles.indexOf(data.role);
 
-                    setUserRoles(roles);
+                if (data.checked && index < 0)
+                    roles.push(data.role);
+                else if (!data.checked && index >= 0)
+                    roles.splice(index, 1);
 
-                }).catch(() => {
+                setUserRoles(roles);
 
-                    let list = [...errors];
-                    list.push(key);
+            }).catch(() => {
 
-                    setErrors(list);
-                    
-                }).then(() => {
+                let list = [...errors];
+                list.push(key);
 
-                    let change = [...loadingKeys],
-                        index = change.indexOf(key);
+                setErrors(list);
 
-                    if (index >= 0)
-                        change.splice(index, 1);
+            }).then(() => {
 
-                    setLoadingKeys(change);
+                let change = [...loadingKeys],
+                    index = change.indexOf(key);
 
-                });
+                if (index >= 0)
+                    change.splice(index, 1);
+
+                setLoadingKeys(change);
+
+            });
 
         }
 
         return () => setChangeRole(null);
 
     }, [changeRole]);
+
+    React.useEffect(() => {
+
+        if (changePermit) {
+
+            let key = `permit_${changePermit}`,
+                change = [...loadingKeys];
+
+            change.push(key);
+
+            setLoadingKeys(change);
+
+            axios.post('admin/setUserPermission', {
+                id: user.id,
+                permission: changePermit,
+                checked: userPermits.indexOf(changePermit) >= 0 ? false : true,
+            }).then(({ data }) => {
+
+                let list = [...errors],
+                    index = list.indexOf(key);
+
+                if (index >= 0)
+                    list.splice(index, 1);
+
+                setErrors(list);
+
+                let permissions = [...userPermits];
+                index = permissions.indexOf(data.permission);
+
+                if (data.checked && index < 0)
+                    permissions.push(data.permission);
+                else if (!data.checked && index >= 0)
+                    permissions.splice(index, 1);
+
+                setUserPermits(permissions);
+
+            }).catch(() => {
+
+                let list = [...errors];
+                list.push(key);
+
+                setErrors(list);
+
+            }).then(() => {
+
+                let change = [...loadingKeys],
+                    index = change.indexOf(key);
+
+                if (index >= 0)
+                    change.splice(index, 1);
+
+                setLoadingKeys(change);
+
+            });
+
+        }
+
+        return () => setChangePermit(null);
+
+    }, [changePermit]);
 
     return <Modal
         centered={false}
@@ -132,7 +198,7 @@ function User(props) {
         closeIcon
         size="small"
     >
-        <Modal.Header>Роли и права сотрудника</Modal.Header>
+        <Modal.Header>{user.name_full} - Роли и права</Modal.Header>
 
         <Modal.Content>
 
@@ -147,12 +213,12 @@ function User(props) {
                 ? <Placeholders />
                 : !roles.length
                     ? <div>Ролей не найдено</div>
-                    : roles.map(role => <div key={`role_${role.role}`} className="d-flex justify-content-between align-items-center">
+                    : roles.map(role => <div key={`role_${role.role}`} className={`d-flex justify-content-between align-items-center row-rights ${errors.indexOf(`role_${role.role}`) >= 0 ? "row-rights-error" : ""}`}>
                         <Header
                             as="h4"
                             content={role.role}
                             subheader={role.comment}
-                            className="mt-2"
+                            className="mt-0 mb-0"
                             color={errors.indexOf(`role_${role.role}`) >= 0 ? "red" : "black"}
                         />
                         <div className="position-relative">
@@ -184,7 +250,34 @@ function User(props) {
 
             {loading === true
                 ? <Placeholders />
-                : null
+                : !permits.length
+                    ? <div>Ролей не найдено</div>
+                    : permits.map(permit => <div key={`permit_${permit.permission}`} className={`d-flex justify-content-between align-items-center row-rights ${errors.indexOf(`permit_${permit.permission}`) >= 0 ? "row-rights-error" : ""}`}>
+                        <Header
+                            as="h4"
+                            content={permit.permission}
+                            subheader={permit.comment}
+                            className="mt-0 mb-0"
+                            color={errors.indexOf(`permit_${permit.permission}`) >= 0 ? "red" : "black"}
+                        />
+                        <div className="position-relative">
+                            <Checkbox
+                                toggle
+                                checked={userPermits.indexOf(permit.permission) >= 0}
+                                readOnly={loadingKeys.indexOf(`permit_${permit.permission}`) >= 0}
+                                disabled={loadingKeys.indexOf(`permit_${permit.permission}`) >= 0}
+                                onChange={() => setChangePermit(permit.permission)}
+                                name={`permit_${permit.permission}`}
+                            />
+                            {
+                                loadingKeys.indexOf(`permit_${permit.permission}`) >= 0
+                                    ? <div className="d-flex justify-content-center align-items-center loading-checkbox">
+                                        <Loader inverted size="mini" />
+                                    </div>
+                                    : null
+                            }
+                        </div>
+                    </div>)
             }
 
         </Modal.Content>

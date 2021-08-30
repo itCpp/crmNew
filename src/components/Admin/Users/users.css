@@ -53,3 +53,22 @@
 .loading-checkbox .ui.loader:before {
     border-color: #00000093 !important;
 }
+
+.row-rights {
+    padding: .3rem .8rem;
+    border-radius: .4rem;
+    margin: .2rem auto;
+}
+.row-rights .checkbox {
+    margin-top: 4px;
+}
+.row-rights:hover {
+    background: #f8f8f8;
+}
+
+.row-rights.row-rights-error {
+    background: #fff3f3;
+}
+.row-rights.row-rights-error:hover {
+    background: #ffeded;
+}
