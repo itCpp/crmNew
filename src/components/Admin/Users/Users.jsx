@@ -7,6 +7,7 @@ import { Header, Button, Input, Message } from 'semantic-ui-react';
 import './users.css';
 import User from './User';
 import UserRow from './UserRow';
+import UserRoles from './UserRoles';
 
 function Users(props) {
 
@@ -21,6 +22,7 @@ function Users(props) {
 
     const [block, setBlock] = React.useState(null);
     const [blockLoad, setBlockLoad] = React.useState(null);
+    const [rolesSetting, setRolesSetting] = React.useState(null);
 
     const getUsers = (force = false) => {
 
@@ -99,6 +101,7 @@ function Users(props) {
             setBlock={setBlock}
             blockLoad={blockLoad}
             search={search}
+            setRoles={setRolesSetting}
         />)
         : search && !loading
             ? <Message visible>Ничего не найдено</Message>
@@ -110,6 +113,16 @@ function Users(props) {
             ? <User
                 user={user}
                 setUser={setUser}
+                users={users}
+                setUsers={setUsers}
+            />
+            : null
+        }
+
+        {rolesSetting
+            ? <UserRoles
+                user={rolesSetting}
+                setOpen={setRolesSetting}
                 users={users}
                 setUsers={setUsers}
             />

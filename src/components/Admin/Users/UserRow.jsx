@@ -26,6 +26,7 @@ export default withRouter(function UserRow(props) {
 
     const { user, search } = props;
     const { setBlock, blockLoad } = props;
+    const { setRoles } = props;
 
     if (search) {
         user.login = <ReplaceRow string={user.login} search={search} />
@@ -75,6 +76,14 @@ export default withRouter(function UserRow(props) {
                             setBlock(user.id);
                         }}
                         loading={blockLoad === user.id ? true : false}
+                    />
+                    <Button
+                        icon="list"
+                        color="instagram"
+                        title="Роли и разрешения пользователя"
+                        onClick={() => {
+                            setRoles(user);
+                        }}
                     />
                 </Button.Group>
             </div>

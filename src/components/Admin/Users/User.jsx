@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from './../../../utils/axios-header';
 
-import { Modal, Button, Form, Checkbox } from 'semantic-ui-react';
+import { Modal, Button, Form } from 'semantic-ui-react';
 
 function gen_password(len = 6) {
     var password = "";
