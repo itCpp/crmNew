@@ -4,6 +4,8 @@ import { withRouter } from 'react-router-dom';
 
 import { Loader, Table, Header, Button, Checkbox } from 'semantic-ui-react';
 
+import RoleEdit from './RoleEdit';
+
 function Roles(props) {
 
     const urlParams = new URLSearchParams(props.location.search);
@@ -22,6 +24,8 @@ function Roles(props) {
     const [rolePermits, setRolePermits] = React.useState([]);
 
     const [rolePermission, setRolePermission] = React.useState(false);
+
+    const [openRole, setOpenRole] = React.useState(false);
 
     React.useEffect(() => {
 
@@ -115,11 +119,36 @@ function Roles(props) {
 
     return <div>
 
-        <Header
-            as="h2"
-            content="Роли"
-            subheader="Создание и настройка ролей сотрудников"
-        />
+        {openRole
+            ? <RoleEdit
+                open={openRole}
+                setOpen={setOpenRole}
+                roles={roles}
+                setRoles={setRoles}
+                setRole={setRole}
+            />
+            : null
+        }
+
+        <div className="d-flex justify-content-start align-items-center mb-4">
+
+            <Header
+                as="h2"
+                content="Роли"
+                subheader="Создание и настройка ролей сотрудников"
+                className="mb-0"
+            />
+
+            <Button
+                icon="plus"
+                style={{ margin: "0 0 0 1rem" }}
+                title="Добавить новую роль"
+                positive
+                onClick={() => setOpenRole(true)}
+            />
+
+        </div>
+
 
         {loading
             ? <div className="text-center mt-4"><Loader inline active /></div>
@@ -171,6 +200,14 @@ function Roles(props) {
                                         <Table.HeaderCell>Разрешение</Table.HeaderCell>
                                         <Table.HeaderCell>Описание</Table.HeaderCell>
                                         <Table.HeaderCell textAlign="center">
+                                            <Button
+                                                icon="edit"
+                                                style={{ margin: "0" }}
+                                                title="Редактировать роль"
+                                                primary
+                                                onClick={() => setOpenRole(role.role)}
+                                                size="tiny"
+                                            />
                                         </Table.HeaderCell>
                                     </Table.Row>
                                 </Table.Header>
