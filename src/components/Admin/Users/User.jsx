@@ -31,8 +31,9 @@ function User(props) {
     const [password, setPassword] = React.useState(false);
 
     const [callcenters, setCallcenters] = React.useState([]);
-    const [callcenter, setCallcenter] = React.useState({});
+    const [callcenter, setCallcenter] = React.useState(null);
     const [sectors, setSectors] = React.useState([]);
+    const [sector, setSector] = React.useState(null);
 
     const changeValue = (name, value) => {
 
@@ -62,7 +63,7 @@ function User(props) {
             text: row.name,
             value: row.id,
             onClick: () => {
-                setCallcenter({ ...sectors, callcenter_sector_id: row.id });
+                setSector(row.id);
             },
         })));
 
@@ -71,10 +72,12 @@ function User(props) {
     const loadCallCenterData = id => {
 
         setLoadInput("callcenter_id");
+        setCallcenter(id);
 
         axios.post('admin/getCallCenterData', { id }).then(({ data }) => {
 
             setOptionsSectors(data.sectors);
+            setSector(null);
 
             if (!user.id) {
                 setPin(data.pin);
@@ -103,11 +106,6 @@ function User(props) {
                 text: row.name,
                 value: row.id,
                 onClick: () => {
-                    setCallcenter({
-                        ...callcenter,
-                        callcenter_id: row.id,
-                        callcenter_sector_id: null
-                    });
                     loadCallCenterData(row.id);
                 },
             })));
@@ -129,10 +127,8 @@ function User(props) {
                 }
             }
 
-            setCallcenter({
-                callcenter_id: callcenter_id,
-                callcenter_sector_id: callcenter_sector_id,
-            });
+            setCallcenter(callcenter_id);
+            setSector(callcenter_sector_id);
 
             setFormdata({ ...data.user } || {
                 password: gen_password(8),
@@ -158,7 +154,8 @@ function User(props) {
             let request = {
                 ...formdata,
                 pin: pin,
-                ...callcenter
+                callcenter_id: callcenter,
+                callcenter_sector_id: sector,
             };
 
             axios.post('admin/saveUser', request).then(({ data }) => {
@@ -232,7 +229,7 @@ function User(props) {
                         label="Колл-центр"
                         options={callcenters}
                         placeholder="Выберите колл-центр"
-                        value={callcenter.callcenter_id}
+                        value={callcenter}
                         name="callcenter_id"
                         loading={loadInput === "callcenter_id" ? true : false}
                         error={errorInput === "callcenter_id" ? true : false}
@@ -242,9 +239,9 @@ function User(props) {
                         label="Сектор"
                         options={sectors}
                         placeholder="Выберите сектор"
-                        value={callcenter.callcenter_sector_id}
+                        value={sector}
                         name="callcenter_sector_id"
-                        disabled={errorInput === "callcenter_id" ? true : false}
+                        disabled={errorInput === "callcenter_id" ? true : false || callcenter === null ? true : false}
                         error={errors.callcenter_sector_id || false}
                     />
                 </Form.Group>
