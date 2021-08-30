@@ -30,6 +30,7 @@ function User(props) {
     const [formdata, setFormdata] = React.useState({});
     const [pin, setPin] = React.useState(null);
     const [password, setPassword] = React.useState(false);
+    const [authTypes, setAuthTypes] = React.useState([]);
 
     const [callcenters, setCallcenters] = React.useState([]);
     const [callcenter, setCallcenter] = React.useState(null);
@@ -131,12 +132,16 @@ function User(props) {
             setCallcenter(callcenter_id);
             setSector(callcenter_sector_id);
 
-            setFormdata({ ...data.user } || {
-                password: gen_password(8),
-                auth_type: "secret",
-            });
+            setFormdata(data.user
+                ? { ...data.user }
+                : {
+                    password: gen_password(8),
+                    auth_type: "secret",
+                }
+            );
 
             setPin(data.pin);
+            setAuthTypes(data.auth_types);
 
         }).catch(error => {
             setGError(axios.getError(error));
@@ -329,9 +334,14 @@ function User(props) {
                     <Form.Select
                         fluid
                         label="Способ авторизации"
-                        options={[
-                            { key: 1, text: "По паролю", value: "secret" },
-                        ]}
+                        options={authTypes.map(type => (
+                            {
+                                key: type.value,
+                                text: type.text,
+                                value: type.value,
+                                onClick: () => changeValue("auth_type", type.value)
+                            }
+                        ))}
                         placeholder="Выберите способ"
                         value={formdata.auth_type}
                         name="auth_type"

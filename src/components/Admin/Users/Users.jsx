@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from './../../../utils/axios-header';
 
-import { Header, Button, Input, Segment, Message } from 'semantic-ui-react';
+import { Header, Button, Input, Message } from 'semantic-ui-react';
 
 import './users.css';
 import User from './User';
@@ -12,6 +12,7 @@ function Users(props) {
 
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(false);
+    const [searchTimeOut, setSearchTimeOut] = React.useState(null);
 
     const [load, setLoad] = React.useState(true);
     const [users, setUsers] = React.useState([]);
@@ -23,12 +24,12 @@ function Users(props) {
 
     const getUsers = (force = false) => {
 
-        if (search === "" && !force)
-            return false;
+        // if (search === "" && !force)
+        //     return false;
 
         setLoading(true);
 
-        axios.post('admin/getUsers', { word: search }).then(({ data }) => {
+        axios.post('admin/getUsers', { search }).then(({ data }) => {
             setUsers(data.users);
         }).catch(error => {
             setError(axios.getError(error));
@@ -39,6 +40,19 @@ function Users(props) {
     }
 
     React.useEffect(() => getUsers(true), []);
+
+    React.useEffect(() => {
+
+        if (searchTimeOut)
+            clearTimeout(searchTimeOut);
+
+        if (!loading) {
+            setSearchTimeOut(setTimeout(() => {
+                getUsers();
+            }, 300));
+        }
+
+    }, [search]);
 
     React.useEffect(() => {
 
@@ -77,13 +91,18 @@ function Users(props) {
 
     }, [block]);
 
-    const list = users.map(row => <UserRow
-        key={row.id}
-        user={row}
-        setUser={setUser}
-        setBlock={setBlock}
-        blockLoad={blockLoad}
-    />);
+    const list = users.length
+        ? users.map(row => <UserRow
+            key={row.id}
+            user={row}
+            setUser={setUser}
+            setBlock={setBlock}
+            blockLoad={blockLoad}
+            search={search}
+        />)
+        : search && !loading
+            ? <Message visible>Ничего не найдено</Message>
+            : null
 
     return <div style={{ maxWidth: "800px" }}>
 
@@ -115,6 +134,27 @@ function Users(props) {
                 style={{ marginRight: "0" }}
             />
 
+        </div>
+
+        <div className="text-center mt-3">
+            <Input
+                icon={loading ? null : {
+                    name: 'search',
+                    link: true,
+                    onClick: () => getUsers(true),
+                }}
+                placeholder='Поиск сотрудника...'
+                className="mx-auto input-loading"
+                loading={loading}
+                value={search}
+                onChange={e => setSearch(e.currentTarget.value || "")}
+                onKeyUp={e => {
+                    if (e.keyCode === 13) {
+                        clearTimeout(searchTimeOut);
+                        getUsers(true);
+                    }
+                }}
+            />
         </div>
 
         {list}
