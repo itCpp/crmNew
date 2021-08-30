@@ -103,6 +103,15 @@ function User(props) {
 
                 setUserRoles(roles);
 
+                let usersUpdate = [...users];
+
+                usersUpdate.forEach((row, i) => {
+                    if (row.id === user.id)
+                        usersUpdate[i].roles = data.roles;
+                });
+
+                setUsers(usersUpdate);
+
             }).catch(() => {
 
                 let list = [...errors];
