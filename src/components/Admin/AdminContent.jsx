@@ -1,6 +1,6 @@
 import { withRouter } from "react-router";
 
-import Roles from './Developer/Roles';
+import Roles from './Developer/Roles/Roles';
 import Permits from './Developer/Permits/Permits';
 
 import Users from './Users/Users';

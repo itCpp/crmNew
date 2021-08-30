@@ -3,15 +3,6 @@ import axios from './../../../utils/axios-header';
 
 import { Modal, Header, Placeholder, Checkbox, Loader } from 'semantic-ui-react';
 
-function gen_password(len = 6) {
-    var password = "";
-    var symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!_+=";
-    for (var i = 0; i < len; i++) {
-        password += symbols.charAt(Math.floor(Math.random() * symbols.length));
-    }
-    return password;
-}
-
 function Placeholders() {
 
     return <Placeholder fluid>

@@ -13,14 +13,14 @@ function AdminMenu(props) {
 
                 <h5>Разработка</h5>
 
-                <NavLink to="/admin/roles" className="admin-menu-point">
-                    <Icon name="angle right" />
-                    <span>Роли</span>
-                </NavLink>
-
                 <NavLink to="/admin/permits" className="admin-menu-point">
                     <Icon name="angle right" />
                     <span>Разрешения</span>
+                </NavLink>
+
+                <NavLink to="/admin/roles" className="admin-menu-point">
+                    <Icon name="angle right" />
+                    <span>Роли</span>
                 </NavLink>
 
             </div>
