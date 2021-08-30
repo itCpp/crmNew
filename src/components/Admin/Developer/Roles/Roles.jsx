@@ -163,10 +163,9 @@ function Roles(props) {
         <div className="d-flex">
 
             <div>
-                <Button.Group vertical>
-
-                    {roles.map(role => <Button
-                        key={role.role}
+                {roles.map(role => <div key={role.role} className="buttons-select">
+                    <Button
+                        fluid
                         onClick={() => {
                             if (!loadPermits) {
                                 setSelected(role.role);
@@ -175,9 +174,17 @@ function Roles(props) {
                         }}
                         content={role.name || role.role}
                         active={selected === role.role}
-                    />)}
+                        label={{
+                            basic: true,
+                            // color: 'red',
+                            pointing: 'left',
+                            content: role.users_count,
+                            title: "Количество пользователей",
+                            as: 'a',
+                        }}
+                    />
+                </div>)}
 
-                </Button.Group>
             </div>
 
             {selected && !loading

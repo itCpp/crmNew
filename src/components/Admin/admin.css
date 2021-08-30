@@ -68,3 +68,10 @@
 .role-name:not(:last-child):after {
     content: ", ";
 }
+
+.buttons-select {
+    margin-bottom: .3rem;
+}
+.buttons-select > div {
+    width: 100%;
+}
