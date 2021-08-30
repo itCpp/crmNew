@@ -18,6 +18,9 @@ function Users(props) {
     const [user, setUser] = React.useState(null);
     const [search, setSearch] = React.useState("");
 
+    const [block, setBlock] = React.useState(null);
+    const [blockLoad, setBlockLoad] = React.useState(null);
+
     const getUsers = (force = false) => {
 
         if (search === "" && !force)
@@ -45,10 +48,41 @@ function Users(props) {
 
     }, [user]);
 
+    React.useEffect(() => {
+
+        if (block) {
+
+            setBlockLoad(block);
+
+            axios.post('admin/blockUser', { id: block }).then(({ data }) => {
+
+                setBlockLoad(null);
+
+                let list = [...users];
+
+                list.forEach((row, i) => {
+                    if (row.id === data.id)
+                        list[i].deleted_at = data.deleted_at;
+                });
+
+                setUsers(list);
+
+            }).catch(() => {
+                setBlockLoad(null);
+            });
+
+        }
+
+        return () => setBlock(null);
+
+    }, [block]);
+
     const list = users.map(row => <UserRow
         key={row.id}
         user={row}
         setUser={setUser}
+        setBlock={setBlock}
+        blockLoad={blockLoad}
     />);
 
     return <div style={{ maxWidth: "800px" }}>
@@ -57,6 +91,8 @@ function Users(props) {
             ? <User
                 user={user}
                 setUser={setUser}
+                users={users}
+                setUsers={setUsers}
             />
             : null
         }
@@ -78,7 +114,7 @@ function Users(props) {
                 onClick={() => setUser({ new: true })}
                 style={{ marginRight: "0" }}
             />
-            
+
         </div>
 
         {list}

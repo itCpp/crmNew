@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from './../../../utils/axios-header';
 
-import { Modal, Button, Form, Message } from 'semantic-ui-react';
+import { Modal, Button, Form, Checkbox } from 'semantic-ui-react';
 
 function gen_password(len = 6) {
     var password = "";
@@ -15,6 +15,7 @@ function gen_password(len = 6) {
 function User(props) {
 
     const { user, setUser } = props;
+    const { users, setUsers } = props;
 
     const [loading, setLoading] = React.useState(true);
 
@@ -159,7 +160,22 @@ function User(props) {
             };
 
             axios.post('admin/saveUser', request).then(({ data }) => {
+
+                let list = [...users];
+
+                if (request.id) {
+                    list.forEach((row, i) => {
+                        if (row.id === data.user.id)
+                            list[i] = data.user;
+                    });
+                }
+                else {
+                    list.unshift(data.user);
+                }
+
+                setUsers(list);
                 setUser(null);
+
             }).catch(error => {
                 setError(axios.getError(error));
                 setErrors(axios.getErrors(error));

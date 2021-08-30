@@ -25,6 +25,7 @@ function ReplaceRow(props) {
 export default withRouter(function UserRow(props) {
 
     const { user, search } = props;
+    const { setBlock, blockLoad } = props;
 
     if (search) {
         user.login = <ReplaceRow string={user.login} search={search} />
@@ -34,7 +35,7 @@ export default withRouter(function UserRow(props) {
 
     return <div className="users-item">
 
-        <div className="d-flex align-items-center justify-content-between user-item-header">
+        <div className="d-flex align-items-center justify-content-between user-item-header mb-2">
             <div className="d-flex align-items-center">
                 <div className="user-pin">{user.pin}</div>
                 <div className="user-full-name">{user.name_full}</div>
@@ -43,7 +44,15 @@ export default withRouter(function UserRow(props) {
         </div>
 
         {user.roles.length
-            ? <div className="mt-1"><strong>Входит в группы:</strong>{' '}{user.roles.map(role => <span key={role} className="role-name">{role}</span>)}</div>
+            ? <div><strong>Входит в группы:</strong>{' '}{user.roles.map(role => <span key={role} className="role-name">{role}</span>)}</div>
+            : null
+        }
+
+        {user.callcenter || user.sector
+            ? <div>
+                {user.callcenter ? <span style={{ marginRight: "1rem" }}><strong>Колл-центр:</strong>{' '}{user.callcenter}</span> : null}
+                {user.sector ? <span className="mr-2"><strong>Сектор:</strong>{' '}{user.sector}</span> : null}
+            </div>
             : null
         }
 
@@ -57,6 +66,15 @@ export default withRouter(function UserRow(props) {
                             props.setUser(user);
                             props.history.replace(`/admin/users?id=${user.id}`);
                         }}
+                    />
+                    <Button
+                        icon={user.deleted_at ? "lock" : "unlock"}
+                        title={user.deleted_at ? "Разблокировать" : "Заблокировать"}
+                        color={user.deleted_at ? "red" : "green"}
+                        onClick={() => {
+                            setBlock(user.id);
+                        }}
+                        loading={blockLoad === user.id ? true : false}
                     />
                 </Button.Group>
             </div>
