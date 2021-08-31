@@ -12,7 +12,7 @@ import AuthSecret from './AuthSecret';
 
 function Auth(props) {
 
-    const { setLogin } = props;
+    const { setLogin, setUserData, setUserPermits } = props;
 
     const [loginName, setLoginName] = React.useState(null);
     const [loading, setLoading] = React.useState(false);

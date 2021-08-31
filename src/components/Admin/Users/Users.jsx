@@ -41,7 +41,7 @@ function Users(props) {
 
     }
 
-    React.useEffect(() => getUsers(true), []);
+    // React.useEffect(() => getUsers(true), []);
 
     React.useEffect(() => {
 

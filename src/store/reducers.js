@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import { adCenterReducer } from './adCenter/reducers';
 import { gatesReducer } from './gates/reducers';
+import { adminReducer } from './admin/reducers';
 
 import * as ACTION from './actions';
 
 export default combineReducers({
+    admin: adminReducer,
     adCenter: adCenterReducer,
     gates: gatesReducer,
     main: (state = {

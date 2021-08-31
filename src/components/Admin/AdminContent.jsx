@@ -4,6 +4,8 @@ import Roles from './Developer/Roles/Roles';
 import Permits from './Developer/Permits/Permits';
 
 import Users from './Users/Users';
+import Callcenters from './Callcenters/Callcenters';
+import Sources from './Sources/Sources';
 
 function AdminContent(props) {
 
@@ -20,6 +22,10 @@ function AdminContent(props) {
         body = <Permits />
     else if (page == "users" && permits.admin_users)
         body = <Users />
+    else if (page == "callcenters" && permits.admin_callcenters)
+        body = <Callcenters />
+    else if (page == "sources" && permits.admin_sources)
+        body = <Sources />
 
     return <div className="admin-content-body">
         {body}

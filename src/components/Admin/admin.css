@@ -8,8 +8,8 @@
     top: 35px;
     bottom: 0;
     width: 220px;
-    padding: .5rem;
-    background-color: rgb(82, 82, 82);
+    padding: .5rem 0;
+    background-color: #5b618f;
 }
 
 .admin-content-body {
@@ -23,23 +23,27 @@
 }
 .admin-menu-block > h5 {
     margin-bottom: .5rem;
-    padding: 0 .2rem;
+    padding: 0 1rem;
     color: #ffffff;
+    font-size: 120%;
+}
+.admin-menu-block > .h5-icons {
+    margin-bottom: .5rem;
+    padding: 0 1rem;
+    color: #ffffff;
+    display: flex;
 }
 
 .admin-menu-point {
     display: block;
-    margin: .2rem auto;
-    background: #ffffff;
-    padding: .3rem .5rem;
-    /* border: 1px solid #e9e9ff; */
-    border-radius: .25rem;
-    color: #000000;
+    background: #5b618f;
+    padding: .5rem .5rem;
+    color: #ffffff;
     cursor: pointer;
     font-weight: 500;
 }
 .admin-menu-point.active {
-    background: #ededed;
+    background: #494e76;
 }
 .admin-menu-point:hover {
     background: #f6f6ff;
@@ -48,6 +52,7 @@
 
 .admin-menu-point i.icon {
     opacity: .4;
+    margin-right: .5rem;
 }
 .admin-menu-point > span {
     opacity: .8;
@@ -58,7 +63,7 @@
 }
 .admin-menu-point.active i.icon {
     opacity: 1;
-    color: rgb(165, 2, 2);
+    color: #d36464;
 }
 
 .cell-icons i.icon {
