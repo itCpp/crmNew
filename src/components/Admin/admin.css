@@ -1,3 +1,7 @@
+* {
+    --border-admin-segment: #f1f3ff;
+}
+
 .admin-content {
     display: flex;
     justify-content: space-between;
@@ -14,8 +18,17 @@
 
 .admin-content-body {
     flex-grow: 1;
-    margin-left: 235px;
-    margin-top: .5rem;
+    margin-left: 220px;
+    margin-top: 1rem;
+    padding: 0 .5rem;
+}
+
+.admin-content-segment {
+    margin-bottom: 1rem;
+    padding: .7rem 1rem;
+    border-radius: .5rem;
+    border: 1px solid var(--border-admin-segment);
+    background: #ffffff;
 }
 
 .admin-menu-block {
@@ -79,4 +92,37 @@
 }
 .buttons-select > div {
     width: 100%;
+}
+
+.flex-segments > div {
+    min-width: 250px;
+}
+.flex-segments > div:not(:last-child) {
+    margin-right: 1rem;
+}
+
+.admin-content-segment .divider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: .7rem;
+    padding-bottom: .7rem;
+    border-bottom: 1px solid var(--border-admin-segment);
+}
+
+.admin-content-segment .divider-header h3 {
+    margin: 0;
+}
+
+.callcenter-select-row {
+    padding: .5rem;
+    border-radius: .25rem;
+    margin: .1rem auto;
+    cursor: pointer;
+}
+.callcenter-select-row.callcenter-selected {
+    background: #fafafa;
+}
+.callcenter-select-row:hover {
+    background: #f7f8ff;
 }

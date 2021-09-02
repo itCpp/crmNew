@@ -1,6 +1,6 @@
 import { withRouter } from "react-router";
 import { connect } from 'react-redux';
-import { setSubMenuPoints } from './../../store/admin/actions';
+import { setSubMenuPoints, setPanelMenuPoints } from './../../store/admin/actions';
 
 import { NavLink } from 'react-router-dom';
 
@@ -8,34 +8,29 @@ import { Icon } from 'semantic-ui-react';
 
 function AdminMenu(props) {
 
-    const { permits, subMenuPoints, setSubMenuPoints } = props;
+    const { permits, setSubMenuPoints, setPanelMenuPoints } = props;
+
+    const changePage = () => {
+        setPanelMenuPoints(null);
+        setSubMenuPoints(null);
+    }
 
     return <div className="admin-menu">
 
         {permits.block_dev
             ? <div className="admin-menu-block">
 
-                <h5>Настройки</h5>
+                <h5>Сотрудники</h5>
 
-                <NavLink to="/admin/permits" className="admin-menu-point" onClick={() => setSubMenuPoints(null)}>
+                <NavLink to="/admin/users" className="admin-menu-point" onClick={changePage}>
+                    <Icon name="user" />
+                    <span>Учетные записи</span>
+                </NavLink>
+
+                {/* <NavLink to="/admin/permits" className="admin-menu-point" onClick={changePage}>
                     <Icon name="angle right" />
-                    <span>Permissions</span>
-                </NavLink>
-
-                <NavLink to="/admin/roles" className="admin-menu-point" onClick={() => setSubMenuPoints(null)}>
-                    <Icon name="angle right" />
-                    <span>Roles</span>
-                </NavLink>
-
-                <NavLink to="/admin/callcenters" className="admin-menu-point" onClick={() => setSubMenuPoints(null)}>
-                    <Icon name="sound" />
-                    <span>Колл-центры</span>
-                </NavLink>
-
-                <NavLink to="/admin/sources" className="admin-menu-point" onClick={() => setSubMenuPoints(null)}>
-                    <Icon name="fork" />
-                    <span>Источники</span>
-                </NavLink>
+                    <span>Сессии</span>
+                </NavLink> */}
 
             </div>
             : null
@@ -44,17 +39,27 @@ function AdminMenu(props) {
         {permits.block_dev
             ? <div className="admin-menu-block">
 
-                <h5>Сотрудники</h5>
+                <h5>Настройки</h5>
 
-                <NavLink to="/admin/users" className="admin-menu-point" onClick={() => setSubMenuPoints(null)}>
-                    <Icon name="user" />
-                    <span>Учетные записи</span>
+                <NavLink to="/admin/callcenters" className="admin-menu-point" onClick={changePage}>
+                    <Icon name="sound" />
+                    <span>Колл-центры</span>
                 </NavLink>
 
-                {/* <NavLink to="/admin/permits" className="admin-menu-point" onClick={() => setSubMenuPoints(null)}>
+                <NavLink to="/admin/sources" className="admin-menu-point" onClick={changePage}>
+                    <Icon name="fork" />
+                    <span>Источники</span>
+                </NavLink>
+
+                <NavLink to="/admin/permits" className="admin-menu-point" onClick={changePage}>
                     <Icon name="angle right" />
-                    <span>Сессии</span>
-                </NavLink> */}
+                    <span>Permissions</span>
+                </NavLink>
+
+                <NavLink to="/admin/roles" className="admin-menu-point" onClick={changePage}>
+                    <Icon name="angle right" />
+                    <span>Roles</span>
+                </NavLink>
 
             </div>
             : null
@@ -69,7 +74,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-    setSubMenuPoints
+    setSubMenuPoints, setPanelMenuPoints
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AdminMenu));
