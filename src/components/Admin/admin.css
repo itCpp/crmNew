@@ -114,15 +114,23 @@
     margin: 0;
 }
 
-.callcenter-select-row {
-    padding: .5rem;
+.callcenter-select-row { 
     border-radius: .25rem;
     margin: .1rem auto;
     cursor: pointer;
+}
+.callcenter-select-row > * {
+    padding: .5rem;
 }
 .callcenter-select-row.callcenter-selected {
     background: #fafafa;
 }
 .callcenter-select-row:hover {
     background: #f7f8ff;
+}
+
+.clip {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

@@ -30,6 +30,10 @@ function Callcenters(props) {
 
     }, []);
 
+    React.useEffect(() => {
+        return () => setUpdate(null);
+    }, [update]);
+
     return <>
 
         <div className="admin-content-segment">
@@ -59,6 +63,7 @@ function Callcenters(props) {
 
                 <CallcenterList
                     callcenters={callcenters}
+                    setCallcenters={setCallcenters}
                     select={select}
                     setSelect={setSelect}
                     setUpdate={setUpdate}
