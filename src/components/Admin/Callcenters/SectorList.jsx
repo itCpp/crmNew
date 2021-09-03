@@ -42,7 +42,7 @@ function SectorList(props) {
                     icon="plus"
                     circular
                     basic
-                    color={error ? "red" : "blue"}
+                    color={error ? "red" : "green"}
                     size="mini"
                     title="Создать сектор в колл-центр"
                     disabled={(!select ? true : false) || (error ? true : false) || true}
@@ -65,7 +65,7 @@ function SectorList(props) {
                             key={sector.id}
                             className={className.join(" ")}
                         >
-                            {sector.name}
+                            <div>{sector.name}</div>
                         </div>
                     })
                     : <div className="mt-4 mb-3 text-center text-muted">

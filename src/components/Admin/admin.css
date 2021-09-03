@@ -24,11 +24,16 @@
 }
 
 .admin-content-segment {
+    position: relative;
     margin-bottom: 1rem;
     padding: .7rem 1rem;
     border-radius: .5rem;
     border: 1px solid var(--border-admin-segment);
     background: #ffffff;
+}
+
+.admin-content-segment > .dimmer {
+    border-radius: .5rem;
 }
 
 .admin-menu-block {

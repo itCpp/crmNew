@@ -28,7 +28,7 @@ function CallcenterList(props) {
         }
 
         setCallcenters(list);
-        
+
     };
 
     return <div className="admin-content-segment">
@@ -47,7 +47,7 @@ function CallcenterList(props) {
                     icon="plus"
                     circular
                     basic
-                    primary
+                    positive
                     size="mini"
                     title="Создать колл-центр"
                     onClick={() => setEdit(true)}

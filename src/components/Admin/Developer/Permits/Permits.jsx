@@ -39,7 +39,7 @@ function Permits() {
 
         }
 
-        setPermits([ permit, ...permits]);
+        setPermits([permit, ...permits]);
 
     }
 
@@ -82,33 +82,43 @@ function Permits() {
             edit={edit}
         />
 
-        <Header
-            as="h2"
-            content="Разрешения"
-            subheader="Добавление или удаление разрешений пользотеля или роли для использования в коде API сервера"
-        />
+        <div className="admin-content-segment">
 
-        <Table collapsing>
+            <Header
+                as="h2"
+                content="Разрешения"
+                subheader="Добавление или удаление разрешений пользотеля или роли для использования в коде API сервера"
+            />
 
-            <Table.Header>
-                <Table.Row>
-                    <Table.HeaderCell>Permission</Table.HeaderCell>
-                    <Table.HeaderCell>Описание</Table.HeaderCell>
-                    <Table.HeaderCell textAlign="center">
-                        <Button
-                            icon="plus"
-                            size="tiny"
-                            color="green"
-                            title="Создать новое правило"
-                            onClick={() => setShowAdd(true)}
-                        />
-                    </Table.HeaderCell>
-                </Table.Row>
-            </Table.Header>
+        </div>
 
-            <Table.Body>{tbody}</Table.Body>
+        <div className="admin-content-segment d-inline-block">
 
-        </Table>
+            <Table collapsing basic="very" className="my-3" compact>
+
+                <Table.Header>
+                    <Table.Row>
+                        <Table.HeaderCell>Permission</Table.HeaderCell>
+                        <Table.HeaderCell>Описание</Table.HeaderCell>
+                        <Table.HeaderCell textAlign="center">
+                            <Button
+                                icon="plus"
+                                size="mini"
+                                color="green"
+                                title="Создать новое правило"
+                                onClick={() => setShowAdd(true)}
+                                circular
+                                basic
+                            />
+                        </Table.HeaderCell>
+                    </Table.Row>
+                </Table.Header>
+
+                <Table.Body>{tbody}</Table.Body>
+
+            </Table>
+
+        </div>
     </div>
 
 }

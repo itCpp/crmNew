@@ -129,27 +129,24 @@ function Users(props) {
             : null
         }
 
-        <div className="d-flex align-items-center justify-content-between">
-
+        <div className="admin-content-segment d-flex align-items-center justify-content-between">
             <Header
                 as="h2"
                 content="Сотрудники"
                 className="mb-0"
             />
-
             <Button
-                // labelPosition="right"
                 icon="plus"
-                // content="Добавить сотрудника"
                 title="Добавить сотрудника"
                 color="green"
                 onClick={() => setUser({ new: true })}
                 style={{ marginRight: "0" }}
+                size="mini"
+                circular
             />
-
         </div>
 
-        <div className="text-center mt-3">
+        <div className="admin-content-segment text-center">
             <Input
                 icon={loading ? null : {
                     name: 'search',
