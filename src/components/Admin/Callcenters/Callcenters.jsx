@@ -6,7 +6,7 @@ import { Header, Loader, Message } from 'semantic-ui-react';
 import CallcenterList from './CallcenterList';
 import SectorList from './SectorList';
 
-function Callcenters(props) {
+function Callcenters() {
 
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
@@ -36,13 +36,15 @@ function Callcenters(props) {
 
     return <>
 
-        <div className="admin-content-segment">
+        <div className="admin-content-segment d-flex justify-content-between align-items-center">
 
             <Header
                 as="h2"
                 content="Колл-центры"
                 subheader="Управление колл-центрами и их секторами"
             />
+
+            {loading ? <Loader active inline /> : null}
 
         </div>
 
@@ -54,9 +56,6 @@ function Callcenters(props) {
             />
             : null
         }
-
-        {loading ? <div className="text-center my-3"><Loader active inline /></div> : null}
-
 
         {!error && !loading
             ? <div className="d-flex justify-content-start align-items-start flex-segments">
