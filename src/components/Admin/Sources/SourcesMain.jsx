@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter } from "react-router";
 import axios from "./../../../utils/axios-header";
 
 import { Header, Message, Loader, Button } from "semantic-ui-react";
@@ -6,13 +7,16 @@ import { Header, Message, Loader, Button } from "semantic-ui-react";
 import CreateSource from "./CreateSource";
 import Sources from "./Sources";
 
-function SourcesMain() {
+function SourcesMain(props) {
 
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
 
     const [sources, setSources] = React.useState([]);
     const [select, setSelect] = React.useState(null);
+
+    const [showResource, setShowResource] = React.useState(props.match?.params?.type || null);
+    const [resources, setResources] = React.useState([]);
 
     React.useEffect(() => {
 
@@ -27,6 +31,12 @@ function SourcesMain() {
 
     }, []);
 
+    const getResources = () => {
+
+        setShowResource(true);
+
+    }
+
     return <>
 
         <div className="admin-content-segment d-flex justify-content-between align-items-center">
@@ -40,6 +50,16 @@ function SourcesMain() {
             {loading
                 ? <Loader active inline />
                 : <div>
+
+                    <Button
+                        icon="list"
+                        basic={showResource ? false : true}
+                        color="blue"
+                        title="Список ресурсов для источников"
+                        size="mini"
+                        circular
+                        onClick={getResources}
+                    />
 
                     <CreateSource
                         sources={sources}
@@ -76,4 +96,4 @@ function SourcesMain() {
 
 }
 
-export default SourcesMain;
+export default withRouter(SourcesMain);

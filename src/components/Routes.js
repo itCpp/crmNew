@@ -33,6 +33,7 @@ export default function Routes(props) {
 
                 <Route exact path="/admin" component={Admin} />
                 <Route exact path="/admin/:page" component={Admin} />
+                <Route exact path="/admin/:page/:type" component={Admin} />
 
                 {/* <Route exact path="/users" component={Users} />
                 <Route exact path="/users/:id" component={UserPage} />

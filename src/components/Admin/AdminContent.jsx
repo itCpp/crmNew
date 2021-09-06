@@ -5,7 +5,7 @@ import Permits from './Developer/Permits/Permits';
 
 import Users from './Users/Users';
 import Callcenters from './Callcenters/Callcenters';
-import SourcesMain from './Sources/SourcesMain';
+import SourcesAndResources from './Sources/SourcesAndResources';
 
 function AdminContent(props) {
 
@@ -25,7 +25,7 @@ function AdminContent(props) {
     else if (page == "callcenters" && permits.admin_callcenters)
         body = <Callcenters />
     else if (page == "sources" && permits.admin_sources)
-        body = <SourcesMain />
+        body = <SourcesAndResources />
 
     return <div className="admin-content-body">
         {body}
