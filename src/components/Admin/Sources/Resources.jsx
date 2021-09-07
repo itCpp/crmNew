@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "./../../../utils/axios-header";
 
-import { Message, Table, Loader, Dimmer } from "semantic-ui-react";
+import { Message, Table, Loader, Dimmer, Icon } from "semantic-ui-react";
 
 function Sources(props) {
 
@@ -33,42 +33,35 @@ function Sources(props) {
     if (load)
         return <div className="text-center my-3"><Loader active inline /></div>
 
-    return <div className="admin-content-segment">
+    return <div className="admin-content-segment d-inline-block">
 
         {error
             ? <Message error content={error} />
             : (resources.length
                 ? <div className="position-relative">
-                    <Table basic="very" className="mt-3" compact>
+                    <Table basic="very" className="mt-3" compact collapsing>
 
                         <Table.Header>
                             <Table.Row textAlign="center">
                                 <Table.HeaderCell>#id</Table.HeaderCell>
-                                <Table.HeaderCell title="Наименование источника">Источник</Table.HeaderCell>
-                                <Table.HeaderCell title="Список ресурсов источника">Ресурсы</Table.HeaderCell>
-                                <Table.HeaderCell title="Сектор по умолчанию">Сектор</Table.HeaderCell>
-                                <Table.HeaderCell title="количество заявок по источнику">Заявки</Table.HeaderCell>
-                                <Table.HeaderCell title="Описание и текущие настройки источника">Описание</Table.HeaderCell>
-                                <Table.HeaderCell />
+                                <Table.HeaderCell title="Тип ресурса">Тип</Table.HeaderCell>
+                                <Table.HeaderCell title="Значение ресурса">Ресурс</Table.HeaderCell>
+                                <Table.HeaderCell title="Используется в источнике">Источник</Table.HeaderCell>
+                                <Table.HeaderCell title="Дата и время создания">Дата</Table.HeaderCell>
+                                <Table.HeaderCell title="Количество заявок по ресурсу с момента его создания">Заявок</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
 
                         <Table.Body>
-                            {resources.map(source => {
+                            {resources.map(resource => {
 
-                                return <Table.Row key={source.id} textAlign="center" verticalAlign="top">
-                                    <Table.Cell><b>{source.id}</b></Table.Cell>
-                                    <Table.Cell>{source.name}</Table.Cell>
-                                    <Table.Cell>{typeof source.resources === "object" && source.resources.length
-                                        ? source.resources.map(resource => <div key={`${source.id}-${resource.id}`}>
-                                            <span>{resource.name}</span>
-                                        </div>)
-                                        : <div className="text-muted"><small>Добавте ресурсы</small></div>
-                                    }</Table.Cell>
-                                    <Table.Cell></Table.Cell>
-                                    <Table.Cell></Table.Cell>
-                                    <Table.Cell></Table.Cell>
-                                    <Table.Cell></Table.Cell>
+                                return <Table.Row key={resource.id} textAlign="center" verticalAlign="top">
+                                    <Table.Cell><b>{resource.id}</b></Table.Cell>
+                                    <Table.Cell><Icon name={resource.icon || false} /></Table.Cell>
+                                    <Table.Cell>{resource.val}</Table.Cell>
+                                    <Table.Cell>{resource.source ? (resource.source.name || `#${resource.source.id}`) : ""}</Table.Cell>
+                                    <Table.Cell>{resource.date}</Table.Cell>
+                                    <Table.Cell>{resource.requests || 0}</Table.Cell>
                                 </Table.Row>
 
                             })}

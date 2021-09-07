@@ -60,8 +60,11 @@ function Sources(props) {
                                 <Table.Cell><b>{source.id}</b></Table.Cell>
                                 <Table.Cell>{source.name}</Table.Cell>
                                 <Table.Cell>{typeof source.resources === "object" && source.resources.length
-                                    ? source.resources.map(resource => <div key={`${source.id}-${resource.id}`}>
-                                        <span>{resource.name}</span>
+                                    ? source.resources.map(resource => <div key={`${source.id}-${resource.id}`} className="d-flex align-items-center justify-content-center">
+                                        <span>
+                                            <Icon name={resource.type === "phone" ? "phone" : "world"} />
+                                        </span>
+                                        <span>{resource.val}</span>
                                     </div>)
                                     : <div className="text-muted"><small>Добавте ресурсы</small></div>
                                 }</Table.Cell>
