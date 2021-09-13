@@ -4,6 +4,7 @@ import axios from "./../../../utils/axios-header";
 import { Message, Table, Icon, Dimmer } from "semantic-ui-react";
 
 import SourceEdit from "./SourceEdit";
+import ResourcesSet from "./ResourcesSet";
 
 function Sources(props) {
 
@@ -14,6 +15,7 @@ function Sources(props) {
     const [error, setError] = React.useState(null);
 
     const [select, setSelect] = React.useState(null);
+    const [resources, setResources] = React.useState(null);
 
     const updateSources = source => {
 
@@ -51,6 +53,15 @@ function Sources(props) {
             ? <SourceEdit
                 sourceId={select}
                 setOpen={setSelect}
+                updateSources={updateSources}
+            />
+            : null
+        }
+
+        {resources
+            ? <ResourcesSet
+                sourceId={resources}
+                setOpen={setResources}
                 updateSources={updateSources}
             />
             : null
@@ -115,6 +126,12 @@ function Sources(props) {
                                     {source.comment ? <div><small>{source.comment}</small></div> : null}
                                 </Table.Cell>
                                 <Table.Cell className="cell-icons">
+                                    <Icon
+                                        name="world"
+                                        className="button-icon"
+                                        title="Выбор ресурсов"
+                                        onClick={() => setResources(source.id)}
+                                    />
                                     <Icon
                                         name="edit"
                                         className="button-icon"

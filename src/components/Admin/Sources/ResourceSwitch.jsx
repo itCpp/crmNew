@@ -5,9 +5,9 @@ import { Icon, Checkbox, Dimmer, Loader } from "semantic-ui-react";
 
 function ResourceSwitch(props) {
 
-    const { sourceId, resource, updateSource } = props;
+    const { sourceId, resource, updateSource, checkedDefault } = props;
 
-    const [checked, setChecked] = React.useState(true);
+    const [checked, setChecked] = React.useState(checkedDefault === true ? true : false);
     const [load, setLoad] = React.useState(false);
     const [error, setError] = React.useState(null);
 

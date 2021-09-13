@@ -136,6 +136,7 @@ const CreateSource = props => {
                             sourceId={sourceId}
                             resource={resource}
                             updateSource={updateSources}
+                            checkedDefault={true}
                         />)}
                     </div>
                     : null
