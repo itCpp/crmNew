@@ -143,3 +143,17 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.resource-switch {
+    position: relative;
+    margin: .25rem auto;
+    padding: .1rem 0;
+}
+.resource-checkbox, .resource-name .icon {
+    opacity: .6;
+    transition: .2s;
+}
+.resource-switch:hover .resource-checkbox,
+.resource-switch:hover .resource-name .icon {
+    opacity: 1;
+}

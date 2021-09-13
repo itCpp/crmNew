@@ -3,6 +3,8 @@ import axios from "./../../../utils/axios-header";
 
 import { Message, Table, Icon, Dimmer } from "semantic-ui-react";
 
+import SourceEdit from "./SourceEdit";
+
 function Sources(props) {
 
     const { loading, setLoading } = props;
@@ -10,6 +12,19 @@ function Sources(props) {
 
     const [load, setLoad] = React.useState(true);
     const [error, setError] = React.useState(null);
+
+    const [select, setSelect] = React.useState(null);
+
+    const updateSources = source => {
+
+        let list = [...sources];
+        list.forEach((row, i) => {
+            if (row.id === source.id)
+                list[i] = source;
+        });
+        setSources(list);
+
+    }
 
     React.useEffect(() => {
 
@@ -31,6 +46,15 @@ function Sources(props) {
         return null;
 
     return <div className="admin-content-segment w-100">
+
+        {select
+            ? <SourceEdit
+                sourceId={select}
+                setOpen={setSelect}
+                updateSources={updateSources}
+            />
+            : null
+        }
 
         {error
             ? <Message error content={error} />
@@ -70,8 +94,34 @@ function Sources(props) {
                                 }</Table.Cell>
                                 <Table.Cell></Table.Cell>
                                 <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
+                                <Table.Cell textAlign="left">
+                                    <div>
+                                        <Icon
+                                            name="tasks"
+                                            title="Источник виден в списке источников при создании заявок"
+                                            color={source.actual_list === 1 ? "green" : "grey"}
+                                        />
+                                        <Icon
+                                            name="add square"
+                                            title="Автоматическое добавление текстовой заявки из очереди"
+                                            color={source.auto_done_text_queue === 1 ? "green" : "grey"}
+                                        />
+                                        <Icon
+                                            name="map signs"
+                                            title="Отображается в счетчике дополнительной информации"
+                                            color={source.show_counter === 1 ? "green" : "grey"}
+                                        />
+                                    </div>
+                                    {source.comment ? <div><small>{source.comment}</small></div> : null}
+                                </Table.Cell>
+                                <Table.Cell className="cell-icons">
+                                    <Icon
+                                        name="edit"
+                                        className="button-icon"
+                                        title="Настройка источника"
+                                        onClick={() => setSelect(source.id)}
+                                    />
+                                </Table.Cell>
                             </Table.Row>
 
                         })}
