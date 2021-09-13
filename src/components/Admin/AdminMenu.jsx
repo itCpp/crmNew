@@ -51,6 +51,11 @@ function AdminMenu(props) {
                     <span>Источники</span>
                 </NavLink>
 
+                <NavLink to="/admin/statuses" className="admin-menu-point" onClick={changePage}>
+                    <Icon name="angle right" />
+                    <span>Статусы</span>
+                </NavLink>
+
                 <NavLink to="/admin/permits" className="admin-menu-point" onClick={changePage}>
                     <Icon name="angle right" />
                     <span>Permissions</span>
