@@ -157,3 +157,28 @@
 .resource-switch:hover .resource-name .icon {
     opacity: 1;
 }
+
+.column-table-info {
+    display: flex;
+    justify-content: space-start;
+    margin: .2rem auto;
+}
+
+.column-table-info > *:not(:last-child) {
+    margin-right: .25rem;
+}
+
+.code-row {
+    white-space: nowrap;
+    max-width: 100%;
+    background: #fff;
+    border: solid 1px #e1e4e5;
+    font-size: 75%;
+    padding: 0 5px;
+    font-family: Consolas,"Andale Mono WT","Andale Mono","Lucida Console","Lucida Sans Typewriter","DejaVu Sans Mono","Bitstream Vera Sans Mono","Liberation Mono","Nimbus Mono L",Monaco,"Courier New",Courier,monospace;
+    color: #E74C3C;
+    overflow-x: auto;
+}
+.code-row-blue {
+    color: #3c72e7;
+}

@@ -1,29 +1,51 @@
 import React from "react";
 import axios from "./../../../utils/axios-header";
+import { withRouter } from "react-router";
 
 import { Header, Message, Loader } from "semantic-ui-react";
 
 import CreateTab from "./CreateTab";
 import TabsList from "./TabsList";
+import Tab from "./TabData/Tab";
 
-function Tabs() {
+function Tabs(props) {
 
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
     const [tabs, setTabs] = React.useState([]);
+    const [tab, setTab] = React.useState(null);
 
     React.useEffect(() => {
 
-        axios.post('dev/getTabs').then(({ data }) => {
-            setTabs(data.tabs);
-            setError(null);
-        }).catch(error => {
-            setError(axios.getError(error));
-        }).then(() => {
-            setLoading(false);
-        });
+        if (tab === null) {
 
-    }, []);
+            setLoading(true);
+
+            axios.post('dev/getTabs').then(({ data }) => {
+                setTabs(data.tabs);
+                setError(null);
+            }).catch(error => {
+                setError(axios.getError(error));
+            }).then(() => {
+                setLoading(false);
+            });
+
+        }
+
+    }, [tab]);
+
+    React.useEffect(() => {
+        setTab(props?.match?.params?.type ? Number(props.match.params.type) : null);
+    }, [props?.match?.params?.type]);
+
+    if (tab) {
+        return <Tab 
+            {...props}
+            tab={tab}
+            tabs={tabs}
+            setTabs={setTabs}
+        />
+    }
 
     return <>
 
@@ -52,6 +74,7 @@ function Tabs() {
                 : <TabsList
                     tabs={tabs}
                     setTabs={setTabs}
+                    pushUrl={props.history.push}
                 />
             )
         }
@@ -60,4 +83,4 @@ function Tabs() {
 
 }
 
-export default Tabs;
+export default withRouter(Tabs);

@@ -2,7 +2,7 @@ import { Header, Message, Loader, Table, Icon } from "semantic-ui-react";
 
 function TabsList(props) {
 
-    const { tabs, setEdit } = props;
+    const { tabs, pushUrl } = props;
 
     if (!tabs.length)
         return <Message info content="Создайте первую вкладку" />
@@ -28,7 +28,7 @@ function TabsList(props) {
                             name="edit outline"
                             className="button-icon"
                             title="Настройка статуса"
-                            // onClick={() => setEdit(tab.id)}
+                            onClick={() => pushUrl(`/admin/tabs/${tab.id}`)}
                         />
                     </Table.Cell>
                 </Table.Row>)}
