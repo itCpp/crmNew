@@ -3,6 +3,8 @@ import axios from "./../../../../utils/axios-header";
 
 import { Header, Message, Loader, Form, Icon } from "semantic-ui-react";
 
+import TabBasicSettings from "./TabBasicSettings";
+
 export default function Tab(props) {
 
     const { tab, tabs, setTabs } = props;
@@ -69,18 +71,12 @@ export default function Tab(props) {
 
                 <div className="d-flex justifycontent-start flex-column flex-segments w-100">
 
-                    <div className="admin-content-segment w-100">
-
-                        <div className="divider-header">
-                            <h3>Основные настройки</h3>
-                            <div>
-
-                            </div>
-                        </div>
-
-                        1
-
-                    </div>
+                    <TabBasicSettings
+                        tab={row}
+                        tabs={tabs}
+                        setTabs={setTabs}
+                        setTab={setRow}
+                    />
 
                     <div className="admin-content-segment w-100">
 
