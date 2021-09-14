@@ -8,7 +8,7 @@ import CreateStatus from "./CreateStatus";
 import StatusZeronigInfoCell from "./StatusZeronigInfoCell";
 import EditStatus from "./EditStatus";
 
-function StatusesAndTabs(props) {
+function Statuses() {
 
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
@@ -115,4 +115,4 @@ function StatusesAndTabs(props) {
 
 }
 
-export default withRouter(StatusesAndTabs);
+export default withRouter(Statuses);
