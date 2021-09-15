@@ -5,7 +5,7 @@ import { Button, Modal, Dimmer, Loader, Message, Icon } from "semantic-ui-react"
 
 const TabSql = props => {
 
-    const { id } = props;
+    const { id, where } = props;
 
     const [load, setLoad] = React.useState(false);
     const [error, setError] = React.useState(null);
@@ -23,7 +23,7 @@ const TabSql = props => {
 
             setLoad(true);
 
-            axios.post('dev/getSql', { id }).then(({ data }) => {
+            axios.post('dev/getSql', { id, where }).then(({ data }) => {
                 setMessage(data.message);
             }).catch(error => {
                 setError(axios.getError(error));
