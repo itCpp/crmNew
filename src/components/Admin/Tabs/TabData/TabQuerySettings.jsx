@@ -3,9 +3,9 @@ import axios from "./../../../../utils/axios-header";
 
 import { Dimmer, Loader, Form, Message, Button } from "semantic-ui-react";
 
-import TabFormName from "./../Form/TabFormName";
+import TabFormSqlQuery from "./../Form/TabFormSqlQuery";
 
-export default function TabBasicSettings(props) {
+export default function TabQuerySettings(props) {
 
     const { tab, tabs, setTabs, setTab } = props;
     const [formdata, setFormdata] = React.useState(tab);
@@ -26,6 +26,35 @@ export default function TabBasicSettings(props) {
         if (typeof setFormdata == "function") {
             setFormdata({ ...formdata, [e.name]: value });
         }
+
+    }
+
+    const addQueryRow = () => {
+
+        let data = { ...formdata };
+
+        if (!data.where_settings)
+            data.where_settings = [];
+
+        data.where_settings.push({});
+        setFormdata(data);
+
+    }
+
+    const removeQueryRow = key => {
+
+        let data = { ...formdata };
+        data.where_settings.splice(key, 1);
+        setFormdata(data);
+
+    }
+
+    const queryEdit = (query, key) => {
+
+        let data = [...formdata.where_settings];
+        data[key] = query;
+
+        setFormdata({ ...formdata, where_settings: data });
 
     }
 
@@ -66,10 +95,12 @@ export default function TabBasicSettings(props) {
 
     }, [save]);
 
+    // React.useEffect(() => console.log(formdata), [formdata]);
+
     return <div className="admin-content-segment w-100">
 
         <div className="divider-header">
-            <h3>Основные настройки</h3>
+            <h3>Настройки запроса выборки</h3>
             <div>
                 <Button
                     circular={true}
@@ -94,12 +125,32 @@ export default function TabBasicSettings(props) {
 
             <Form>
 
-                <TabFormName
-                    formdata={formdata}
-                    changeFormdata={changeFormdata}
-                    error={false}
-                    errors={errors}
-                />
+                {formdata.where_settings && formdata.where_settings.length > 0
+                    ? formdata.where_settings.map((query, i) => <TabFormSqlQuery
+                        key={i}
+                        {...props}
+                        formdata={formdata}
+                        changeFormdata={changeFormdata}
+                        error={false}
+                        errors={errors}
+                        query={query}
+                        queryKey={i}
+                        queryEdit={queryEdit}
+                        removeQueryRow={removeQueryRow}
+                    />)
+                    : <Message info size="tiny" className="mt-3" content="Добавьте условия выбора" />
+                }
+
+                <div className="text-center">
+                    <Button
+                        content="Добавить выражение"
+                        color="green"
+                        basic
+                        icon="plus"
+                        labelPosition="right"
+                        onClick={addQueryRow}
+                    />
+                </div>
 
             </Form>
 

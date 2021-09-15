@@ -4,6 +4,7 @@ import axios from "./../../../../utils/axios-header";
 import { Header, Message, Loader, Form, Icon } from "semantic-ui-react";
 
 import TabBasicSettings from "./TabBasicSettings";
+import TabQuerySettings from "./TabQuerySettings";
 
 export default function Tab(props) {
 
@@ -78,18 +79,13 @@ export default function Tab(props) {
                         setTab={setRow}
                     />
 
-                    <div className="admin-content-segment w-100">
-
-                        <div className="divider-header">
-                            <h3>Настройки запроса выборки</h3>
-                            <div>
-
-                            </div>
-                        </div>
-
-                        1
-
-                    </div>
+                    <TabQuerySettings
+                        tab={row}
+                        tabs={tabs}
+                        setTabs={setTabs}
+                        setTab={setRow}
+                        columns={columns}
+                    />
 
                 </div>
 
