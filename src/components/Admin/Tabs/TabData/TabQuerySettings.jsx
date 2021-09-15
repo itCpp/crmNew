@@ -1,9 +1,10 @@
 import React from "react";
 import axios from "./../../../../utils/axios-header";
 
-import { Dimmer, Loader, Form, Message, Button } from "semantic-ui-react";
+import { Form, Message, Button } from "semantic-ui-react";
 
 import TabFormSqlQuery from "./../Form/TabFormSqlQuery";
+import TabSql from "./TabSql";
 
 export default function TabQuerySettings(props) {
 
@@ -150,6 +151,7 @@ export default function TabQuerySettings(props) {
                         labelPosition="right"
                         onClick={addQueryRow}
                     />
+                    <TabSql id={formdata.id} />
                 </div>
 
             </Form>
