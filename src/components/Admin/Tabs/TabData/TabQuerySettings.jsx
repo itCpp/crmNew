@@ -119,6 +119,8 @@ export default function TabQuerySettings(props) {
 
         <div className="position-relative mb-2">
 
+            <Message size="mini" className="mt-3" content="Сформируйте необходимый запрос для вывода заявок по данной вкладке. Все необходимые условия будут добавлены автоматически в соответствии с открытыми разрешениями сотрудника. Условия по правам также можно настроить в блоке настроек прав на текущей странице" />
+
             {globalError
                 ? <Message error content={globalError} />
                 : null
@@ -151,7 +153,7 @@ export default function TabQuerySettings(props) {
                         labelPosition="right"
                         onClick={addQueryRow}
                     />
-                    <TabSql id={formdata.id} />
+                    <TabSql id={formdata.id} where={formdata.where_settings} />
                 </div>
 
             </Form>

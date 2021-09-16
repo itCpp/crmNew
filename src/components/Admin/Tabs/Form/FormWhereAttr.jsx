@@ -1,5 +1,6 @@
 import AttrWhere from "./AttrWhere";
 import AttrWhereBetween from "./AttrWhereBetween";
+import AttrWhereIn from "./AttrWhereIn";
 
 export default function FormWhereAttr(props) {
 
@@ -13,6 +14,9 @@ export default function FormWhereAttr(props) {
         case "whereBetween":
         case "whereNotBetween":
             return <AttrWhereBetween {...props} />
+        case "whereIn":
+        case "whereNotIn":
+            return <AttrWhereIn {...props} />
 
         default:
             return null;
