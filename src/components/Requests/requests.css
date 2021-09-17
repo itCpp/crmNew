@@ -1,0 +1,25 @@
+.tab-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: .25rem;
+    background: #ffffff;
+    border-bottom: 1px solid var(--border-admin-segment);
+}
+
+.tab-list-row {
+    margin: .25rem;
+    padding: .25rem .8rem;
+    background: #ffffff;
+    border: 1px solid #ebedff;
+    border-radius: .25rem;
+    cursor: pointer;
+    font-weight: 600;
+}
+.tab-list-active {
+    box-shadow: 0px 0px 0px 2px #ebedff;
+}
+.tab-list-row:hover {
+    background: #f7f8ff;
+}
