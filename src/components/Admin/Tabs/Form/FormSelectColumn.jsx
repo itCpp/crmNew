@@ -2,12 +2,12 @@ import { Form } from "semantic-ui-react";
 
 export default function FormSelectColumn(props) {
 
-    const { columns, changeAttr, value, item } = props;
+    const { columns, changeAttr, value, item, name } = props;
 
     const options = columns.map((row, i) => ({
         key: i,
-        onClick: () => changeAttr('column', row.name, item),
-        name: "column",
+        onClick: () => changeAttr(name || "column", row.name, item),
+        name: name || "column",
         text: row.name,
         value: row.name,
     }));

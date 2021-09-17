@@ -4,7 +4,7 @@ import { Form } from "semantic-ui-react";
 
 import FormSelectColumn from "./FormSelectColumn";
 
-export default function AttrNull(props) {
+export default function AttrWhereNull(props) {
 
     const { columns, query, changeData } = props;
 
@@ -29,18 +29,21 @@ export default function AttrNull(props) {
 
     return <div className="where-row">
 
-        {query.attr.map((attr, i) => <div key={i}>
+        {query.attr.map((attr, i) => i === 0
+            ? <div key={i}>
 
-            <Form.Group>
-                <FormSelectColumn
-                    columns={columns}
-                    changeAttr={changeAttr}
-                    value={attr.column || ""}
-                    item={0}
-                />
-            </Form.Group>
+                <Form.Group>
+                    <FormSelectColumn
+                        columns={columns}
+                        changeAttr={changeAttr}
+                        value={attr.column || ""}
+                        item={0}
+                    />
+                </Form.Group>
 
-        </div>)}
+            </div>
+            : null
+        )}
 
     </div>
 

@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Form, Button } from "semantic-ui-react";
 
 import FormSelectWhere from "./FormSelectWhere";
@@ -6,6 +8,7 @@ import FormWhereAttr from "./FormWhereAttr";
 export default function TabFormSqlQuery(props) {
 
     const { query, queryKey, queryEdit, removeQueryRow } = props;
+    const [addWhere, setAddWhere] = React.useState(false);
 
     const changeData = (...a) => {
 
@@ -27,10 +30,27 @@ export default function TabFormSqlQuery(props) {
 
     }
 
+    const whereForAddAttr = ["where", "orWhere"];
+
     return <div className="where-block">
 
         <Form.Group>
-            <FormSelectWhere {...props} changeData={changeData} />
+            <FormSelectWhere
+                {...props}
+                changeData={changeData}
+            />
+            {whereForAddAttr.indexOf(query.where) >= 0
+                ? <Button
+                    icon="plus"
+                    color="green"
+                    title="Добавить еще условие"
+                    onClick={() => setAddWhere(true)}
+                    style={{ height: "38px" }}
+                    size="mini"
+                    basic
+                />
+                : null
+            }
             <Button
                 icon="trash"
                 title="Удалить выражение"
@@ -42,7 +62,12 @@ export default function TabFormSqlQuery(props) {
         </Form.Group>
 
         {query.where
-            ? <FormWhereAttr {...props} changeData={changeData} />
+            ? <FormWhereAttr
+                {...props}
+                addWhere={addWhere}
+                setAddWhere={setAddWhere}
+                changeData={changeData}
+            />
             : null
         }
 

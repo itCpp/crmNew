@@ -105,54 +105,57 @@ export default function AttrWhereIn(props) {
 
     return <div className="where-row">
 
-        {query.attr.map((attr, i) => <div key={i}>
+        {query.attr.map((attr, i) => i === 0
+            ? <div key={i}>
 
-            <Form.Group>
-                <FormSelectColumn
-                    columns={columns}
-                    width={8}
-                    changeAttr={changeAttr}
-                    value={attr.column || ""}
-                    item={0}
-                />
-                <Form.Select
-                    label="Список занчений"
-                    placeholder="Выберите список"
-                    width={8}
-                    options={[
-                        { value: "mylist", text: "Свои значения" },
-                        { value: "status", text: "Список статусов" },
-                        { value: "sources", text: "Список источников" },
-                        { value: "resources", text: "Список ресурсов" },
-                    ].map((option, key) => ({
-                        ...option,
+                <Form.Group>
+                    <FormSelectColumn
+                        columns={columns}
+                        width={8}
+                        changeAttr={changeAttr}
+                        value={attr.column || ""}
+                        item={0}
+                    />
+                    <Form.Select
+                        label="Список занчений"
+                        placeholder="Выберите список"
+                        width={8}
+                        options={[
+                            { value: "mylist", text: "Свои значения" },
+                            { value: "status", text: "Список статусов" },
+                            { value: "sources", text: "Список источников" },
+                            { value: "resources", text: "Список ресурсов" },
+                        ].map((option, key) => ({
+                            ...option,
+                            key,
+                            onClick: () => changeAttr("preset", option.value, i),
+                        }))}
+                        value={attr.preset || ""}
+                        loading={load}
+                        error={error ? true : false}
+                    />
+                </Form.Group>
+
+                <Dropdown
+                    options={list.map((row, key) => ({
                         key,
-                        onClick: () => changeAttr("preset", option.value, i),
+                        ...row
                     }))}
-                    value={attr.preset || ""}
-                    loading={load}
-                    error={error ? true : false}
+                    placeholder="Укажите или выберите значения"
+                    search
+                    selection
+                    fluid
+                    multiple
+                    allowAdditions
+                    value={selected}
+                    onAddItem={handleAddition}
+                    onChange={handleChange}
+                    disabled={load}
                 />
-            </Form.Group>
 
-            <Dropdown
-                options={list.map((row, key) => ({
-                    key,
-                    ...row
-                }))}
-                placeholder="Укажите или выберите значения"
-                search
-                selection
-                fluid
-                multiple
-                allowAdditions
-                value={selected}
-                onAddItem={handleAddition}
-                onChange={handleChange}
-                disabled={load}
-            />
-
-        </div>)}
+            </div>
+            : null
+        )}
 
     </div>
 

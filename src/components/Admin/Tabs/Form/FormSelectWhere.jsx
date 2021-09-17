@@ -16,7 +16,7 @@ export default function FormSelectWhere(props) {
         { value: "whereNotNull", text: "whereNotNull" },
         { value: "whereDate", text: "whereDate" },
         { value: "whereMonth", text: "whereMonth" },
-        { value: "whereDay", text: "whereDay" },
+        // { value: "whereDay", text: "whereDay" },
         { value: "whereYear", text: "whereYear" },
         { value: "whereTime", text: "whereTime" },
         { value: "whereColumn", text: "whereColumn" },

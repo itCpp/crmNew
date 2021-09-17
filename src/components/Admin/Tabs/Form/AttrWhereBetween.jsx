@@ -52,7 +52,7 @@ export default function AttrWhereBetween(props) {
         {query.attr.map((attr, i) => i === 0 ? <Form.Group key={i}>
             <FormSelectColumn
                 columns={columns}
-                width={8}
+                width={10}
                 changeAttr={changeAttr}
                 value={attr.column || ""}
                 item={i}

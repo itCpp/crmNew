@@ -1,7 +1,9 @@
 import AttrWhere from "./AttrWhere";
 import AttrWhereBetween from "./AttrWhereBetween";
 import AttrWhereIn from "./AttrWhereIn";
-import AttrNull from "./AttrNull";
+import AttrWhereNull from "./AttrWhereNull";
+import AttrWhereDatetime from "./AttrWhereDatetime";
+import AttrWhereColumn from "./AttrWhereColumn";
 
 export default function FormWhereAttr(props) {
 
@@ -20,7 +22,15 @@ export default function FormWhereAttr(props) {
             return <AttrWhereIn {...props} />
         case "whereNull":
         case "whereNotNull":
-            return <AttrNull {...props} />
+            return <AttrWhereNull {...props} />
+        case "whereDate":
+        case "whereMonth":
+        case "whereDay":
+        case "whereYear":
+        case "whereTime":
+            return <AttrWhereDatetime {...props} />
+        case "whereColumn":
+            return <AttrWhereColumn {...props} />
 
         default:
             return null;
