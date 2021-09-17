@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { Loader, Table, Header, Button, Checkbox, Dimmer } from 'semantic-ui-react';
 
 import RoleEdit from './RoleEdit';
+import RoleTabs from './RoleTabs';
 
 function Roles(props) {
 
@@ -26,6 +27,7 @@ function Roles(props) {
     const [rolePermission, setRolePermission] = React.useState(false);
 
     const [openRole, setOpenRole] = React.useState(false);
+    const [openTabs, setOpenTabs] = React.useState(false);
 
     React.useEffect(() => {
 
@@ -130,6 +132,17 @@ function Roles(props) {
             : null
         }
 
+        {openTabs
+            ? <RoleTabs
+                open={openTabs}
+                setOpen={setOpenTabs}
+                roles={roles}
+                setRoles={setRoles}
+                setRole={setRole}
+            />
+            : null
+        }
+
         <div className="admin-content-segment">
             <Header
                 as="h2"
@@ -214,18 +227,30 @@ function Roles(props) {
                             <Table.Header>
                                 <Table.Row>
                                     <Table.HeaderCell>Разрешение</Table.HeaderCell>
-                                    <Table.HeaderCell>Описание</Table.HeaderCell>
-                                    <Table.HeaderCell textAlign="center">
-                                        <Button
-                                            icon="edit"
-                                            style={{ margin: "0" }}
-                                            title="Редактировать роль"
-                                            primary
-                                            onClick={() => setOpenRole(role.role)}
-                                            size="tiny"
-                                            circular
-                                            basic
-                                        />
+                                    <Table.HeaderCell colSpan={2}>
+                                        <div className="d-flex justify-content-between align-items-center">
+                                            <span>Описание</span>
+                                            <div>
+                                                <Button
+                                                    icon="table"
+                                                    title="Доступные вкладки"
+                                                    color="orange"
+                                                    onClick={() => setOpenTabs(role.role)}
+                                                    size="tiny"
+                                                    circular
+                                                    basic
+                                                />
+                                                <Button
+                                                    icon="edit"
+                                                    title="Редактировать роль"
+                                                    primary
+                                                    onClick={() => setOpenRole(role.role)}
+                                                    size="tiny"
+                                                    circular
+                                                    basic
+                                                />
+                                            </div>
+                                        </div>
                                     </Table.HeaderCell>
                                 </Table.Row>
                             </Table.Header>
@@ -242,52 +267,6 @@ function Roles(props) {
             </div>
             : null
         }
-        {/* 
-        <div className="d-flex">
-
-            {selected && !loading
-                ? <div className="flex-grow-1">
-
-                    {loadPermits
-                        ? <div className="text-center mt-4"><Loader inline active /></div>
-                        : <div style={{ marginLeft: "1rem" }}>
-
-                            <Header
-                                as="h4"
-                                content={role.role}
-                                subheader={role.comment}
-                            />
-
-                            <Table collapsing>
-
-                                <Table.Header>
-                                    <Table.Row>
-                                        <Table.HeaderCell>Разрешение</Table.HeaderCell>
-                                        <Table.HeaderCell>Описание</Table.HeaderCell>
-                                        <Table.HeaderCell textAlign="center">
-                                            <Button
-                                                icon="edit"
-                                                style={{ margin: "0" }}
-                                                title="Редактировать роль"
-                                                primary
-                                                onClick={() => setOpenRole(role.role)}
-                                                size="tiny"
-                                            />
-                                        </Table.HeaderCell>
-                                    </Table.Row>
-                                </Table.Header>
-
-                                <Table.Body>{tbody}</Table.Body>
-
-                            </Table>
-                        </div>
-                    }
-
-                </div>
-                : null
-            }
-
-        </div> */}
 
     </div >
 

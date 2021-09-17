@@ -210,3 +210,7 @@
 .ui.toggle.checkbox.permites-check:not(:first-child) {
     margin-top: .5rem;
 }
+
+.selected-all > *:not(:last-child) {
+    margin-bottom: 1rem;
+}
