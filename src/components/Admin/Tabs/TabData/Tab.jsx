@@ -1,10 +1,11 @@
 import React from "react";
 import axios from "./../../../../utils/axios-header";
 
-import { Header, Message, Loader, Form, Icon } from "semantic-ui-react";
+import { Header, Message, Loader, Placeholder } from "semantic-ui-react";
 
 import TabBasicSettings from "./TabBasicSettings";
 import TabQuerySettings from "./TabQuerySettings";
+import TabPermitsSettings from "./TabPermitsSettings";
 
 export default function Tab(props) {
 
@@ -49,11 +50,19 @@ export default function Tab(props) {
 
         <div className="admin-content-segment d-flex justify-content-between align-items-center">
 
-            <Header
-                as="h2"
-                content={`Вкладка: ${row?.name || ""}`}
-                subheader={row?.name_title || ""}
-            />
+            {load
+                ? <Placeholder>
+                    <Placeholder.Header style={{ width: 300 }}>
+                        <Placeholder.Line />
+                        <Placeholder.Line />
+                    </Placeholder.Header>
+                </Placeholder>
+                : <Header
+                    as="h2"
+                    content={`Вкладка: ${row?.name || ""}`}
+                    subheader={row?.name_title || ""}
+                />
+            }
 
         </div>
 
@@ -89,22 +98,31 @@ export default function Tab(props) {
 
                 </div>
 
+                <div className="d-flex justifycontent-start flex-column flex-segments w-100">
 
+                    <TabPermitsSettings
+                        tab={row}
+                        tabs={tabs}
+                        setTabs={setTabs}
+                        setTab={setRow}
+                    />
 
-                <div className="admin-content-segment w-100">
+                    <div className="admin-content-segment w-100">
 
-                    <div className="divider-header">
-                        <h3>Информация о колонках</h3>
-                        <div>
+                        <div className="divider-header">
+                            <h3>Информация о колонках</h3>
+                            <div>
 
+                            </div>
                         </div>
-                    </div>
 
-                    {columns.map(column => <div key={column.name} className="column-table-info">
-                        <code className="code-row" title="Наименование колонки">{column.name}</code>
-                        <div className="code-row code-row-blue" title="Тип колонки">{column.type}</div>
-                        <small>{column.comment}</small>
-                    </div>)}
+                        {columns.map(column => <div key={column.name} className="column-table-info">
+                            <code className="code-row" title="Наименование колонки">{column.name}</code>
+                            <div className="code-row code-row-blue" title="Тип колонки">{column.type}</div>
+                            <small>{column.comment}</small>
+                        </div>)}
+
+                    </div>
 
                 </div>
 

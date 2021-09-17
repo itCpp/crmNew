@@ -203,3 +203,10 @@
 .where-row .fields, .where-block .fields {
     align-items: end;
 }
+
+.ui.toggle.checkbox.permites-check label {
+    padding-top: 2px;
+}
+.ui.toggle.checkbox.permites-check:not(:first-child) {
+    margin-top: .5rem;
+}
