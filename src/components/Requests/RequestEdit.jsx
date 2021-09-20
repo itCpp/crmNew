@@ -73,6 +73,8 @@ const RequestEdit = props => {
 
     }, [save]);
 
+    React.useEffect(() => console.log(formdata), [formdata]);
+
     return <Modal
         className="my-large"
         open={true}
@@ -104,6 +106,7 @@ const RequestEdit = props => {
                                 name="client_name"
                                 value={formdata.client_name || ""}
                                 onChange={(e, { name, value }) => changeData(name, value)}
+                                error={errors.client_name ? true : false}
                             />
                         </Form.Group>
 
@@ -118,6 +121,7 @@ const RequestEdit = props => {
                                 name="status_id"
                                 value={formdata.status_id || 0}
                                 onChange={(e, { name, value }) => changeData(name, value)}
+                                error={errors.status_id ? true : false}
                             />
                         </Form.Group>
 
@@ -134,6 +138,7 @@ const RequestEdit = props => {
                                     name="region"
                                     value={formdata.region || ""}
                                     onChange={(e, { name, value }) => changeData(name, value)}
+                                    error={errors.region ? true : false}
                                 />
                             </Form.Field>
                             <Form.Field width={8}>
@@ -148,6 +153,7 @@ const RequestEdit = props => {
                                     name="theme"
                                     value={formdata.theme || ""}
                                     onChange={(e, { name, value }) => changeData(name, value)}
+                                    error={errors.theme ? true : false}
                                 />
                             </Form.Field>
                         </Form.Group>
@@ -163,6 +169,7 @@ const RequestEdit = props => {
                                     name="address"
                                     value={formdata.address || ""}
                                     onChange={(e, { name, value }) => changeData(name, value)}
+                                    error={errors.address ? true : false}
                                 />
                             </Form.Field>
                             <Form.Field width={8}>
@@ -173,6 +180,7 @@ const RequestEdit = props => {
                                     name="event_date"
                                     value={formdata.event_date || ""}
                                     onChange={(e, { name, value }) => changeData(name, value)}
+                                    error={errors.event_date ? true : false}
                                 />
                             </Form.Field>
                             <Form.Field width={8}>
@@ -183,6 +191,7 @@ const RequestEdit = props => {
                                     name="event_time"
                                     value={formdata.event_time || ""}
                                     onChange={(e, { name, value }) => changeData(name, value)}
+                                    error={errors.event_time ? true : false}
                                 />
                             </Form.Field>
                         </Form.Group>
@@ -197,6 +206,7 @@ const RequestEdit = props => {
                                 rows={5}
                                 value={formdata.comment || ""}
                                 onChange={(e, { name, value }) => changeData(name, value)}
+                                error={errors.comment ? true : false}
                             />
                         </Form.Field>
 
@@ -209,6 +219,7 @@ const RequestEdit = props => {
                                 name="comment_urist"
                                 value={formdata.comment_urist || ""}
                                 onChange={(e, { name, value }) => changeData(name, value)}
+                                error={errors.comment_urist ? true : false}
                             />
                         </Form.Field>
 
