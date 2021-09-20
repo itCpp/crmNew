@@ -3,6 +3,7 @@ import axios from "./../../utils/axios-header";
 
 import { connect } from 'react-redux';
 import { setTabList, selectTab } from "./../../store/requests/actions";
+import { setTopMenu } from "./../../store/interface/actions";
 
 import { Loader, Message } from "semantic-ui-react";
 
@@ -13,7 +14,7 @@ import RequestsTable from "./RequestsTable";
 
 function Requests(props) {
 
-    const { setTabList, selectTab } = props;
+    const { setTabList, selectTab, setTopMenu } = props;
 
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(false);
@@ -31,6 +32,7 @@ function Requests(props) {
 
             setError(false);
             setTabList(data.tabs);
+            setTopMenu(data.topMenu);
 
         }).catch(error => {
             setError(axios.getError(error));
@@ -62,7 +64,7 @@ const mapStateToProps = state => ({
 });
 
 const mapActions = {
-    setTabList, selectTab
+    setTabList, selectTab, setTopMenu
 }
 
 export default connect(mapStateToProps, mapActions)(Requests);

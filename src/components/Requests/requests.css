@@ -23,3 +23,20 @@
 .tab-list-row:hover {
     background: #f7f8ff;
 }
+
+.request-button-control > button {
+    padding: .5rem .45rem !important;
+}
+.request-button-control > button > i.icon {
+    font-size: 120%;
+}
+
+.fields input {
+    font-size: 1rem !important;
+    max-height: 38px;
+}
+
+.my-large {
+    width: 90% !important;
+    max-width: 1200px !important;
+}

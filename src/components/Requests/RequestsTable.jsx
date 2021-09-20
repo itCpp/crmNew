@@ -1,14 +1,17 @@
 import React from "react";
+import { withRouter } from "react-router";
 import axios from "./../../utils/axios-header";
 
 import { connect } from 'react-redux';
 import { setTabList, selectTab, setRequests } from "./../../store/requests/actions";
 
-import { Loader, Message, Table, Icon } from "semantic-ui-react";
+import { Loader, Message, Table, Icon, Button } from "semantic-ui-react";
+
+import RequestEdit from "./RequestEdit";
 
 const RequestsTableRow = props => {
 
-    const { row } = props;
+    const { row, setEdit } = props;
 
     let type = null;
     if (row.query_type === "call")
@@ -75,7 +78,16 @@ const RequestsTableRow = props => {
         </Table.Cell>
 
         <Table.Cell>
-            
+            <Button.Group size="mini" basic className="request-button-control">
+                {row.permits?.requests_edit
+                    ? <Button
+                        icon="edit outline"
+                        title="Редактировать заявку"
+                        onClick={() => setEdit(row)}
+                    />
+                    : null
+                }
+            </Button.Group>
         </Table.Cell>
 
     </Table.Row>
@@ -91,6 +103,18 @@ const RequestsTable = props => {
     const [load, setLoad] = React.useState(true);
 
     const [error, setError] = React.useState(null);
+    const [edit, setEdit] = React.useState(null);
+
+    React.useEffect(() => {
+
+        if (edit) {
+            props.history.replace(`${props.match.path}?edit=${edit.id}`);
+        }
+        else {
+            props.history.replace(props.match.path);
+        }
+
+    }, [edit]);
 
     const getRequests = () => {
 
@@ -142,6 +166,11 @@ const RequestsTable = props => {
 
     return <div className="py-2 px-1">
 
+        {edit
+            ? <RequestEdit {...props} row={edit} setOpen={setEdit} />
+            : null
+        }
+
         <Table basic textAlign="center" compact>
 
             <Table.Header>
@@ -160,7 +189,7 @@ const RequestsTable = props => {
 
             <Table.Body>
                 {requests.length
-                    ? requests.map(row => <RequestsTableRow key={row.id} {...props} row={row} />)
+                    ? requests.map(row => <RequestsTableRow key={row.id} {...props} row={row} setEdit={setEdit} />)
                     : <Table.Row>
                         <Table.Cell colSpan={document.querySelectorAll('#requests-header-row > *').length}>
                             <div className="text-center my-5 text-muted" style={{ opacity: 0.5 }}>
@@ -188,4 +217,4 @@ const mapActionsToProps = {
     setTabList, selectTab, setRequests
 }
 
-export default connect(mapStateToProps, mapActionsToProps)(RequestsTable);
+export default withRouter(connect(mapStateToProps, mapActionsToProps)(RequestsTable));

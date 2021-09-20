@@ -3,6 +3,7 @@ import { adCenterReducer } from './adCenter/reducers';
 import { gatesReducer } from './gates/reducers';
 import { adminReducer } from './admin/reducers';
 import { requestsReducer } from './requests/reducers';
+import { interfaceReducer } from './interface/reducers';
 
 import * as ACTION from './actions';
 
@@ -11,6 +12,7 @@ export default combineReducers({
     admin: adminReducer,
     adCenter: adCenterReducer,
     gates: gatesReducer,
+    interface: interfaceReducer,
     main: (state = {
         login: false,
         userData: {},
