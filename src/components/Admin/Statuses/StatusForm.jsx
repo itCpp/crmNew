@@ -80,6 +80,15 @@ function StatusForm(props) {
             error={errors.name || false}
         />
 
+        <Form.Checkbox
+            toggle
+            label="Необходимо указать время события"
+            name="event_time"
+            checked={formdata.event_time === 1 ? true : false}
+            onChange={changeFormdata}
+            disabled={error ? true : false}
+        />
+
         <hr />
 
         <div className="field mb-2">

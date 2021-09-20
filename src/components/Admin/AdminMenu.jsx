@@ -52,7 +52,7 @@ function AdminMenu(props) {
                 </NavLink>
 
                 <NavLink to="/admin/statuses" className="admin-menu-point" onClick={changePage}>
-                    <Icon name="angle right" />
+                    <Icon name="certificate" />
                     <span>Статусы</span>
                 </NavLink>
 

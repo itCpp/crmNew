@@ -6,6 +6,7 @@ import { Loader, Table, Header, Button, Checkbox, Dimmer } from 'semantic-ui-rea
 
 import RoleEdit from './RoleEdit';
 import RoleTabs from './RoleTabs';
+import RoleStatuses from './RoleStatuses';
 
 function Roles(props) {
 
@@ -28,6 +29,7 @@ function Roles(props) {
 
     const [openRole, setOpenRole] = React.useState(false);
     const [openTabs, setOpenTabs] = React.useState(false);
+    const [openStatuses, setOpenStatuses] = React.useState(false);
 
     React.useEffect(() => {
 
@@ -143,6 +145,17 @@ function Roles(props) {
             : null
         }
 
+        {openStatuses
+            ? <RoleStatuses
+                open={openStatuses}
+                setOpen={setOpenStatuses}
+                roles={roles}
+                setRoles={setRoles}
+                setRole={setRole}
+            />
+            : null
+        }
+
         <div className="admin-content-segment">
             <Header
                 as="h2"
@@ -231,6 +244,15 @@ function Roles(props) {
                                         <div className="d-flex justify-content-between align-items-center">
                                             <span>Описание</span>
                                             <div>
+                                                <Button
+                                                    icon="certificate"
+                                                    title="Доступные статусы заявки"
+                                                    color="orange"
+                                                    onClick={() => setOpenStatuses(role.role)}
+                                                    size="tiny"
+                                                    circular
+                                                    basic
+                                                />
                                                 <Button
                                                     icon="table"
                                                     title="Доступные вкладки"
