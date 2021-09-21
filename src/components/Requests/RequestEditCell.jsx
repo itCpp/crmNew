@@ -19,12 +19,30 @@ const RequestEditCell = props => {
     const [load, setLoad] = React.useState(false);
 
     const [formdata, setFormdata] = React.useState({});
+    const [position, setPosition] = React.useState({ x: 0, y: 0 });
 
     React.useEffect(() => {
 
         if (props?.editCell?.id) {
 
+            const modal = document.getElementById('request-edit-modal');
+            const pos = {
+                x: props?.editCell?.pageX || 0,
+                y: props?.editCell?.pageY || 0,
+            }
+
+            if (modal) {
+
+                const clientHeight = document.documentElement.clientHeight;
+
+                if (clientHeight < pos.y + modal.clientHeight) {
+                    pos.y = (pos.y + (clientHeight - (pos.y + modal.clientHeight))) - 5;
+                }
+
+            }
+
             setLoading(true);
+            setPosition(pos);
 
             axios.post('requests/getRow', {
                 id: props.editCell?.id
@@ -116,6 +134,7 @@ const RequestEditCell = props => {
         loading={loading}
         setSave={setSave}
         load={load}
+        position={position}
     />
 
 }
@@ -150,10 +169,19 @@ const TitleLoader = () => <Placeholder className="w-100">
     </Placeholder.Header>
 </Placeholder>
 
-const HeaderModal = props => <div className="request-edit-cell-header">
+const ModalHeader = props => <div className="request-edit-cell-header">
     {props?.formdata?.request?.id && !props?.loading ? <span>#{props.formdata.request.id}</span> : <TitleLoader />}
     <span><Icon name="close" onClick={() => props.setEditCell(null)} /></span>
 </div>
+
+const ModalBody = props => <div
+    className="request-edit-cell shadow"
+    style={{
+        top: props.position.y,
+        left: props?.position?.x ? props.position.x - 220 : 0,
+    }}
+    id="request-edit-modal"
+>{props.body || null}</div>
 
 const SaveButton = props => <Button
     fluid
@@ -164,25 +192,22 @@ const SaveButton = props => <Button
     loading={props.load ? true : false}
 />
 
-const EditDate = props => {
+const EditDate = props => <ModalBody {...props}
+    body={<>
 
-    const { formdata, changeData, errors, loading } = props;
+        <ModalHeader {...props} />
 
-    return <div className="request-edit-cell">
-
-        <HeaderModal {...props} />
-
-        <Form className="request-edit-cell-body" loading={loading}>
+        <Form className="request-edit-cell-body" loading={props.loading}>
 
             <Form.Field className="mb-2">
                 <label><Icon name="map marker alternate" />Адрес</label>
                 <Form.Select
                     placeholder="Укажите адрес офиса"
-                    options={formdata.addresses || []}
+                    options={props?.formdata?.addresses || []}
                     name="address"
-                    value={formdata?.request?.address || null}
-                    onChange={(e, { name, value }) => changeData(name, value)}
-                    error={errors.address ? true : false}
+                    value={props?.formdata?.request?.address || null}
+                    onChange={(e, { name, value }) => props.changeData(name, value)}
+                    error={props?.errors?.address ? true : false}
                     disabled={props.load ? true : false}
                 />
             </Form.Field>
@@ -193,9 +218,9 @@ const EditDate = props => {
                     placeholder="Укажите дату"
                     type="datetime-local"
                     name="event_datetime"
-                    value={formdata?.request?.event_datetime || ""}
-                    onChange={(e, { name, value }) => changeData(name, value)}
-                    error={errors.event_datetime ? true : false}
+                    value={props?.formdata?.request?.event_datetime || ""}
+                    onChange={(e, { name, value }) => props.changeData(name, value)}
+                    error={props?.errors?.event_datetime ? true : false}
                     disabled={props.load ? true : false}
                 />
             </Form.Field>
@@ -204,148 +229,163 @@ const EditDate = props => {
 
         </Form>
 
-    </div>
+    </>}
 
-}
+/>
 
-const EditClient = props => <div className="request-edit-cell">
+const EditClient = props => <ModalBody {...props}
+    body={<>
 
-    <HeaderModal {...props} />
+        <ModalHeader {...props} />
 
-    <Form className="request-edit-cell-body" loading={props.loading}>
+        <Form className="request-edit-cell-body" loading={props.loading}>
 
-        <Form.Field className="mb-2">
-            <label><Icon name="user" />ФИО клиента</label>
-            <Form.Input
-                placeholder="Укажите ФИО клиента"
-                name="client_name"
-                value={props?.formdata?.request?.client_name || ""}
-                onChange={(e, { name, value }) => props.changeData(name, value)}
-                error={props?.errors?.client_name ? true : false}
-                disabled={props.load ? true : false}
-            />
-        </Form.Field>
+            <Form.Field className="mb-2">
+                <label><Icon name="user" />ФИО клиента</label>
+                <Form.Input
+                    placeholder="Укажите ФИО клиента"
+                    name="client_name"
+                    value={props?.formdata?.request?.client_name || ""}
+                    onChange={(e, { name, value }) => props.changeData(name, value)}
+                    error={props?.errors?.client_name ? true : false}
+                    disabled={props.load ? true : false}
+                />
+            </Form.Field>
 
-        <Form.Field className="mb-2">
-            <label><Icon name="world" />Город</label>
-            <Dropdown
-                fluid
-                placeholder="Укажите город"
-                search={caseSensitiveSearch}
-                selection
-                options={props?.formdata?.cities || []}
-                name="region"
-                value={props?.formdata?.request?.region || ""}
-                onChange={(e, { name, value }) => props.changeData(name, value)}
-                error={props?.errors?.region ? true : false}
-                disabled={props.load ? true : false}
-            />
-        </Form.Field>
+            <Form.Field className="mb-2">
+                <label><Icon name="world" />Город</label>
+                <Dropdown
+                    fluid
+                    placeholder="Укажите город"
+                    search={caseSensitiveSearch}
+                    selection
+                    options={props?.formdata?.cities || []}
+                    name="region"
+                    value={props?.formdata?.request?.region || ""}
+                    onChange={(e, { name, value }) => props.changeData(name, value)}
+                    error={props?.errors?.region ? true : false}
+                    disabled={props.load ? true : false}
+                />
+            </Form.Field>
 
-        <SaveButton {...props} />
+            <SaveButton {...props} />
 
-    </Form>
+        </Form>
 
-</div>
+    </>}
+
+/>
 
 
-const EditTheme = props => <div className="request-edit-cell">
+const EditTheme = props => <ModalBody {...props}
+    body={<>
 
-    <HeaderModal {...props} />
+        <ModalHeader {...props} />
 
-    <Form className="request-edit-cell-body" loading={props.loading}>
+        <Form className="request-edit-cell-body" loading={props.loading}>
 
-        <Form.Field className="mb-2">
-            <label><Icon name="book" />Тематика</label>
-            <Dropdown
-                placeholder="Укажите тематику"
-                search={caseSensitiveSearch}
-                selection
-                options={props?.formdata?.themes || []}
-                name="theme"
-                value={props?.formdata?.request?.theme || ""}
-                onChange={(e, { name, value }) => props.changeData(name, value)}
-                error={props?.errors?.theme ? true : false}
-            />
-        </Form.Field>
+            <Form.Field className="mb-2">
+                <label><Icon name="book" />Тематика</label>
+                <Dropdown
+                    placeholder="Укажите тематику"
+                    search={caseSensitiveSearch}
+                    selection
+                    options={props?.formdata?.themes || []}
+                    name="theme"
+                    value={props?.formdata?.request?.theme || ""}
+                    onChange={(e, { name, value }) => props.changeData(name, value)}
+                    error={props?.errors?.theme ? true : false}
+                />
+            </Form.Field>
 
-        <SaveButton {...props} />
+            <SaveButton {...props} />
 
-    </Form>
+        </Form>
 
-</div>
+    </>}
 
-const EditCommentFirst = props => <div className="request-edit-cell">
+/>
 
-    <HeaderModal {...props} />
+const EditCommentFirst = props => <ModalBody {...props}
+    body={<>
 
-    <Form className="request-edit-cell-body" loading={props.loading}>
+        <ModalHeader {...props} />
 
-        <Form.Field className="mb-2">
-            <label><Icon name="comment alternate outline" />Первичный комментарий</label>
-            <Form.TextArea
-                placeholder="Укажите первичный комментарий"
-                type="time"
-                name="comment_first"
-                rows={4}
-                value={props?.formdata?.request?.comment_first || ""}
-                onChange={(e, { name, value }) => props.changeData(name, value)}
-                error={props?.errors?.comment_first ? true : false}
-            />
-        </Form.Field>
+        <Form className="request-edit-cell-body" loading={props.loading}>
 
-        <SaveButton {...props} />
+            <Form.Field className="mb-2">
+                <label><Icon name="comment alternate outline" />Первичный комментарий</label>
+                <Form.TextArea
+                    placeholder="Укажите первичный комментарий"
+                    type="time"
+                    name="comment_first"
+                    rows={4}
+                    value={props?.formdata?.request?.comment_first || ""}
+                    onChange={(e, { name, value }) => props.changeData(name, value)}
+                    error={props?.errors?.comment_first ? true : false}
+                />
+            </Form.Field>
 
-    </Form>
+            <SaveButton {...props} />
 
-</div>
+        </Form>
 
-const EditComment = props => <div className="request-edit-cell">
+    </>}
 
-    <HeaderModal {...props} />
+/>
 
-    <Form className="request-edit-cell-body" loading={props.loading}>
+const EditComment = props => <ModalBody {...props}
+    body={<>
 
-        <Form.Field className="mb-2">
-            <label><Icon name="comment outline" />Суть обращения</label>
-            <Form.TextArea
-                placeholder="Укажите суть обращения"
-                type="time"
-                name="comment"
-                rows={4}
-                value={props?.formdata?.request?.comment || ""}
-                onChange={(e, { name, value }) => props.changeData(name, value)}
-                error={props?.errors?.comment ? true : false}
-            />
-        </Form.Field>
+        <ModalHeader {...props} />
 
-        <SaveButton {...props} />
+        <Form className="request-edit-cell-body" loading={props.loading}>
 
-    </Form>
+            <Form.Field className="mb-2">
+                <label><Icon name="comment outline" />Суть обращения</label>
+                <Form.TextArea
+                    placeholder="Укажите суть обращения"
+                    type="time"
+                    name="comment"
+                    rows={4}
+                    value={props?.formdata?.request?.comment || ""}
+                    onChange={(e, { name, value }) => props.changeData(name, value)}
+                    error={props?.errors?.comment ? true : false}
+                />
+            </Form.Field>
 
-</div>
+            <SaveButton {...props} />
 
-const EditCommentUrist = props => <div className="request-edit-cell">
+        </Form>
 
-    <HeaderModal {...props} />
+    </>}
 
-    <Form className="request-edit-cell-body" loading={props.loading}>
+/>
 
-        <Form.Field className="mb-2">
-            <label><Icon name="comment" />Комментарий юристу</label>
-            <Form.TextArea
-                placeholder="Укажите комментарий для юриста"
-                type="time"
-                name="comment_urist"
-                rows={4}
-                value={props?.formdata?.request?.comment_urist || ""}
-                onChange={(e, { name, value }) => props.changeData(name, value)}
-                error={props?.errors?.comment_urist ? true : false}
-            />
-        </Form.Field>
+const EditCommentUrist = props => <ModalBody {...props}
+    body={<>
 
-        <SaveButton {...props} />
+        <ModalHeader {...props} />
 
-    </Form>
+        <Form className="request-edit-cell-body" loading={props.loading}>
 
-</div>
+            <Form.Field className="mb-2">
+                <label><Icon name="comment" />Комментарий юристу</label>
+                <Form.TextArea
+                    placeholder="Укажите комментарий для юриста"
+                    type="time"
+                    name="comment_urist"
+                    rows={4}
+                    value={props?.formdata?.request?.comment_urist || ""}
+                    onChange={(e, { name, value }) => props.changeData(name, value)}
+                    error={props?.errors?.comment_urist ? true : false}
+                />
+            </Form.Field>
+
+            <SaveButton {...props} />
+
+        </Form>
+
+    </>}
+
+/>

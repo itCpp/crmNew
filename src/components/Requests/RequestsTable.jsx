@@ -25,8 +25,8 @@ const RequestsTableRow = props => {
         let data = {
             id: row.id,
             type: e.currentTarget?.dataset ? e.currentTarget?.dataset.type : null,
-            pageX: e.pageX,
-            pageY: e.pageY,
+            pageX: e.clientX,
+            pageY: e.clientY,
             currentTarget: e.currentTarget,
         }
 
@@ -246,7 +246,7 @@ const RequestsTable = props => {
         </div >
     }
 
-    return <div className="py-2 px-1 position-relative" id="requests-block">
+    return <div className="py-2 px-1" id="requests-block">
 
         {edit
             ? <RequestEdit {...props} row={edit} setOpen={setEdit} />
