@@ -11,7 +11,7 @@ const caseSensitiveSearch = (options, query) => {
 
 const RequestEdit = props => {
 
-    const { row, setOpen } = props;
+    const { row, setOpen, updateRequestRow } = props;
 
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
@@ -21,6 +21,7 @@ const RequestEdit = props => {
     const [errors, setErrors] = React.useState({});
 
     const [formdata, setFormdata] = React.useState(row);
+    const [permits, setPermits] = React.useState({});
     const [statuses, setStatuses] = React.useState([]);
     const [cities, setCities] = React.useState([]);
     const [themes, setThemes] = React.useState([]);
@@ -33,11 +34,27 @@ const RequestEdit = props => {
         }).then(({ data }) => {
 
             setFormdata(data.request);
+            setPermits(data.permits);
 
-            setCities(data.cities);
-            setThemes(data.themes);
+            setCities([null, ...data.cities]);
+            setThemes([null, ...data.themes]);
 
-            setStatuses([{ text: "Не обработана", value: 0, id: 0 }, ...data.statuses]);
+            setAddresses([{ id: null, name: "Не указан" }, ...data.offices].map((office, key) => ({
+                key,
+                text: office.name,
+                value: office.id,
+                disabled: office.active === 0 ? true : false
+            })));
+
+            setStatuses([
+                {
+                    text: "Не обработана",
+                    value: 0,
+                    id: 0,
+                    disabled: data?.permits?.request_set_null_status ? false : true,
+                },
+                ...data.statuses
+            ]);
 
         }).catch(error => {
             setError(axios.getError(error));
@@ -59,6 +76,7 @@ const RequestEdit = props => {
 
             axios.post('requests/save', formdata).then(({ data }) => {
                 setErrorSave(null);
+                updateRequestRow(data.request);
             }).catch(error => {
                 setError(null);
                 setErrorSave(axios.getError(error));
@@ -127,13 +145,13 @@ const RequestEdit = props => {
 
                         <Form.Group>
                             <Form.Field width={8}>
-                                <label>Город</label>
+                                <label><Icon name="world" />Город</label>
                                 <Dropdown
                                     placeholder="Укажите город"
                                     search={caseSensitiveSearch}
                                     selection
                                     options={cities.map((city, key) => ({
-                                        key, value: city, text: city
+                                        key, value: city, text: city || "Не определен"
                                     }))}
                                     name="region"
                                     value={formdata.region || ""}
@@ -142,13 +160,13 @@ const RequestEdit = props => {
                                 />
                             </Form.Field>
                             <Form.Field width={8}>
-                                <label>Тематика</label>
+                                <label><Icon name="book" />Тематика</label>
                                 <Dropdown
                                     placeholder="Укажите тематику"
                                     search={caseSensitiveSearch}
                                     selection
                                     options={themes.map((theme, key) => ({
-                                        key, value: theme, text: theme
+                                        key, value: theme, text: theme || "Не определена"
                                     }))}
                                     name="theme"
                                     value={formdata.theme || ""}
@@ -163,11 +181,9 @@ const RequestEdit = props => {
                                 <label><Icon name="map marker alternate" />Адрес</label>
                                 <Form.Select
                                     placeholder="Укажите адрес офиса"
-                                    options={adresses.map((addr, key) => ({
-                                        key, value: addr.id, text: addr.name
-                                    }))}
+                                    options={adresses}
                                     name="address"
-                                    value={formdata.address || ""}
+                                    value={formdata.address || null}
                                     onChange={(e, { name, value }) => changeData(name, value)}
                                     error={errors.address ? true : false}
                                 />
@@ -197,9 +213,8 @@ const RequestEdit = props => {
                         </Form.Group>
 
                         <Form.Field>
-                            <label><Icon name="comment outline" />Описание проблемы</label>
+                            <label><Icon name="comment outline" />Описание проблемы (отразится в карточке клиента)</label>
                             <Form.TextArea
-                                fluid
                                 placeholder="Опишите суть обращения"
                                 type="time"
                                 name="comment"
@@ -211,9 +226,8 @@ const RequestEdit = props => {
                         </Form.Field>
 
                         <Form.Field>
-                            <label><Icon name="comment" />Комментарий юристу</label>
+                            <label><Icon name="comment" />Комментарий юристу (видно только юристу)</label>
                             <Form.TextArea
-                                fluid
                                 placeholder="Комментарий для юриста перивчного приема"
                                 type="time"
                                 name="comment_urist"

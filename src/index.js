@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import store from './store/store';
 
 import 'semantic-ui-css/semantic.min.css';
+import 'react-semantic-toasts/styles/react-semantic-alert.css';
 import './css/bootstrap-utilities.css';
 import './index.css';
 

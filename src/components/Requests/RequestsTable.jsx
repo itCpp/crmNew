@@ -3,44 +3,89 @@ import { withRouter } from "react-router";
 import axios from "./../../utils/axios-header";
 
 import { connect } from 'react-redux';
-import { setTabList, selectTab, setRequests } from "./../../store/requests/actions";
+import {
+    setTabList,
+    selectTab,
+    setRequests,
+    updateRequestRow
+} from "./../../store/requests/actions";
 
 import { Loader, Message, Table, Icon, Button } from "semantic-ui-react";
 
 import RequestEdit from "./RequestEdit";
+import RequestEditCell from "./RequestEditCell";
 
 const RequestsTableRow = props => {
 
     const { row, setEdit } = props;
+    const { setEditCell } = props;
+
+    const setCell = e => {
+
+        let data = {
+            id: row.id,
+            type: e.currentTarget?.dataset ? e.currentTarget?.dataset.type : null,
+            pageX: e.pageX,
+            pageY: e.pageY,
+            currentTarget: e.currentTarget,
+        }
+
+        setEditCell(data);
+
+    }
+
+    let className = ["request-row"];
 
     let type = null;
     if (row.query_type === "call")
         type = <Icon name="call square" title="Звонок" />
     else if (row.query_type === "text")
         type = <Icon name="comment alternate" title="Тектовая заявка" />
-    
-    return <Table.Row>
+
+    return <Table.Row className={className.join(' ')}>
 
         <Table.Cell>
+
             <div>
                 <span style={{ opacity: 0.5 }}>{type}</span>
                 <span title="Номер заявки">#{row.id}</span>
             </div>
+
+            <div title="Источник">
+                <span style={{ opacity: 0.5 }}><Icon name="fork" /></span>
+                <span>{row.source?.name || "Неизвестно"}</span>
+            </div>
+
+            <div>{row.status?.name || "Не обработана"}</div>
+
         </Table.Cell>
 
         <Table.Cell>
+
             {row.date_uplift ? <div title="Дата последнего обращения" className="d-flex justify-content-center">
                 <Icon name="level up" />
                 <span>{row.date_uplift}</span>
             </div> : null}
+
             <div title="Дата поступления" className="d-flex justify-content-center">
                 <Icon name="plus" />
                 <span>{row.date_create}</span>
             </div>
+
             {row.date_event ? <div title="Дата записи, или прихода" className="d-flex justify-content-center">
                 <Icon name="clock" />
                 <span>{row.date_event}</span>
             </div> : null}
+
+            {row.office?.id ? <div title={`Офис ${row.office.name}`} className="d-flex justify-content-center">
+                <Icon name="map marker alternate" />
+                <span>{row.office.name}</span>
+            </div> : null}
+
+            <div className="request-cell-edit" data-type="date" onClick={setCell}>
+                <Icon name="pencil" />
+            </div>
+
         </Table.Cell>
 
         <Table.Cell>
@@ -48,33 +93,69 @@ const RequestsTableRow = props => {
         </Table.Cell>
 
         <Table.Cell>
+
             {row.client_name ? <div>{row.client_name}</div> : null}
+            {row.region ? <div>{row.region}</div> : null}
             {row.clients.map(client => <div key={`client_${row.id}_${client.id}`}>
                 <div>{client.phone}</div>
             </div>)}
+
+            <div className="request-cell-edit" data-type="client" onClick={setCell}>
+                <Icon name="pencil" />
+            </div>
+
         </Table.Cell>
 
         <Table.Cell>
-            {row.source?.name ? <div>{row.source.name}</div> : null}
-        </Table.Cell>
 
-        <Table.Cell>
-            <div className="hover-block text-left">
+            <div className="cell-block text-left position-relative">
+
                 <Icon name="hashtag" />
                 <span>{row.theme || <span style={{ opacity: 0.4 }}>Тема не указана</span>}</span>
+
+                <div className="request-cell-edit-in-block" data-type="theme" onClick={setCell}>
+                    <Icon name="pencil" />
+                </div>
+
             </div>
-            <div className="hover-block text-left" title="Комментарий секретаря">
+
+            <div className="cell-block text-left position-relative" title="Комментарий секретаря">
+
+                <Icon name="comment alternate outline" />
+                <span>{row.comment_first || <span style={{ opacity: 0.4 }}>Комментария нет</span>}</span>
+
+                <div className="request-cell-edit-in-block" data-type="commentFirst" onClick={setCell}>
+                    <Icon name="pencil" />
+                </div>
+
+            </div>
+
+        </Table.Cell>
+
+        <Table.Cell>
+
+            <div className="cell-block text-left position-relative" title="Суть обращения">
+
+                <Icon name="comment outline" />
+                <span>{row.comment || <span style={{ opacity: 0.4 }}>Суть обращения не указана</span>}</span>
+
+                <div className="request-cell-edit-in-block" data-type="comment" onClick={setCell}>
+                    <Icon name="pencil" />
+                </div>
+
+            </div>
+
+            <div className="cell-block text-left position-relative" title="Комментарий юристу">
+
                 <Icon name="comment" />
-                <span>{row.theme || <span style={{ opacity: 0.4 }}>Комментария нет</span>}</span>
+                <span>{row.comment_urist || <span style={{ opacity: 0.4 }}>Комментарий юристу не указан</span>}</span>
+
+                <div className="request-cell-edit-in-block" data-type="commentUrist" onClick={setCell}>
+                    <Icon name="pencil" />
+                </div>
+
             </div>
-        </Table.Cell>
 
-        <Table.Cell>
-            {row.region ? <div>{row.region}</div> : null}
-        </Table.Cell>
-
-        <Table.Cell>
-            <div>{row.status?.name || "Не обработана"}</div>
         </Table.Cell>
 
         <Table.Cell>
@@ -104,6 +185,7 @@ const RequestsTable = props => {
 
     const [error, setError] = React.useState(null);
     const [edit, setEdit] = React.useState(null);
+    const [editCell, setEditCell] = React.useState(null);
 
     React.useEffect(() => {
 
@@ -164,7 +246,7 @@ const RequestsTable = props => {
         </div >
     }
 
-    return <div className="py-2 px-1">
+    return <div className="py-2 px-1 position-relative" id="requests-block">
 
         {edit
             ? <RequestEdit {...props} row={edit} setOpen={setEdit} />
@@ -178,18 +260,16 @@ const RequestsTable = props => {
                     <Table.HeaderCell>id</Table.HeaderCell>
                     <Table.HeaderCell>Дата</Table.HeaderCell>
                     <Table.HeaderCell>Оператор</Table.HeaderCell>
-                    <Table.HeaderCell>Имя и телефон</Table.HeaderCell>
-                    <Table.HeaderCell>Источник</Table.HeaderCell>
+                    <Table.HeaderCell>Клиент</Table.HeaderCell>
                     <Table.HeaderCell>Тема</Table.HeaderCell>
-                    <Table.HeaderCell>Регион</Table.HeaderCell>
-                    <Table.HeaderCell>Статус</Table.HeaderCell>
+                    <Table.HeaderCell>Комментарии</Table.HeaderCell>
                     <Table.HeaderCell />
                 </Table.Row>
             </Table.Header>
 
             <Table.Body>
                 {requests.length
-                    ? requests.map(row => <RequestsTableRow key={row.id} {...props} row={row} setEdit={setEdit} />)
+                    ? requests.map(row => <RequestsTableRow key={row.id} {...props} row={row} setEdit={setEdit} setEditCell={setEditCell} />)
                     : <Table.Row>
                         <Table.Cell colSpan={document.querySelectorAll('#requests-header-row > *').length}>
                             <div className="text-center my-5 text-muted" style={{ opacity: 0.5 }}>
@@ -201,6 +281,11 @@ const RequestsTable = props => {
             </Table.Body>
 
         </Table>
+
+        {editCell?.id
+            ? <RequestEditCell {...props} editCell={editCell} setEditCell={setEditCell} />
+            : null
+        }
 
     </div>
 
@@ -214,7 +299,7 @@ const mapStateToProps = state => ({
 });
 
 const mapActionsToProps = {
-    setTabList, selectTab, setRequests
+    setTabList, selectTab, setRequests, updateRequestRow
 }
 
 export default withRouter(connect(mapStateToProps, mapActionsToProps)(RequestsTable));

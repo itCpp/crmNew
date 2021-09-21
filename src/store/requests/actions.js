@@ -15,3 +15,9 @@ export const setRequests = data => ({
     type: SET_REQUESTS,
     payload: data
 });
+
+export const UPDATE_REQUEST_ROW = "UPDATE_REQUEST_ROW";
+export const updateRequestRow = data => ({
+    type: UPDATE_REQUEST_ROW,
+    payload: data
+});

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { setLogin, setUserData, setUserPermits } from './store/actions';
 
 import { Loader } from 'semantic-ui-react';
+import { SemanticToastContainer } from 'react-semantic-toasts';
 
 import './App.css';
 
@@ -40,9 +41,10 @@ function App(props) {
         </div>
     }
 
-    return <Routes
-        login={login}
-    />
+    return <>
+        <SemanticToastContainer position="bottom-left" />
+        <Routes login={login} />
+    </>
 
 }
 

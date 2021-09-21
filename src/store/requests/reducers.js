@@ -19,6 +19,19 @@ export const requestsReducer = (state = defaultState, action) => {
         case ACTION.SET_REQUESTS:
             return { ...state, requests: action.payload }
 
+        case ACTION.UPDATE_REQUEST_ROW:
+
+            let requests = [...state.requests];
+
+            state.requests.find((item, key) => {
+                if (item.id === action.payload.id) {
+                    requests[key] = action.payload;
+                    return key;
+                }
+            });
+
+            return { ...state, requests: requests }
+
         default:
             return state;
     
