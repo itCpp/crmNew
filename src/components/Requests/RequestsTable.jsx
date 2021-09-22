@@ -164,7 +164,10 @@ const RequestsTableRow = props => {
                     ? <Button
                         icon="edit outline"
                         title="Редактировать заявку"
-                        onClick={() => setEdit(row)}
+                        onClick={() => {
+                            setEdit(row);
+                            setEditCell(null);
+                        }}
                     />
                     : null
                 }

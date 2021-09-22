@@ -26,23 +26,24 @@ const RequestEditCell = props => {
         if (props?.editCell?.id) {
 
             const modal = document.getElementById('request-edit-modal');
-            const pos = {
+            const css = {
                 x: props?.editCell?.pageX || 0,
                 y: props?.editCell?.pageY || 0,
+                display: "block",
             }
 
             if (modal) {
 
                 const clientHeight = document.documentElement.clientHeight;
 
-                if (clientHeight < pos.y + modal.clientHeight) {
-                    pos.y = (pos.y + (clientHeight - (pos.y + modal.clientHeight))) - 5;
+                if (clientHeight < css.y + modal.clientHeight) {
+                    css.y = (css.y + (clientHeight - (css.y + modal.clientHeight))) - 5;
                 }
 
             }
 
             setLoading(true);
-            setPosition(pos);
+            setPosition(css);
 
             axios.post('requests/getRow', {
                 id: props.editCell?.id
@@ -126,6 +127,35 @@ const RequestEditCell = props => {
 
     }, [save]);
 
+    const [drag, setDrag] = React.useState({ move: false });
+
+    const onMouseDown = e => {
+
+        return;
+
+        setDrag({ ...drag, move: true });
+
+    }
+
+    const onMouseMove = e => {
+
+        return;
+
+        if (!drag.move) return;
+
+        // const modal = document.getElementById('request-edit-modal');
+        setPosition({ x: e.clientX - position.x, y: e.clientY - position.y });
+
+    }
+
+    const onMouseUp = e => {
+
+        return;
+
+        setDrag({ ...drag, move: false });
+
+    }
+
     return <RequestEditCellSwitch
         {...props}
         formdata={formdata}
@@ -134,7 +164,10 @@ const RequestEditCell = props => {
         loading={loading}
         setSave={setSave}
         load={load}
-        position={position}
+        css={position}
+        onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+        onMouseUp={onMouseUp}
     />
 
 }
@@ -170,15 +203,16 @@ const TitleLoader = () => <Placeholder className="w-100">
 </Placeholder>
 
 const ModalHeader = props => <div className="request-edit-cell-header">
-    {props?.formdata?.request?.id && !props?.loading ? <span>#{props.formdata.request.id}</span> : <TitleLoader />}
+    {props?.formdata?.request?.id && !props?.loading ? <span className="flex-grow-1 header-for-drag" onMouseDown={props.onMouseDown} onMouseMove={props.onMouseMove} onMouseUp={props.onMouseUp}>#{props.formdata.request.id}</span> : <TitleLoader />}
     <span><Icon name="close" onClick={() => props.setEditCell(null)} /></span>
 </div>
 
 const ModalBody = props => <div
-    className="request-edit-cell shadow"
+    className={`request-edit-cell shadow`}
     style={{
-        top: props.position.y,
-        left: props?.position?.x ? props.position.x - 220 : 0,
+        top: props.css.y,
+        left: props?.css?.x ? props.css.x - 220 : 0,
+        display: props?.css?.display || "none",
     }}
     id="request-edit-modal"
 >{props.body || null}</div>
