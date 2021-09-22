@@ -112,3 +112,9 @@
 .request-edit-cell-body .disabled.field {
     opacity: 1 !important;
 }
+
+.pin-btn-select {
+    width: 90px;
+    padding: .7rem .5rem !important;
+    margin: .25rem !important;
+}

@@ -14,6 +14,7 @@ import { Loader, Message, Table, Icon, Button } from "semantic-ui-react";
 
 import RequestEdit from "./RequestEdit";
 import RequestEditCell from "./RequestEditCell";
+import RequestPinChange from "./RequestPinChange";
 
 const RequestsTableRow = props => {
 
@@ -89,7 +90,7 @@ const RequestsTableRow = props => {
         </Table.Cell>
 
         <Table.Cell>
-            {row.pin ? <div>{row.pin}</div> : null}
+            <RequestPinChange {...props} />
         </Table.Cell>
 
         <Table.Cell>
