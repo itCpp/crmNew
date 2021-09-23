@@ -15,6 +15,7 @@ import { Loader, Message, Table, Icon, Button } from "semantic-ui-react";
 import RequestEdit from "./RequestEdit";
 import RequestEditCell from "./RequestEditCell";
 import RequestPinChange from "./RequestPinChange";
+import RequestSectorChange from "./RequestSectorChange";
 
 const RequestsTableRow = props => {
 
@@ -90,6 +91,7 @@ const RequestsTableRow = props => {
         </Table.Cell>
 
         <Table.Cell>
+            <RequestSectorChange {...props} />
             <RequestPinChange {...props} />
         </Table.Cell>
 
@@ -235,6 +237,46 @@ const RequestsTable = props => {
 
     }, [select]);
 
+    /**
+     * Вывод доступных к выбору сектров
+     * @returns {object}
+     */
+    const findSectors = async formdata => {
+
+        let response = {};
+    
+        await axios.post('requests/changeSectorShow', formdata).then(({ data }) => {
+            response = { ...data, done: true };
+        }).catch(error => {
+            response = {
+                done: false,
+                error: axios.getError(error),
+            }
+        });
+    
+        return response;
+    
+    }
+
+    /**
+     * Смена сектора
+     * @returns {boolean}
+     */
+    const changeSector = async formdata => {
+
+        let response = true;
+
+        await axios.post('requests/setSector', formdata).then(({ data }) => {
+            props.updateRequestRow(data.request);
+        }).catch(error => {
+            axios.toast(error, { time: 5000 });
+            response = false;
+        });
+
+        return response;
+
+    }
+
     if (!select) {
         return <div className="my-4 mx-auto w-100" style={{ maxWidth: "550px" }}>
             <Message info content="Выберите вкладку для отображения заявок" className="mx-1" />
@@ -273,7 +315,15 @@ const RequestsTable = props => {
 
             <Table.Body>
                 {requests.length
-                    ? requests.map(row => <RequestsTableRow key={row.id} {...props} row={row} setEdit={setEdit} setEditCell={setEditCell} />)
+                    ? requests.map(row => <RequestsTableRow
+                        key={row.id}
+                        {...props}
+                        row={row}
+                        setEdit={setEdit}
+                        setEditCell={setEditCell}
+                        findSectors={findSectors}
+                        changeSector={changeSector}
+                    />)
                     : <Table.Row>
                         <Table.Cell colSpan={document.querySelectorAll('#requests-header-row > *').length}>
                             <div className="text-center my-5 text-muted" style={{ opacity: 0.5 }}>

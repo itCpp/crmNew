@@ -81,16 +81,16 @@ const RequestPinChange = props => {
 
             <Modal.Content className="text-center">
                 {pins.length
-                    ? pins.map(row => <Button
-                        key={row.pin}
-                        content={row.pin}
-                        className="pin-btn-select"
-                        color={row.color || "grey"}
-                        title={row.title || null}
-                        disabled={row.disabled || select !== false ? true : false}
-                        loading={select === row.id ? true : false}
-                        onClick={() => setSelect(row.id)}
-                    />)
+                    ? pins.map(row => <div key={row.pin} title={row.title || null} className="d-inline-block">
+                        <Button
+                            content={row.pin}
+                            className="pin-btn-select"
+                            color={row.color || "grey"}
+                            disabled={row.disabled || select !== false ? true : false}
+                            loading={select === row.id ? true : false}
+                            onClick={() => setSelect(row.id)}
+                        />
+                    </div>)
                     : <div className="text-muted">Доступных к выбору операторов нет</div>
                 }
             </Modal.Content>

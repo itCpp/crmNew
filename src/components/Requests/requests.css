@@ -118,3 +118,15 @@
     padding: .7rem .5rem !important;
     margin: .25rem !important;
 }
+
+.dropdown-change-sector .error-message {
+    white-space: normal !important;
+}
+
+.dropdown-change-sector.loading > .divider {
+    margin-right: 8px;
+}
+
+.select-sector {
+    padding: .1rem !important;
+}
