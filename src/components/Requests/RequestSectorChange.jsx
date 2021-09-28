@@ -40,7 +40,7 @@ const RequestSectorChange = props => {
         </div>
     }
 
-    return <div className="mb-1">
+    return <div className={`mb-1 ${!row.sector ? "text-danger" : ""}`}>
         <Icon name="random" />
         <Dropdown
             inline
@@ -69,7 +69,21 @@ const RequestSectorChange = props => {
                                                 <Dropdown.Item key={sector.id} onClick={() => setChange(sector.id)} className="d-flex justify-content-between align-items-center">
                                                     <span className="flex-grow-1">{sector.name}</span>
                                                     <div className="d-flex align-items-center">
-                                                        
+                                                        <Label
+                                                            color="green"
+                                                            horizontal
+                                                            content={`${sector.free || 0}/${sector.online || 0}`}
+                                                            title="Свободные операторы / Всего в системе"
+                                                            size="mini"
+                                                        />
+                                                        <Label
+                                                            color="orange"
+                                                            horizontal
+                                                            title="Количество заявок сегодня"
+                                                            content={sector.requests || 0}
+                                                            size="mini"
+                                                            style={{ margin: 0 }}
+                                                        />
                                                     </div>
                                                 </Dropdown.Item>
                                             ))
