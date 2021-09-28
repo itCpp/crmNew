@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import {
     setTabList,
     selectTab,
+    selectedUpdateTab,
     setRequests,
     updateRequestRow
 } from "./../../store/requests/actions";
@@ -184,6 +185,7 @@ const RequestsTableRow = props => {
 const RequestsTable = props => {
 
     const { user, permits, select } = props;
+    const { selectedUpdate, selectedUpdateTab } = props;
     const { requests, setRequests } = props;
 
     const [loading, setLoading] = React.useState(true);
@@ -224,18 +226,19 @@ const RequestsTable = props => {
         }).then(() => {
             setLoading(false);
             setLoad(false);
+            selectedUpdateTab(false);
         });
 
     }
 
     React.useEffect(() => {
 
-        if (select) {
+        if (select && selectedUpdate) {
             setLoading(true);
             getRequests();
         }
 
-    }, [select]);
+    }, [select, selectedUpdate]);
 
     /**
      * Вывод доступных к выбору сектров
@@ -349,11 +352,12 @@ const mapStateToProps = state => ({
     user: state.main.userData,
     permits: state.main.userPermits,
     select: state.requests.select,
+    selectedUpdate: state.requests.selectedUpdate,
     requests: state.requests.requests,
 });
 
 const mapActionsToProps = {
-    setTabList, selectTab, setRequests, updateRequestRow
+    setTabList, selectTab, setRequests, updateRequestRow, selectedUpdateTab
 }
 
 export default withRouter(connect(mapStateToProps, mapActionsToProps)(RequestsTable));

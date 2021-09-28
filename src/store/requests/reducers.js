@@ -3,6 +3,7 @@ import * as ACTION from './actions'
 const defaultState = {
     tabs: [],
     select: null,
+    selectedUpdate: false,
     requests: [],
 };
 
@@ -14,7 +15,10 @@ export const requestsReducer = (state = defaultState, action) => {
             return { ...state, tabs: action.payload }
 
         case ACTION.SELECT_TAB:
-            return { ...state, select: action.payload }
+            return { ...state, select: action.payload, selectedUpdate: true }
+
+        case ACTION.SELECTED_UPDATE_TAB:
+            return { ...state, selectedUpdate: action.payload }
 
         case ACTION.SET_REQUESTS:
             return { ...state, requests: action.payload }

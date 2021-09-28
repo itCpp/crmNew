@@ -1,16 +1,21 @@
 import { connect } from 'react-redux';
-import { selectTab } from "./../../store/requests/actions";
+import { selectTab, selectedUpdateTab } from "./../../store/requests/actions";
 
 import { Icon } from "semantic-ui-react";
 
 const RequestsTabs = props => {
 
-    const { tabs, select, selectTab } = props;
+    const { tabs, select, selectTab, selectedUpdateTab } = props;
     const { selectMenu, openSubMenu } = props;
 
     const setSelect = id => {
+
+        if (id === select)
+            return selectedUpdateTab(true);
+
         selectTab(id);
         localStorage.setItem('select_tab', id);
+
     }
 
     if (tabs.length && !tabs.find(i => i.id === select))
@@ -57,4 +62,4 @@ const mapStateToProps = state => ({
     select: state.requests.select,
 });
 
-export default connect(mapStateToProps, { selectTab })(RequestsTabs);
+export default connect(mapStateToProps, { selectTab, selectedUpdateTab })(RequestsTabs);

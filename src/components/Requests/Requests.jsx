@@ -41,8 +41,10 @@ function Requests(props) {
 
         let selected;
 
-        if (selected = localStorage.getItem('select_tab'))
+        if (selected = localStorage.getItem('select_tab')) {
             selectTab(Number(selected));
+            openSubMenu('requests');
+        }
 
         axios.post('requests/start').then(({ data }) => {
 

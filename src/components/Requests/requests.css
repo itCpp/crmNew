@@ -50,16 +50,18 @@
 }
 
 .tab-list {
-    visibility: hidden;
+    /* visibility: hidden;
     opacity: 0;
     transform: translateY(-10px);
-    transition: all .3s ease;
+    transition: all .3s ease; */
+    display: none;
 }
 
 [data-active="true"] .tab-list {
-    visibility: visible;
+    /* visibility: visible;
     transform: translateY(0);
-    opacity: 1;
+    opacity: 1; */
+    display: block;
 }
 
 .tab-list .menu-list-row {
@@ -98,6 +100,7 @@
 
 .request-row > td {
     position: relative;
+    font-weight: 100;
 }
 
 .request-cell-edit,

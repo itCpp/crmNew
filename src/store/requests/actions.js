@@ -10,6 +10,12 @@ export const selectTab = data => ({
     payload: data
 });
 
+export const SELECTED_UPDATE_TAB = "SELECTED_UPDATE_TAB";
+export const selectedUpdateTab = data => ({
+    type: SELECTED_UPDATE_TAB,
+    payload: data
+});
+
 export const SET_REQUESTS = "SET_REQUESTS";
 export const setRequests = data => ({
     type: SET_REQUESTS,
