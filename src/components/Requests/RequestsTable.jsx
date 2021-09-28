@@ -11,7 +11,7 @@ import {
     updateRequestRow
 } from "./../../store/requests/actions";
 
-import { Loader, Message, Table, Icon, Button } from "semantic-ui-react";
+import { Loader, Message, Table, Icon, Button, Grid } from "semantic-ui-react";
 
 import RequestEdit from "./RequestEdit";
 import RequestEditCell from "./RequestEditCell";
@@ -188,7 +188,7 @@ const RequestsTable = props => {
     const { selectedUpdate, selectedUpdateTab } = props;
     const { requests, setRequests } = props;
 
-    const [loading, setLoading] = React.useState(true);
+    const [loading, setLoading] = React.useState(false);
     const [load, setLoad] = React.useState(true);
 
     const [error, setError] = React.useState(null);
@@ -247,7 +247,7 @@ const RequestsTable = props => {
     const findSectors = async formdata => {
 
         let response = {};
-    
+
         await axios.post('requests/changeSectorShow', formdata).then(({ data }) => {
             response = { ...data, done: true };
         }).catch(error => {
@@ -256,9 +256,9 @@ const RequestsTable = props => {
                 error: axios.getError(error),
             }
         });
-    
+
         return response;
-    
+
     }
 
     /**
@@ -295,49 +295,70 @@ const RequestsTable = props => {
         </div >
     }
 
-    return <div className="py-2 px-1" id="requests-block">
+    return <div className="px-3" id="requests-block">
+
+        <div className="page-title-box">
+            <h4 className="page-title">Заявки</h4>
+        </div>
 
         {edit
             ? <RequestEdit {...props} row={edit} setOpen={setEdit} />
             : null
         }
 
-        <Table basic textAlign="center" compact>
+        <Grid columns={1}>
 
-            <Table.Header>
-                <Table.Row id="requests-header-row">
-                    <Table.HeaderCell>id</Table.HeaderCell>
-                    <Table.HeaderCell>Дата</Table.HeaderCell>
-                    <Table.HeaderCell>Оператор</Table.HeaderCell>
-                    <Table.HeaderCell>Клиент</Table.HeaderCell>
-                    <Table.HeaderCell>Тема</Table.HeaderCell>
-                    <Table.HeaderCell>Комментарии</Table.HeaderCell>
-                    <Table.HeaderCell />
-                </Table.Row>
-            </Table.Header>
+            <Grid.Row>
 
-            <Table.Body>
-                {requests.length
-                    ? requests.map(row => <RequestsTableRow
-                        key={row.id}
-                        {...props}
-                        row={row}
-                        setEdit={setEdit}
-                        setEditCell={setEditCell}
-                        findSectors={findSectors}
-                        changeSector={changeSector}
-                    />)
-                    : <Table.Row>
-                        <Table.Cell colSpan={document.querySelectorAll('#requests-header-row > *').length}>
-                            <div className="text-center my-5 text-muted" style={{ opacity: 0.5 }}>
-                                <strong>Данных нет</strong>
-                            </div>
-                        </Table.Cell>
-                    </Table.Row>
-                }
-            </Table.Body>
+                <Grid.Column>
 
-        </Table>
+                    <div className="block-card">
+
+                        <Table basic='very' textAlign="left" compact>
+
+                            <Table.Header>
+                                <Table.Row id="requests-header-row">
+                                    <Table.HeaderCell>id</Table.HeaderCell>
+                                    <Table.HeaderCell>Дата</Table.HeaderCell>
+                                    <Table.HeaderCell>Оператор</Table.HeaderCell>
+                                    <Table.HeaderCell>Клиент</Table.HeaderCell>
+                                    <Table.HeaderCell>Тема</Table.HeaderCell>
+                                    <Table.HeaderCell>Комментарии</Table.HeaderCell>
+                                    <Table.HeaderCell />
+                                </Table.Row>
+                            </Table.Header>
+
+                            <Table.Body>
+                                {requests.length
+                                    ? requests.map(row => <RequestsTableRow
+                                        key={row.id}
+                                        {...props}
+                                        row={row}
+                                        setEdit={setEdit}
+                                        setEditCell={setEditCell}
+                                        findSectors={findSectors}
+                                        changeSector={changeSector}
+                                    />)
+                                    : <Table.Row>
+                                        <Table.Cell colSpan={document.querySelectorAll('#requests-header-row > *').length}>
+                                            <div className="text-center my-5 text-muted" style={{ opacity: 0.5 }}>
+                                                <strong>Данных нет</strong>
+                                            </div>
+                                        </Table.Cell>
+                                    </Table.Row>
+                                }
+                            </Table.Body>
+
+                        </Table>
+
+                    </div>
+
+                </Grid.Column>
+
+            </Grid.Row>
+            
+        </Grid >
+
 
         {editCell?.id
             ? <RequestEditCell {...props} editCell={editCell} setEditCell={setEditCell} />
@@ -345,6 +366,7 @@ const RequestsTable = props => {
         }
 
     </div>
+
 
 }
 

@@ -72,8 +72,10 @@
 .tab-list-active {
     color: #ffffff;
 }
-.tab-list-active:hover {
-    color: #f0f0f0;
+.tab-list-active:hover,
+[data-active="true"] > .menu-list-row:hover,
+.menu-list-block-active > .menu-list-row:hover {
+    color: #e9e9e9;
 }
 
 .request-button-control > button {
@@ -101,6 +103,10 @@
 .request-row > td {
     position: relative;
     font-weight: 100;
+}
+#requests-header-row > th,
+.request-row > td {
+    padding: .5rem !important;
 }
 
 .request-cell-edit,

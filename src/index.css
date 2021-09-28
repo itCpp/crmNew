@@ -9,8 +9,9 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #f7f8ff;
+  background: #fafbfe;
   cursor: default;
+  color: #6c757d;
 }
 
 code {
@@ -75,4 +76,39 @@ hr {
 
 .ui-alerts {
   width: 400px;
+}
+
+
+
+.block-card {
+  border: none;
+  -webkit-box-shadow: 0 0 35px 0 rgb(154 161 171 / 15%);
+  box-shadow: 0 0 35px 0 rgb(154 161 171 / 15%);
+  margin-bottom: 24px;
+}
+.block-card {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border-radius: .25rem;
+  padding: 1.5rem;
+}
+
+.page-title-box .page-title {
+  font-size: 18px;
+  margin: 0;
+  line-height: 75px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #6c757d;
 }
