@@ -19,6 +19,22 @@ function Requests(props) {
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(false);
 
+    const [selectMenu, setSelectMenu] = React.useState([]);
+
+    const openSubMenu = name => {
+
+        let points = [...selectMenu];
+        let key = points.indexOf(name);
+
+        if (key >= 0)
+            points.splice(key, 1);
+        else
+            points.push(name);
+
+        setSelectMenu(points);
+
+    }
+
     React.useEffect(() => {
 
         setLoading(true);
@@ -51,10 +67,14 @@ function Requests(props) {
         </div >
     }
 
-    return <>
-        <RequestsTabs />
+    return <div className="d-flex h-100">
+
+        <div className="request-main-menu">
+            <RequestsTabs {...props} openSubMenu={openSubMenu} selectMenu={selectMenu} />
+        </div>
+
         <RequestsTable />
-    </>
+    </div>
 
 }
 

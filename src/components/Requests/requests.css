@@ -1,27 +1,77 @@
-.tab-list {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    width: 100%;
-    padding: .25rem;
-    background: #ffffff;
-    border-bottom: 1px solid var(--border-admin-segment);
+#root, #sub-root {
+    height: 100%;
 }
 
-.tab-list-row {
-    margin: .25rem;
-    padding: .25rem .8rem;
-    background: #ffffff;
-    border: 1px solid #ebedff;
-    border-radius: .25rem;
+.request-main-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: stretch;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 230px;
+    padding: .25rem;
+    background: #313a46;
+    /* border-right: 1px solid var(--border-admin-segment); */
+}
+
+.menu-list-row {
+    margin: .1rem;
+    padding: .5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     cursor: pointer;
-    font-weight: 600;
+    color: #8391a2;
+    transition: .2s;
+    font-weight: 100;
 }
+.menu-list-row:hover {
+    color: #a0acbb;
+    transition: .2s;
+}
+.rotate {
+    margin: 0;
+    transition: .1s;
+}
+
+.menu-list-point .icon {
+    margin-right: .5rem;
+}
+
+[data-active="true"] > .menu-list-row,
+.menu-list-block-active > .menu-list-row {
+    color: #ffffff;
+}
+
+[data-active="true"] .menu-list-row .rotate {
+    transform: rotate(90deg);
+    transition: .1s;
+}
+
+.tab-list {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all .3s ease;
+}
+
+[data-active="true"] .tab-list {
+    visibility: visible;
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.tab-list .menu-list-row {
+    margin: 0 auto;
+    padding: .3rem 1rem .3rem 2.3rem;
+}
+
 .tab-list-active {
-    box-shadow: 0px 0px 0px 2px #ebedff;
+    color: #ffffff;
 }
-.tab-list-row:hover {
-    background: #f7f8ff;
+.tab-list-active:hover {
+    color: #f0f0f0;
 }
 
 .request-button-control > button {
@@ -29,6 +79,10 @@
 }
 .request-button-control > button > i.icon {
     font-size: 120%;
+}
+
+#requests-block {
+    flex-grow: 1;
 }
 
 .fields input,

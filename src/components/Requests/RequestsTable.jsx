@@ -284,7 +284,7 @@ const RequestsTable = props => {
     }
 
     if (loading)
-        return <div className="text-center my-4"><Loader active inline indeterminate /></div>
+        return <div className="text-center my-4 w-100"><Loader active inline indeterminate /></div>
 
     if (error) {
         return <div className="my-4 mx-auto w-100" style={{ maxWidth: "550px" }}>
