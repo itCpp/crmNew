@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "./../../utils/axios-header";
 
-import { Icon, Button, Modal, Header } from "semantic-ui-react";
+import { Icon, Button, Modal, Header, Select } from "semantic-ui-react";
 
 const RequestPinChange = props => {
 
@@ -14,16 +14,27 @@ const RequestPinChange = props => {
 
     const [select, setSelect] = React.useState(false);
 
+    const [addrs, setAddrs] = React.useState([]);
+    const [addr, setAddr] = React.useState(null);
+
+    const [errors, setErrors] = React.useState({});
+
     React.useEffect(() => {
 
         if (open) {
 
             setLoad(true);
             setSelect(false);
+            setErrors({});
 
             axios.post('requests/changePinShow', { id: row.id }).then(({ data }) => {
+
                 setPins(data.pins);
                 setClear(data.clear);
+
+                setAddrs(data.offices);
+                setAddr(data.address);
+
             }).catch(error => {
                 axios.toast(error, { time: 6000 });
                 setOpen(false);
@@ -41,12 +52,15 @@ const RequestPinChange = props => {
 
             axios.post('requests/setPin', {
                 id: row.id,
-                user: select
+                user: select,
+                addr,
             }).then(({ data }) => {
                 props.updateRequestRow(data.request);
                 setOpen(false);
+                setErrors({});
             }).catch(error => {
                 axios.toast(error, { time: 6000 });
+                setErrors(axios.getErrors(error));
             }).then(() => {
                 setSelect(false);
             });
@@ -79,7 +93,26 @@ const RequestPinChange = props => {
                 <span>{row.pin ? "Сменить оператора" : "Назначить оператора"}</span>
             </Header>
 
-            <Modal.Content className="text-center">
+            <Modal.Content className="text-center pt-0">
+
+                <div>
+                    <Select
+                        basic
+                        options={[{ name: "Не указан", id: null }, ...addrs].map(item => ({
+                            key: item.id,
+                            text: item.name,
+                            value: item.id,
+                            disabled: item.active === 0 ? true : false,
+                            onClick: () => setAddr(item.id),
+                        }))}
+                        placeholder="Укажите адрес"
+                        className="mb-3"
+                        value={addr}
+                        disabled={select !== false ? true : false}
+                        error={errors.addr ? true : false}
+                    />
+                </div>
+
                 {pins.length
                     ? pins.map(row => <div key={row.pin} title={row.title || null} className="d-inline-block">
                         <Button

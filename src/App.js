@@ -26,7 +26,7 @@ function App(props) {
 
         }).catch(error => {
 
-            if (error?.response.status === 401)
+            if (error?.response?.status === 401)
                 setLogin(false);
 
         }).then(() => {
