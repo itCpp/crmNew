@@ -189,3 +189,10 @@
 .dropdown-change-sector.loading > .divider {
     margin-right: 8px;
 }
+
+.request-row {
+    font-size: 90%;
+}
+.request-row:hover {
+    background: #fafcff;
+}

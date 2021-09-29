@@ -84,7 +84,7 @@ instance.getErrors = error => error?.response?.data?.errors || {}
 
 /**
  * Всплывающее уведомление с ошибкой
- * @param {object|string} error Объект ошибки ответа или текст сообщения
+ * @param {object|string|null} error Объект ошибки ответа или текст сообщения
  * @param {object} options
  * @param {null|function} onClose
  * @param {null|function} onClick
@@ -93,12 +93,18 @@ instance.getErrors = error => error?.response?.data?.errors || {}
  */
 instance.toast = (error, options = {}, onClose = null, onClick = null, onDismiss = null) => {
 
-    if (typeof error != "string")
+    if (error && typeof error != "string")
         error = instance.getError(error);
 
     options.type = options.type || "error";
+
+    if (!options.title) {
+        if (options.type == "success")
+            options.title = "Выполнено";
+    }
+
     options.title = options.title || "Ошибка";
-    options.description = options.description || <p>{error}</p>;
+    options.description = options.description || error;
     options.time = options.time || 0;
     options.animation = options.animation || "fly right";
 

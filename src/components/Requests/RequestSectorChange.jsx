@@ -75,6 +75,7 @@ const RequestSectorChange = props => {
                                                             content={`${sector.free || 0}/${sector.online || 0}`}
                                                             title="Свободные операторы / Всего в системе"
                                                             size="mini"
+                                                            style={{ minWidth: "auto" }}
                                                         />
                                                         <Label
                                                             color="orange"
@@ -82,7 +83,7 @@ const RequestSectorChange = props => {
                                                             title="Количество заявок сегодня"
                                                             content={sector.requests || 0}
                                                             size="mini"
-                                                            style={{ margin: 0 }}
+                                                            style={{ margin: 0, minWidth: "auto" }}
                                                         />
                                                     </div>
                                                 </Dropdown.Item>

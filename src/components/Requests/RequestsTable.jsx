@@ -17,6 +17,7 @@ import RequestEdit from "./RequestEdit";
 import RequestEditCell from "./RequestEditCell";
 import RequestPinChange from "./RequestPinChange";
 import RequestSectorChange from "./RequestSectorChange";
+import RequestAdd from "./RequestAdd";
 
 const RequestsTableRow = props => {
 
@@ -65,23 +66,23 @@ const RequestsTableRow = props => {
 
         <Table.Cell>
 
-            {row.date_uplift ? <div title="Дата последнего обращения" className="d-flex justify-content-center">
-                <Icon name="level up" />
+            {row.date_uplift ? <div title="Дата последнего обращения" className="d-flex justify-content-start">
+                <span><Icon name="level up" /></span>
                 <span>{row.date_uplift}</span>
             </div> : null}
 
-            <div title="Дата поступления" className="d-flex justify-content-center">
-                <Icon name="plus" />
+            <div title="Дата поступления" className="d-flex justify-content-start">
+                <span><Icon name="plus" /></span>
                 <span>{row.date_create}</span>
             </div>
 
-            {row.date_event ? <div title="Дата записи, или прихода" className="d-flex justify-content-center">
-                <Icon name="clock" />
+            {row.date_event ? <div title="Дата записи, или прихода" className="d-flex justify-content-start">
+                <span><Icon name="clock" /></span>
                 <span>{row.date_event}</span>
             </div> : null}
 
-            {row.office?.id ? <div title={`Офис ${row.office.name}`} className="d-flex justify-content-center">
-                <Icon name="map marker alternate" />
+            {row.office?.id ? <div title={`Офис ${row.office.name}`} className="d-flex justify-content-start">
+                <span><Icon name="map marker alternate" /></span>
                 <span>{row.office.name}</span>
             </div> : null}
 
@@ -184,16 +185,23 @@ const RequestsTableRow = props => {
 
 const RequestsTable = props => {
 
-    const { user, permits, select } = props;
+    const { user, select } = props;
     const { selectedUpdate, selectedUpdateTab } = props;
     const { requests, setRequests } = props;
 
-    const [loading, setLoading] = React.useState(false);
+    const [loading, setLoading] = React.useState(true);
     const [load, setLoad] = React.useState(true);
 
     const [error, setError] = React.useState(null);
     const [edit, setEdit] = React.useState(null);
     const [editCell, setEditCell] = React.useState(null);
+    const [permits, setPermits] = React.useState({});
+
+    const [add, setAdd] = React.useState(false);
+
+    React.useEffect(() => {
+        selectedUpdateTab(true);
+    }, []);
 
     React.useEffect(() => {
 
@@ -215,6 +223,7 @@ const RequestsTable = props => {
         }).then(({ data }) => {
 
             setError(null);
+            setPermits(data.permits);
 
             if (data.page > 1)
                 setRequests([...requests, data.requests]);
@@ -297,14 +306,35 @@ const RequestsTable = props => {
 
     return <div className="px-3" id="requests-block">
 
-        <div className="page-title-box">
-            <h4 className="page-title">Заявки</h4>
+        <div className="d-flex justify-content-between align-items-center">
+            <div className="page-title-box">
+                <h4 className="page-title">Заявки</h4>
+            </div>
+            {permits.requests_add
+                ? <>
+                    <Button
+                        icon="plus"
+                        color="green"
+                        circular
+                        title="Создать заявку"
+                        basic
+                        onClick={() => setAdd(true)}
+                    />
+                    {add
+                        ? <RequestAdd {...props} permits={permits} setOpen={setAdd} />
+                        : null
+                    }
+                </>
+                : null
+            }
         </div>
 
         {edit
             ? <RequestEdit {...props} row={edit} setOpen={setEdit} />
             : null
         }
+
+
 
         <Grid columns={1}>
 
@@ -356,7 +386,7 @@ const RequestsTable = props => {
                 </Grid.Column>
 
             </Grid.Row>
-            
+
         </Grid >
 
 
