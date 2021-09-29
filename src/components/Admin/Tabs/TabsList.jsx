@@ -1,40 +1,80 @@
-import { Header, Message, Loader, Table, Icon } from "semantic-ui-react";
+import React from 'react';
+import axios from "./../../../utils/axios-header";
+import {
+    sortableContainer,
+    sortableElement,
+    sortableHandle,
+    arrayMove
+} from 'react-sortable-hoc';
+
+import { Message, Loader, Dimmer, Icon, List } from "semantic-ui-react";
+
+const DragHandle = sortableHandle(() => <Icon name="move" className="button-icon" />);
+
+const SortableItem = sortableElement(({ tab, pushUrl }) => (
+    <List.Item className="tabs-list-hover">
+        <div className="d-flex justify-content-between align-items-center py-2 px-3">
+            <List.Content>
+                <DragHandle />
+                <span>{tab.name}</span>
+            </List.Content>
+            <List.Content>
+                <Icon
+                    name="edit outline"
+                    className="button-icon"
+                    title="Настройка статуса"
+                    onClick={() => pushUrl(`/admin/tabs/${tab.id}`)}
+                />
+            </List.Content>
+        </div>
+
+    </List.Item>
+));
+
+const SortableContainer = sortableContainer(({ children }) => {
+    return <List celled>{children}</List>;
+});
 
 function TabsList(props) {
 
-    const { tabs, pushUrl } = props;
+    const { tabs, setTabs } = props;
+    const [load, setLoad] = React.useState(false);
+
+    const onSortEnd = ({ oldIndex, newIndex }) => {
+
+        setLoad(true);
+
+        let newTabs = arrayMove(tabs, oldIndex, newIndex);
+
+        axios.post('dev/tabsPosition', newTabs.map((tab, i) => ({
+            id: tab.id, position: i,
+        }))).then(() => {
+            setTabs(newTabs);
+        }).catch(error => {
+            axios.toast(error);
+        }).then(() => {
+            setLoad(false);
+        });
+    }
 
     if (!tabs.length)
         return <Message info content="Создайте первую вкладку" />
 
-    return <div className="admin-content-segment">
+    return <div className="d-flex justify-content-start align-items-start flex-segments">
 
-        <Table basic="very" className="mt-3" compact>
+        <div className="admin-content-segment pt-4 position-relative">
 
-            <Table.Header>
-                <Table.Row textAlign="center">
-                    <Table.HeaderCell>#id</Table.HeaderCell>
-                    <Table.HeaderCell title="Наименование вкладки">Вкладка</Table.HeaderCell>
-                    <Table.HeaderCell />
-                </Table.Row>
-            </Table.Header>
+            <SortableContainer onSortEnd={onSortEnd} useDragHandle lockAxis="y" helperClass="tab-list-move">
+                {tabs.map((tab, index) => (
+                    <SortableItem key={tab.id} index={index} tab={tab} {...props} />
+                ))}
+            </SortableContainer>
 
-            <Table.Body>
-                {tabs.map(tab => <Table.Row key={tab.id} textAlign="center" verticalAlign="top">
-                    <Table.Cell>{tab.id}</Table.Cell>
-                    <Table.Cell>{tab.name}</Table.Cell>
-                    <Table.Cell className="cell-icons">
-                        <Icon
-                            name="edit outline"
-                            className="button-icon"
-                            title="Настройка статуса"
-                            onClick={() => pushUrl(`/admin/tabs/${tab.id}`)}
-                        />
-                    </Table.Cell>
-                </Table.Row>)}
-            </Table.Body>
+            <Dimmer active={load} inverted>
+                <Loader inverted />
+            </Dimmer>
 
-        </Table>
+        </div>
 
     </div>
 

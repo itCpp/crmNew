@@ -105,7 +105,7 @@ instance.toast = (error, options = {}, onClose = null, onClick = null, onDismiss
 
     options.title = options.title || "Ошибка";
     options.description = options.description || error;
-    options.time = options.time || 0;
+    options.time = options.time || 5000;
     options.animation = options.animation || "fly right";
 
     toast(options);

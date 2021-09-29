@@ -20,6 +20,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.2",
     "react-semantic-toasts": "^0.6.5",
+    "react-sortable-hoc": "^2.0.0",
     "react-string-replace": "^0.4.4",
     "redux": "^4.0.5",
     "semantic-ui-css": "^2.4.1",
