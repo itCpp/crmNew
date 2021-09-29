@@ -22,7 +22,7 @@ function StatusForm(props) {
 
     }
 
-    React.useEffect(() => console.log(formdata), [formdata]);
+    // React.useEffect(() => console.log(formdata), [formdata]);
 
     return <Form loading={load}>
 

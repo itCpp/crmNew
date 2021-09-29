@@ -39,7 +39,7 @@ const CreateTab = props => {
             axios.post('dev/createTab', formdata).then(({ data }) => {
 
                 if (typeof setTabs == "function")
-                    setTabs([data.tab, ...tabs]);
+                    setTabs([...tabs, data.tab]);
 
                 setOpen(false);
 
