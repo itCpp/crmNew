@@ -9,9 +9,9 @@ function Header(props) {
 
     const { user, permits } = props;
 
-    return <div className="header-menu border-bottom" id="header-menu">
+    return <div className="header-menu" id="header-menu">
 
-        <div className="d-flex justify-content-between align-items-center">
+        <div className="d-flex justify-content-between align-items-center h-100">
 
             <div>
 

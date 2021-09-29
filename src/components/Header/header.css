@@ -4,8 +4,12 @@
 }
 
 .header-menu {
+    position: sticky;
+    top: 0;
+    min-height: 50px;
     padding: .5rem 1rem;
     background: #ffffff;
+    border-bottom: 1px solid var(--border-admin-segment);
     z-index: 100;
 }
 

@@ -69,13 +69,18 @@ function Requests(props) {
         </div >
     }
 
-    return <div className="d-flex h-100">
+    return <div className="d-flex" style={{ flexGrow: 1 }}>
+
+        <div className="bg-request-main-menu"></div>
 
         <div className="request-main-menu">
-            <RequestsTabs {...props} openSubMenu={openSubMenu} selectMenu={selectMenu} />
+            <div className="nav-bar">
+                <RequestsTabs {...props} openSubMenu={openSubMenu} selectMenu={selectMenu} />
+            </div>
         </div>
 
         <RequestsTable />
+
     </div>
 
 }

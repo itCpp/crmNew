@@ -334,8 +334,6 @@ const RequestsTable = props => {
             : null
         }
 
-
-
         <Grid columns={1}>
 
             <Grid.Row>
@@ -371,7 +369,7 @@ const RequestsTable = props => {
                                     />)
                                     : <Table.Row>
                                         <Table.Cell colSpan={document.querySelectorAll('#requests-header-row > *').length}>
-                                            <div className="text-center my-5 text-muted" style={{ opacity: 0.5 }}>
+                                            <div className="text-center mt-5 mb-4 text-muted" style={{ opacity: 0.5 }}>
                                                 <strong>Данных нет</strong>
                                             </div>
                                         </Table.Cell>

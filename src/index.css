@@ -1,5 +1,6 @@
 * {
   --border-color: #dededf;
+  --width-main-menu: 230px;
 }
 
 body {
@@ -78,13 +79,10 @@ hr {
   width: 400px;
 }
 
-
-
 .block-card {
   border: none;
   -webkit-box-shadow: 0 0 35px 0 rgb(154 161 171 / 15%);
   box-shadow: 0 0 35px 0 rgb(154 161 171 / 15%);
-  margin-bottom: 24px;
 }
 .block-card {
   position: relative;

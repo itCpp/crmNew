@@ -1,5 +1,7 @@
 #root, #sub-root {
     height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 .request-main-menu {
@@ -9,10 +11,25 @@
     align-content: stretch;
     flex-wrap: wrap;
     width: 100%;
-    max-width: 230px;
+    min-height: 100%;
+    max-width: var(--width-main-menu);
     padding: .25rem;
-    background: #313a46;
     /* border-right: 1px solid var(--border-admin-segment); */
+}
+
+.request-main-menu .nav-bar {
+    position: sticky;
+    top: 53px;
+}
+
+.bg-request-main-menu {
+    background: #313a46;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: var(--width-main-menu);
 }
 
 .menu-list-row {
