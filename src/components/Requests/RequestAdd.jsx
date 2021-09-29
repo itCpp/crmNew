@@ -44,7 +44,6 @@ const RequestAdd = props => {
                 key: row.id,
                 text: row.name || `Источник №${row.id}`,
                 value: row.id,
-                onClick: () => changeData("source", row.id),
             })));
 
         }).catch(error => {
@@ -78,10 +77,12 @@ const RequestAdd = props => {
                     </p>
                 });
 
+                setOpen(null);
+
             }).catch(error => {
                 let errors = axios.getErrors(error);
                 setErrors(errors);
-                axios.toast(error, { time: 20000 });
+                axios.toast(error, { time: 5000 });
             }).then(() => {
                 setLoading(false);
             });
@@ -159,15 +160,19 @@ const RequestAdd = props => {
                     error={errors.client_name ? true : false}
                 />
 
-                <Form.Select
-                    label="Источник"
-                    placeholder="Выберите источник"
-                    options={sources}
-                    name="source"
-                    value={formdata.source || ""}
-                    error={errors.source ? true : false}
-                    required
-                />
+                <Form.Field required>
+                    <label>Источник</label>
+                    <Dropdown
+                        placeholder="Выберите источник"
+                        search={caseSensitiveSearch}
+                        selection
+                        options={sources}
+                        name="source"
+                        value={formdata.source || ""}
+                        onChange={(e, { name, value }) => changeData(name, value)}
+                        error={errors.source ? true : false}
+                    />
+                </Form.Field>
 
                 <Form.Group>
 
