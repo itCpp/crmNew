@@ -5,7 +5,7 @@ import { Input, Button, Icon } from 'semantic-ui-react';
 
 function AuthSecret(props) {
 
-    const { setError, loginDone } = props;
+    const { setError, loginDone, authCansel } = props;
 
     const [password, setPassword] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
@@ -66,6 +66,15 @@ function AuthSecret(props) {
             disabled={!password || loading}
             loading={loading}
             onClick={() => setSend(true)}
+        />
+
+        <Button
+            fluid
+            className="mt-1"
+            content="Отмена"
+            basic
+            disabled={loading}
+            onClick={() => authCansel(null)}
         />
     </>
 

@@ -64,7 +64,7 @@ export default withRouter(function UserRow(props) {
                     icon="edit"
                     primary
                     onClick={() => {
-                        props.setUser(user);
+                        props.setUser(user.id);
                         props.history.replace(`/admin/users?id=${user.id}`);
                     }}
                     size="mini"

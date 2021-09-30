@@ -9,19 +9,21 @@ import { Input, Button } from 'semantic-ui-react';
 import './auth.css';
 
 import AuthSecret from './AuthSecret';
+import AuthAdmin from './AuthAdmin';
 
 function Auth(props) {
 
     const { setLogin, setUserData, setUserPermits } = props;
 
-    const [loginName, setLoginName] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
     const [send, setSend] = React.useState(false);
     const [error, setError] = React.useState(false);
 
+    const [loginName, setLoginName] = React.useState(null);
     const [userId, setUserId] = React.useState(null);
     const [userName, setUserName] = React.useState(null);
     const [userAuthType, setUserAuthType] = React.useState(null);
+    const [authQueryId, setAuthQueryId] = React.useState(null);
 
     const loginDone = data => {
 
@@ -52,6 +54,7 @@ function Auth(props) {
                 setUserName(data.name);
                 setUserAuthType(data.auth_type);
                 setError(false);
+                setAuthQueryId(data.query_id);
             }).catch(error => {
                 setError(axios.getError(error));
             }).then(() => {
@@ -63,6 +66,13 @@ function Auth(props) {
         return setSend(false);
 
     }, [send]);
+
+    const authCansel = () => {
+        setLoginName(null);
+        setUserId(null);
+        setUserName(null);
+        setUserAuthType(null);
+    }
 
     let body = <>
         <Input
@@ -86,7 +96,7 @@ function Auth(props) {
         />
     </>
 
-    if (userAuthType === "secret")
+    if (userAuthType === "secret") {
         body = <AuthSecret
             loginDone={loginDone}
             setLogin={setLogin}
@@ -94,7 +104,39 @@ function Auth(props) {
             userId={userId}
             loginName={loginName}
             setError={setError}
+            authCansel={authCansel}
         />
+    }
+    else if (userAuthType === "admin") {
+        body = <AuthAdmin
+            loginDone={loginDone}
+            setLogin={setLogin}
+            userName={userName}
+            userId={userId}
+            authQueryId={authQueryId}
+            loginName={loginName}
+            setError={setError}
+            authCansel={authCansel}
+        />
+    }
+    else if (userAuthType !== null) {
+        body = <>
+
+            <div className="mb-2 px-1">Здравствуйте, {userName}!</div>
+
+            <div className="text-danger px-1">К сожалению, тип авторизации для Вашей учетной записи не определен, сообщите об этом администратору</div>
+
+            <Button
+                fluid
+                className="mt-3"
+                content="Отмена"
+                basic
+                disabled={loading}
+                onClick={authCansel}
+            />
+
+        </>
+    }
 
     return <div className="auth-bg">
 

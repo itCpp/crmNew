@@ -81,7 +81,7 @@ function User(props) {
             setOptionsSectors(data.sectors);
             setSector(null);
 
-            if (!user.id) {
+            if (!user) {
                 setPin(data.pin);
             }
 
@@ -97,7 +97,7 @@ function User(props) {
 
     React.useEffect(() => {
 
-        axios.post('admin/getAddUserData', user).then(({ data }) => {
+        axios.post('admin/getAddUserData', { id: user }).then(({ data }) => {
 
             setGError(false);
 
@@ -170,7 +170,7 @@ function User(props) {
 
                 if (request.id) {
                     list.forEach((row, i) => {
-                        if (row.id === data.user.id)
+                        if (row.id === data.user)
                             list[i] = data.user;
                     });
                 }
@@ -206,7 +206,7 @@ function User(props) {
         closeIcon
         size="small"
     >
-        <Modal.Header>{user.id ? "Изменить данные" : "Добавить сотрудника"}</Modal.Header>
+        <Modal.Header>{user ? "Изменить данные" : "Добавить сотрудника"}</Modal.Header>
 
         <Modal.Content>
 
@@ -360,7 +360,7 @@ function User(props) {
             </div>
             <Button
                 onClick={() => setSave(true)}
-                content={user.id ? "Изменить" : "Добавить"}
+                content={user ? "Изменить" : "Добавить"}
                 color="green"
                 disabled={loading || gError ? true : false}
             />
