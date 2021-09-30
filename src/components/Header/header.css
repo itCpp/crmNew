@@ -1,6 +1,9 @@
 .header-title {
     font-weight: 700;
     margin-right: 1rem;
+    font-size: 150%;
+    line-height: 150%;
+    margin-top: 2px;
 }
 
 .header-menu {
@@ -70,9 +73,15 @@
     line-height: 50px;
 }
 
-.btn-header:hover { background: var(--border-admin-segment); }
-.btn-header:active { opacity: .8; }
+.header-nav-btn .icon {
+    opacity: .5;
+}
+.header-nav-btn.active .icon {
+    color: #3b81dc;
+    opacity: 1;
+}
+
+.btn-header:hover { background: #f0f2ff; }
 
 .btn-header.btn-header-danger { color: #631717; background: #ffe0e0; }
 .btn-header.btn-header-danger:hover { color: #631717; background: #ffd0d0; }
-.btn-header.btn-header-danger:active { color: #631717; background: #ffd0d0; }

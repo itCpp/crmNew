@@ -23,24 +23,22 @@ function Header(props) {
 
         <div className="d-flex justify-content-between align-items-center h-100">
 
-            <div>
+            <div className="d-flex align-items-center">
 
-                <b className="header-title">CRM MKA</b>
-
-                <NavLink exact to="/" className="header-menu-link text-primary" title="Главная страница">
-                    <Icon name="home" className="header-menu-icon" />
-                </NavLink>
-
-                {permits.admin_access
-                    ? <NavLink to="/admin" className="header-menu-link text-danger" title="Админ-панель">
-                        <Icon name="setting" className="header-menu-icon" />
-                    </NavLink>
-                    : null
-                }
+                <NavLink exact to="/" title="Главная страница" className="header-title">CRM MKA</NavLink>
 
             </div>
 
             <div className="header-rows">
+
+                {permits.admin_access
+                    ? <NavLink to="/admin" title="Админ-панель" className="header-nav-btn">
+                        <ButtonHeader
+                            icon="setting"
+                        />
+                    </NavLink>
+                    : null
+                }
 
                 {mode ?
                     <span>
@@ -52,7 +50,8 @@ function Header(props) {
                     </span>
                     : null
                 }
-                <strong>{user.pin}{' '}</strong>
+
+                <strong>{user.pin}{user.old_pin ? ` (${user.old_pin})` : ' '}</strong>
                 <span>{user.name_fio}</span>
 
                 {mode ?

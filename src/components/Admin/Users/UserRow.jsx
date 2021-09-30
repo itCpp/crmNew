@@ -79,7 +79,7 @@ export default withRouter(function UserRow(props) {
                     }}
                     loading={blockLoad === user.id ? true : false}
                     size="mini"
-                    basic
+                    basic={user.deleted_at ? false : true}
                 />
                 <Button
                     icon="list"

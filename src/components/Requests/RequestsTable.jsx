@@ -99,8 +99,16 @@ const RequestsTableRow = props => {
 
         <Table.Cell>
 
-            {row.client_name ? <div>{row.client_name}</div> : null}
-            {row.region ? <div>{row.region}</div> : null}
+            {row.client_name ? <div title="ФИО клиента" className="d-flex justify-content-start">
+                <span><Icon name="user" /></span>
+                <span>{row.client_name}</span>
+            </div> : null}
+
+            {row.region ? <div title="Город" className="d-flex justify-content-start">
+                <span><Icon name="world" /></span>
+                <span>{row.region}</span>
+            </div> : null}
+
             {row.clients.map(client => <div key={`client_${row.id}_${client.id}`}>
                 <div>{client.phone}</div>
             </div>)}

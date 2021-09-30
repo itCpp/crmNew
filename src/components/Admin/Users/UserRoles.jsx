@@ -216,7 +216,7 @@ function User(props) {
                     : roles.map(role => <div key={`role_${role.role}`} className={`d-flex justify-content-between align-items-center row-rights ${errors.indexOf(`role_${role.role}`) >= 0 ? "row-rights-error" : ""}`}>
                         <Header
                             as="h4"
-                            content={role.role}
+                            content={role.name || role.role}
                             subheader={role.comment}
                             className="mt-0 mb-0"
                             color={errors.indexOf(`role_${role.role}`) >= 0 ? "red" : "black"}
