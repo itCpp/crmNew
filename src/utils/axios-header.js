@@ -20,6 +20,11 @@ instance.interceptors.request.use(function (config) {
     config.headers.Authorization = token ? token : null;
     config.headers['X-Requested-Version'] = process.env.REACT_APP_VERSION || null;
 
+    let godMode = localStorage.getItem('god-mode-id');
+
+    if (godMode)
+        config.headers['X-God-Mode'] = godMode;
+
     return config;
 
 });

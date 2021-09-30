@@ -2,6 +2,8 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from './../../../utils/axios-header';
 
+// import { connect } from 'react-redux';
+
 import { Header, Button, Input, Message } from 'semantic-ui-react';
 
 import './users.css';
@@ -93,8 +95,14 @@ function Users(props) {
 
     }, [block]);
 
+    const setGodMode = id => {
+        localStorage.setItem('god-mode-id', id);
+        window.location.href = "/";
+    }
+
     const list = users.length
         ? users.map(row => <UserRow
+            {...props}
             key={row.id}
             user={row}
             setUser={setUser}
@@ -102,6 +110,7 @@ function Users(props) {
             blockLoad={blockLoad}
             search={search}
             setRoles={setRolesSetting}
+            setGodMode={setGodMode}
         />)
         : search && !loading
             ? <Message visible>Ничего не найдено</Message>
@@ -173,4 +182,4 @@ function Users(props) {
 
 }
 
-export default withRouter(Users)
+export default withRouter(Users);

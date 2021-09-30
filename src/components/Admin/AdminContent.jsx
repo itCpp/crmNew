@@ -23,7 +23,7 @@ function AdminContent(props) {
     else if (page == "permits" && permits.dev_permits)
         body = <Permits />
     else if (page == "users" && permits.admin_users)
-        body = <Users />
+        body = <Users {...props} />
     else if (page == "callcenters" && permits.admin_callcenters)
         body = <Callcenters />
     else if (page == "sources" && permits.admin_sources)

@@ -27,6 +27,7 @@ export default withRouter(function UserRow(props) {
     const { user, search } = props;
     const { setBlock, blockLoad } = props;
     const { setRoles } = props;
+    const { permits, setGodMode } = props;
 
     if (search) {
         user.login = <ReplaceRow string={user.login} search={search} />
@@ -59,33 +60,48 @@ export default withRouter(function UserRow(props) {
 
         <div className="d-flex align-items-center justify-content-between mt-3">
             <div className="cell-icons">
-                <Button.Group size="tiny">
-                    <Button
-                        icon="edit"
-                        primary
-                        onClick={() => {
-                            props.setUser(user);
-                            props.history.replace(`/admin/users?id=${user.id}`);
-                        }}
+                <Button
+                    icon="edit"
+                    primary
+                    onClick={() => {
+                        props.setUser(user);
+                        props.history.replace(`/admin/users?id=${user.id}`);
+                    }}
+                    size="mini"
+                    basic
+                />
+                <Button
+                    icon={user.deleted_at ? "lock" : "unlock"}
+                    title={user.deleted_at ? "Разблокировать" : "Заблокировать"}
+                    color={user.deleted_at ? "red" : "green"}
+                    onClick={() => {
+                        setBlock(user.id);
+                    }}
+                    loading={blockLoad === user.id ? true : false}
+                    size="mini"
+                    basic
+                />
+                <Button
+                    icon="list"
+                    color="instagram"
+                    title="Роли и разрешения пользователя"
+                    onClick={() => {
+                        setRoles(user);
+                    }}
+                    size="mini"
+                    basic
+                />
+                {permits.god_mode
+                    ? <Button
+                        icon="user secret"
+                        color="orange"
+                        title="God mode"
+                        onClick={() => setGodMode(user.id)}
+                        size="mini"
+                        basic
                     />
-                    <Button
-                        icon={user.deleted_at ? "lock" : "unlock"}
-                        title={user.deleted_at ? "Разблокировать" : "Заблокировать"}
-                        color={user.deleted_at ? "red" : "green"}
-                        onClick={() => {
-                            setBlock(user.id);
-                        }}
-                        loading={blockLoad === user.id ? true : false}
-                    />
-                    <Button
-                        icon="list"
-                        color="instagram"
-                        title="Роли и разрешения пользователя"
-                        onClick={() => {
-                            setRoles(user);
-                        }}
-                    />
-                </Button.Group>
+                    : null
+                }
             </div>
             <div><small>Создан {user.date}</small></div>
         </div>

@@ -1,13 +1,23 @@
+import React from "react";
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { Icon } from 'semantic-ui-react';
+
+import ButtonHeader from "./ButtonHeader";
 
 import './header.css';
 
 function Header(props) {
 
     const { user, permits } = props;
+    const [mode, setMode] = React.useState(localStorage.getItem('god-mode-id'));
+
+    const godModeOff = () => {
+        setMode(true);
+        localStorage.removeItem('god-mode-id');
+        window.location.reload();
+    }
 
     return <div className="header-menu" id="header-menu">
 
@@ -30,10 +40,31 @@ function Header(props) {
 
             </div>
 
-            <div>
+            <div className="header-rows">
 
+                {mode ?
+                    <span>
+                        <Icon
+                            name="secret user"
+                            className="text-primary"
+                            title="Имитация пользователя"
+                        />
+                    </span>
+                    : null
+                }
                 <strong>{user.pin}{' '}</strong>
                 <span>{user.name_fio}</span>
+
+                {mode ?
+                    <ButtonHeader
+                        icon="close"
+                        className="btn-header-danger"
+                        title="Отключить имитацию пользователя"
+                        onClick={godModeOff}
+                        loading={mode === true ? true : false}
+                    />
+                    : null
+                }
 
             </div>
 
