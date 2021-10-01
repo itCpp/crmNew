@@ -50,5 +50,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "laravel-echo": "^1.11.2",
+    "socket.io-client": "^2.4.0"
   }
 }

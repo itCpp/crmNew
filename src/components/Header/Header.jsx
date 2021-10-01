@@ -1,10 +1,12 @@
 import React from "react";
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { setAuthQueriesCount, changeAuthQueriesCount } from "./../../store/actions";
 
 import { Icon } from 'semantic-ui-react';
 
 import ButtonHeader from "./ButtonHeader";
+import AuthQueries from "./../Auth/AuthQueries";
 
 import './header.css';
 
@@ -30,6 +32,11 @@ function Header(props) {
             </div>
 
             <div className="header-rows">
+
+                {permits.user_auth_query
+                    ? <AuthQueries {...props} />
+                    : null
+                }
 
                 {permits.admin_access
                     ? <NavLink to="/admin" title="Админ-панель" className="header-nav-btn">
@@ -77,6 +84,11 @@ function Header(props) {
 const mapStateToProps = state => ({
     user: state.main.userData,
     permits: state.main.userPermits,
+    count: state.main.authQueries
 });
 
-export default connect(mapStateToProps)(Header);
+const mapActions = {
+    changeAuthQueriesCount, setAuthQueriesCount
+}
+
+export default connect(mapStateToProps, mapActions)(Header);

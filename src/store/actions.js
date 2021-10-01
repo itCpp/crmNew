@@ -15,3 +15,15 @@ export const setUserPermits = content => ({
     type: SET_USER_PERMITS,
     payload: content
 });
+
+export const SET_AUTH_QUERIES = "SET_AUTH_QUERIES";
+export const setAuthQueriesCount = content => ({
+    type: SET_AUTH_QUERIES,
+    payload: content
+});
+
+export const CHANGE_AUTH_QUERIES = "CHANGE_AUTH_QUERIES";
+export const changeAuthQueriesCount = content => ({
+    type: CHANGE_AUTH_QUERIES,
+    payload: content
+});

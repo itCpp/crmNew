@@ -61,6 +61,7 @@
     justify-content: center;
     align-items: center;
     width: 50px;
+    margin: 0 !important;
 }
 .btn-header {
     position: absolute;
@@ -85,3 +86,9 @@
 
 .btn-header.btn-header-danger { color: #631717; background: #ffe0e0; }
 .btn-header.btn-header-danger:hover { color: #631717; background: #ffd0d0; }
+
+.btn-header > .label {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+}

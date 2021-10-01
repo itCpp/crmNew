@@ -24,6 +24,7 @@ function Auth(props) {
     const [userName, setUserName] = React.useState(null);
     const [userAuthType, setUserAuthType] = React.useState(null);
     const [authQueryId, setAuthQueryId] = React.useState(null);
+    const [ip, setIp] = React.useState(null);
 
     const loginDone = data => {
 
@@ -55,6 +56,7 @@ function Auth(props) {
                 setUserAuthType(data.auth_type);
                 setError(false);
                 setAuthQueryId(data.query_id);
+                setIp(data.ip);
             }).catch(error => {
                 setError(axios.getError(error));
             }).then(() => {
@@ -117,6 +119,7 @@ function Auth(props) {
             loginName={loginName}
             setError={setError}
             authCansel={authCansel}
+            ip={ip}
         />
     }
     else if (userAuthType !== null) {

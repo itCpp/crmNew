@@ -17,6 +17,7 @@ export default combineReducers({
         login: false,
         userData: {},
         userPermits: {},
+        authQueries: 0,
     }, action) => {
 
         switch (action.type) {
@@ -29,6 +30,12 @@ export default combineReducers({
 
             case ACTION.SET_USER_PERMITS:
                 return { ...state, userPermits: action.payload }
+
+            case ACTION.SET_AUTH_QUERIES:
+                return { ...state, authQueries: action.payload }
+
+            case ACTION.CHANGE_AUTH_QUERIES:
+                return { ...state, authQueries: (state.authQueries + action.payload) }
 
             default:
                 return state;
