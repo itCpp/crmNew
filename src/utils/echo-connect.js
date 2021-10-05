@@ -19,3 +19,10 @@ const connectEcho = async user => {
 }
 
 export default connectEcho;
+
+export const updateToken = token => {
+
+    if (window.Echo)
+        window.Echo.options.auth.headers.Authorization = token;
+
+}

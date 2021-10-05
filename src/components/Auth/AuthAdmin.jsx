@@ -40,7 +40,6 @@ const AuthAdmin = props => {
             }).catch(error => {
                 setError(axios.getError(error));
                 authCansel();
-            }).then(() => {
                 setLoading(false);
             });
 

@@ -11,8 +11,6 @@ const opens = {
 
 const authQueryIncoming = (e, change, update, setOpen) => {
 
-    console.log({ e, change, opens, update });
-
     if (!e.cancel && !opens.modal) {
 
         axios.toast(null,

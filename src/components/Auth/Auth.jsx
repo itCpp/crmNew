@@ -3,6 +3,7 @@ import axios from './../../utils/axios-header';
 import { connect } from 'react-redux';
 import { setLogin, setUserData, setUserPermits } from './../../store/actions';
 import Cookies from 'js-cookie';
+import { updateToken } from "./../../utils/echo-connect";
 
 import { Input, Button } from 'semantic-ui-react';
 
@@ -38,6 +39,7 @@ function Auth(props) {
             domain: process.env.REACT_APP_COOKIE_DOMAIN || window.location.hostname,
         });
 
+        updateToken(data.token);
         localStorage.setItem(tokenKey, data.token);
 
     }

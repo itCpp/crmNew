@@ -1,9 +1,16 @@
 import React from "react";
+import axios from "./../../utils/axios-header";
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { setAuthQueriesCount, changeAuthQueriesCount } from "./../../store/actions";
+import {
+    setAuthQueriesCount,
+    changeAuthQueriesCount,
+    setLogin,
+    setUserData,
+    setUserPermits
+} from "./../../store/actions";
 
-import { Icon } from 'semantic-ui-react';
+import { Icon, Dropdown, Dimmer, Loader } from 'semantic-ui-react';
 
 import ButtonHeader from "./ButtonHeader";
 import AuthQueries from "./../Auth/AuthQueries";
@@ -13,7 +20,25 @@ import './header.css';
 function Header(props) {
 
     const { user, permits } = props;
+    const { setLogin, setUserData, setUserPermits } = props;
     const [mode, setMode] = React.useState(localStorage.getItem('god-mode-id'));
+
+    const [logout, setLogout] = React.useState(false);
+
+    React.useEffect(() => {
+
+        if (logout) {
+            axios.post('logout').then(() => {
+                setLogin(false);
+                setUserData({});
+                setUserPermits({});
+            }).catch(error => {
+                setLogout(false);
+                axios.toast(error)
+            });
+        }
+
+    }, [logout]);
 
     const godModeOff = () => {
         setMode(true);
@@ -58,8 +83,27 @@ function Header(props) {
                     : null
                 }
 
-                <strong>{user.pin}{user.old_pin ? ` (${user.old_pin})` : ' '}</strong>
-                <span>{user.name_fio}</span>
+                <div className="position-relative">
+
+                    <strong>{user.pin}{user.old_pin ? ` (${user.old_pin})` : ' '}</strong>
+
+                    <Dropdown text={user.name_fio} className="mt-1">
+                        <Dropdown.Menu>
+                            <Dropdown.Item
+                                icon="log out"
+                                text="Выход"
+                                disabled={logout}
+                                onClick={() => setLogout(true)}
+                            />
+                        </Dropdown.Menu>
+                    </Dropdown>
+
+                    <Dimmer active={logout} inverted>
+                        <Loader inverted size="small" />
+                    </Dimmer>
+                    
+                </div>
+
 
                 {mode ?
                     <ButtonHeader
@@ -88,7 +132,11 @@ const mapStateToProps = state => ({
 });
 
 const mapActions = {
-    changeAuthQueriesCount, setAuthQueriesCount
+    changeAuthQueriesCount,
+    setAuthQueriesCount,
+    setLogin,
+    setUserData,
+    setUserPermits
 }
 
 export default connect(mapStateToProps, mapActions)(Header);

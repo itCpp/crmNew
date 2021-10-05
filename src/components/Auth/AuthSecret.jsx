@@ -27,7 +27,6 @@ function AuthSecret(props) {
                 loginDone(data);
             }).catch(error => {
                 setError(axios.getError(error));
-            }).then(() => {
                 setLoading(false);
             });
 

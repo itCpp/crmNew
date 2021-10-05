@@ -12,7 +12,6 @@ import './App.css';
 
 import Routes from './components/Routes';
 
-
 function App(props) {
 
     const { login, setLogin, setUserData, setUserPermits } = props;
