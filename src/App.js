@@ -3,7 +3,15 @@ import axios from './utils/axios-header';
 import connectEcho from "./utils/echo-connect";
 
 import { connect } from 'react-redux';
-import { setLogin, setUserData, setUserPermits, setAuthQueriesCount } from './store/actions';
+import {
+    setLogin,
+    setUserData,
+    setUserPermits,
+    setAuthQueriesCount,
+    setUsersOnline,
+    userJoin,
+    userLeave,
+} from './store/actions';
 
 import { Loader } from 'semantic-ui-react';
 import { SemanticToastContainer } from 'react-semantic-toasts';
@@ -14,29 +22,62 @@ import Routes from './components/Routes';
 
 function App(props) {
 
-    const { login, setLogin, setUserData, setUserPermits } = props;
+    const { userData, setLogin, setUserData, setUserPermits } = props;
     const [loading, setLoading] = React.useState(true);
 
     React.useEffect(async () => {
 
-        axios.post('/check').then(({ data }) => {
+        await connectEcho();
+
+        await axios.post('/check').then(async ({ data }) => {
 
             setLogin(true);
             setUserData(data.user);
             setUserPermits(data.permits);
             props.setAuthQueriesCount(data.authQueries);
 
-        }).catch(error => {
+        }).catch(async error => {
 
             if (error?.response?.status === 401)
                 setLogin(false);
 
         }).then(async () => {
             setLoading(false);
-            await connectEcho();
         });
 
     }, []);
+
+    React.useEffect(() => {
+
+        if (userData?.id) {
+
+            window.userId = userData.id;
+
+            window.Echo.join(`App.Users`)
+                .here(props.setUsersOnline)
+                .joining(props.userJoin)
+                .leaving(props.userLeave);
+
+            window.Echo.private(`App.User.${window.userId}`);
+
+        }
+        else if (!userData?.id) {
+            window.Echo.leave(`App.Users`);
+        }
+        else if (!userData?.id && window.userId) {
+            window.Echo.leave(`App.User.${window.userId}`);
+        }
+
+        return () => {
+            
+            window.Echo.leave(`App.Users`);
+
+            if (window.userId)
+                window.Echo.leave(`App.User.${window.userId}`);
+
+        }
+
+    }, [userData]);
 
     if (loading) {
         return <div className="loading-page">
@@ -46,17 +87,24 @@ function App(props) {
 
     return <>
         <SemanticToastContainer position="bottom-left" />
-        <Routes login={login} />
+        <Routes {...props} />
     </>
 
 }
 
 const mapStateToProps = state => ({
     login: state.main.login,
+    userData: state.main.userData,
 });
 
 const mapDispatchToProps = {
-    setLogin, setUserData, setUserPermits, setAuthQueriesCount
+    setLogin,
+    setUserData,
+    setUserPermits,
+    setAuthQueriesCount,
+    setUsersOnline,
+    userJoin,
+    userLeave,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

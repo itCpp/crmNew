@@ -238,7 +238,7 @@ const AuthQueries = props => {
     return <>
 
         <ButtonHeader
-            icon="user circle"
+            icon="users"
             className="header-nav-btn"
             title={"Запрос авторизации"}
             label={props.count > 0 ? props.count : null}

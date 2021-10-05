@@ -27,3 +27,21 @@ export const changeAuthQueriesCount = content => ({
     type: CHANGE_AUTH_QUERIES,
     payload: content
 });
+
+export const USERS_ONLINE = "USERS_ONLINE";
+export const setUsersOnline = data => ({
+    type: USERS_ONLINE,
+    payload: data
+});
+
+export const USER_JOIN = "USER_JOIN";
+export const userJoin = data => ({
+    type: USER_JOIN,
+    payload: data
+});
+
+export const USER_LEAVE = "USER_LEAVE";
+export const userLeave = data => ({
+    type: USER_LEAVE,
+    payload: data
+});

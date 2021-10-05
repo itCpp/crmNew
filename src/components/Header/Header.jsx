@@ -87,8 +87,14 @@ function Header(props) {
 
                     <strong>{user.pin}{user.old_pin ? ` (${user.old_pin})` : ' '}</strong>
 
-                    <Dropdown text={user.name_fio} className="mt-1">
+                    <Dropdown text={user.name_fio} className="mt-1 header-hover-text" pointing="top right" direction="left">
                         <Dropdown.Menu>
+                            <Dropdown.Item
+                                icon="user"
+                                text="Мои данные"
+                                disabled={true}
+                            />
+                            <Dropdown.Divider className="my-0" />
                             <Dropdown.Item
                                 icon="log out"
                                 text="Выход"
@@ -101,9 +107,8 @@ function Header(props) {
                     <Dimmer active={logout} inverted>
                         <Loader inverted size="small" />
                     </Dimmer>
-                    
-                </div>
 
+                </div>
 
                 {mode ?
                     <ButtonHeader

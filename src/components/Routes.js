@@ -9,7 +9,9 @@ import Admin from './Admin/AdminMain';
 
 export default function Routes(props) {
 
-    if (!props.login)
+    const { login } = props;
+
+    if (!login)
         return <Auth />
 
     return <BrowserRouter>
@@ -39,7 +41,5 @@ export default function Routes(props) {
         </div>
 
     </BrowserRouter>
-
-
 
 }

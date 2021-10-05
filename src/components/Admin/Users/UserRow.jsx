@@ -39,10 +39,18 @@ export default withRouter(function UserRow(props) {
 
         <div className="d-flex align-items-center justify-content-between user-item-header mb-2">
             <div className="d-flex align-items-center">
+                {props.onlineId.indexOf(user.id) >= 0
+                    ? <span>
+                        <Icon name="circle" title="Онлайн" color="green" />
+                    </span>
+                    : null
+                }
                 <div className="user-pin">{user.pin}</div>
                 <div className="user-full-name">{user.name_full}</div>
             </div>
-            <div>{user.login}</div>
+            <div>
+                <span>{user.login}</span>
+            </div>
         </div>
 
         {user.roles.length

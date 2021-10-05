@@ -29,10 +29,6 @@ function Auth(props) {
 
     const loginDone = data => {
 
-        setLogin(true);
-        setUserData(data.user);
-        setUserPermits(data.permits);
-
         let tokenKey = process.env.REACT_APP_TOKEN_KEY || "token";
 
         Cookies.set(tokenKey, data.token, {
@@ -41,6 +37,10 @@ function Auth(props) {
 
         updateToken(data.token);
         localStorage.setItem(tokenKey, data.token);
+
+        setLogin(true);
+        setUserData(data.user);
+        setUserPermits(data.permits);
 
     }
 

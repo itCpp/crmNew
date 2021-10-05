@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from './../../../utils/axios-header';
 
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 
 import { Header, Button, Input, Message } from 'semantic-ui-react';
 
@@ -182,4 +182,8 @@ function Users(props) {
 
 }
 
-export default withRouter(Users);
+const mapStore = store => ({
+    onlineId: store.main.onlineId,
+})
+
+export default withRouter(connect(mapStore)(Users));

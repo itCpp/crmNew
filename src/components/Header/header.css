@@ -82,6 +82,11 @@
     opacity: 1;
 }
 
+.header-hover-text:hover {
+    cursor: pointer;
+    color: #3b81dc;
+}
+
 .btn-header:hover { background: #f0f2ff; }
 
 .btn-header.btn-header-danger { color: #631717; background: #ffe0e0; }

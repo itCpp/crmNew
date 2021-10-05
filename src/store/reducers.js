@@ -14,11 +14,16 @@ export default combineReducers({
     gates: gatesReducer,
     interface: interfaceReducer,
     main: (state = {
-        login: false,
-        userData: {},
-        userPermits: {},
-        authQueries: 0,
+        login: false, // Флаг авторизации
+        userData: {}, // Данные текущего пользователя
+        userPermits: {}, // Права текущего пользователя
+        authQueries: 0, // Количество запросов на авторизацию
+        online: [], // Список всех онлайн пользователей
+        onlineId: [], // Идентификаторы онлайн пользователей
     }, action) => {
+
+        let online = [],
+            onlineId = [];
 
         switch (action.type) {
 
@@ -36,6 +41,46 @@ export default combineReducers({
 
             case ACTION.CHANGE_AUTH_QUERIES:
                 return { ...state, authQueries: (state.authQueries + action.payload) }
+
+            /** Список онлайн и добавление нового пользователя */
+            case ACTION.USERS_ONLINE:
+            case ACTION.USER_JOIN:
+
+                online = [...state.online];
+                onlineId = [...state.onlineId];
+
+                if (action.payload?.id) {
+                    if (onlineId.indexOf(action.payload.id) < 0) {
+                        online.push(action.payload);
+                        onlineId.push(action.payload.id);
+                    }
+                }
+                else {
+                    action.payload.forEach(user => {
+                        if (onlineId.indexOf(user.id) < 0) {
+                            online.push(user);
+                            onlineId.push(user.id);
+                        }
+                    });
+                }
+
+                return { ...state, online, onlineId }
+
+            /** Выход пользователя */
+            case ACTION.USER_LEAVE:
+
+                online = [];
+                onlineId = [];
+
+                state.online.forEach(user => {
+                    if (user.id !== action?.payload?.id) {
+                        online.push(user);
+                        onlineId.push(user.id);
+                    }
+                });
+
+                return { ...state, online, onlineId }
+
 
             default:
                 return state;
