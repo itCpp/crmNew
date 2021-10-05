@@ -38,6 +38,14 @@ const TabSortSettings = props => {
 
     }
 
+    const removeQueryRow = key => {
+
+        let data = { ...formdata };
+        data.order_by_settings.splice(key, 1);
+        setFormdata(data);
+
+    }
+
     const queryEdit = (query, key) => {
 
         let data = [...formdata.order_by_settings];
@@ -68,7 +76,7 @@ const TabSortSettings = props => {
 
         <div className="position-relative mb-2">
 
-        <Message size="mini" className="mt-3" content="Сформируйте условия сортировки строк. По умолчанию сортировка определена по дате добавления заявки (created_at) в порядке возрастания, т.е. новые строки будут всегда в начале таблицы" />
+            <Message size="mini" className="mt-3" content="Сформируйте условия сортировки строк. По умолчанию сортировка определена по дате добавления заявки (created_at) в порядке возрастания, т.е. новые строки будут всегда в начале таблицы" />
 
             {globalError
                 ? <Message error content={globalError} />
@@ -88,7 +96,7 @@ const TabSortSettings = props => {
                         query={query}
                         queryKey={i}
                         queryEdit={queryEdit}
-                    // removeQueryRow={removeQueryRow}
+                        removeQueryRow={removeQueryRow}
                     />)
                     : <Message info size="tiny" className="mt-3" content="Добавьте условия сортировки строк" />
                 }

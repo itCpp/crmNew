@@ -3,11 +3,11 @@ import FormSelectColumn from "./FormSelectColumn";
 
 const TabFormSort = props => {
 
-    const { columns, query, queryKey, queryEdit } = props;
+    const { columns, query, queryKey, queryEdit, removeQueryRow } = props;
 
     const changeAttr = (name, value, item) => {
 
-        let data = {...query};
+        let data = { ...query };
         data[name] = value;
 
         queryEdit(data, item);
@@ -36,6 +36,15 @@ const TabFormSort = props => {
                 width={10}
                 value={query.by || ""}
                 onChange={(e, { value }) => changeAttr("by", value, queryKey)}
+            />
+
+            <Button
+                icon="trash"
+                title="Удалить условие"
+                onClick={() => removeQueryRow(queryKey)}
+                style={{ height: "38px" }}
+                size="mini"
+                basic
             />
 
         </Form.Group>
