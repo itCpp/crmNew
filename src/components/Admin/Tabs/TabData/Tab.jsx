@@ -6,6 +6,7 @@ import { Header, Message, Loader, Placeholder } from "semantic-ui-react";
 import TabBasicSettings from "./TabBasicSettings";
 import TabQuerySettings from "./TabQuerySettings";
 import TabPermitsSettings from "./TabPermitsSettings";
+import TabSortSettings from "./TabSortSettings";
 
 export default function Tab(props) {
 
@@ -89,6 +90,14 @@ export default function Tab(props) {
                     />
 
                     <TabQuerySettings
+                        tab={row}
+                        tabs={tabs}
+                        setTabs={setTabs}
+                        setTab={setRow}
+                        columns={columns}
+                    />
+
+                    <TabSortSettings
                         tab={row}
                         tabs={tabs}
                         setTabs={setTabs}

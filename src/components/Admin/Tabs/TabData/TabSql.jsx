@@ -5,7 +5,7 @@ import { Button, Modal, Dimmer, Loader, Message, Icon } from "semantic-ui-react"
 
 const TabSql = props => {
 
-    const { id, where } = props;
+    const { id, where, orderBy } = props;
 
     const [load, setLoad] = React.useState(false);
     const [error, setError] = React.useState(null);
@@ -23,7 +23,7 @@ const TabSql = props => {
 
             setLoad(true);
 
-            axios.post('dev/getSql', { id, where }).then(({ data }) => {
+            axios.post('dev/getSql', { id, where, orderBy }).then(({ data }) => {
                 setMessage(data.message);
             }).catch(error => {
                 setError(axios.getError(error));
@@ -39,7 +39,7 @@ const TabSql = props => {
         closeIcon
         open={open}
         trigger={<Button
-            content="Получить запрос"
+            content="Проверить запрос"
             title="Проверить сформированный запрос"
             color="blue"
             basic

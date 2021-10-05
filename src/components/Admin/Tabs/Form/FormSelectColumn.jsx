@@ -2,7 +2,7 @@ import { Form } from "semantic-ui-react";
 
 export default function FormSelectColumn(props) {
 
-    const { columns, changeAttr, value, item, name } = props;
+    const { columns, changeAttr, value, item, name, noLabel } = props;
 
     const options = columns.map((row, i) => ({
         key: i,
@@ -13,7 +13,7 @@ export default function FormSelectColumn(props) {
     }));
 
     return <Form.Select
-        label={item === 0 ? "Столбец" : false}
+        label={item === 0 && !noLabel ? "Столбец" : false}
         placeholder="Столбец..."
         options={options}
         width={props.width || 16}

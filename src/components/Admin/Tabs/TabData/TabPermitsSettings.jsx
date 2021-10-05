@@ -104,7 +104,7 @@ export default function TabBasicSettings(props) {
                 checked={formdata?.request_all_sector === 1 ? true : false}
                 onClick={changeFormdata}
                 label="Отобразить заявки своего сектора"
-                className="permites-check"
+                className="permites-check d-block"
                 disabled
             />
 
@@ -113,7 +113,7 @@ export default function TabBasicSettings(props) {
                 checked={formdata?.request_all_callcenter === 1 ? true : false}
                 onClick={changeFormdata}
                 label="Отобразить заявки своего колл-центра"
-                className="permites-check"
+                className="permites-check d-block"
                 disabled
             />
 
@@ -122,7 +122,7 @@ export default function TabBasicSettings(props) {
                 checked={formdata?.request_all === 1 ? true : false}
                 onChange={changeFormdata}
                 label="Отобразить все заявки ЦРМ"
-                className="permites-check"
+                className="permites-check d-block"
                 disabled
             />
 
