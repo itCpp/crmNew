@@ -61,13 +61,15 @@ code {
   text-align: right !important;
 }
 
-.button-icon {
-  cursor: pointer;
+.button-icon,
+.button-icon-disabled {
   opacity: .7 !important;
 }
 .button-icon:hover {
+  cursor: pointer;
   opacity: 1 !important;
 }
+
 
 hr {
   border: none;

@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from './../../utils/axios-header';
 
-import { Message, Button } from "semantic-ui-react";
+import { Message, Button, Dimmer, Loader } from "semantic-ui-react";
 
 const getTimer = sec => {
 
@@ -52,7 +52,7 @@ const AuthAdmin = props => {
 
     React.useEffect(() => {
 
-        foo.current = setInterval(() => setTimer(prevTimer => prevTimer + 1), 1000);
+        foo.current = setInterval(() => setTimer(prevTimer => loading ? prevTimer : prevTimer + 1), 1000);
 
         window.Echo.channel(`App.Auth.${userId}`)
             .listen('AuthDone', e => {
@@ -68,7 +68,7 @@ const AuthAdmin = props => {
 
             });
 
-        return () => { 
+        return () => {
             clearInterval(foo.current);
             window.Echo.leaveChannel(`App.Auth.${userId}`);
         }
@@ -103,7 +103,7 @@ const AuthAdmin = props => {
 
     }, [cancel]);
 
-    return <>
+    return <div className="position-relative">
 
         <div className="mb-2 px-1">Здравствуйте, {props.userName}!</div>
 
@@ -123,10 +123,9 @@ const AuthAdmin = props => {
 
             <strong>Ожидание {getTimer(timer)}</strong>
 
-            {loading
-                ? <div>Loading</div>
-                : null
-            }
+            <Dimmer active={loading} inverted>
+                <Loader inverted />
+            </Dimmer>
 
         </div>
 
@@ -135,7 +134,7 @@ const AuthAdmin = props => {
             : null
         }
 
-    </>
+    </div>
 
 }
 

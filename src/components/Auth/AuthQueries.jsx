@@ -5,51 +5,44 @@ import ButtonHeader from "./../Header/ButtonHeader";
 
 import { Modal, Placeholder, List, Icon, Dimmer, Loader } from "semantic-ui-react";
 
-const authQueryIncoming = (e, change, open, update) => {
+const opens = {
+    modal: false
+};
 
-    if (!e.cancel) {
+const authQueryIncoming = (e, change, update, setOpen) => {
 
-        axios.toast(null, {
-            description: <span>Сотрудник {e.user.name_full} <b>{e.user.pin}</b></span>,
-            type: "info",
-            time: 10000,
-            title: "Запрос авторизации",
-            icon: "user",
-        });
+    console.log({ e, change, opens, update });
+
+    if (!e.cancel && !opens.modal) {
+
+        axios.toast(null,
+            {
+                description: <span>Сотрудник <i>{e.query?.user?.name_full}</i> <b>{e.query?.user?.pin}</b></span>,
+                type: "warning",
+                time: 10000,
+                title: "Запрос авторизации",
+                icon: "user",
+            },
+            () => null,
+            () => setOpen(true)
+        );
 
     }
 
     change(e.cancel ? (-1) : 1);
 
-    // if (open && !e.cancel) {
-    //     update({ add: e.query });
-    // }
-    // else if (open && e.cancel) {
-    //     update({ drop: e.query });
-    // }
+    if (opens.modal && !e.cancel) {
+        update({ add: e.query });
+    }
+    else if (opens.modal && e.cancel) {
+        update({ drop: e.query });
+    }
 
 }
 
 const AuthQueryRow = props => {
 
-    const { row } = props;
-
-    const [loading, setLoading] = React.useState(null);
-
-    const doneQuery = data => {
-
-        setLoading(true);
-
-        axios.post('users/authComplete', data).then(({ data }) => {
-
-        }).catch(error => {
-            setLoading(false);
-            axios.toast(error);
-        }).then(() => {
-            setLoading(false);
-        });
-
-    }
+    const { row, doneQuery, load } = props;
 
     return <List.Item className="position-relative py-2">
 
@@ -62,18 +55,18 @@ const AuthQueryRow = props => {
                 <div>
                     <Icon
                         name="dont"
-                        className="button-icon text-danger"
+                        className={`${load ? 'button-icon-disabled' : 'button-icon'} text-danger`}
                         size="large"
                         title="Отклонить"
-                        onClick={() => doneQuery({ drop: row.id })}
+                        onClick={() => load ? null : doneQuery({ drop: row.id, id: row.id })}
                     />
                     <Icon
                         name="check circle"
-                        className="button-icon text-success"
+                        className={`${load ? 'button-icon-disabled' : 'button-icon'} text-success`}
                         size="large"
                         title="Подтвердить"
                         style={{ margin: 0 }}
-                        onClick={() => doneQuery({ done: row.id })}
+                        onClick={() => load ? null : doneQuery({ done: row.id, id: row.id })}
                     />
                 </div>
             </div>
@@ -84,7 +77,7 @@ const AuthQueryRow = props => {
             </div>
         </List.Content>
 
-        <Dimmer active={loading} inverted>
+        <Dimmer active={load === row.id} inverted>
             <Loader inverted />
         </Dimmer>
 
@@ -104,6 +97,7 @@ const AuthQueriesModal = props => {
 
     const [loading, setLoading] = React.useState(true);
     const [load, setLoad] = React.useState(true);
+    const [loadRow, setLoadRow] = React.useState(false);
 
     const [rows, setRows] = React.useState([]);
     const [page, setPage] = React.useState(1);
@@ -154,6 +148,31 @@ const AuthQueriesModal = props => {
 
     }, [update]);
 
+    const doneQuery = formdata => {
+
+        setLoadRow(formdata.id || true);
+
+        axios.post('users/authComplete', formdata).then(({ data }) => {
+
+            let list = [];
+            props.changeAuthQueriesCount(-1);
+
+            rows.forEach(query => {
+                if (query.id !== data.id) {
+                    list.push(query);
+                }
+            });
+
+            setRows(list);
+
+        }).catch(error => {
+            axios.toast(error);
+        }).then(() => {
+            setLoadRow(false);
+        });
+
+    }
+
     return <Modal
         open={true}
         closeIcon
@@ -182,8 +201,9 @@ const AuthQueriesModal = props => {
                     ? <List divided verticalAlign="middle">
                         {rows.map(row => <AuthQueryRow
                             key={row.id}
-                            {...props}
                             row={row}
+                            load={loadRow}
+                            doneQuery={doneQuery}
                         />)}
                     </List>
                     : <div className="text-center text-muted my-5">Данных нет</div>
@@ -203,9 +223,13 @@ const AuthQueries = props => {
     const [update, setUpdate] = React.useState(null);
 
     React.useEffect(() => {
+        opens.modal = open;
+    }, [open]);
+
+    React.useEffect(() => {
 
         window.Echo.private(`App.Admin.AuthQueries.${user.callcenter_id || 0}.${user.callcenter_sector_id || 0}`)
-            .listen('AuthQuery', e => authQueryIncoming(e, props.changeAuthQueriesCount, open, setUpdate))
+            .listen('AuthQuery', e => authQueryIncoming(e, props.changeAuthQueriesCount, setUpdate, setOpen))
 
         return () => {
             window.Echo.leave(`App.Admin.AuthQueries.${user.callcenter_id || 0}.${user.callcenter_sector_id || 0}`);

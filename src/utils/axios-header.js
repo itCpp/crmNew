@@ -20,6 +20,9 @@ instance.interceptors.request.use(function (config) {
     config.headers.Authorization = token ? token : null;
     config.headers['X-Requested-Version'] = process.env.REACT_APP_VERSION || null;
 
+    if (window.Echo)
+        config.headers['X-Socket-ID'] = window.Echo.socketId();
+
     let godMode = localStorage.getItem('god-mode-id');
 
     if (godMode)
@@ -91,12 +94,12 @@ instance.getErrors = error => error?.response?.data?.errors || {}
  * Всплывающее уведомление с ошибкой
  * @param {object|string|null} error Объект ошибки ответа или текст сообщения
  * @param {object} options
- * @param {null|function} onClose
- * @param {null|function} onClick
- * @param {null|function} onDismiss
+ * @param {void} onClose
+ * @param {void} onClick
+ * @param {void} onDismiss
  * @retrun Сообщение об ошибке
  */
-instance.toast = (error, options = {}, onClose = null, onClick = null, onDismiss = null) => {
+instance.toast = (error, options = {}, onClose = () => null, onClick = () => null, onDismiss = () => null) => {
 
     if (error && typeof error != "string")
         error = instance.getError(error);
@@ -113,7 +116,7 @@ instance.toast = (error, options = {}, onClose = null, onClick = null, onDismiss
     options.time = options.time || 5000;
     options.animation = options.animation || "fly right";
 
-    toast(options);
+    toast(options, onClose, onClick, onDismiss);
 
     return error;
 
