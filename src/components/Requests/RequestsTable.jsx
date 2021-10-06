@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { withRouter } from "react-router";
 import axios from "./../../utils/axios-header";
+import throttle from "lodash/throttle";
 
 import { connect } from 'react-redux';
 import {
@@ -199,6 +200,8 @@ const RequestsTable = props => {
 
     const [loading, setLoading] = React.useState(true);
     const [load, setLoad] = React.useState(true);
+    const [page, setPage] = React.useState(0);
+    const [end, setEnd] = React.useState(false);
 
     const [error, setError] = React.useState(null);
     const [edit, setEdit] = React.useState(null);
@@ -211,51 +214,99 @@ const RequestsTable = props => {
         selectedUpdateTab(true);
     }, []);
 
+    /** Загрузка или обновления выбранной вкладки */
     React.useEffect(() => {
+        if (select && selectedUpdate) {
+            setLoading(true);
 
-        if (edit) {
-            props.history.replace(`${props.match.path}?edit=${edit.id}`);
-        }
-        else {
-            props.history.replace(props.match.path);
-        }
+            setRequests([]);
+            setPage(0);
+            setEnd(false);
 
+            getRequests();
+        }
+    }, [select, selectedUpdate]);
+
+    /** Подмена ссылки при открытии окна редактирования заявки */
+    React.useEffect(() => {
+        edit
+            ? props.history.replace(`${props.match.path}?edit=${edit.id}`)
+            : props.history.replace(props.match.path);
     }, [edit]);
 
-    const getRequests = () => {
+    /** Получение строк заявко */
+    const getRequests = React.useCallback(() => {
 
-        setLoad(true);
+        setLoad(true); // Индикация загрузки в конце таблицы
+
+        console.log(selectedUpdate);
 
         axios.post('requests/get', {
             tabId: select,
+            page,
         }).then(({ data }) => {
 
-            setError(null);
-            setPermits(data.permits);
+            setError(null); // Обнуление ошибок
+            setPermits(data.permits); // Обновление прав
 
-            if (data.page > 1)
-                setRequests([...requests, data.requests]);
-            else
-                setRequests(data.requests);
+            // Добавление или обнуление имеющихся строк
+            let rows = data.page > 1
+                ? [...requests, ...data.requests]
+                : data.requests;
+
+            setRequests(rows);
+
+            setPage(data.next); // Следующая страница
+
+            // Флаг окончания строк по выбранной вкладке
+            if (data.next > data.pages)
+                setEnd(true);
 
         }).catch(error => {
-            setError(axios.getError(error));
+
+            page === 0
+                ? setError(axios.getError(error))
+                : axios.toast(error);
+
+            setEnd(true);
+
         }).then(() => {
+
             setLoading(false);
             setLoad(false);
             selectedUpdateTab(false);
+        console.log(selectedUpdate);
+
+
         });
 
-    }
+    }, [page, select, requests, selectedUpdate]);
 
+    /** Обработка прокрутки с задержкой */
+    const scrolling = React.useCallback(
+        throttle(e => {
+
+            let scrollHeight = e.target.documentElement.scrollHeight,
+                scrollTop = e.target.documentElement.scrollTop,
+                innerHeight = window.innerHeight;
+
+            if (((scrollHeight - (scrollTop + innerHeight)) < 100) && !end && !load)
+                getRequests();
+
+        }, 500),
+        [page, load, end]
+    );
+
+    /** Обработчик прокрутки */
     React.useEffect(() => {
 
-        if (select && selectedUpdate) {
-            setLoading(true);
-            getRequests();
+        document.addEventListener('scroll', scrolling);
+
+        return () => {
+            document.removeEventListener('scroll', scrolling);
         }
 
-    }, [select, selectedUpdate]);
+    }, [page, load, end]);
 
     /**
      * Вывод доступных к выбору сектров
@@ -388,6 +439,11 @@ const RequestsTable = props => {
                         </Table>
 
                     </div>
+
+                    {load
+                        ? <img src="/images/loader.gif" alt="loader" className="loader-requests" />
+                        : null
+                    }
 
                 </Grid.Column>
 

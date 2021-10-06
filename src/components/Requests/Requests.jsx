@@ -2,7 +2,7 @@ import React from "react";
 import axios from "./../../utils/axios-header";
 
 import { connect } from 'react-redux';
-import { setTabList, selectTab } from "./../../store/requests/actions";
+import { setTabList, selectTab, selectedUpdateTab } from "./../../store/requests/actions";
 import { setTopMenu } from "./../../store/interface/actions";
 
 import { Loader, Message } from "semantic-ui-react";
@@ -88,10 +88,12 @@ function Requests(props) {
 const mapStateToProps = state => ({
     user: state.main.userData,
     permits: state.main.userPermits,
+    tabs: state.requests.tabs,
+    select: state.requests.select,
 });
 
 const mapActions = {
-    setTabList, selectTab, setTopMenu
+    setTabList, selectTab, setTopMenu, selectedUpdateTab
 }
 
 export default connect(mapStateToProps, mapActions)(Requests);

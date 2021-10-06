@@ -4,6 +4,11 @@ import { Form, Message, Button } from "semantic-ui-react";
 import TabFormSort from "./../Form/TabFormSort";
 import TabSql from "./TabSql";
 
+/**
+ * Компонент изменения блока условий сортировки строк по выбранной вкладке
+ * 
+ * @param {object} props Передннаые параметры в компонент
+ */
 const TabSortSettings = props => {
 
     const { tab, tabs, setTabs, setTab } = props;
@@ -14,6 +19,11 @@ const TabSortSettings = props => {
     const [errors, setErrors] = React.useState({});
     const [save, setSave] = React.useState(false);
 
+    /**
+     * Функция изменнеия глобальных данных вкладки
+     * 
+     * @param  {...any} a 
+     */
     const changeFormdata = (...a) => {
 
         const e = a[1] || a[0].currentTarget;
@@ -26,6 +36,9 @@ const TabSortSettings = props => {
 
     }
 
+    /**
+     * Добавление строки условия сортировки
+     */
     const addQueryRow = () => {
 
         let data = { ...formdata };
@@ -38,6 +51,10 @@ const TabSortSettings = props => {
 
     }
 
+    /**
+     * Удаление строки условия сортировки
+     * @param {number} key Ключ массива условий
+     */
     const removeQueryRow = key => {
 
         let data = { ...formdata };
@@ -46,6 +63,11 @@ const TabSortSettings = props => {
 
     }
 
+    /**
+     * Изменение данных одной строки условия сортировки
+     * @param {object} query Измененные данные
+     * @param {number} key Ключ массива условий
+     */
     const queryEdit = (query, key) => {
 
         let data = [...formdata.order_by_settings];
@@ -54,6 +76,45 @@ const TabSortSettings = props => {
         setFormdata({ ...formdata, order_by_settings: data });
 
     }
+
+    /** Отслеживание изменнеий данных вкладки */
+    React.useEffect(() => {
+        setFormdata(tab);
+    }, [tab]);
+
+    /** Сохранение изменений в БД */
+    React.useEffect(() => {
+
+        if (save) {
+
+            setLoad(true);
+
+            axios.post('dev/saveTab', formdata).then(({ data }) => {
+
+                setError(false);
+
+                tabs.find((r, k, a) => {
+                    if (r.id === formdata.id) {
+                        a[k] = data.tab;
+                        setTabs(a);
+                        return true;
+                    }
+                });
+
+                setTab(data.tab);
+
+            }).catch(error => {
+                setError(axios.getError(error));
+                setErrors(axios.getErrors(error));
+            }).then(() => {
+                setLoad(false);
+            });
+
+        }
+
+        return () => setSave(false);
+
+    }, [save]);
 
     return <div className="admin-content-segment w-100">
 

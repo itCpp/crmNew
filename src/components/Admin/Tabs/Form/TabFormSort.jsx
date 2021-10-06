@@ -8,6 +8,7 @@ const TabFormSort = props => {
     const changeAttr = (name, value, item) => {
 
         let data = { ...query };
+        data.where = "orderBy";
         data[name] = value;
 
         queryEdit(data, item);

@@ -208,3 +208,10 @@
 .request-row:hover {
     background: #fafcff;
 }
+
+.loader-requests {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    margin-left: -8px;
+}

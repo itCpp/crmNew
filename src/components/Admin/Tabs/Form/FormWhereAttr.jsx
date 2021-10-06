@@ -22,6 +22,8 @@ export default function FormWhereAttr(props) {
             return <AttrWhereIn {...props} />
         case "whereNull":
         case "whereNotNull":
+        case "orWhereNull":
+        case "orWhereNotNull":
             return <AttrWhereNull {...props} />
         case "whereDate":
         case "whereMonth":

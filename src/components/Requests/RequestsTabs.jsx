@@ -1,6 +1,3 @@
-import { connect } from 'react-redux';
-import { selectTab, selectedUpdateTab } from "./../../store/requests/actions";
-
 import { Icon } from "semantic-ui-react";
 
 const RequestsTabs = props => {
@@ -46,7 +43,12 @@ const RequestsTabs = props => {
                 if (select === tab.id)
                     className.push("tab-list-active");
 
-                return <div key={tab.id} title={tab.name_title || tab.name} className={className.join(" ")} onClick={() => setSelect(tab.id)}>
+                return <div
+                    key={tab.id}
+                    title={tab.name_title || tab.name}
+                    className={className.join(" ")}
+                    onClick={() => setSelect(tab.id)}
+                >
                     <span>{tab.name}</span>
                 </div>
             })}
@@ -57,9 +59,4 @@ const RequestsTabs = props => {
 
 }
 
-const mapStateToProps = state => ({
-    tabs: state.requests.tabs,
-    select: state.requests.select,
-});
-
-export default connect(mapStateToProps, { selectTab, selectedUpdateTab })(RequestsTabs);
+export default RequestsTabs;
