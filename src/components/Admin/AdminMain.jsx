@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from './../../utils/axios-header';
+import { connect } from 'react-redux';
 
 import { Loader } from 'semantic-ui-react';
 
@@ -7,7 +8,7 @@ import './admin.css';
 import AdminMenu from './AdminMenu';
 import AdminContent from './AdminContent';
 
-function Admin() {
+function Admin(props) {
 
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(false);
@@ -34,9 +35,13 @@ function Admin() {
 
     return <div className="admin-content">
         <AdminMenu permits={adminPermits} />
-        <AdminContent permits={adminPermits} />
+        <AdminContent {...props} permits={adminPermits} />
     </div>;
 
 }
 
-export default Admin;
+const mapStateToProps = state => ({
+    user: state.main.userData,
+})
+
+export default connect(mapStateToProps)(Admin);

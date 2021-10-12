@@ -6,11 +6,14 @@ import CallsList from "./CallsList";
 
 const Calls = props => {
 
+    const { permits } = props;
+
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
     const [calls, setCalls] = React.useState([]);
 
     React.useEffect(() => {
+
         axios.post('dev/getCalls').then(({ data }) => {
             setCalls(data.calls);
         }).catch(error => {
@@ -18,6 +21,18 @@ const Calls = props => {
         }).then(() => {
             setLoading(false);
         });
+
+        window.Echo.private(`App.Admin.Calls`)
+            .listen('IncomingCalls', ({ data }) => {
+                let newCalls = [data, ...calls].slice(0, -1);
+                console.log({ data, newCalls});
+                setCalls(newCalls);
+            });
+
+        return () => {
+            window.Echo.leave(`App.Admin.Calls`);
+        }
+
     }, []);
 
     return <>
@@ -42,9 +57,12 @@ const Calls = props => {
 
         </div>
 
-        <div className="admin-content-segment d-flex flex-column justify-content-between align-items-center">
-            <CallsList calls={calls} />
+        <div className="d-flex justify-content-start align-items-start flex-segments">
+            <div className="admin-content-segment pt-4 position-relative">
+                <CallsList calls={calls} />
+            </div>
         </div>
+
 
     </>
 
