@@ -118,6 +118,17 @@ const RequestEdit = props => {
 
             <Grid>
 
+                <Grid.Column width={6}>
+
+                    <Comments
+                        row={formdata}
+                        comments={comments}
+                        setComments={setComments}
+                        user={props.user}
+                    />
+
+                </Grid.Column>
+
                 <Grid.Column width={10}>
 
                     <Form>
@@ -244,16 +255,6 @@ const RequestEdit = props => {
                         </Form.Field>
 
                     </Form>
-
-                </Grid.Column>
-
-                <Grid.Column width={6}>
-
-                    <Comments
-                        row={formdata}
-                        comments={comments}
-                        user={props.user}
-                    />
 
                 </Grid.Column>
 
