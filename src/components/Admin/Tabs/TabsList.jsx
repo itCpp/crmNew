@@ -66,7 +66,12 @@ function TabsList(props) {
 
             <SortableContainer onSortEnd={onSortEnd} useDragHandle lockAxis="y" helperClass="tab-list-move">
                 {tabs.map((tab, index) => (
-                    <SortableItem key={tab.id} index={index} tab={tab} {...props} />
+                    <SortableItem
+                        {...props}
+                        key={tab.id}
+                        index={index}
+                        tab={tab}
+                    />
                 ))}
             </SortableContainer>
 
