@@ -211,7 +211,10 @@
 
 .loader-requests {
     position: absolute;
-    bottom: 15px;
-    left: 50%;
-    margin-left: -8px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    min-height: 19px;
+    margin: .25rem auto .5rem;
 }

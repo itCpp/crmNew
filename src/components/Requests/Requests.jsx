@@ -11,6 +11,7 @@ import "./requests.css";
 
 import RequestsTabs from "./RequestsTabs";
 import RequestsTable from "./RequestsTable";
+import RequestsRowsMain from "./RequestsRows/RequestsRowsMain";
 
 function Requests(props) {
 
@@ -79,7 +80,8 @@ function Requests(props) {
             </div>
         </div>
 
-        <RequestsTable />
+        {/* <RequestsTable /> */}
+        <RequestsRowsMain />
 
     </div>
 
