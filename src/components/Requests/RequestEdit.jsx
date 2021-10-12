@@ -4,6 +4,8 @@ import axios from "./../../utils/axios-header";
 
 import { Modal, Button, Grid, Dimmer, Loader, Form, Dropdown, Icon } from "semantic-ui-react";
 
+import Comments from "./Comments/CommentsEditRequest";
+
 const caseSensitiveSearch = (options, query) => {
     const re = new RegExp(_.escapeRegExp(query))
     return options.filter((opt) => re.test(opt.text))
@@ -26,15 +28,18 @@ const RequestEdit = props => {
     const [cities, setCities] = React.useState([]);
     const [themes, setThemes] = React.useState([]);
     const [adresses, setAddresses] = React.useState([]);
+    const [comments, setComments] = React.useState([]);
 
     React.useEffect(() => {
 
         axios.post('requests/getRow', {
-            id: row.id
+            id: row.id,
+            getComments: true,
         }).then(({ data }) => {
 
             setFormdata(data.request);
             setPermits(data.permits);
+            setComments(data.comments || []);
 
             setCities([null, ...data.cities]);
             setThemes([null, ...data.themes]);
@@ -77,6 +82,7 @@ const RequestEdit = props => {
             axios.post('requests/save', formdata).then(({ data }) => {
                 setErrorSave(null);
                 updateRequestRow(data.request);
+                setOpen(null);
             }).catch(error => {
                 setError(null);
                 setErrorSave(axios.getError(error));
@@ -91,7 +97,7 @@ const RequestEdit = props => {
 
     }, [save]);
 
-    React.useEffect(() => console.log(formdata), [formdata]);
+    // React.useEffect(() => console.log(formdata), [formdata]);
 
     return <Modal
         className="my-large"
@@ -112,7 +118,7 @@ const RequestEdit = props => {
 
             <Grid>
 
-                <Grid.Column>
+                <Grid.Column width={10}>
 
                     <Form>
 
@@ -241,12 +247,19 @@ const RequestEdit = props => {
 
                 </Grid.Column>
 
+                <Grid.Column width={6}>
+
+                    <Comments
+                        row={formdata}
+                        comments={comments}
+                        user={props.user}
+                    />
+
+                </Grid.Column>
+
             </Grid>
 
-            {loading
-                ? <Dimmer active inverted><Loader active /></Dimmer>
-                : null
-            }
+            {loading && <Dimmer active inverted><Loader active /></Dimmer>}
 
         </Modal.Content>
 

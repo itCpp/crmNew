@@ -1,0 +1,29 @@
+.comments-body {
+    display: flex;
+    flex-direction: column-reverse;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.commets-in-modal {
+    border-radius: .5rem;
+    background: #f5f9ff;
+    padding: .5rem 1rem;
+    margin: 0 .25rem;
+}
+.commets-in-modal:not(:last-child) {
+    margin-top: .5rem;
+}
+
+.comment-type-my {
+    background: #f6ffe2;
+}
+
+.commets-in-modal .comment-time {
+    opacity: .5;
+    text-align: right;
+    font-size: 70%;
+}
+.commets-in-modal .comment-text {
+    font-size: 90%;
+}
