@@ -9,23 +9,25 @@ import {
     setRequests,
     updateRequestRow
 } from "./../../../store/requests/actions";
-import { Loader, Message, Table, Icon, Button, Grid } from "semantic-ui-react";
+import { Loader, Message, Button } from "semantic-ui-react";
 
 import RequestsTable from "./RequestsTable";
+import RequestAdd from "./../RequestAdd";
 
 const LIMIT_ROWS_PAGE = 20; // Ограничение количества строк на вывод за один запрос
 
 const RequestsRowsMain = props => {
 
-    const { select, selectTab } = props;
+    const { select } = props;
     const { requests, setRequests } = props;
     const { selectedUpdate, selectedUpdateTab } = props;
 
-    const [loading, setLoading] = React.useState(false);
+    const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(false);
     const [loadPage, setLoadPage] = React.useState(false);
 
     const [permits, setPermits] = React.useState({});
+    const [add, setAdd] = React.useState(false);
 
     const [paginate, setPaginate] = React.useState({
         page: 1, // Выбранная страница
@@ -38,6 +40,9 @@ const RequestsRowsMain = props => {
         if (selectedUpdate) {
             setLoading(true);
             getRequests({ ...paginate, page: 1, tabId: select });
+        }
+        else {
+            setLoading(false);
         }
     }, [selectedUpdate, select]);
 
@@ -61,7 +66,7 @@ const RequestsRowsMain = props => {
                 : data.requests;
 
             setRequests(rows);
-            setPaginate({ ...params, pages: data.pages });
+            setPaginate({ ...params, pages: data.pages, total: data.total });
 
             if (typeof callback == "function")
                 callback(data);
@@ -121,7 +126,27 @@ const RequestsRowsMain = props => {
 
     return <div className="px-3" id="requests-block">
 
-        <div className="block-card mt-4 mb-3">
+        <div className="d-flex justify-content-between align-items-center">
+            <div className="page-title-box">
+                <h4 className="page-title">Заявки</h4>
+            </div>
+            {permits.requests_add
+                ? <>
+                    <Button
+                        icon="plus"
+                        color="green"
+                        circular
+                        title="Создать заявку"
+                        basic
+                        onClick={() => setAdd(true)}
+                    />
+                    {add && <RequestAdd {...props} permits={permits} setOpen={setAdd} />}
+                </>
+                : null
+            }
+        </div>
+
+        <div className="block-card mb-3">
 
             {!select && !error && <div className="my-3 mx-auto w-100" style={{ maxWidth: "550px" }}>
                 <Message info content="Выберите вкладку для отображения заявок" className="mx-1" />
@@ -143,6 +168,10 @@ const RequestsRowsMain = props => {
                     loadPage={loadPage}
                 />
             }
+
+            {!loading && select && !error && requests.length === 0 && <div className="text-center">
+                <div className="my-4" style={{ opacity: "0.4", fontWeight: 500 }}>Заявок нет</div>
+            </div>}
 
             {error && !loading && <div className="my-3 mx-auto w-100" style={{ maxWidth: "550px" }}>
                 <Message error content={error} className="mx-1" />

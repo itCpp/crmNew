@@ -8,6 +8,7 @@ import Callcenters from './Callcenters/Callcenters';
 import SourcesAndResources from './Sources/SourcesAndResources';
 import Statuses from './Statuses/Statuses';
 import Tabs from './Tabs/Tabs';
+import Calls from './Calls/Calls';
 
 function AdminContent(props) {
 
@@ -32,6 +33,8 @@ function AdminContent(props) {
         body = <Statuses />
     else if (page == "tabs" && permits.dev_tabs)
         body = <Tabs />
+    else if (page == "calls" && permits.dev_calls)
+        body = <Calls {...props} />
 
     return <div className="admin-content-body">
         {body}

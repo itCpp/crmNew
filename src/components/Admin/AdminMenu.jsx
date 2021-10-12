@@ -51,6 +51,13 @@ function AdminMenu(props) {
                     <span>Источники</span>
                 </NavLink>
 
+                {permits.dev_calls &&
+                    <NavLink to="/admin/calls" className="admin-menu-point" onClick={changePage}>
+                        <Icon name="call" />
+                        <span>Звонки</span>
+                    </NavLink>
+                }
+
                 <NavLink to="/admin/statuses" className="admin-menu-point" onClick={changePage}>
                     <Icon name="certificate" />
                     <span>Статусы</span>
