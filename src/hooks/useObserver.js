@@ -10,6 +10,7 @@ export const useObserver = (elem, canLoad, isLoading, callback) => {
         if (observer.current) observer.current.disconnect();
 
         const cb = entries => {
+
             if (typeof callback == "function" && entries[0].isIntersecting) {
                 callback(entries, observer);
             }
@@ -18,6 +19,6 @@ export const useObserver = (elem, canLoad, isLoading, callback) => {
         observer.current = new IntersectionObserver(cb);
         observer.current.observe(elem.current);
 
-    }, [isLoading, canLoad]);
+    }, [isLoading]);
 
 }

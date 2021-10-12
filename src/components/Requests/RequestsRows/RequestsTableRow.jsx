@@ -1,5 +1,5 @@
 import React from "react";
-import { Loader, Message, Table, Icon, Button, Grid } from "semantic-ui-react";
+import { Table, Icon } from "semantic-ui-react";
 import Cells from "./Cells";
 import RequestPinChange from "./../RequestPinChange";
 import RequestSectorChange from "./../RequestSectorChange";
@@ -16,6 +16,9 @@ const RequestsTableRow = props => {
     else if (row.query_type === "text")
         row.query_type_icon = <Icon name="comment alternate" title="Тектовая заявка" />
 
+    if (row.status?.theme)
+        className.push(`request-row-theme-${row.status.theme}`);
+
     return <Table.Row className={className.join(' ')}>
 
         <Cells.CellId row={row} setCell={props.setCell} />
@@ -27,7 +30,7 @@ const RequestsTableRow = props => {
         <Cells.CellClient row={row} setCell={props.setCell} />
         <Cells.CellTheme row={row} setCell={props.setCell} />
         <Cells.CellComments row={row} setCell={props.setCell} />
-        <Cells.CellButtons row={row} setCell={props.setCell} />
+        <Cells.CellButtons row={row} setEdit={props.setEdit} />
 
     </Table.Row>
 

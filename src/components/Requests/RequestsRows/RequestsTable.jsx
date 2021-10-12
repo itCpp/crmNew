@@ -4,7 +4,7 @@ import Hooks from "./../../../hooks";
 import { Table, Icon, Button, Loader } from "semantic-ui-react";
 import RequestsTableRow from "./RequestsTableRow";
 import RequestEditCell from "./../RequestEditCell";
-
+import RequestEdit from "./../RequestEdit";
 
 const RequestsTable = props => {
 
@@ -12,10 +12,9 @@ const RequestsTable = props => {
     const { paginate, loadPage } = props;
 
     const elem = React.useRef();
-    Hooks.useObserver(elem, paginate.page >= paginate.pages, loadPage, () => {
+    Hooks.useObserver(elem, paginate.page === paginate.pages, loadPage, () => {
         let page = (paginate.page + 1);
-        if (page <= paginate.pages)
-            getRequests({ ...paginate, page });
+        getRequests({ ...paginate, page });
     });
 
     const [editCell, setEditCell] = React.useState(null);
@@ -27,6 +26,8 @@ const RequestsTable = props => {
         pageY: e.clientY,
         currentTarget: e.currentTarget,
     });
+
+    const [edit, setEdit] = React.useState(null);
 
     return <>
 
@@ -51,6 +52,7 @@ const RequestsTable = props => {
                         {...props}
                         row={row}
                         setCell={setCell}
+                        setEdit={setEdit}
                     />)
                     : <Table.Row>
                         <Table.Cell colSpan={7}>
@@ -63,6 +65,7 @@ const RequestsTable = props => {
         </Table>
 
         {editCell?.id && <RequestEditCell {...props} editCell={editCell} setEditCell={setEditCell} />}
+        {edit && <RequestEdit {...props} row={edit} setOpen={setEdit} />}
 
         <div ref={elem} className="loader-requests">
             {loadPage && <img src="/images/loader.gif" />}
