@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "./../../../../utils/axios-header";
 
-import { Header, Message, Loader, Placeholder } from "semantic-ui-react";
+import { Header, Message, Loader, Placeholder, Icon } from "semantic-ui-react";
 
 import TabBasicSettings from "./TabBasicSettings";
 import TabQuerySettings from "./TabQuerySettings";
@@ -58,11 +58,21 @@ export default function Tab(props) {
                         <Placeholder.Line />
                     </Placeholder.Header>
                 </Placeholder>
-                : <Header
-                    as="h2"
-                    content={`Вкладка: ${row?.name || ""}`}
-                    subheader={row?.name_title || ""}
-                />
+                : <div className="d-flex align-items-center">
+                    <Icon
+                        name="arrow left"
+                        size="big"
+                        className="button-icon"
+                        style={{ marginRight: "1rem" }}
+                        title="Назад"
+                        onClick={() => props.history.goBack()}
+                    />
+                    <Header
+                        as="h2"
+                        content={`Вкладка: ${row?.name || ""}`}
+                        subheader={row?.name_title || ""}
+                    />
+                </div>
             }
 
         </div>
