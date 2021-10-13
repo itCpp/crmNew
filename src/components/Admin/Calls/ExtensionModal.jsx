@@ -1,7 +1,9 @@
 import React from "react";
 import axios from "./../../../utils/axios-header";
 
-import { Button, Modal, Message, Icon, Form, Input, Checkbox } from "semantic-ui-react";
+import { Button, Modal, Message, Icon, Form, Input, Checkbox, Dropdown } from "semantic-ui-react";
+
+import places from "./../../../data/ad_places";
 
 const ExtensionModal = props => {
 
@@ -14,6 +16,8 @@ const ExtensionModal = props => {
 
     const [create, setCreate] = React.useState(null);
     const [formdata, setFormdata] = React.useState({});
+
+    const ad_places = places.map((place, i) => ({ key: i, ...place }));
 
     React.useEffect(() => {
 
@@ -34,7 +38,7 @@ const ExtensionModal = props => {
     }, []);
 
     const onChange = (e, { name, value, type, checked }) => {
-        
+
         if (['checkbox', 'radio'].indexOf(type) >= 0)
             value = checked === true ? 1 : 0;
 
@@ -141,6 +145,20 @@ const ExtensionModal = props => {
                     onChange={onChange}
                     error={errors.phone ? true : false}
                 />
+
+                <Form.Field>
+                    <label></label>
+                    <Dropdown
+                        selection
+                        options={ad_places}
+                        label="Рекламная площадка"
+                        placeholder="Выберите рекламную площадку"
+                        name="ad_place"
+                        value={formdata.ad_place || ""}
+                        onChange={onChange}
+                        error={errors.ad_place ? true : false}
+                    />
+                </Form.Field>
 
                 <Checkbox
                     toggle

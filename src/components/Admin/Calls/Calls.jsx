@@ -101,7 +101,7 @@ const Calls = props => {
             />
         }
 
-        <div className="admin-content-segment d-flex justify-content-between align-items-center">
+        <div className="admin-content-segment d-flex justify-content-between align-items-center" style={{ maxWidth: 900 }}>
 
             <Header
                 as="h2"
@@ -125,7 +125,7 @@ const Calls = props => {
         </div>
 
         {!loading &&
-            <div className="d-flex justify-content-start align-items-start flex-segments">
+            <div style={{ maxWidth: 900 }}>
 
                 {showExtensions
                     ? <Extensions

@@ -2,6 +2,8 @@ import React from "react";
 import moment from "moment";
 import { Icon, Transition, List, Loader } from "semantic-ui-react";
 
+import { icons } from "./../../../data/ad_places";
+
 const CallsList = props => {
 
     const { calls } = props;
@@ -16,7 +18,7 @@ const CallsList = props => {
         verticalAlign="middle"
     >
         {calls.map(call => <List.Item key={call.id}>
-            <div className="d-flex calls-log">
+            <div className="d-flex justify-content-between calls-log">
 
                 <div>#{call.id}</div>
 
@@ -24,7 +26,8 @@ const CallsList = props => {
 
                 <div>{call.phone}</div>
 
-                <div className={`${call.source === null ? 'text-danger' : ''}`}>
+                <div className={`${call.source === null ? 'text-danger' : ''} flex-grow-1`}>
+                    {icons[call?.source?.ad_place] && <Icon {...icons[call?.source?.ad_place]} />}
                     <span>{call.sip}</span>
                     {' '}
                     {call.source === null &&
@@ -62,6 +65,18 @@ const CallsList = props => {
                     }
                 </div>
 
+                <div className="position-relative" style={{ minWidth: 16 }}>
+                    {(call.failed || (!call.failed && !call.added)) && <>
+                        <Icon
+                            name="redo"
+                            className="button-icon m-0"
+                            title="Повторить обработку"
+                            onClick={() => !retry && setRetry(call.id)}
+                        />
+                        {retries[`load${call.id}`] === true && <div className="loader-cell"><Loader active size="tiny" /></div>}
+                    </>}
+                </div>
+
                 {call.added &&
                     <div><Icon name="check" color="green" title="Добавлено в заявку" />
                         {moment(call.added).format("DD.MM.YYYY HH:mm:ss")}
@@ -77,16 +92,6 @@ const CallsList = props => {
                 {!call.failed && !call.added &&
                     <div className="text-danger">Ошибка обработки</div>
                 }
-
-                {(call.failed || (!call.failed && !call.added)) && <div className="position-relative">
-                    <Icon
-                        name="redo"
-                        className="button-icon m-0"
-                        title="Повторить обработку"
-                        onClick={() => !retry && setRetry(call.id)}
-                    />
-                    {retries[`load${call.id}`] === true && <div className="loader-cell"><Loader active size="tiny" /></div>}
-                </div>}
 
             </div>
         </List.Item>)}

@@ -20,11 +20,11 @@ function AdminMenu(props) {
         {permits.block_dev
             ? <div className="admin-menu-block">
 
-                <h5>Сотрудники</h5>
+                <h5>Учетные записи</h5>
 
                 <NavLink to="/admin/users" className="admin-menu-point" onClick={changePage}>
                     <Icon name="user" />
-                    <span>Учетные записи</span>
+                    <span>Сотрудники</span>
                 </NavLink>
 
                 {/* <NavLink to="/admin/permits" className="admin-menu-point" onClick={changePage}>
@@ -32,8 +32,37 @@ function AdminMenu(props) {
                     <span>Сессии</span>
                 </NavLink> */}
 
+                {permits.block_dev &&
+                    <NavLink to="/admin/roles" className="admin-menu-point" onClick={changePage}>
+                        <Icon name="angle right" />
+                        <span>Roles</span>
+                    </NavLink>
+                }
+
+                {permits.block_dev &&
+                    <NavLink to="/admin/permits" className="admin-menu-point" onClick={changePage}>
+                        <Icon name="angle right" />
+                        <span>Permissions</span>
+                    </NavLink>
+                }
+
             </div>
             : null
+        }
+
+        {permits.block_dev &&
+            <div className="admin-menu-block">
+
+                <h5>Логи</h5>
+
+                {permits.dev_calls &&
+                    <NavLink to="/admin/calls" className="admin-menu-point" onClick={changePage}>
+                        <Icon name="call" />
+                        <span>Звонки</span>
+                    </NavLink>
+                }
+
+            </div>
         }
 
         {permits.block_dev
@@ -51,13 +80,6 @@ function AdminMenu(props) {
                     <span>Источники</span>
                 </NavLink>
 
-                {permits.dev_calls &&
-                    <NavLink to="/admin/calls" className="admin-menu-point" onClick={changePage}>
-                        <Icon name="call" />
-                        <span>Звонки</span>
-                    </NavLink>
-                }
-
                 <NavLink to="/admin/statuses" className="admin-menu-point" onClick={changePage}>
                     <Icon name="certificate" />
                     <span>Статусы</span>
@@ -73,15 +95,7 @@ function AdminMenu(props) {
                     <span>Офисы</span>
                 </NavLink>
 
-                <NavLink to="/admin/roles" className="admin-menu-point" onClick={changePage}>
-                    <Icon name="angle right" />
-                    <span>Roles</span>
-                </NavLink>
 
-                <NavLink to="/admin/permits" className="admin-menu-point" onClick={changePage}>
-                    <Icon name="angle right" />
-                    <span>Permissions</span>
-                </NavLink>
 
             </div>
             : null
