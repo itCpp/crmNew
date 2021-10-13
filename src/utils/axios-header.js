@@ -99,7 +99,13 @@ instance.getErrors = error => error?.response?.data?.errors || {}
  * @param {void} onDismiss
  * @retrun Сообщение об ошибке
  */
-instance.toast = (error, options = {}, onClose = () => null, onClick = () => null, onDismiss = () => null) => {
+instance.toast = (
+    error,
+    options = {},
+    onClose = () => null,
+    onClick = () => null,
+    onDismiss = () => null
+) => {
 
     if (error && typeof error != "string")
         error = instance.getError(error);
@@ -109,11 +115,13 @@ instance.toast = (error, options = {}, onClose = () => null, onClick = () => nul
     if (!options.title) {
         if (options.type == "success")
             options.title = "Выполнено";
+        else if (options.type == "warning")
+            options.title = "Внимание";
     }
 
     options.title = options.title || "Ошибка";
     options.description = options.description || error;
-    options.time = options.time || 5000;
+    options.time = typeof options.time == "undefined" ? 5000 : options.time;
     options.animation = options.animation || "fly right";
 
     toast(options, onClose, onClick, onDismiss);

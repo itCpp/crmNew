@@ -1,8 +1,9 @@
 import React from "react";
 import axios from "./../../../utils/axios-header";
-import { Header, Loader } from "semantic-ui-react";
+import { Button, Header, Loader, Message } from "semantic-ui-react";
 
 import CallsList from "./CallsList";
+import Extensions from "./Extensions";
 
 const Calls = props => {
 
@@ -11,23 +12,24 @@ const Calls = props => {
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
     const [calls, setCalls] = React.useState([]);
+    const [showExtensions, setShowExtensions] = React.useState(false);
+
+    const incomingCall = call => {
+        setCalls(prevCalls => [call, ...prevCalls].slice(0, -1));
+    }
 
     React.useEffect(() => {
 
         axios.post('dev/getCalls').then(({ data }) => {
             setCalls(data.calls);
         }).catch(error => {
-            setError()
+            setError(axios.getError(error));
         }).then(() => {
             setLoading(false);
         });
 
         window.Echo.private(`App.Admin.Calls`)
-            .listen('IncomingCalls', ({ data }) => {
-                let newCalls = [data, ...calls].slice(0, -1);
-                console.log({ data, newCalls});
-                setCalls(newCalls);
-            });
+            .listen('IncomingCalls', ({ data }) => incomingCall(data));
 
         return () => {
             window.Echo.leave(`App.Admin.Calls`);
@@ -48,6 +50,13 @@ const Calls = props => {
             {loading
                 ? <Loader active inline />
                 : <div>
+                    <Button
+                        circular
+                        icon="tty"
+                        basic={!showExtensions}
+                        primary
+                        onClick={() => setShowExtensions(prev => !prev)}
+                    />
                     {/* <CreateStatus
                         statuses={statuses}
                         setStatuses={setStatuses}
@@ -57,12 +66,27 @@ const Calls = props => {
 
         </div>
 
-        <div className="d-flex justify-content-start align-items-start flex-segments">
-            <div className="admin-content-segment pt-4 position-relative">
-                <CallsList calls={calls} />
-            </div>
-        </div>
+        {!loading &&
+            <div className="d-flex justify-content-start align-items-start flex-segments">
 
+                {showExtensions
+                    ? <Extensions />
+                    : <div className="admin-content-segment position-relative">
+
+                        <div className="divider-header">
+                            <h3>Журнал звонков</h3>
+                        </div>
+
+                        {error
+                            ? <Message error content={error} />
+                            : <CallsList calls={calls} />
+                        }
+
+                    </div>
+                }
+
+            </div>
+        }
 
     </>
 

@@ -222,3 +222,7 @@
 .calls-log > * {
     margin: .25rem 1rem;
 }
+
+.list-extensions > *:not(:last-child) {
+    margin-right: 1rem;
+}
