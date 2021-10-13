@@ -1,14 +1,14 @@
 import React from "react";
 import axios from "./../../../utils/axios-header";
 import { Loader, Message, List, Label, Icon, Button } from "semantic-ui-react";
-import ExtensionModal from "./ExtensionModal";
 
 const Extensions = props => {
 
+    const { setExtension } = props;
+    const { extensions, setExtensions } = props;
+
     const [load, setLoad] = React.useState(true);
     const [error, setError] = React.useState(false);
-    const [extensions, setExtensions] = React.useState([]);
-    const [extension, setExtension] = React.useState(null);
 
     React.useEffect(() => {
 
@@ -25,7 +25,21 @@ const Extensions = props => {
     return <div className="admin-content-segment" style={{ minWidth: 800 }}>
 
         <div className="divider-header">
+
             <h3>Слушатели звонков</h3>
+
+            <div>
+                <Button
+                    icon="plus"
+                    circular
+                    basic
+                    positive
+                    size="mini"
+                    title="Создать колл-центр"
+                    onClick={() => setExtension(true)}
+                />
+            </div>
+
         </div>
 
         {load && !error && <div className="text-center mt-4 mb-3"><Loader active inline /></div>}
@@ -67,14 +81,6 @@ const Extensions = props => {
                     </div>
                 </List.Item>)}
             </List>
-        }
-
-        {extension &&
-            <ExtensionModal
-                setOpen={setExtension}
-                id={extension}
-                setExtensions={setExtensions}
-            />
         }
 
     </div>

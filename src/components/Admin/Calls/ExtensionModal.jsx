@@ -6,6 +6,7 @@ import { Button, Modal, Message, Icon, Form, Input, Checkbox } from "semantic-ui
 const ExtensionModal = props => {
 
     const { id, setOpen, setExtensions } = props;
+    const { sip, setSip, setCalls } = props;
 
     const [load, setLoad] = React.useState(true);
     const [error, setError] = React.useState(null);
@@ -17,6 +18,7 @@ const ExtensionModal = props => {
     React.useEffect(() => {
 
         if (id === true) {
+            setFormdata(prev => ({ ...prev, extension: sip }));
             setLoad(false);
         }
         else {
@@ -63,6 +65,18 @@ const ExtensionModal = props => {
                     return list;
                 });
 
+                setCalls(list => {
+
+                    list.forEach((row, i) => {
+                        if (row.sip === data.extension.extension) {
+                            list[i].source = data.extension;
+                        }
+                    });
+
+                    return list;
+
+                });
+
                 if (data.alert) {
                     axios.toast(data.alert, {
                         type: 'warning',
@@ -70,6 +84,7 @@ const ExtensionModal = props => {
                     });
                 }
 
+                setSip(null);
                 setOpen(null);
 
             }).catch(error => {

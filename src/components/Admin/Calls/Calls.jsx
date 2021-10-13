@@ -4,6 +4,7 @@ import { Button, Header, Loader, Message } from "semantic-ui-react";
 
 import CallsList from "./CallsList";
 import Extensions from "./Extensions";
+import ExtensionModal from "./ExtensionModal";
 
 const Calls = props => {
 
@@ -12,7 +13,13 @@ const Calls = props => {
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
     const [calls, setCalls] = React.useState([]);
+
     const [showExtensions, setShowExtensions] = React.useState(false);
+
+    // Модальное окно редактирования и создания
+    const [extension, setExtension] = React.useState(null);
+    const [sip, setSip] = React.useState(null);
+    const [extensions, setExtensions] = React.useState([]);
 
     const incomingCall = call => {
         setCalls(prevCalls => [call, ...prevCalls].slice(0, -1));
@@ -28,16 +35,29 @@ const Calls = props => {
             setLoading(false);
         });
 
-        window.Echo.private(`App.Admin.Calls`)
-            .listen('IncomingCalls', ({ data }) => incomingCall(data));
+        if (permits.dev_calls)
+            window.Echo.private(`App.Admin.Calls`)
+                .listen('IncomingCalls', ({ data }) => incomingCall(data));
 
         return () => {
-            window.Echo.leave(`App.Admin.Calls`);
+            if (permits.dev_calls)
+                window.Echo.leave(`App.Admin.Calls`);
         }
 
     }, []);
 
     return <>
+
+        {extension &&
+            <ExtensionModal
+                setOpen={setExtension}
+                id={extension}
+                setExtensions={setExtensions}
+                sip={sip}
+                setSip={setSip}
+                setCalls={setCalls}
+            />
+        }
 
         <div className="admin-content-segment d-flex justify-content-between align-items-center">
 
@@ -57,10 +77,6 @@ const Calls = props => {
                         primary
                         onClick={() => setShowExtensions(prev => !prev)}
                     />
-                    {/* <CreateStatus
-                        statuses={statuses}
-                        setStatuses={setStatuses}
-                    /> */}
                 </div>
             }
 
@@ -70,7 +86,12 @@ const Calls = props => {
             <div className="d-flex justify-content-start align-items-start flex-segments">
 
                 {showExtensions
-                    ? <Extensions />
+                    ? <Extensions
+                        extension={extension}
+                        setExtension={setExtension}
+                        extensions={extensions}
+                        setExtensions={setExtensions}
+                    />
                     : <div className="admin-content-segment position-relative">
 
                         <div className="divider-header">
@@ -79,7 +100,11 @@ const Calls = props => {
 
                         {error
                             ? <Message error content={error} />
-                            : <CallsList calls={calls} />
+                            : <CallsList
+                                calls={calls}
+                                setSip={setSip}
+                                setExtension={setExtension}
+                            />
                         }
 
                     </div>
