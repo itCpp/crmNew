@@ -1,11 +1,12 @@
 import React from "react";
 import moment from "moment";
-import { Icon, Transition, List } from "semantic-ui-react";
+import { Icon, Transition, List, Loader } from "semantic-ui-react";
 
 const CallsList = props => {
 
     const { calls } = props;
     const { setExtension, setSip } = props;
+    const { retries, retry, setRetry } = props;
 
     return <Transition.Group
         as={List}
@@ -23,12 +24,12 @@ const CallsList = props => {
 
                 <div>{call.phone}</div>
 
-                <div>
+                <div className={`${call.source === null ? 'text-danger' : ''}`}>
                     <span>{call.sip}</span>
                     {' '}
                     {call.source === null &&
                         <Icon
-                            name="plus"
+                            name="plus square"
                             className="button-icon"
                             title="Создать слушатель"
                             onClick={() => {
@@ -76,6 +77,16 @@ const CallsList = props => {
                 {!call.failed && !call.added &&
                     <div className="text-danger">Ошибка обработки</div>
                 }
+
+                {(call.failed || (!call.failed && !call.added)) && <div className="position-relative">
+                    <Icon
+                        name="redo"
+                        className="button-icon m-0"
+                        title="Повторить обработку"
+                        onClick={() => !retry && setRetry(call.id)}
+                    />
+                    {retries[`load${call.id}`] === true && <div className="loader-cell"><Loader active size="tiny" /></div>}
+                </div>}
 
             </div>
         </List.Item>)}

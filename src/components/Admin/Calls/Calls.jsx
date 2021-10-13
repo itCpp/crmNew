@@ -21,8 +21,29 @@ const Calls = props => {
     const [sip, setSip] = React.useState(null);
     const [extensions, setExtensions] = React.useState([]);
 
-    const incomingCall = call => {
-        setCalls(prevCalls => [call, ...prevCalls].slice(0, -1));
+    const incomingCall = (call, update) => {
+
+        if (update) {
+            axios.toast(null, {
+                time: 10000,
+                description: <p>Повторная обработка по звонку <b>#{call.id}</b> завершена</p>,
+                type: "success",
+            });
+
+            setCalls(prev => {
+                prev.forEach((row, i) => {
+                    if (row.id === call.id)
+                        prev[i] = call;
+                })
+                return prev;
+            });
+
+            setRetries(p => ({ ...p, [`load${call.id}`]: false }));
+
+            return;
+        }
+
+        setCalls(prev => [call, ...prev].slice(0, -1));
     }
 
     React.useEffect(() => {
@@ -37,7 +58,7 @@ const Calls = props => {
 
         if (permits.dev_calls)
             window.Echo.private(`App.Admin.Calls`)
-                .listen('IncomingCalls', ({ data }) => incomingCall(data));
+                .listen('IncomingCalls', ({ data, update }) => incomingCall(data, update));
 
         return () => {
             if (permits.dev_calls)
@@ -45,6 +66,27 @@ const Calls = props => {
         }
 
     }, []);
+
+    const [retry, setRetry] = React.useState(false);
+    const [retries, setRetries] = React.useState({});
+
+    React.useEffect(() => {
+
+        if (retry) {
+
+            setRetries(p => ({ ...p, [`load${retry}`]: true }));
+
+            axios.post('dev/retryIncomingCall', { id: retry }).then(() => null)
+                .catch(error => {
+                    axios.toast(error);
+                    setRetries(p => ({ ...p, [`load${retry}`]: false }));
+                }).then(() => {
+                    setRetry(false);
+                });
+
+        }
+
+    }, [retry]);
 
     return <>
 
@@ -104,6 +146,9 @@ const Calls = props => {
                                 calls={calls}
                                 setSip={setSip}
                                 setExtension={setExtension}
+                                retry={retry}
+                                setRetry={setRetry}
+                                retries={retries}
                             />
                         }
 
