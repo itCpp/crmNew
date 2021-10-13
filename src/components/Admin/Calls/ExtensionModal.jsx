@@ -15,19 +15,30 @@ const ExtensionModal = props => {
     const [errors, setErrors] = React.useState({});
 
     const [create, setCreate] = React.useState(null);
-    const [formdata, setFormdata] = React.useState({});
+    const [formdata, setFormdata] = React.useState({ on_work: 1 });
+    const [resources, setResources] = React.useState([]);
 
     const ad_places = places.map((place, i) => ({ key: i, ...place }));
 
     React.useEffect(() => {
 
-        if (id === true) {
-            setFormdata(prev => ({ ...prev, extension: sip }));
-            setLoad(false);
-        }
-        else {
+        if (id !== null) {
+
             axios.post('dev/getIncomingCallExtension', { id }).then(({ data }) => {
-                setFormdata(data.extension);
+
+                setFormdata(data.extension || { extension: sip, on_work: 1 });
+
+                let find = false;
+                data.resources.forEach(row => {
+                    if (row.val === data.extension.phone)
+                        find = true;
+                });
+
+                if (!find)
+                    data.resources = [{ val: data.extension.phone }, ...data.resources];
+
+                setResources(data.resources);
+
             }).catch(error => {
                 setError(axios.getError(error));
             }).then(() => {
@@ -43,6 +54,10 @@ const ExtensionModal = props => {
             value = checked === true ? 1 : 0;
 
         setFormdata(prev => ({ ...prev, [name]: value }));
+    }
+
+    const onAddItemPhone = (e, { value }) => {
+        setResources(prev => [...prev, { val: value }]);
     }
 
     React.useEffect(() => {
@@ -134,24 +149,35 @@ const ExtensionModal = props => {
                     error={errors.extension ? true : false}
                 />
 
-                <Form.Field
-                    control={Input}
-                    label="Номер источника"
-                    placeholder="Укажите номер телефона"
-                    required
-                    disabled={error}
-                    name="phone"
-                    value={formdata.phone || ""}
-                    onChange={onChange}
-                    error={errors.phone ? true : false}
-                />
+                <Form.Field required>
+                    <label>Номер источника</label>
+                    <Dropdown
+                        selection
+                        search
+                        allowAdditions
+                        options={resources.map((row, key) => ({
+                            key,
+                            text: row.val,
+                            value: row.val,
+                            content: (<div className="d-flex align-items-center justify-content-between">
+                                <div>{row.val}</div>
+                                {row.source && <div style={{ opacity: 0.5 }}><small>{row.source.name || `Источник #${row.source.id}`}</small></div>}
+                            </div>)
+                        }))}
+                        placeholder="Укажите номер телефона"
+                        name="phone"
+                        value={formdata.phone || ""}
+                        onChange={onChange}
+                        error={errors.phone ? true : false}
+                        onAddItem={onAddItemPhone}
+                    />
+                </Form.Field>
 
                 <Form.Field>
-                    <label></label>
+                    <label>Рекламная площадка</label>
                     <Dropdown
                         selection
                         options={ad_places}
-                        label="Рекламная площадка"
                         placeholder="Выберите рекламную площадку"
                         name="ad_place"
                         value={formdata.ad_place || ""}
