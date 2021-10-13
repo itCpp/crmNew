@@ -26,8 +26,8 @@ const Calls = props => {
         if (update) {
             axios.toast(null, {
                 time: 10000,
-                description: <p>Повторная обработка по звонку <b>#{call.id}</b> завершена</p>,
-                type: "success",
+                description: <p>Повторная обработка по звонку <b>#{call.id}</b> {call.failed ? "завершена, но заявка не добавлена" : "завершена с добавлением заявки"}</p>,
+                type: call.failed ? "warning" : "success",
             });
 
             setCalls(prev => {
