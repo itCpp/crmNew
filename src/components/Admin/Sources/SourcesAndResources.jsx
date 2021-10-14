@@ -34,7 +34,7 @@ function SourcesAndResources(props) {
 
     return <>
 
-        <div className="admin-content-segment d-flex justify-content-between align-items-center">
+        <div className="admin-content-segment d-flex justify-content-between align-items-center  segment-compact">
 
             <Header
                 as="h2"

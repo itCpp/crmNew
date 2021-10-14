@@ -31,15 +31,19 @@ function Sources(props) {
         return null;
 
     if (load)
-        return <div className="text-center my-3"><Loader active inline /></div>
+        return <div className="text-center my-4 segment-compact"><Loader active inline /></div>
 
-    return <div className="admin-content-segment d-inline-block">
+    return <div className="admin-content-segment segment-compact">
+
+        <div className="divider-header">
+            <h3>Ресурсы источников</h3>
+        </div>
 
         {error
             ? <Message error content={error} />
             : (resources.length
                 ? <div className="position-relative">
-                    <Table basic="very" className="mt-3" compact collapsing>
+                    <Table basic="very" className="mt-3 w-100" compact collapsing>
 
                         <Table.Header>
                             <Table.Row textAlign="center">

@@ -47,7 +47,11 @@ function Sources(props) {
     if (loading)
         return null;
 
-    return <div className="admin-content-segment w-100">
+    return <div className="admin-content-segment segment-compact">
+
+        <div className="divider-header">
+            <h3>Источники</h3>
+        </div>
 
         {select
             ? <SourceEdit

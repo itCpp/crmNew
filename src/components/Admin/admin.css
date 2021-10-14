@@ -32,8 +32,16 @@
     background: #ffffff;
 }
 
+.segment-compact {
+    max-width: 900px;
+}
+
 .admin-content-segment > .dimmer {
     border-radius: .5rem;
+}
+
+.admin-segment-hr {
+    border-top: 1px solid var(--border-admin-segment);
 }
 
 .admin-menu-block {
