@@ -2,7 +2,7 @@ import React from "react";
 import axios from "./../../utils/axios-header";
 
 import { connect } from 'react-redux';
-import { setTabList, selectTab, selectedUpdateTab } from "./../../store/requests/actions";
+import { setTabList, selectTab, selectedUpdateTab, updateRequestRow } from "./../../store/requests/actions";
 import { setTopMenu } from "./../../store/interface/actions";
 
 import { Loader, Message } from "semantic-ui-react";
@@ -49,6 +49,9 @@ function Requests(props) {
 
         axios.post('requests/start').then(({ data }) => {
 
+            window.Echo && window.Echo.private(`App.Requests`)
+                .listen('UpdateRequestRow', ({ row }) => props.updateRequestRow(row))
+
             setError(false);
             setTabList(data.tabs);
             setTopMenu(data.topMenu);
@@ -58,6 +61,10 @@ function Requests(props) {
         }).then(() => {
             setLoading(false);
         });
+
+        return () => {
+            window.Echo && window.Echo.leave(`App.Requests`);
+        }
 
     }, []);
 
@@ -95,7 +102,7 @@ const mapStateToProps = state => ({
 });
 
 const mapActions = {
-    setTabList, selectTab, setTopMenu, selectedUpdateTab
+    setTabList, selectTab, setTopMenu, selectedUpdateTab, updateRequestRow
 }
 
 export default connect(mapStateToProps, mapActions)(Requests);

@@ -1,12 +1,14 @@
 import React from "react";
-import { Table, Icon } from "semantic-ui-react";
+import { Table, Icon, Transition } from "semantic-ui-react";
 import Cells from "./Cells";
 import RequestPinChange from "./../RequestPinChange";
 import RequestSectorChange from "./../RequestSectorChange";
 
-const RequestsTableRow = props => {
+import TTT from "./Transition";
 
-    const { row } = props;
+export const RequestsTableRow = props => {
+
+    const { row, updates } = props;
 
     let className = ["request-row"];
     row.query_type_icon = null;
@@ -19,20 +21,26 @@ const RequestsTableRow = props => {
     if (row.status?.theme)
         className.push(`request-row-theme-${row.status.theme}`);
 
-    return <Table.Row className={className.join(' ')}>
+    return <Transition
+        animation="updateRow"
+        duration={500}
+        visible={updates[`u${row.id}`] === false ? false : true}
+    >
+        <Table.Row className={className.join(' ')}>
 
-        <Cells.CellId row={row} setCell={props.setCell} />
-        <Cells.CellDate row={row} setCell={props.setCell} />
-        <Cells.CellOperator>
-            <RequestSectorChange {...props} />
-            <RequestPinChange {...props} />
-        </Cells.CellOperator>
-        <Cells.CellClient row={row} setCell={props.setCell} />
-        <Cells.CellTheme row={row} setCell={props.setCell} />
-        <Cells.CellComments row={row} setCell={props.setCell} />
-        <Cells.CellButtons row={row} setEdit={props.setEdit} />
+            <Cells.CellId row={row} setCell={props.setCell} />
+            <Cells.CellDate row={row} setCell={props.setCell} />
+            <Cells.CellOperator>
+                <RequestSectorChange {...props} />
+                <RequestPinChange {...props} />
+            </Cells.CellOperator>
+            <Cells.CellClient row={row} setCell={props.setCell} />
+            <Cells.CellTheme row={row} setCell={props.setCell} />
+            <Cells.CellComments row={row} setCell={props.setCell} />
+            <Cells.CellButtons row={row} setEdit={props.setEdit} />
 
-    </Table.Row>
+        </Table.Row>
+    </Transition>
 
 }
 

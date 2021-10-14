@@ -273,3 +273,18 @@
     min-height: 19px;
     margin: .25rem auto .5rem;
 }
+
+.transition.updateRow {
+    -webkit-animation-name: updateRow;
+    animation-name: updateRow;
+}
+@-webkit-keyframes updateRow {
+    0% { opacity: 0; }
+    30% { opacity: .3; }
+    100% { opacity: 1; }
+}
+@keyframes updateRow {
+    0% { opacity: 0; }
+    30% { opacity: .3; }
+    100% { opacity: 1; }
+}

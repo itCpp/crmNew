@@ -27,3 +27,9 @@ export const updateRequestRow = data => ({
     type: UPDATE_REQUEST_ROW,
     payload: data
 });
+
+export const UPDATED_ROWS_FLAG = "UPDATED_ROWS_FLAG";
+export const updatedRowsFlag = data => ({
+    type: UPDATED_ROWS_FLAG,
+    payload: data
+});

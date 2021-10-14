@@ -1,7 +1,6 @@
 import React from "react";
-import axios from "./../../../utils/axios-header";
 import Hooks from "./../../../hooks";
-import { Table, Icon, Button, Loader } from "semantic-ui-react";
+import { Table, Transition } from "semantic-ui-react";
 import RequestsTableRow from "./RequestsTableRow";
 import RequestEditCell from "./../RequestEditCell";
 import RequestEdit from "./../RequestEdit";
@@ -53,6 +52,7 @@ const RequestsTable = props => {
                         row={row}
                         setCell={setCell}
                         setEdit={setEdit}
+                        updates={props.updates}
                     />)
                     : <Table.Row>
                         <Table.Cell colSpan={7}>

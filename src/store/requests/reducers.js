@@ -5,6 +5,7 @@ const defaultState = {
     select: null,
     selectedUpdate: false,
     requests: [],
+    updates: {},
 };
 
 export const requestsReducer = (state = defaultState, action) => {
@@ -25,20 +26,28 @@ export const requestsReducer = (state = defaultState, action) => {
 
         case ACTION.UPDATE_REQUEST_ROW:
 
-            let requests = [...state.requests];
+            let requests = [...state.requests],
+                updates = { ...state.updates };
 
             state.requests.find((item, key) => {
                 if (item.id === action.payload.id) {
-                    requests[key] = action.payload;
+
+                    requests[key] = { ...requests[key], ...action.payload };
+
+                    if (typeof updates[`u${action.payload.id}`] == "undefined")
+                        updates[`u${action.payload.id}`] = false;
+                    else
+                        updates[`u${action.payload.id}`] = !updates[`u${action.payload.id}`];
+
                     return key;
                 }
             });
 
-            return { ...state, requests: requests }
+            return { ...state, requests: requests, updates }
 
         default:
             return state;
-    
+
     }
 
 }

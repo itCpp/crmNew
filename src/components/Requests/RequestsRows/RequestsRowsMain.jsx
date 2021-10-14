@@ -166,6 +166,7 @@ const RequestsRowsMain = props => {
                     findSectors={findSectors}
                     changeSector={changeSector}
                     loadPage={loadPage}
+                    updates={props.updates}
                 />
             }
 
@@ -189,6 +190,7 @@ const mapStateToProps = state => ({
     select: state.requests.select,
     selectedUpdate: state.requests.selectedUpdate,
     requests: state.requests.requests,
+    updates: state.requests.updates,
 });
 
 const mapActionsToProps = {
