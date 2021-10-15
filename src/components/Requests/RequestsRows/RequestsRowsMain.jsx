@@ -19,7 +19,7 @@ const LIMIT_ROWS_PAGE = 20; // Ограничение количества ст�
 
 const RequestsRowsMain = props => {
 
-    const { select } = props;
+    const { select, setSearchProcess } = props;
     const { requests, setRequests } = props;
     const { selectedUpdate, selectedUpdateTab } = props;
 
@@ -47,6 +47,10 @@ const RequestsRowsMain = props => {
             setLoading(false);
         }
     }, [selectedUpdate, select]);
+
+    React.useEffect(() => {
+        setSearchProcess(paginate.search && Object.keys(paginate.search).length > 0);
+    }, [paginate.search]);
 
     /**
      * Запрос на получение данных по заявкам

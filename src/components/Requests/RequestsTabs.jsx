@@ -3,7 +3,7 @@ import { Icon } from "semantic-ui-react";
 const RequestsTabs = props => {
 
     const { tabs, select, selectTab, selectedUpdateTab } = props;
-    const { selectMenu, openSubMenu } = props;
+    const { selectMenu, openSubMenu, searchProcess } = props;
 
     const setSelect = id => {
 
@@ -20,7 +20,7 @@ const RequestsTabs = props => {
 
     return <div className={`menu-list-block ${select ? "menu-list-block-active" : ""}`} data-active={selectMenu.indexOf('requests') >= 0 ? true : false}>
 
-        <div className="menu-list-row" onClick={() => openSubMenu('requests')}>
+        {/* <div className="menu-list-row" onClick={() => openSubMenu('requests')}>
             <div className="menu-list-point">
                 <Icon name="table" />
                 <span>Заявки</span>
@@ -53,7 +53,39 @@ const RequestsTabs = props => {
                 </div>
             })}
 
+        </div> */}
+
+        <div className="menu-list-row title">
+
+            <div className="menu-list-point">
+                <Icon name="table" />
+                <span>Заявки</span>
+            </div>
+
         </div>
+
+        {tabs.map(tab => {
+
+            let className = ["menu-list-row sub-row"];
+
+            if (select === tab.id && !searchProcess)
+                className.push("tab-list-active");
+
+            return <div
+                key={tab.id}
+                title={tab.name_title || tab.name}
+                className={className.join(" ")}
+                onClick={() => setSelect(tab.id)}
+            >
+                <span className="select-point">
+                    <Icon
+                        name="chevron right"
+                        size="small"
+                    />
+                </span>
+                <span>{tab.name}</span>
+            </div>
+        })}
 
     </div>
 

@@ -28,6 +28,7 @@
 }
 
 .menu-list-row {
+    position: relative;
     margin: .1rem;
     padding: .5rem 1rem;
     display: flex;
@@ -42,6 +43,28 @@
     color: #a0acbb;
     transition: .2s;
 }
+
+.menu-list-row.title {
+    font-weight: 700;
+}
+
+.menu-list-row.sub-row {
+    margin-left: 2rem;
+    padding-top: .1rem;
+    padding-bottom: .1rem;
+}
+
+.menu-list-row.sub-row .select-point {
+    display: none;
+}
+
+.menu-list-row.sub-row.tab-list-active .select-point {
+    display: block;
+    position: absolute;
+    left: -.5rem;
+    top: 0px;
+}
+
 .rotate {
     margin: 0;
     transition: .1s;
@@ -51,8 +74,8 @@
     margin-right: .5rem;
 }
 
-[data-active="true"] > .menu-list-row,
-.menu-list-block-active > .menu-list-row {
+[data-active="true"] > .menu-list-row:not(.sub-row),
+.menu-list-block-active > .menu-list-row:not(.sub-row) {
     color: #ffffff;
 }
 

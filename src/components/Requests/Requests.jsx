@@ -16,7 +16,7 @@ import { Loader, Message } from "semantic-ui-react";
 import "./requests.css";
 
 import RequestsTabs from "./RequestsTabs";
-import RequestsTable from "./RequestsTable";
+// import RequestsTable from "./RequestsTable";
 import RequestsRowsMain from "./RequestsRows/RequestsRowsMain";
 
 function Requests(props) {
@@ -27,6 +27,7 @@ function Requests(props) {
     const [error, setError] = React.useState(false);
 
     const [selectMenu, setSelectMenu] = React.useState([]);
+    const [searchProcess, setSearchProcess] = React.useState(false);
 
     const openSubMenu = name => {
 
@@ -66,7 +67,7 @@ function Requests(props) {
             window.requestPermits = data.permits;
             window.Echo && window.Echo.private(`App.Requests`)
                 .listen('UpdateRequestRow', ({ row }) => props.updateRequestRow(row))
-                .listen('CreatedNewRequest', data => createRequestRow(data))
+            // .listen('CreatedNewRequest', data => createRequestRow(data))
 
         }).catch(error => {
             setError(axios.getError(error));
@@ -95,12 +96,17 @@ function Requests(props) {
 
         <div className="request-main-menu">
             <div className="nav-bar">
-                <RequestsTabs {...props} openSubMenu={openSubMenu} selectMenu={selectMenu} />
+                <RequestsTabs
+                    {...props}
+                    openSubMenu={openSubMenu}
+                    selectMenu={selectMenu}
+                    searchProcess={searchProcess}
+                />
             </div>
         </div>
 
         {/* <RequestsTable /> */}
-        <RequestsRowsMain />
+        <RequestsRowsMain setSearchProcess={setSearchProcess} />
 
     </div>
 
