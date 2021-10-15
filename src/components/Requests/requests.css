@@ -288,3 +288,17 @@
     30% { opacity: .3; }
     100% { opacity: 1; }
 }
+
+.search-form {
+    display: flex;
+    flex-direction: column;
+}
+.search-form > * {
+    margin: 0 .5rem .5rem !important;
+}
+
+.button-label-info {
+    position: absolute;
+    top: 0;
+    right: 0;
+}

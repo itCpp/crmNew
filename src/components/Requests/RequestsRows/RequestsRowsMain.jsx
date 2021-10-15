@@ -13,6 +13,7 @@ import { Loader, Message, Button } from "semantic-ui-react";
 
 import RequestsTable from "./RequestsTable";
 import RequestAdd from "./../RequestAdd";
+import RequestSearch from "./../Search/RequestSearch";
 
 const LIMIT_ROWS_PAGE = 20; // Ограничение количества строк на вывод за один запрос
 
@@ -33,13 +34,14 @@ const RequestsRowsMain = props => {
         page: 1, // Выбранная страница
         limit: LIMIT_ROWS_PAGE, // Количество строк за один запрос
         tabId: select, // Выбранная вкладка
+        search: null,
     });
 
     /** Смена вкладки или клик по уже выбранной */
     React.useEffect(() => {
         if (selectedUpdate) {
             setLoading(true);
-            getRequests({ ...paginate, page: 1, tabId: select });
+            getRequests({ ...paginate, page: 1, tabId: select, search: null });
         }
         else {
             setLoading(false);
@@ -52,6 +54,9 @@ const RequestsRowsMain = props => {
      * @param {null|function} callback Функция обратного вызова
      */
     const getRequests = (params, callback = null) => {
+
+        if (params.search)
+            setLoading(true);
 
         setLoadPage(true);
 
@@ -130,8 +135,13 @@ const RequestsRowsMain = props => {
             <div className="page-title-box">
                 <h4 className="page-title">Заявки</h4>
             </div>
-            {permits.requests_add
-                ? <>
+            <div>
+                <RequestSearch
+                    getRequests={getRequests}
+                    paginate={paginate}
+                    setRequests={setRequests}
+                />
+                {permits.requests_add && <>
                     <Button
                         icon="plus"
                         color="green"
@@ -141,9 +151,8 @@ const RequestsRowsMain = props => {
                         onClick={() => setAdd(true)}
                     />
                     {add && <RequestAdd {...props} permits={permits} setOpen={setAdd} />}
-                </>
-                : null
-            }
+                </>}
+            </div>
         </div>
 
         <div className="block-card mb-3">
@@ -152,7 +161,7 @@ const RequestsRowsMain = props => {
                 <Message info content="Выберите вкладку для отображения заявок" className="mx-1" />
             </div>}
 
-            {loading && select && !error &&
+            {loading && select &&
                 <div className="text-center my-4 w-100"><Loader active inline indeterminate /></div>
             }
 
@@ -171,7 +180,9 @@ const RequestsRowsMain = props => {
             }
 
             {!loading && select && !error && requests.length === 0 && <div className="text-center">
-                <div className="my-4" style={{ opacity: "0.4", fontWeight: 500 }}>Заявок нет</div>
+                <div className="my-4" style={{ opacity: "0.4", fontWeight: 500 }}>
+                    {paginate.search ? "Ничего не найдено" : "Заявок нет"}
+                </div>
             </div>}
 
             {error && !loading && <div className="my-3 mx-auto w-100" style={{ maxWidth: "550px" }}>

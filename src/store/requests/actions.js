@@ -33,3 +33,9 @@ export const updatedRowsFlag = data => ({
     type: UPDATED_ROWS_FLAG,
     payload: data
 });
+
+export const CREATE_REQUEST_ROW = "CREATE_REQUEST_ROW";
+export const createRequestRow = data => ({
+    type: CREATE_REQUEST_ROW,
+    payload: data
+});

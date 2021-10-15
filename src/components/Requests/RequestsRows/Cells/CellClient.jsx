@@ -20,7 +20,7 @@ const CellClient = props => {
             </div>
         }
 
-        {row.clients.map(client => <div key={`client_${row.id}_${client.id}`}>
+        {row.clients && row.clients.map(client => <div key={`client_${row.id}_${client.id}`}>
             <div>{client.phone}</div>
         </div>)}
 

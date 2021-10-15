@@ -2,7 +2,13 @@ import React from "react";
 import axios from "./../../utils/axios-header";
 
 import { connect } from 'react-redux';
-import { setTabList, selectTab, selectedUpdateTab, updateRequestRow } from "./../../store/requests/actions";
+import {
+    setTabList,
+    selectTab,
+    selectedUpdateTab,
+    updateRequestRow,
+    createRequestRow
+} from "./../../store/requests/actions";
 import { setTopMenu } from "./../../store/interface/actions";
 
 import { Loader, Message } from "semantic-ui-react";
@@ -36,6 +42,10 @@ function Requests(props) {
 
     }
 
+    const createRequestRow = data => {
+        props.createRequestRow({ ...data });
+    }
+
     React.useEffect(() => {
 
         setLoading(true);
@@ -49,12 +59,14 @@ function Requests(props) {
 
         axios.post('requests/start').then(({ data }) => {
 
-            window.Echo && window.Echo.private(`App.Requests`)
-                .listen('UpdateRequestRow', ({ row }) => props.updateRequestRow(row))
-
             setError(false);
             setTabList(data.tabs);
             setTopMenu(data.topMenu);
+
+            window.requestPermits = data.permits;
+            window.Echo && window.Echo.private(`App.Requests`)
+                .listen('UpdateRequestRow', ({ row }) => props.updateRequestRow(row))
+                .listen('CreatedNewRequest', data => createRequestRow(data))
 
         }).catch(error => {
             setError(axios.getError(error));
@@ -102,7 +114,12 @@ const mapStateToProps = state => ({
 });
 
 const mapActions = {
-    setTabList, selectTab, setTopMenu, selectedUpdateTab, updateRequestRow
+    setTabList,
+    selectTab,
+    setTopMenu,
+    selectedUpdateTab,
+    updateRequestRow,
+    createRequestRow
 }
 
 export default connect(mapStateToProps, mapActions)(Requests);

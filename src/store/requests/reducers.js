@@ -1,4 +1,5 @@
 import * as ACTION from './actions'
+import createRequestRow from "./createRequestRow";
 
 const defaultState = {
     tabs: [],
@@ -22,7 +23,7 @@ export const requestsReducer = (state = defaultState, action) => {
             return { ...state, selectedUpdate: action.payload }
 
         case ACTION.SET_REQUESTS:
-            return { ...state, requests: action.payload }
+            return { ...state, requests: action.payload, updates: {} }
 
         case ACTION.UPDATE_REQUEST_ROW:
 
@@ -44,6 +45,9 @@ export const requestsReducer = (state = defaultState, action) => {
             });
 
             return { ...state, requests: requests, updates }
+
+        case ACTION.CREATE_REQUEST_ROW:
+            return createRequestRow(state, action.payload);
 
         default:
             return state;
