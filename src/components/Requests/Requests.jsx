@@ -106,7 +106,7 @@ function Requests(props) {
         </div>
 
         {/* <RequestsTable /> */}
-        <RequestsRowsMain setSearchProcess={setSearchProcess} />
+        <RequestsRowsMain searchProcess={searchProcess} setSearchProcess={setSearchProcess} />
 
     </div>
 

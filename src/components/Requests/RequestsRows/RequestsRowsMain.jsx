@@ -9,7 +9,7 @@ import {
     setRequests,
     updateRequestRow
 } from "./../../../store/requests/actions";
-import { Loader, Message, Button } from "semantic-ui-react";
+import { Loader, Message, Button, Icon, Label } from "semantic-ui-react";
 
 import RequestsTable from "./RequestsTable";
 import RequestAdd from "./../RequestAdd";
@@ -19,7 +19,7 @@ const LIMIT_ROWS_PAGE = 20; // Ограничение количества ст�
 
 const RequestsRowsMain = props => {
 
-    const { select, setSearchProcess } = props;
+    const { select, searchProcess, setSearchProcess } = props;
     const { requests, setRequests } = props;
     const { selectedUpdate, selectedUpdateTab } = props;
 
@@ -29,6 +29,7 @@ const RequestsRowsMain = props => {
 
     const [permits, setPermits] = React.useState({});
     const [add, setAdd] = React.useState(false);
+    const [tabName, setTabName] = React.useState(false);
 
     const [paginate, setPaginate] = React.useState({
         page: 1, // Выбранная страница
@@ -41,6 +42,7 @@ const RequestsRowsMain = props => {
     /** Смена вкладки или клик по уже выбранной */
     React.useEffect(() => {
         if (selectedUpdate && select) {
+            setTabName(props.tabs.find(item => item.id === select));
             getRequests({ ...paginate, page: 1, tabId: select, search: null });
         }
         else {
@@ -137,7 +139,33 @@ const RequestsRowsMain = props => {
 
         <div className="d-flex justify-content-between align-items-center">
             <div className="page-title-box">
+
                 <h4 className="page-title">Заявки</h4>
+
+                {searchProcess &&
+                    <div className="page-title-subox">
+                        <Icon name="chevron right" />
+                        <span>Поиск</span>
+                        {paginate.total && <Label
+                            content={paginate.total}
+                            size="mini"
+                            color="green"
+                        />}
+                    </div>
+                }
+
+                {tabName?.name && !searchProcess &&
+                    <div className="page-title-subox">
+                        <Icon name="chevron right" />
+                        <span>{tabName.name}</span>
+                        {paginate?.total > 0 && !loading && <Label
+                            content={paginate.total}
+                            size="mini"
+                            color="green"
+                        />}
+                    </div>
+                }
+
             </div>
             <div>
                 <RequestSearch
@@ -206,6 +234,7 @@ const mapStateToProps = state => ({
     selectedUpdate: state.requests.selectedUpdate,
     requests: state.requests.requests,
     updates: state.requests.updates,
+    tabs: state.requests.tabs,
 });
 
 const mapActionsToProps = {

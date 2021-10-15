@@ -325,3 +325,16 @@
     top: 0;
     right: 0;
 }
+
+.page-title-box {
+    display: flex;
+    align-items: center;
+}
+
+.page-title-box > *:not(:last-child) {
+    margin-right: 1rem !important;
+}
+
+.page-title-subox > *:not(:last-child) {
+    margin-right: .5rem !important;
+}
