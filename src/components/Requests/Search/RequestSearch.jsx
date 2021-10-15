@@ -8,6 +8,7 @@ const RequestSearch = props => {
     const [open, setOpen] = React.useState(false);
     const [search, setSearch] = React.useState({});
     const [start, setStart] = React.useState(false);
+    const [active, setActive] = React.useState(false);
 
     const close = () => setOpen(false);
 
@@ -30,6 +31,17 @@ const RequestSearch = props => {
         if (e.keyCode === 13)
             return setStart(true);
 
+    }
+
+    const searchCansel = () => {
+        setOpen(false);
+        setRequests([]);
+        getRequests({
+            ...paginate,
+            search: null,
+            page: 1,
+            tabId: localStorage.getItem('select_tab'),
+        });
     }
 
     React.useEffect(() => {
@@ -55,16 +67,11 @@ const RequestSearch = props => {
 
     }, [start]);
 
-    const searchCansel = () => {
-        setOpen(false);
-        setRequests([]);
-        getRequests({
-            ...paginate,
-            search: null,
-            page: 1,
-            tabId: localStorage.getItem('select_tab'),
-        });
-    }
+    React.useEffect(() => {
+
+        setActive(Object.keys(search).length > 0);
+
+    }, [search]);
 
     React.useEffect(() => {
 
@@ -157,7 +164,7 @@ const RequestSearch = props => {
                     onKeyUp={onKeyUp}
                 />
 
-                {paginate?.search &&
+                {paginate?.search && active &&
                     <Button
                         color="orange"
                         content="Отменить поиск"
@@ -169,6 +176,7 @@ const RequestSearch = props => {
                     color="green"
                     content="Найти"
                     onClick={() => setStart(true)}
+                    disabled={!active}
                 />
 
             </div>
