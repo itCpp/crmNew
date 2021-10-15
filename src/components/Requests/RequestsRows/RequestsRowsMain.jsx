@@ -40,7 +40,7 @@ const RequestsRowsMain = props => {
 
     /** Смена вкладки или клик по уже выбранной */
     React.useEffect(() => {
-        if (selectedUpdate) {
+        if (selectedUpdate && select) {
             getRequests({ ...paginate, page: 1, tabId: select, search: null });
         }
         else {
