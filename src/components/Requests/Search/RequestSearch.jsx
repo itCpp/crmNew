@@ -12,7 +12,14 @@ const RequestSearch = props => {
     const close = () => setOpen(false);
 
     const onChange = (e, { name, value }) => {
-        setSearch(p => ({ ...p, [name]: value }));
+
+        let params = { ...search, [name]: value };
+
+        if (params[name] === "")
+            delete (params[name]);
+
+        setSearch(params);
+
     }
 
     const onKeyUp = e => {
@@ -48,12 +55,21 @@ const RequestSearch = props => {
 
     }, [start]);
 
+    const searchCansel = () => {
+        setOpen(false);
+        setRequests([]);
+        getRequests({
+            ...paginate,
+            search: null,
+            page: 1,
+            tabId: localStorage.getItem('select_tab'),
+        });
+    }
+
     React.useEffect(() => {
 
         if (!paginate.search)
             setSearch({});
-
-        console.log(paginate);
 
     }, [paginate]);
 
@@ -140,6 +156,14 @@ const RequestSearch = props => {
                     onChange={onChange}
                     onKeyUp={onKeyUp}
                 />
+
+                {paginate?.search &&
+                    <Button
+                        color="orange"
+                        content="Отменить поиск"
+                        onClick={() => searchCansel()}
+                    />
+                }
 
                 <Button
                     color="green"

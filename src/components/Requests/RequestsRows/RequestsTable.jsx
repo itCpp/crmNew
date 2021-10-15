@@ -8,13 +8,38 @@ import RequestEdit from "./../RequestEdit";
 const RequestsTable = props => {
 
     const { requests, getRequests } = props;
-    const { paginate, loadPage } = props;
+    const { paginate, loadPage, last } = props;
 
     const elem = React.useRef();
-    Hooks.useObserver(elem, paginate.page === paginate.pages, loadPage, () => {
-        let page = (paginate.page + 1);
-        getRequests({ ...paginate, page });
-    });
+    const observer = React.useRef();
+
+    React.useEffect(() => {
+
+        if (loadPage || !elem.current) return;
+        if (observer.current) observer.current.disconnect();
+
+        const cb = entries => {
+
+            if (entries[0].isIntersecting) {
+
+                let page = (paginate.page + 1);
+
+                if (page <= paginate.pages)
+                    getRequests({ ...paginate, page });
+
+            }
+            
+        };
+
+        observer.current = new IntersectionObserver(cb);
+        observer.current.observe(elem.current);
+
+    }, [loadPage]);
+
+    // Hooks.useObserver(elem, paginate.page === paginate.pages, { loadPage, last }, () => {
+    //     let page = (paginate.page + 1);
+    //     getRequests({ ...paginate, page });
+    // });
 
     const [editCell, setEditCell] = React.useState(null);
 

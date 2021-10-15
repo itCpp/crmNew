@@ -32,6 +32,7 @@ const RequestsRowsMain = props => {
 
     const [paginate, setPaginate] = React.useState({
         page: 1, // Выбранная страница
+        pages: null,
         limit: LIMIT_ROWS_PAGE, // Количество строк за один запрос
         tabId: select, // Выбранная вкладка
         search: null,
@@ -40,7 +41,6 @@ const RequestsRowsMain = props => {
     /** Смена вкладки или клик по уже выбранной */
     React.useEffect(() => {
         if (selectedUpdate) {
-            setLoading(true);
             getRequests({ ...paginate, page: 1, tabId: select, search: null });
         }
         else {
@@ -55,7 +55,7 @@ const RequestsRowsMain = props => {
      */
     const getRequests = (params, callback = null) => {
 
-        if (params.search)
+        if (params.page === 1)
             setLoading(true);
 
         setLoadPage(true);
