@@ -8,7 +8,8 @@ import {
     selectedUpdateTab,
     updateRequestRow,
     createRequestRow,
-    dropRequestRow
+    dropRequestRow,
+    counterUpdate
 } from "./../../store/requests/actions";
 import { setTopMenu } from "./../../store/interface/actions";
 
@@ -85,9 +86,28 @@ function Requests(props) {
 
     React.useEffect(() => {
 
-        setLoading(true);
+        let selected,
+            counterUpdateInterval,
+            counterUpdateProcess = true,
+            counterUpdateError = false;
 
-        let selected;
+        const checkCounter = () => {
+
+            if (counterUpdateProcess || counterUpdateError) return;
+
+            counterUpdateProcess = true;
+
+            axios.post('requests/getCounter').then(({ data }) => {
+                props.counterUpdate(data.counter);
+            }).catch(() => {
+                counterUpdateError = true;
+            }).then(() => {
+                counterUpdateProcess = false;
+            });
+
+        }
+
+        setLoading(true);
 
         if (selected = localStorage.getItem('select_tab')) {
             selectTab(Number(selected));
@@ -108,6 +128,13 @@ function Requests(props) {
             window.Echo && window.Echo.private(`App.Requests.${window.userPin}`)
                 .listen('UpdateRequestRowForPin', updateRequestRowForPin);
 
+            if (data.intervalCounter) {
+                counterUpdateInterval = setInterval(checkCounter, data.intervalCounter);
+                counterUpdateProcess = false;
+            }
+
+            props.counterUpdate(data.counter);
+
         }).catch(error => {
             setError(axios.getError(error));
         }).then(() => {
@@ -116,7 +143,9 @@ function Requests(props) {
 
         return () => {
             window.Echo && window.Echo.leave(`App.Requests`);
-            window.Echo && window.Echo.leave(`App.Requests.${window.userPin}`)
+            window.Echo && window.Echo.leave(`App.Requests.${window.userPin}`);
+
+            clearInterval(counterUpdateInterval);
         }
 
     }, []);
@@ -141,6 +170,7 @@ function Requests(props) {
                     openSubMenu={openSubMenu}
                     selectMenu={selectMenu}
                     searchProcess={searchProcess}
+                    counter={props.counter || {}}
                 />
             </div>
         </div>
@@ -157,6 +187,7 @@ const mapStateToProps = state => ({
     permits: state.main.userPermits,
     tabs: state.requests.tabs,
     select: state.requests.select,
+    counter: state.requests.counter,
 });
 
 const mapActions = {
@@ -166,7 +197,8 @@ const mapActions = {
     selectedUpdateTab,
     updateRequestRow,
     createRequestRow,
-    dropRequestRow
+    dropRequestRow,
+    counterUpdate
 }
 
 export default connect(mapStateToProps, mapActions)(Requests);

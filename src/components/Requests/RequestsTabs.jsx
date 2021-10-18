@@ -4,6 +4,7 @@ const RequestsTabs = props => {
 
     const { tabs, select, selectTab, selectedUpdateTab } = props;
     const { selectMenu, openSubMenu, searchProcess } = props;
+    const { counter } = props;
 
     const setSelect = id => {
 
@@ -84,6 +85,7 @@ const RequestsTabs = props => {
                     />
                 </span>
                 <span>{tab.name}</span>
+                <small>{counter[`tab${tab.id}`]?.count || ""}</small>
             </div>
         })}
 

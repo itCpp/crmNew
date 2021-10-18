@@ -7,6 +7,7 @@ const defaultState = {
     selectedUpdate: false,
     requests: [],
     updates: {},
+    counter: {},
 };
 
 let list = [];
@@ -57,11 +58,14 @@ export const requestsReducer = (state = defaultState, action) => {
 
             list.forEach((row, i) => {
                 if (row.id === action.payload) {
-                    delete(list[i]);
+                    delete (list[i]);
                 }
             });
 
             return { ...state, requests: list }
+
+        case ACTION.COUNTER_UPDATE:
+            return { ...state, counter: action.payload }
 
         default:
             return state;

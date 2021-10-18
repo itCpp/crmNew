@@ -46,3 +46,10 @@ export const dropRequestRow = data => ({
     type: DROP_REQUEST_ROW,
     payload: data
 });
+
+/** Данные счетчика */
+export const COUNTER_UPDATE = "COUNTER_UPDATE";
+export const counterUpdate = data => ({
+    type: COUNTER_UPDATE,
+    payload: data
+});
