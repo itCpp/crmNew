@@ -22,9 +22,9 @@ const CellOperator = props => {
             <Icon name="comment alternate outline" />
             <span>{row.comment_first || <span style={{ opacity: 0.4 }}>Комментария нет</span>}</span>
 
-            <div className="request-cell-edit-in-block" data-type="commentFirst" onClick={e => setCell(e, row)}>
+            {row.permits.requests_comment_first && <div className="request-cell-edit-in-block" data-type="commentFirst" onClick={e => setCell(e, row)}>
                 <Icon name="pencil" />
-            </div>
+            </div>}
 
         </div>
 

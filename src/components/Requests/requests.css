@@ -211,6 +211,10 @@
     opacity: 1 !important;
 }
 
+.my-form .disabled {
+    opacity: .7 !important;
+}
+
 .pin-btn-select {
     width: 90px;
     padding: .7rem .5rem !important;

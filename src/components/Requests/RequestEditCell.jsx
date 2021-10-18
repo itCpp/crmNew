@@ -19,6 +19,7 @@ const RequestEditCell = props => {
     const [load, setLoad] = React.useState(false);
 
     const [formdata, setFormdata] = React.useState({});
+    const [permits, setPermits] = React.useState({});
     const [position, setPosition] = React.useState({ x: 0, y: 0 });
 
     React.useEffect(() => {
@@ -78,6 +79,7 @@ const RequestEditCell = props => {
                 }));
 
                 setFormdata(formdata);
+                setPermits(data.permits);
 
             }).catch(error => {
                 setError(axios.getError(error));
@@ -127,47 +129,38 @@ const RequestEditCell = props => {
 
     }, [save]);
 
-    const [drag, setDrag] = React.useState({ move: false });
+    // const [drag, setDrag] = React.useState({ move: false });
 
-    const onMouseDown = e => {
+    // const onMouseDown = e => {
+    //     return;
+    //     setDrag({ ...drag, move: true });
+    // }
 
-        return;
+    // const onMouseMove = e => {
+    //     return;
+    //     if (!drag.move) return;
+    //     // const modal = document.getElementById('request-edit-modal');
+    //     setPosition({ x: e.clientX - position.x, y: e.clientY - position.y });
+    // }
 
-        setDrag({ ...drag, move: true });
-
-    }
-
-    const onMouseMove = e => {
-
-        return;
-
-        if (!drag.move) return;
-
-        // const modal = document.getElementById('request-edit-modal');
-        setPosition({ x: e.clientX - position.x, y: e.clientY - position.y });
-
-    }
-
-    const onMouseUp = e => {
-
-        return;
-
-        setDrag({ ...drag, move: false });
-
-    }
+    // const onMouseUp = e => {
+    //     return;
+    //     setDrag({ ...drag, move: false });
+    // }
 
     return <RequestEditCellSwitch
         {...props}
         formdata={formdata}
+        permits={permits}
         changeData={changeData}
         errors={errors}
         loading={loading}
         setSave={setSave}
         load={load}
         css={position}
-        onMouseDown={onMouseDown}
-        onMouseMove={onMouseMove}
-        onMouseUp={onMouseUp}
+        // onMouseDown={onMouseDown}
+        // onMouseMove={onMouseMove}
+        // onMouseUp={onMouseUp}
     />
 
 }
@@ -242,7 +235,7 @@ const EditDate = props => <ModalBody {...props}
                     value={props?.formdata?.request?.address || null}
                     onChange={(e, { name, value }) => props.changeData(name, value)}
                     error={props?.errors?.address ? true : false}
-                    disabled={props.load ? true : false}
+                    disabled={props.load || (props?.permits?.requests_addr_change ? false : true) ? true : false}
                 />
             </Form.Field>
 

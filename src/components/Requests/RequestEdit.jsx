@@ -131,7 +131,7 @@ const RequestEdit = props => {
 
                 <Grid.Column width={10}>
 
-                    <Form>
+                    <Form className="my-form">
 
                         <Form.Group>
                             <Form.Input
@@ -203,6 +203,7 @@ const RequestEdit = props => {
                                     value={formdata.address || null}
                                     onChange={(e, { name, value }) => changeData(name, value)}
                                     error={errors.address ? true : false}
+                                    disabled={permits.requests_addr_change ? false : true}
                                 />
                             </Form.Field>
                             <Form.Field width={8}>
