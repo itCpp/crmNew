@@ -1,5 +1,5 @@
 import * as ACTION from './actions'
-import createRequestRow from "./createRequestRow";
+// import createRequestRow from "./createRequestRow";
 
 const defaultState = {
     tabs: [],
@@ -8,6 +8,8 @@ const defaultState = {
     requests: [],
     updates: {},
 };
+
+let list = [];
 
 export const requestsReducer = (state = defaultState, action) => {
 
@@ -47,7 +49,19 @@ export const requestsReducer = (state = defaultState, action) => {
             return { ...state, requests: requests, updates }
 
         case ACTION.CREATE_REQUEST_ROW:
-            return createRequestRow(state, action.payload);
+            return { ...state, requests: [action.payload, ...state.requests] }
+
+        case ACTION.DROP_REQUEST_ROW:
+
+            list = [...state.requests];
+
+            list.forEach((row, i) => {
+                if (row.id === action.payload) {
+                    delete(list[i]);
+                }
+            });
+
+            return { ...state, requests: list }
 
         default:
             return state;

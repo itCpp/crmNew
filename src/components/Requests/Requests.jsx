@@ -7,7 +7,8 @@ import {
     selectTab,
     selectedUpdateTab,
     updateRequestRow,
-    createRequestRow
+    createRequestRow,
+    dropRequestRow
 } from "./../../store/requests/actions";
 import { setTopMenu } from "./../../store/interface/actions";
 
@@ -43,9 +44,44 @@ function Requests(props) {
 
     }
 
-    const createRequestRow = data => {
-        props.createRequestRow({ ...data });
-    }
+    const updateRequestRow = React.useCallback(data => {
+
+        if (data.toExclude && data.toExclude.indexOf(window.userPin) >= 0)
+            return;
+
+        const { row } = data;
+        props.updateRequestRow(row);
+        // console.log(data);
+
+    }, []);
+
+    const updateRequestRowForPin = React.useCallback(data => {
+
+        const { row, drop } = data;
+
+        if (drop) {
+            axios.toast(null, {
+                time: 5000,
+                type: "info",
+                description: <p>Заявка <b>#{row}</b> передана другому оператору</p>
+            });
+            return props.dropRequestRow(row);
+        }
+
+        axios.toast(null, {
+            time: 0,
+            type: "info",
+            description: <p>Вам назначена новая заявка <b>#{row}</b></p>
+        });
+
+        axios.post('requests/getRowForTab', {
+            id: row,
+            tabId: localStorage.getItem('select_tab')
+        }).then(({ data }) => {
+            data.row && props.createRequestRow(data.row);
+        });
+
+    }, []);
 
     React.useEffect(() => {
 
@@ -65,9 +101,12 @@ function Requests(props) {
             setTopMenu(data.topMenu);
 
             window.requestPermits = data.permits;
+
             window.Echo && window.Echo.private(`App.Requests`)
-                .listen('UpdateRequestRow', ({ row }) => props.updateRequestRow(row))
-            // .listen('CreatedNewRequest', data => createRequestRow(data))
+                .listen('UpdateRequestRow', updateRequestRow);
+
+            window.Echo && window.Echo.private(`App.Requests.${window.userPin}`)
+                .listen('UpdateRequestRowForPin', updateRequestRowForPin);
 
         }).catch(error => {
             setError(axios.getError(error));
@@ -77,6 +116,7 @@ function Requests(props) {
 
         return () => {
             window.Echo && window.Echo.leave(`App.Requests`);
+            window.Echo && window.Echo.leave(`App.Requests.${window.userPin}`)
         }
 
     }, []);
@@ -125,7 +165,8 @@ const mapActions = {
     setTopMenu,
     selectedUpdateTab,
     updateRequestRow,
-    createRequestRow
+    createRequestRow,
+    dropRequestRow
 }
 
 export default connect(mapStateToProps, mapActions)(Requests);

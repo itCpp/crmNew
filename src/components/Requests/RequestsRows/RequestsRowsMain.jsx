@@ -213,7 +213,12 @@ const RequestsRowsMain = props => {
 
             {!loading && select && !error && requests.length === 0 && <div className="text-center">
                 <div className="my-4" style={{ opacity: "0.4", fontWeight: 500 }}>
-                    {paginate.search ? "Ничего не найдено" : "Заявок нет"}
+                    <Icon name="database" style={{
+                        margin: "1rem 0 0",
+                        fontSize: "3rem",
+                        opacity: 0.2,
+                    }} />
+                    <div>{paginate.search ? "Ничего не найдено" : "Заявок нет"}</div>
                 </div>
             </div>}
 

@@ -52,6 +52,7 @@ function App(props) {
         if (userData?.id) {
 
             window.userId = userData.id;
+            window.userPin = userData.pin;
 
             window.Echo.join(`App.Users`)
                 .here(props.setUsersOnline)

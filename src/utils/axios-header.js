@@ -117,6 +117,8 @@ instance.toast = (
             options.title = "Выполнено";
         else if (options.type == "warning")
             options.title = "Внимание";
+        else if (options.type == "info")
+            options.title = "Информация";
     }
 
     options.title = options.title || "Ошибка";

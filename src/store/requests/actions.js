@@ -39,3 +39,10 @@ export const createRequestRow = data => ({
     type: CREATE_REQUEST_ROW,
     payload: data
 });
+
+/** Удаление строки у старого оператора при его смене */
+export const DROP_REQUEST_ROW = "DROP_REQUEST_ROW";
+export const dropRequestRow = data => ({
+    type: DROP_REQUEST_ROW,
+    payload: data
+});
