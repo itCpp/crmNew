@@ -1,8 +1,27 @@
+import { useCallback, useRef } from "react";
 import { Table, Icon } from "semantic-ui-react";
 
 const CellClient = props => {
 
     const { row, setCell } = props;
+
+    const copyPhone = useCallback((e, phone) => {
+
+        navigator.clipboard.writeText(phone);
+        const phoneText = e.currentTarget && e.currentTarget.querySelector('.to-copy-text');
+
+        if (phoneText) {
+            phoneText.classList.add('copyed');
+            setTimeout(() => phoneText.classList.remove('copyed'), 300);
+        }
+
+        // e.target.classList.add('copyed');
+
+        // setTimeout(() => {
+        //     e.target.classList.remove('copyed');
+        // }, 300);
+
+    }, []);
 
     return <Table.Cell>
 
@@ -20,8 +39,15 @@ const CellClient = props => {
             </div>
         }
 
-        {row.clients && row.clients.map(client => <div key={`client_${row.id}_${client.id}`}>
-            <div>{client.phone}</div>
+        {row.clients && row.clients.map(client => <div
+            key={`client_${row.id}_${client.id}`}
+            onClick={(e) => copyPhone(e, client.phone)}
+            className="d-flex align-items-center"
+        >
+            <div>
+                <Icon name="copy" className="button-icon" title="Скопировать номер телефона" />
+            </div>
+            <div className="to-copy-text">{client.phone}</div>
         </div>)}
 
         <div className="request-cell-edit" data-type="client" onClick={e => setCell(e, row)}>

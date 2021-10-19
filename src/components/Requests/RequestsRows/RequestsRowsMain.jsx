@@ -7,7 +7,8 @@ import {
     selectTab,
     selectedUpdateTab,
     setRequests,
-    updateRequestRow
+    updateRequestRow,
+    // counterUpdate
 } from "./../../../store/requests/actions";
 import { Loader, Message, Button, Icon, Label } from "semantic-ui-react";
 
@@ -243,7 +244,12 @@ const mapStateToProps = state => ({
 });
 
 const mapActionsToProps = {
-    setTabList, selectTab, setRequests, updateRequestRow, selectedUpdateTab
+    setTabList,
+    selectTab,
+    setRequests,
+    updateRequestRow,
+    selectedUpdateTab,
+    // counterUpdate
 }
 
 export default withRouter(connect(mapStateToProps, mapActionsToProps)(RequestsRowsMain));

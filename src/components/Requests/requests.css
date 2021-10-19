@@ -316,6 +316,14 @@
     100% { opacity: 1; }
 }
 
+.to-copy-text:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+.to-copy-text.copyed {
+    animation: updateRow .3s;
+}
+
 .search-form {
     display: flex;
     flex-direction: column;

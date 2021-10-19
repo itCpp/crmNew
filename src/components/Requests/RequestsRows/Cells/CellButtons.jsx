@@ -6,7 +6,25 @@ const CellButtons = props => {
 
     return <Table.Cell>
 
-        <Button.Group size="mini" basic className="request-button-control">
+        <div className="d-flex justify-content-center align-items-center">
+
+            <Icon
+                name="edit"
+                title="Редактировать заявку"
+                onClick={() => setEdit(row)}
+                className="button-icon mx-1"
+            />
+
+            {/* <Icon
+                name="ellipsis vertical"
+                title="Редактировать заявку"
+                onClick={() => setEdit(row)}
+                className="button-icon mx-1"
+            /> */}
+
+        </div>
+
+        {/* <Button.Group size="mini" className="request-button-control">
             {row.permits?.requests_edit
                 ? <Button
                     icon="edit outline"
@@ -15,7 +33,7 @@ const CellButtons = props => {
                 />
                 : null
             }
-        </Button.Group>
+        </Button.Group> */}
 
     </Table.Cell>
 

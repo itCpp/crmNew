@@ -65,7 +65,7 @@ export const requestsReducer = (state = defaultState, action) => {
             return { ...state, requests: list }
 
         case ACTION.COUNTER_UPDATE:
-            return { ...state, counter: action.payload }
+            return { ...state, counter: { ...state.counter, ...action.payload } }
 
         default:
             return state;
