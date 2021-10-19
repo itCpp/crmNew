@@ -7,12 +7,14 @@ import TabBasicSettings from "./TabBasicSettings";
 import TabQuerySettings from "./TabQuerySettings";
 import TabPermitsSettings from "./TabPermitsSettings";
 import TabSortSettings from "./TabSortSettings";
+import TabStatusesRows from "./TabStatusesRows";
 
 export default function Tab(props) {
 
     const { tab, tabs, setTabs } = props;
     const [row, setRow] = React.useState(tabs.find(i => i.id === tab));
     const [columns, setColumns] = React.useState([]);
+    const [statuses, setStatuses] = React.useState([]);
 
     const [load, setLoad] = React.useState(true);
     const [error, setError] = React.useState(null);
@@ -23,7 +25,11 @@ export default function Tab(props) {
 
             setLoad(true);
 
-            axios.post('dev/getTab', { id: tab, getColumns: true }).then(({ data }) => {
+            axios.post('dev/getTab', {
+                id: tab,
+                getColumns: true,
+                getStatuses: true,
+             }).then(({ data }) => {
 
                 tabs.find((r, k, a) => {
                     if (r.id === tab) {
@@ -35,6 +41,7 @@ export default function Tab(props) {
 
                 setRow(data.tab);
                 setColumns(data.columns);
+                setStatuses(data.statuses);
                 setError(null);
 
             }).catch(error => {
@@ -97,6 +104,13 @@ export default function Tab(props) {
                         tabs={tabs}
                         setTabs={setTabs}
                         setTab={setRow}
+                    />
+
+                    <TabStatusesRows
+                        tab={row}
+                        setRow={setRow}
+                        statuses={statuses}
+                        setStatuses={setStatuses}
                     />
 
                     <TabQuerySettings
