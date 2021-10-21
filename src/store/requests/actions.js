@@ -1,3 +1,5 @@
+export const LIMIT_ROWS_PAGE = 20;
+
 export const SET_TAB_LIST = "SET_TAB_LIST";
 export const setTabList = data => ({
     type: SET_TAB_LIST,

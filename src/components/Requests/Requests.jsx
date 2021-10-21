@@ -23,7 +23,7 @@ import RequestsRowsMain from "./RequestsRows/RequestsRowsMain";
 
 function Requests(props) {
 
-    const { setTabList, selectTab, setTopMenu } = props;
+    const { user, setTabList, selectTab, setTopMenu } = props;
 
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(false);
@@ -56,13 +56,23 @@ function Requests(props) {
 
     }, []);
 
+    const getRowForTab = React.useCallback(id => {
+        axios.post('requests/getRowForTab', {
+            id: id,
+            tabId: localStorage.getItem('select_tab')
+        }).then(({ data }) => {
+            data.row && props.createRequestRow(data.row);
+        });
+    }, []);
+
     const updateRequestRowForPin = React.useCallback(data => {
 
         const { row, drop } = data;
 
         if (drop) {
             axios.toast(null, {
-                time: 5000,
+                time: 30000,
+                title: "Отмена заявки",
                 type: "info",
                 description: <p>Заявка <b>#{row}</b> передана другому оператору</p>
             });
@@ -70,17 +80,30 @@ function Requests(props) {
         }
 
         axios.toast(null, {
-            time: 0,
+            time: 30000,
+            title: "Новая заявка",
             type: "info",
             description: <p>Вам назначена новая заявка <b>#{row}</b></p>
         });
 
-        axios.post('requests/getRowForTab', {
-            id: row,
-            tabId: localStorage.getItem('select_tab')
-        }).then(({ data }) => {
-            data.row && props.createRequestRow(data.row);
-        });
+        getRowForTab(row);
+
+    }, []);
+
+    /** Обработка новой заявки */
+    const createdNewRequest = React.useCallback(data => {
+
+        console.log(data);
+        const { row, result } = data;
+
+        result?.created && getRowForTab(row);
+
+    }, []);
+
+    const createdNewRequestForSector = React.useCallback(data => {
+
+        if (!data.dropCallCenter && !data.dropSector)
+            return getRowForTab(data.row);
 
     }, []);
 
@@ -122,11 +145,40 @@ function Requests(props) {
 
             window.requestPermits = data.permits;
 
-            window.Echo && window.Echo.private(`App.Requests`)
-                .listen('UpdateRequestRow', updateRequestRow);
+            // window.Echo && window.Echo.private(`App.Requests`)
+            //     .listen('UpdateRequestRow', updateRequestRow);
 
+            // Информирование по личным заявкам
             window.Echo && window.Echo.private(`App.Requests.${window.userPin}`)
                 .listen('UpdateRequestRowForPin', updateRequestRowForPin);
+
+            // Информаирование по общим заявкам
+            if (
+                data.permits.requests_all_my_sector // Все заявки сектора
+                || data.permits.requests_all_sectors // Все заявки всех секторов
+                || data.permits.requests_all_callcenters // Все заявки всех коллцентров
+            ) {
+
+                let echo;
+
+                if (data.permits.requests_all_callcenters)
+                    echo = "0.0";
+                else if (data.permits.requests_all_sectors && user.callcenter_id)
+                    echo = `${user.callcenter_id}.0`;
+                else if (user.callcenter_id && user.callcenter_sector_id)
+                    echo = `${user.callcenter_id}.${user.callcenter_sector_id}`;
+
+                // Информаирование по всем заявкам всех секторов и/или коллцентров
+                if (typeof echo != "undefined" && window.Echo) {
+                    window.Echo.private(`App.Requests.All.${echo}`)
+                        .listen('Requests\\CreatedNewRequest', createdNewRequest)
+                        .listen('Requests\\UpdateRequestRowForSector', createdNewRequestForSector)
+                        .listen('Requests\\UpdateRequestRow', updateRequestRow);
+                }
+
+                window.forEcho = echo;
+
+            }
 
             if (data.intervalCounter) {
                 counterUpdateInterval = setInterval(checkCounter, data.intervalCounter);
@@ -142,8 +194,12 @@ function Requests(props) {
         });
 
         return () => {
+
             window.Echo && window.Echo.leave(`App.Requests`);
             window.Echo && window.Echo.leave(`App.Requests.${window.userPin}`);
+
+            if (window.forEcho && window.Echo)
+                window.Echo.leave(`App.Requests.All.${window.forEcho}`);
 
             clearInterval(counterUpdateInterval);
         }

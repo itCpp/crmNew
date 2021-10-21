@@ -9,14 +9,13 @@ import {
     setRequests,
     updateRequestRow,
     // counterUpdate
+    LIMIT_ROWS_PAGE,
 } from "./../../../store/requests/actions";
 import { Loader, Message, Button, Icon, Label } from "semantic-ui-react";
 
 import RequestsTable from "./RequestsTable";
 import RequestAdd from "./../RequestAdd";
 import RequestSearch from "./../Search/RequestSearch";
-
-const LIMIT_ROWS_PAGE = 20; // Ограничение количества строк на вывод за один запрос
 
 const RequestsRowsMain = props => {
 

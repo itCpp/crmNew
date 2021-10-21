@@ -28,7 +28,7 @@ const RequestsTable = props => {
                     getRequests({ ...paginate, page });
 
             }
-            
+
         };
 
         observer.current = new IntersectionObserver(cb);
@@ -69,7 +69,11 @@ const RequestsTable = props => {
                 </Table.Row>
             </Table.Header>
 
-            <Table.Body>
+            <Transition.Group
+                as={Table.Body}
+                duration={300}
+                animation="fly right"
+            >
                 {requests.length
                     ? requests.map(row => <RequestsTableRow
                         key={row.id}
@@ -85,7 +89,7 @@ const RequestsTable = props => {
                         </Table.Cell>
                     </Table.Row>
                 }
-            </Table.Body>
+            </Transition.Group>
 
         </Table>
 

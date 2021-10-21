@@ -58,7 +58,7 @@ export const requestsReducer = (state = defaultState, action) => {
 
             list.forEach((row, i) => {
                 if (row.id === action.payload) {
-                    delete (list[i]);
+                    list.splice(i, 1);
                 }
             });
 
