@@ -145,13 +145,6 @@ function Requests(props) {
 
             window.requestPermits = data.permits;
 
-            // window.Echo && window.Echo.private(`App.Requests`)
-            //     .listen('UpdateRequestRow', updateRequestRow);
-
-            // Информирование по личным заявкам
-            window.Echo && window.Echo.private(`App.Requests.${window.userPin}`)
-                .listen('UpdateRequestRowForPin', updateRequestRowForPin);
-
             // Информаирование по общим заявкам
             if (
                 data.permits.requests_all_my_sector // Все заявки сектора
@@ -179,6 +172,11 @@ function Requests(props) {
                 window.forEcho = echo;
 
             }
+            // Информирование по личным заявкам
+            else {
+                window.Echo && window.Echo.private(`App.Requests.${window.userPin}`)
+                    .listen('UpdateRequestRowForPin', updateRequestRowForPin);
+            }
 
             if (data.intervalCounter) {
                 counterUpdateInterval = setInterval(checkCounter, data.intervalCounter);
@@ -195,11 +193,10 @@ function Requests(props) {
 
         return () => {
 
-            window.Echo && window.Echo.leave(`App.Requests`);
-            window.Echo && window.Echo.leave(`App.Requests.${window.userPin}`);
-
             if (window.forEcho && window.Echo)
                 window.Echo.leave(`App.Requests.All.${window.forEcho}`);
+            else if (window.Echo)
+                window.Echo.leave(`App.Requests.${window.userPin}`);
 
             clearInterval(counterUpdateInterval);
         }
