@@ -54,27 +54,27 @@ function App(props) {
             window.userId = userData.id;
             window.userPin = userData.pin;
 
-            window.Echo.join(`App.Users`)
+            window.Echo && window.Echo.join(`App.Users`)
                 .here(props.setUsersOnline)
                 .joining(props.userJoin)
                 .leaving(props.userLeave);
 
-            window.Echo.private(`App.User.${window.userId}`);
+            window.Echo && window.Echo.private(`App.User.${window.userId}`);
 
         }
         else if (!userData?.id) {
-            window.Echo.leave(`App.Users`);
+            window.Echo && window.Echo.leave(`App.Users`);
         }
         else if (!userData?.id && window.userId) {
-            window.Echo.leave(`App.User.${window.userId}`);
+            window.Echo && window.Echo.leave(`App.User.${window.userId}`);
         }
 
         return () => {
-            
-            window.Echo.leave(`App.Users`);
+
+            window.Echo && window.Echo.leave(`App.Users`);
 
             if (window.userId)
-                window.Echo.leave(`App.User.${window.userId}`);
+                window.Echo && window.Echo.leave(`App.User.${window.userId}`);
 
         }
 

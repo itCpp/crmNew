@@ -1,11 +1,11 @@
 import React from "react";
 import axios from "./../../utils/axios-header";
-
-import { Icon, Button, Modal, Header, Select } from "semantic-ui-react";
+import { connect } from 'react-redux';
+import { Icon, Button, Modal, Header, Select, Label } from "semantic-ui-react";
 
 const RequestPinChange = props => {
 
-    const { row } = props;
+    const { row, onlineId } = props;
     const [open, setOpen] = React.useState(false);
     const [load, setLoad] = React.useState(false);
 
@@ -114,16 +114,35 @@ const RequestPinChange = props => {
                 </div>
 
                 {pins.length
-                    ? pins.map(row => <div key={row.pin} title={row.title || null} className="d-inline-block">
-                        <Button
-                            content={row.pin}
-                            className="pin-btn-select"
-                            color={row.color || "grey"}
-                            disabled={row.disabled || select !== false ? true : false}
-                            loading={select === row.id ? true : false}
-                            onClick={() => setSelect(row.id)}
-                        />
-                    </div>)
+                    ? pins.map(user => {
+
+                        let className = ["pin-btn-select"];
+
+                        return <div key={user.pin} title={user.title || null} className="d-inline-block position-relative">
+
+                            <Button
+                                content={user.pin}
+                                className={className.join(' ')}
+                                color={user.color || "grey"}
+                                disabled={user.disabled || select !== false ? true : false}
+                                loading={select === user.id ? true : false}
+                                onClick={() => setSelect(user.id)}
+                            />
+
+                            {onlineId && onlineId.indexOf(user.id) >= 0 &&
+                                <Label
+                                    circular
+                                    color="teal"
+                                    empty
+                                    attached="bottom right"
+                                    style={{ bottom: "2px", right: "2px" }}
+                                    size="mini"
+                                    title="Онлайн"
+                                />
+                            }
+
+                        </div>
+                    })
                     : <div className="text-muted">Доступных к выбору операторов нет</div>
                 }
             </Modal.Content>
@@ -152,7 +171,6 @@ const RequestPinChange = props => {
             </Modal.Actions>
         </Modal>
 
-
     }
 
     return <div title={row.pin ? "Оператор назначен" : "Оператор не назначен"}>
@@ -161,4 +179,8 @@ const RequestPinChange = props => {
 
 }
 
-export default RequestPinChange;
+const mapStateToProps = state => ({
+    onlineId: state.main.onlineId,
+});
+
+export default connect(mapStateToProps)(RequestPinChange);
