@@ -23,6 +23,7 @@ const ButtonHeader = props => {
             className={className.join(" ")}
             title={props.title}
             onClick={props.onClick || null}
+            disabled={props.disabled || null}
         >
             {content}
             {label}

@@ -20,6 +20,7 @@ export default combineReducers({
         authQueries: 0, // Количество запросов на авторизацию
         online: [], // Список всех онлайн пользователей
         onlineId: [], // Идентификаторы онлайн пользователей
+        worktime: {}, // Данные о рабочем времени сотрудника
     }, action) => {
 
         let online = [],
@@ -81,6 +82,8 @@ export default combineReducers({
 
                 return { ...state, online, onlineId }
 
+            case ACTION.USER_WORK_TIME:
+                return { ...state, worktime: action.payload }
 
             default:
                 return state;

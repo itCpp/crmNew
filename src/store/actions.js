@@ -45,3 +45,9 @@ export const userLeave = data => ({
     type: USER_LEAVE,
     payload: data
 });
+
+export const USER_WORK_TIME = "USER_WORK_TIME";
+export const setUserWorkTime = data => ({
+    type: USER_WORK_TIME,
+    payload: data
+});

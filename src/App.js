@@ -11,6 +11,7 @@ import {
     setUsersOnline,
     userJoin,
     userLeave,
+    setUserWorkTime,
 } from './store/actions';
 
 import { Loader } from 'semantic-ui-react';
@@ -35,6 +36,7 @@ function App(props) {
             setUserData(data.user);
             setUserPermits(data.permits);
             props.setAuthQueriesCount(data.authQueries);
+            props.setUserWorkTime(data.worktime);
 
         }).catch(async error => {
 
@@ -59,7 +61,11 @@ function App(props) {
                 .joining(props.userJoin)
                 .leaving(props.userLeave);
 
-            window.Echo && window.Echo.private(`App.User.${window.userId}`);
+            window.Echo && window.Echo.private(`App.User.${window.userId}`)
+                .listen('Users\\ChangeUserWorkTime', data => {
+                    console.log(data);
+                    props.setUserWorkTime(data.worktime);
+                });
 
         }
         else if (!userData?.id) {
@@ -106,6 +112,7 @@ const mapDispatchToProps = {
     setUsersOnline,
     userJoin,
     userLeave,
+    setUserWorkTime,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -14,6 +14,7 @@ import { Icon, Dropdown, Dimmer, Loader } from 'semantic-ui-react';
 
 import ButtonHeader from "./ButtonHeader";
 import AuthQueries from "./../Auth/AuthQueries";
+import ActiveStatusUser from "./ActiveStatusUser";
 
 import './header.css';
 
@@ -110,6 +111,8 @@ function Header(props) {
 
                 </div>
 
+                <ActiveStatusUser {...props} />
+
                 {mode ?
                     <ButtonHeader
                         icon="close"
@@ -132,6 +135,7 @@ function Header(props) {
 
 const mapStateToProps = state => ({
     user: state.main.userData,
+    worktime: state.main.worktime,
     permits: state.main.userPermits,
     count: state.main.authQueries
 });

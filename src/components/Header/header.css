@@ -73,6 +73,9 @@
     font-size: 130%;
     line-height: 50px;
 }
+.btn-header:disabled {
+    cursor: default;
+}
 
 .header-nav-btn .icon {
     opacity: .5;
@@ -87,7 +90,7 @@
     color: #3b81dc;
 }
 
-.btn-header:hover { background: #f0f2ff; }
+.btn-header:hover:not([disabled]) { background: #f0f2ff; }
 
 .btn-header.btn-header-danger { color: #631717; background: #ffe0e0; }
 .btn-header.btn-header-danger:hover { color: #631717; background: #ffd0d0; }
