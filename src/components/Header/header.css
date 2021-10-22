@@ -77,6 +77,9 @@
     cursor: default;
 }
 
+.header-nav-btn {
+    margin: 0 !important;
+}
 .header-nav-btn .icon {
     opacity: .5;
 }

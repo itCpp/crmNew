@@ -7,7 +7,8 @@ import {
     changeAuthQueriesCount,
     setLogin,
     setUserData,
-    setUserPermits
+    setUserPermits,
+    setUserWorkTime
 } from "./../../store/actions";
 
 import { Icon, Dropdown, Dimmer, Loader } from 'semantic-ui-react';
@@ -73,6 +74,8 @@ function Header(props) {
                     : null
                 }
 
+                <ActiveStatusUser {...props} />
+
                 {mode ?
                     <span>
                         <Icon
@@ -111,8 +114,6 @@ function Header(props) {
 
                 </div>
 
-                <ActiveStatusUser {...props} />
-
                 {mode ?
                     <ButtonHeader
                         icon="close"
@@ -145,7 +146,8 @@ const mapActions = {
     setAuthQueriesCount,
     setLogin,
     setUserData,
-    setUserPermits
+    setUserPermits,
+    setUserWorkTime
 }
 
 export default connect(mapStateToProps, mapActions)(Header);
