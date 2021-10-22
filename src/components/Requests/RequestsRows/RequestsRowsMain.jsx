@@ -238,6 +238,7 @@ const mapStateToProps = state => ({
     select: state.requests.select,
     selectedUpdate: state.requests.selectedUpdate,
     requests: state.requests.requests,
+    requestsIds: state.requests.requestsIds,
     updates: state.requests.updates,
     tabs: state.requests.tabs,
 });

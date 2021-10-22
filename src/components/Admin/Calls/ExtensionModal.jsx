@@ -30,12 +30,12 @@ const ExtensionModal = props => {
 
                 let find = false;
                 data.resources.forEach(row => {
-                    if (row.val === data.extension.phone)
+                    if (row.val === data.extension?.phone)
                         find = true;
                 });
 
                 if (!find)
-                    data.resources = [{ val: data.extension.phone }, ...data.resources];
+                    data.resources = [{ val: data.extension?.phone || null }, ...data.resources];
 
                 setResources(data.resources);
 
@@ -157,18 +157,18 @@ const ExtensionModal = props => {
                         allowAdditions
                         options={resources.map((row, key) => ({
                             key,
-                            text: row.val,
-                            value: row.val,
+                            text: row.val || "Источник не указан",
+                            value: row.val || null,
                             content: (<div className="d-flex align-items-center justify-content-between">
-                                <div>{row.val}</div>
+                                <div>{row.val || "Источник не указан"}</div>
                                 {row.source && <div style={{ opacity: 0.5 }}><small>{row.source.name || `Источник #${row.source.id}`}</small></div>}
                             </div>)
                         }))}
                         placeholder="Укажите номер телефона"
                         name="phone"
-                        value={formdata.phone || ""}
+                        value={formdata?.phone || ""}
                         onChange={onChange}
-                        error={errors.phone ? true : false}
+                        error={errors?.phone ? true : false}
                         onAddItem={onAddItemPhone}
                     />
                 </Form.Field>
@@ -180,7 +180,7 @@ const ExtensionModal = props => {
                         options={ad_places}
                         placeholder="Выберите рекламную площадку"
                         name="ad_place"
-                        value={formdata.ad_place || ""}
+                        value={formdata?.ad_place || ""}
                         onChange={onChange}
                         error={errors.ad_place ? true : false}
                     />
@@ -223,7 +223,7 @@ const ExtensionModal = props => {
                 icon="save"
                 onClick={() => setCreate(true)}
                 positive
-                disabled={load || error}
+                disabled={load || (error ? true : false)}
             />
         </Modal.Actions>
 

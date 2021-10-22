@@ -6,11 +6,14 @@ const defaultState = {
     select: null,
     selectedUpdate: false,
     requests: [],
+    requestsIds: [],
     updates: {},
     counter: {},
 };
 
 let list = [];
+
+const getIdList = list => list.map(r => r.id);
 
 export const requestsReducer = (state = defaultState, action) => {
 
@@ -26,7 +29,7 @@ export const requestsReducer = (state = defaultState, action) => {
             return { ...state, selectedUpdate: action.payload }
 
         case ACTION.SET_REQUESTS:
-            return { ...state, requests: action.payload, updates: {} }
+            return { ...state, requests: action.payload, updates: {}, requestsIds: getIdList(action.payload) }
 
         case ACTION.UPDATE_REQUEST_ROW:
 
@@ -50,7 +53,8 @@ export const requestsReducer = (state = defaultState, action) => {
             return { ...state, requests: requests, updates }
 
         case ACTION.CREATE_REQUEST_ROW:
-            return { ...state, requests: [action.payload, ...state.requests] }
+            list = [action.payload, ...state.requests];
+            return { ...state, requests: list, requestsIds: getIdList(list) }
 
         case ACTION.DROP_REQUEST_ROW:
 
@@ -62,7 +66,7 @@ export const requestsReducer = (state = defaultState, action) => {
                 }
             });
 
-            return { ...state, requests: list }
+            return { ...state, requests: list, requestsIds: getIdList(list) }
 
         case ACTION.COUNTER_UPDATE:
             return { ...state, counter: { ...state.counter, ...action.payload } }

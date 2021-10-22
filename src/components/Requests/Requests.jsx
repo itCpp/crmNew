@@ -56,14 +56,20 @@ function Requests(props) {
 
     }, []);
 
-    const getRowForTab = React.useCallback(id => {
+    const getRowForTab = id => {
+
+        console.log(searchProcess);
+
+        if (searchProcess) return;
+
         axios.post('requests/getRowForTab', {
             id: id,
             tabId: localStorage.getItem('select_tab')
         }).then(({ data }) => {
             data.row && props.createRequestRow(data.row);
         });
-    }, []);
+
+    };
 
     const updateRequestRowForPin = React.useCallback(data => {
 
@@ -88,7 +94,7 @@ function Requests(props) {
 
         getRowForTab(row);
 
-    }, []);
+    }, [searchProcess]);
 
     /** Обработка новой заявки */
     const createdNewRequest = React.useCallback(data => {
@@ -98,7 +104,7 @@ function Requests(props) {
 
         result?.created && getRowForTab(row);
 
-    }, []);
+    }, [searchProcess]);
 
     const createdNewRequestForSector = React.useCallback(data => {
 
@@ -145,7 +151,7 @@ function Requests(props) {
 
             window.requestPermits = data.permits;
 
-            // Информаирование по общим заявкам
+            // Информаирование по всем доступным заявкам
             if (
                 data.permits.requests_all_my_sector // Все заявки сектора
                 || data.permits.requests_all_sectors // Все заявки всех секторов
@@ -175,7 +181,8 @@ function Requests(props) {
             // Информирование по личным заявкам
             else {
                 window.Echo && window.Echo.private(`App.Requests.${window.userPin}`)
-                    .listen('UpdateRequestRowForPin', updateRequestRowForPin);
+                    .listen('Requests\\UpdateRequestRowForPin', updateRequestRowForPin)
+                    .listen('Requests\\UpdateRequestRow', updateRequestRow);
             }
 
             if (data.intervalCounter) {

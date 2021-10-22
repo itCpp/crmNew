@@ -7,7 +7,7 @@ import RequestEdit from "./../RequestEdit";
 
 const RequestsTable = props => {
 
-    const { requests, getRequests } = props;
+    const { requests, getRequests, requestsIds } = props;
     const { paginate, loadPage, last } = props;
 
     const elem = React.useRef();
@@ -25,7 +25,7 @@ const RequestsTable = props => {
                 let page = (paginate.page + 1);
 
                 if (page <= paginate.pages)
-                    getRequests({ ...paginate, page });
+                    getRequests({ ...paginate, page, notId: requestsIds });
 
             }
 
@@ -34,7 +34,7 @@ const RequestsTable = props => {
         observer.current = new IntersectionObserver(cb);
         observer.current.observe(elem.current);
 
-    }, [loadPage]);
+    }, [loadPage, requestsIds]);
 
     // Hooks.useObserver(elem, paginate.page === paginate.pages, { loadPage, last }, () => {
     //     let page = (paginate.page + 1);
