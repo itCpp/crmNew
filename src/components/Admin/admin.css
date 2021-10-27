@@ -246,3 +246,10 @@
     align-items: center;
     background: #ffffff;
 }
+
+.canvas-block .canvas-sip-times {
+    opacity: .7;
+}
+.canvas-block:hover .canvas-sip-times {
+    opacity: 1;
+}

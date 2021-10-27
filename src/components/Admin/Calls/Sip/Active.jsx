@@ -18,15 +18,17 @@ const ActiveSip = props => {
         axios.post('admin/sip/stats', dates).then(({ data }) => {
             setRows(prev => {
 
+                let next = [...prev];
+
                 data.events.forEach(row => {
 
                     let finded = false;
 
-                    prev.find((item, key) => {
+                    next.find((item, key) => {
                         if (item.extension === row.extension) {
-                            prev[key] = {
-                                ...prev[key],
-                                event: [...item.events, ...row.events],
+                            next[key] = {
+                                ...next[key],
+                                events: [...item.events, ...row.events],
                                 status: row.status,
                                 eventLast: row.eventLast,
                             }
@@ -35,17 +37,18 @@ const ActiveSip = props => {
                     });
 
                     if (!finded)
-                        prev.push(row);
+                        next.push(row);
 
                 });
 
-                return prev;
+                return next;
             });
 
-            setDates({
+            setDates(prev => ({
                 start: data.first,
-                stop: data.last,
-            });
+                last: data.last ? data.last : prev.last,
+                stop: data.stop,
+            }));
 
             setPeriod(data.period);
 

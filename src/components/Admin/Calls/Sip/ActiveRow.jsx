@@ -54,13 +54,13 @@ const ActiveRow = props => {
             window.removeEventListener('resize', resizeCanvas);
         }
 
-    }, []);
-
-    React.useEffect(() => {
-        resizeCanvas(row);
     }, [row, period]);
 
-    return <div className="mb-2" ref={block}>
+    React.useEffect(() => {
+        resizeCanvas();
+    }, [row, period]);
+
+    return <div className="mb-2 canvas-block" ref={block}>
 
         <div className="mb-2 mt-1 d-flex justify-content-between">
             <h5 className="mb-0">{row.extension}</h5>
@@ -73,9 +73,9 @@ const ActiveRow = props => {
             </span>
         </div>
 
-        <div style={{ position: "relative", height: 10 }}>
+        <div style={{ position: "relative", height: 10 }} className="canvas-sip-times">
             <canvas ref={canvas} height="10" style={{
-                borderRadius: ".25rem",
+                borderRadius: ".1rem",
                 position: "absolute",
             }} />
         </div>
