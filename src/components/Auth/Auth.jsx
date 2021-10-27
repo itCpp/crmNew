@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from './../../utils/axios-header';
 import { connect } from 'react-redux';
-import { setLogin, setUserData, setUserPermits } from './../../store/actions';
+import { setLogin, setUserData, setUserPermits, setUserWorkTime } from './../../store/actions';
 import Cookies from 'js-cookie';
 import { updateToken } from "./../../utils/echo-connect";
 
@@ -41,6 +41,7 @@ function Auth(props) {
         setLogin(true);
         setUserData(data.user);
         setUserPermits(data.permits);
+        props.setUserWorkTime(data.worktime);
 
     }
 
@@ -177,7 +178,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    setLogin, setUserData, setUserPermits
+    setLogin, setUserData, setUserPermits, setUserWorkTime
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);

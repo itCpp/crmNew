@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "./../../utils/axios-header";
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
     setAuthQueriesCount,
@@ -96,7 +96,7 @@ function Header(props) {
                             <Dropdown.Item
                                 icon="user"
                                 text="Мои данные"
-                                disabled={true}
+                                onClick={() => props.history.push(`/user/${user.id}`)}
                             />
                             <Dropdown.Divider className="my-0" />
                             <Dropdown.Item
@@ -150,4 +150,4 @@ const mapActions = {
     setUserWorkTime
 }
 
-export default connect(mapStateToProps, mapActions)(Header);
+export default withRouter(connect(mapStateToProps, mapActions)(Header));

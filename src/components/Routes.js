@@ -23,6 +23,7 @@ export default function Routes(props) {
             <Switch>
 
                 <Route exact path="/" component={Requests} />
+                <Route exact path="/user/:id" component={Requests} />
 
                 <Route exact path="/admin" component={Admin} />
                 <Route exact path="/admin/:page" component={Admin} />

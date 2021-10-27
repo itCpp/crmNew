@@ -62,6 +62,11 @@ function AdminMenu(props) {
                     </NavLink>
                 }
 
+                <NavLink to="/admin/sips" className="admin-menu-point" onClick={changePage}>
+                    <Icon name="phone volume" />
+                    <span>Активность SIP</span>
+                </NavLink>
+
             </div>
         }
 

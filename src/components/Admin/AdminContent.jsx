@@ -9,6 +9,7 @@ import SourcesAndResources from './Sources/SourcesAndResources';
 import Statuses from './Statuses/Statuses';
 import Tabs from './Tabs/Tabs';
 import Calls from './Calls/Calls';
+import ActiveSip from './Calls/Sip/Active';
 
 function AdminContent(props) {
 
@@ -35,6 +36,8 @@ function AdminContent(props) {
         body = <Tabs />
     else if (page == "calls" && permits.dev_calls)
         body = <Calls {...props} />
+    else if (page == "sips" && permits.dev_calls)
+        body = <ActiveSip {...props} />
 
     return <div className="admin-content-body">
         {body}

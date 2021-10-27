@@ -20,10 +20,12 @@ import "./requests.css";
 import RequestsTabs from "./RequestsTabs";
 // import RequestsTable from "./RequestsTable";
 import RequestsRowsMain from "./RequestsRows/RequestsRowsMain";
+import UserMainData from "./../User/UserMainData";
 
 function Requests(props) {
 
     const { user, setTabList, selectTab, setTopMenu } = props;
+    const page = props.match.path;
 
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(false);
@@ -236,7 +238,14 @@ function Requests(props) {
         </div>
 
         {/* <RequestsTable /> */}
-        <RequestsRowsMain searchProcess={searchProcess} setSearchProcess={setSearchProcess} />
+        
+        {page === "/" &&
+            <RequestsRowsMain searchProcess={searchProcess} setSearchProcess={setSearchProcess} />
+        }
+
+        {page === "/user/:id" &&
+            <UserMainData {...props} />
+        }
 
     </div>
 
