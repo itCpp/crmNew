@@ -17,10 +17,10 @@ instance.interceptors.request.use(function (config) {
     let tokenKey = process.env.REACT_APP_TOKEN_KEY || "token";
     const token = Cookies.get(tokenKey) || localStorage.getItem(tokenKey);
 
-    config.headers.Authorization = token ? token : null;
-    config.headers['X-Requested-Version'] = process.env.REACT_APP_VERSION || null;
+    config.headers.Authorization = token ? `Bearer ${token}` : null;
+    // config.headers['X-Requested-Version'] = process.env.REACT_APP_VERSION || null;
 
-    if (window.Echo)
+    if (window.Echo && window.Echo.socketId())
         config.headers['X-Socket-ID'] = window.Echo.socketId();
 
     let godMode = localStorage.getItem('god-mode-id');
