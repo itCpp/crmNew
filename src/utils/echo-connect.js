@@ -11,7 +11,7 @@ const connectEcho = async user => {
         // path: '/ws/socket.io',
         auth: {
             headers: {
-                Authorization: localStorage.getItem(tokenKey)
+                Authorization: `Bearer ` + localStorage.getItem(tokenKey)
             }
         },
     });
@@ -23,6 +23,6 @@ export default connectEcho;
 export const updateToken = token => {
 
     if (window.Echo)
-        window.Echo.options.auth.headers.Authorization = token;
+        window.Echo.options.auth.headers.Authorization = `Bearer ${token}`;
 
 }
