@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import NotFound from './NotFound';
 import Auth from './Auth/Auth';
 import Header from './Header/Header';
-import Requests from './Requests/Requests';
+import Requests from './CRM/CRM';
 import Admin from './Admin/AdminMain';
 
 export default function Routes(props) {

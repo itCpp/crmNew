@@ -17,6 +17,9 @@ const CallsList = props => {
         divided
         verticalAlign="middle"
     >
+
+        {calls.length == 0 && <div className="text-center my-5 opacity-50">Данных нет</div>}
+
         {calls.map(call => <List.Item key={call.id}>
             <div className="d-flex justify-content-between calls-log">
 
