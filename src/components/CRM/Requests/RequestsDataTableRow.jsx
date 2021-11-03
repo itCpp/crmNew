@@ -4,16 +4,19 @@ import Cell from "./RequestsDataTableCells"
 
 const RequestsDataTableRow = React.memo(props => {
 
-    console.log(props.row.id, "RequestsDataTableRow");
-
     const { row } = props;
 
     let className = ["request-row"];
     row.status?.theme && className.push(`request-row-theme-${row.status.theme}`);
 
-    return <Table.Row className={className.join(' ')}>
+    return <Table.Row className={className.join(' ')} verticalAlign="top">
         <Cell.Id row={row} />
         <Cell.Date row={row} />
+        <Cell.Operator row={row} />
+        <Cell.Client row={row} />
+        <Cell.Theme row={row} />
+        <Cell.Comments row={row} />
+        <Cell.Buttons row={row} />
     </Table.Row>
 
 });

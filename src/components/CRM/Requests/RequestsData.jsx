@@ -9,7 +9,6 @@ import RequestsDataTable from "./RequestsDataTable";
 
 const RequestData = React.memo(props => {
 
-    console.log("RequestData", props);
     const { select } = props;
     const { setRequests } = props;
 
@@ -52,7 +51,7 @@ const RequestData = React.memo(props => {
 
     return <div id="requests-block">
 
-        <div className="block-card my-3">
+        <div className="block-card my-3 px-2">
 
             {loading && select &&
                 <div className="text-center my-4 w-100"><Loader active inline indeterminate /></div>

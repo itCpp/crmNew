@@ -8,19 +8,21 @@ const CellId = memo(props => {
 
     return <TableCell>
 
-        <div>
+        <div className="d-flex">
             {row.query_type &&
-                <span className="opacity-50"><QueryTypeIcon query_type={row.query_type} /></span>
+                <span className="opacity-80"><QueryTypeIcon query_type={row.query_type} /></span>
             }
             <span title="Номер заявки">#{row.id}</span>
         </div>
 
-        <div title="Источник">
-            <span className="opacity-50"><Icon name="fork" /></span>
-            <span>{row.source?.name || "Неизвестно"}</span>
+        <div title={`Источник: ${row.source?.name || "Неизвестно"}`} className="d-flex">
+            <span className="opacity-80"><Icon name="fork" /></span>
+            <span className="wrap-cell wrap-cell-max">{row.source?.name || "Неизвестно"}</span>
         </div>
 
-        <div>{row.status?.name || "Не обработана"}</div>
+        <div className="wrap-cell" title={row.status?.name || "Не обработана"}>
+            <strong>{row.status?.name || "Не обработана"}</strong>
+        </div>
 
     </TableCell>
 

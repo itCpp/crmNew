@@ -358,3 +358,23 @@
     border-radius: 50%;
     margin-right: .3rem;
 }
+
+.wrap-cell {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.wrap-cell-max {
+    max-width: 150px;
+}
+
+.truncate-text-show, .truncate-text {
+    overflow: hidden;
+    line-height: 1.3em;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
+.truncate-text {
+    -webkit-line-clamp: 3; 
+    /* height: 3.8em; */
+}

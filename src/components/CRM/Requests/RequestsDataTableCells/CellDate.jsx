@@ -5,30 +5,30 @@ const CellDate = memo(props => {
 
     const { row, setCell } = props;
 
-    return <Table.Cell>
+    return <Table.Cell style={{ minWidth: "125px" }}>
 
         {row.date_uplift &&
             <div title="Дата последнего обращения" className="d-flex justify-content-start">
-                <span className="opacity-50"><Icon name="level up" /></span>
+                <span className="opacity-80"><Icon name="level up" /></span>
                 <span>{row.date_uplift}</span>
             </div>
         }
 
         <div title="Дата поступления" className="d-flex justify-content-start">
-            <span className="opacity-50"><Icon name="plus" /></span>
+            <span className="opacity-80"><Icon name="plus" /></span>
             <span>{row.date_create}</span>
         </div>
 
         {row.date_event &&
-            <div title="Дата записи, или прихода" className="d-flex justify-content-start">
-                <span className="opacity-50"><Icon name="clock" /></span>
+            <div title="Дата записи, или прихода" className="d-flex justify-content-start my-1">
+                <span className="opacity-80"><Icon name="clock" /></span>
                 <span>{row.date_event}</span>
             </div>
         }
 
         {row.office?.id &&
-            <div title={`Офис ${row.office.name}`} className="d-flex justify-content-start">
-                <span className="opacity-50"><Icon name="map marker alternate" /></span>
+            <div title={`Офис ${row.office.name}`} className="d-flex justify-content-start mt-1">
+                <span className="opacity-80"><Icon name="map marker alternate" /></span>
                 <span>{row.office.name}</span>
             </div>
         }

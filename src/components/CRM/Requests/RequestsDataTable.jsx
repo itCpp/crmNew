@@ -6,7 +6,6 @@ import RequestsDataTableRow from "./RequestsDataTableRow";
 
 const RequestsDataTable = React.memo(props => {
 
-    console.log("RequestsDataTable", props);
     const { requests } = props;
 
     return <>
