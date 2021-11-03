@@ -2,7 +2,7 @@ import _ from "lodash";
 import React from "react";
 import axios from "./../../../../utils/axios-header";
 import { useDispatch, useSelector } from "react-redux";
-import { requestEdit } from "../../../../store/requests/actions";
+import { requestEdit, updateRequestRow } from "../../../../store/requests/actions";
 
 import { Modal, Button, Grid, Dimmer, Loader, Form, Dropdown, Icon } from "semantic-ui-react";
 
@@ -85,7 +85,7 @@ const RequestEdit = () => {
 
             axios.post('requests/save', formdata).then(({ data }) => {
                 setErrorSave(null);
-                // updateRequestRow(data.request);
+                dispatch(updateRequestRow(data.request));
                 setOpen(null);
             }).catch(error => {
                 setError(null);
@@ -100,8 +100,6 @@ const RequestEdit = () => {
         return () => setSave(false);
 
     }, [save]);
-
-    // React.useEffect(() => console.log(formdata), [formdata]);
 
     return <Modal
         className="my-large"
