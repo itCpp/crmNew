@@ -1,8 +1,11 @@
 import { Table, Icon } from "semantic-ui-react";
+import { useDispatch } from "react-redux";
+import { requestEdit } from "../../../../store/requests/actions";
 
 const CellButtons = props => {
 
     const { row } = props;
+    const dispatch = useDispatch();
 
     return <Table.Cell>
 
@@ -10,7 +13,7 @@ const CellButtons = props => {
             <Icon
                 name="edit"
                 title="Редактировать заявку"
-                // onClick={() => setEdit(row)}
+                onClick={() => dispatch(requestEdit(row))}
                 className="button-icon mx-1"
             />
         </div>

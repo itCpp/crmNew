@@ -24,6 +24,12 @@ export const setRequests = data => ({
     payload: data
 });
 
+export const REQUEST_EDIT_ID = "REQUEST_EDIT_ID";
+export const requestEdit = data => ({
+    type: REQUEST_EDIT_ID,
+    payload: data
+});
+
 export const UPDATE_REQUEST_ROW = "UPDATE_REQUEST_ROW";
 export const updateRequestRow = data => ({
     type: UPDATE_REQUEST_ROW,

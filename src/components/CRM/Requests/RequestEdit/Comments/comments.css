@@ -1,0 +1,94 @@
+.comments-body {
+    display: flex;
+    flex-direction: column-reverse;
+    flex-grow: 1;
+    overflow-y: auto;
+    position: relative;
+}
+
+.no-comments {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: .1;
+}
+.no-comments > .icon {
+    margin: 0 !important;
+    font-size: 13rem !important;
+    line-height: 13rem;
+}
+
+.commets-in-modal {
+    border-radius: .5rem;
+    background: #f5f9ff;
+    padding: .5rem 1rem;
+    margin: 0 .25rem;
+    z-index: 1;
+    white-space: pre-line;
+}
+.commets-in-modal:not(:last-child) {
+    margin-top: .5rem;
+}
+
+.comment-author {
+    margin-bottom: .25rem;
+}
+
+.commets-in-modal .comment-time {
+    opacity: .5;
+    text-align: right;
+    font-size: 70%;
+}
+
+.commets-in-modal .comment-text {
+    font-size: 90%;
+}
+
+.comment-type-my {
+    background: #f6ffe2;
+}
+.comment-type-sb {
+    background: #ffcfcf;
+}
+.comment-type-client {
+    background: #f8f8f8;
+}
+.comment-type-system {
+    max-width: 80%;
+    margin-right: auto; 
+    margin-left: auto; 
+    background: #eeeeee;
+    border-radius: 1rem;
+    padding: .5rem 1rem;
+    text-align: center;
+    font-size: 70%;
+}
+.comment-type-system > *:not(.comment-text) {
+    display: none;
+}
+
+.comment-input {
+    width: 100%;
+    max-height: 300px;
+    padding: .5rem 1rem !important;
+    font-size: 90%;
+    resize: none !important;
+}
+.comment-send {
+    position: absolute;
+    bottom: 9px;
+    right: 5px;
+    opacity: .6 !important;
+    cursor: pointer;
+    margin: 0 !important;
+    font-size: 130% !important;
+    line-height: 130% !important;
+}
+.comment-send:hover {
+    opacity: 1 !important;
+}

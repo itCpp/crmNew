@@ -6,11 +6,13 @@ import { LIMIT_ROWS_PAGE, setRequests } from "./../../../store/requests/actions"
 import { Loader } from "semantic-ui-react";
 
 import RequestsDataTable from "./RequestsDataTable";
+import RequestEdit from "./RequestEdit/RequestEdit";
 
 const RequestData = React.memo(props => {
 
     const { select } = props;
     const { setRequests } = props;
+    const { requestEdit } = props;
 
     const [loading, setLoading] = React.useState(true);
     const [page, setPage] = React.useState(1);
@@ -51,6 +53,8 @@ const RequestData = React.memo(props => {
 
     return <div id="requests-block">
 
+        {requestEdit && <RequestEdit />}
+
         <div className="block-card my-3 px-2">
 
             {loading && select &&
@@ -69,6 +73,7 @@ const mapStateToProps = state => ({
     // requests: state.requests.requests,
     select: state.requests.select,
     tabs: state.requests.tabs,
+    requestEdit: state.requests.requestEdit,
 });
 
 const mapActionsToProps = {

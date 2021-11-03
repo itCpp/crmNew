@@ -7,6 +7,7 @@ const defaultState = {
     selectedUpdate: false,
     requests: [],
     requestsIds: [],
+    requestEdit: null, // Объект редактируемой заявки
     updates: {},
     counter: {},
 };
@@ -70,6 +71,9 @@ export const requestsReducer = (state = defaultState, action) => {
 
         case ACTION.COUNTER_UPDATE:
             return { ...state, counter: { ...state.counter, ...action.payload } }
+
+        case ACTION.REQUEST_EDIT_ID:
+            return { ...state, requestEdit: action.payload }
 
         default:
             return state;
