@@ -10,6 +10,7 @@ const defaultState = {
     requestEdit: null, // Объект редактируемой заявки
     updates: {},
     counter: {},
+    searchRequest: null, // Поисковой запрос
 };
 
 let list = [];
@@ -74,6 +75,9 @@ export const requestsReducer = (state = defaultState, action) => {
 
         case ACTION.REQUEST_EDIT_ID:
             return { ...state, requestEdit: action.payload }
+
+        case ACTION.SEARCH_REQUEST:
+            return { ...state, searchRequest: action.payload }
 
         default:
             return state;

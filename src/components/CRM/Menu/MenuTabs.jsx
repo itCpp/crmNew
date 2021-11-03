@@ -1,11 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
-import { selectTab } from "./../../../store/requests/actions";
+import { selectTab, setSearchRequest } from "./../../../store/requests/actions";
 import { Icon } from "semantic-ui-react";
 
 const MenuTabs = props => {
 
-    const { selectMenu } = props;
+    const { selectMenu, setSearchRequest } = props;
     const { tabs } = props;
     const { select, selectTab } = props;
     const { counter } = props;
@@ -18,6 +18,7 @@ const MenuTabs = props => {
         //     return selectedUpdateTab(true);
 
         selectTab(id);
+        setSearchRequest(null);
         localStorage.setItem('select_tab', id);
 
     }
@@ -28,7 +29,7 @@ const MenuTabs = props => {
     }, []);
 
     return <div
-        className={`menu-list-block ${select ? "menu-list-block-active" : ""}`}
+        className={`menu-list-block ${(select || select === 0) ? "menu-list-block-active" : ""}`}
         data-active={selectMenu && selectMenu.indexOf('requests') >= 0 ? true : false}
     >
 
@@ -76,5 +77,5 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-    selectTab,
+    selectTab, setSearchRequest
 })(MenuTabs);

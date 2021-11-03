@@ -61,3 +61,9 @@ export const counterUpdate = data => ({
     type: COUNTER_UPDATE,
     payload: data
 });
+
+export const SEARCH_REQUEST = "SEARCH_REQUEST";
+export const setSearchRequest = data => ({
+    type: SEARCH_REQUEST,
+    payload: data
+});
