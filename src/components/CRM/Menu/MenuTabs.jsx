@@ -10,7 +10,7 @@ const MenuTabs = props => {
     const { select, selectTab } = props;
     const { counter } = props;
 
-    console.log("MenuTabs", props);
+    // console.log("MenuTabs", props);
 
     const setSelect = id => {
 

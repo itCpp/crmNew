@@ -89,7 +89,7 @@ function Header(props) {
 
                 <div className="position-relative">
 
-                    <strong>{user.pin}{user.old_pin ? ` (${user.old_pin})` : ' '}</strong>
+                    <strong title="Это Ваш персональный идентификационный номер">{user.pin}{(user.old_pin && Number(user.pin) !== Number(user.old_pin)) ? ` (${user.old_pin}) ` : ' '}</strong>
 
                     <Dropdown text={user.name_fio} className="mt-1 header-hover-text" pointing="top right" direction="left">
                         <Dropdown.Menu>
