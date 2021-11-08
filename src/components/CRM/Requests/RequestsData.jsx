@@ -53,12 +53,12 @@ const RequestData = React.memo(props => {
             });
         }
         else if (page && Number(select) === 0 && searchRequest) {
-            getRequests({
-                page,
-                limit: LIMIT_ROWS_PAGE,
-                tabId: select,
-                search: searchRequest,
-            });
+            // getRequests({
+            //     page,
+            //     limit: LIMIT_ROWS_PAGE,
+            //     tabId: select,
+            //     search: searchRequest,
+            // });
         }
 
     }, [select, page]);

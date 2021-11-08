@@ -1,19 +1,20 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { setRequests, setSearchRequest } from "../../../store/requests/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { LIMIT_ROWS_PAGE, setRequests, setSearchRequest, selectTab } from "../../../store/requests/actions";
 import { Button, Dropdown, Icon, Form, Label } from "semantic-ui-react";
 
 const RequestsSearch = React.memo(props => {
 
-    const { getRequests, paginate } = props;
+    const { getRequests } = props;
     const dispatch = useDispatch();
+    const { searchRequest } = useSelector(state => state.requests);
 
     const [open, setOpen] = React.useState(false);
     const [search, setSearch] = React.useState({});
     const [start, setStart] = React.useState(false);
     const [active, setActive] = React.useState(false);
 
-    const close = () => setOpen(false);
+    const close = React.useCallback(() => setOpen(false), []);
 
     const onChange = (e, { name, value }) => {
 
@@ -32,21 +33,21 @@ const RequestsSearch = React.memo(props => {
         if (e.keyCode === 32)
             return setSearch(p => ({ ...p, [e.target.name]: e.target.value + " " }));
 
-        if (e.keyCode === 13)
+        if (e.keyCode === 13 && Object.keys(search).length > 0)
             return setStart(true);
 
     }
 
-    const searchCansel = () => {
+    const searchCansel = React.useCallback(() => {
+        let tabId = Number(localStorage.getItem('select_tab'));
+
         setOpen(false);
+        setSearch({});
+
+        dispatch(selectTab(tabId > 0 ? tabId : null));
         dispatch(setRequests([]));
-        getRequests({
-            ...paginate,
-            search: null,
-            page: 1,
-            tabId: localStorage.getItem('select_tab'),
-        });
-    }
+        dispatch(setSearchRequest(null));
+    }, []);
 
     React.useEffect(() => {
 
@@ -65,7 +66,9 @@ const RequestsSearch = React.memo(props => {
             setOpen(false);
             dispatch(setRequests([]));
             dispatch(setSearchRequest(search));
-            // getRequests({ search: search, page: 1, tabId: 0 });
+
+            if (typeof search == "object" && Object.keys(search).length > 0)
+                getRequests({ search: search, page: 1, tabId: 0, limit: LIMIT_ROWS_PAGE });
         }
 
         return () => setStart(false);
@@ -74,10 +77,10 @@ const RequestsSearch = React.memo(props => {
 
     React.useEffect(() => {
 
-        if (!paginate?.search)
+        if (!searchRequest && Object.keys(search).length > 0)
             setSearch({});
 
-    }, [paginate]);
+    }, [searchRequest]);
 
     return <Dropdown
         floating
@@ -89,7 +92,7 @@ const RequestsSearch = React.memo(props => {
                 basic
                 onClick={() => setOpen(true)}
             />
-            {paginate?.search &&
+            {searchRequest &&
                 <Label
                     color="red"
                     circular
@@ -163,7 +166,7 @@ const RequestsSearch = React.memo(props => {
                     onKeyUp={onKeyUp}
                 />
 
-                {paginate?.search && active &&
+                {searchRequest &&
                     <Button
                         color="orange"
                         content="Отменить поиск"
