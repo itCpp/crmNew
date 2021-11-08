@@ -33,6 +33,13 @@ export const requestsReducer = (state = defaultState, action) => {
         case ACTION.SET_REQUESTS:
             return { ...state, requests: action.payload, updates: {}, requestsIds: getIdList(action.payload) }
 
+        case ACTION.APPEND_REQUESTS:
+            return {
+                ...state,
+                requests: [...state.requests, ...action.payload],
+                requestsIds: getIdList(state.requests)
+            }
+
         case ACTION.UPDATE_REQUEST_ROW:
 
             let requests = [...state.requests],

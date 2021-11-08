@@ -6,7 +6,29 @@ import RequestsDataTableRow from "./RequestsDataTableRow";
 
 const RequestsDataTable = React.memo(props => {
 
-    const { requests } = props;
+    const { requests, loadPage } = props;
+    const { setPage } = props;
+
+    const elem = React.useRef();
+    const observer = React.useRef();
+
+    React.useEffect(() => {
+
+        if (loadPage || !elem.current) return;
+        if (observer.current) observer.current.disconnect();
+
+        const cb = entries => {
+
+            if (entries[0].isIntersecting) {
+                setPage(page => page + 1);
+            }
+
+        };
+
+        observer.current = new IntersectionObserver(cb);
+        observer.current.observe(elem.current);
+
+    }, [loadPage]);
 
     return <>
 
@@ -50,6 +72,10 @@ const RequestsDataTable = React.memo(props => {
 
             </Table>
         }
+
+        <div ref={elem} className="loader-requests">
+            {loadPage && <img src="/images/loader.gif" />}
+        </div>
 
     </>
 

@@ -24,6 +24,12 @@ export const setRequests = data => ({
     payload: data
 });
 
+export const APPEND_REQUESTS = "APPEND_REQUESTS";
+export const appendRequests = data => ({
+    type: APPEND_REQUESTS,
+    payload: data
+});
+
 export const REQUEST_EDIT_ID = "REQUEST_EDIT_ID";
 export const requestEdit = data => ({
     type: REQUEST_EDIT_ID,

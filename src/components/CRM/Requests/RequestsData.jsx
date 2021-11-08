@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "./../../../utils/axios-header";
 import { connect } from "react-redux";
-import { LIMIT_ROWS_PAGE, setRequests, selectTab } from "./../../../store/requests/actions";
+import { LIMIT_ROWS_PAGE, setRequests, appendRequests, selectTab } from "./../../../store/requests/actions";
 
 import { Loader, Message } from "semantic-ui-react";
 
@@ -13,11 +13,13 @@ const RequestData = React.memo(props => {
 
     const { select, selectTab } = props;
     const { searchRequest } = props;
-    const { setRequests } = props;
+    const { setRequests, appendRequests } = props;
     const { requestEdit } = props;
 
     const [loading, setLoading] = React.useState(true);
+    const [loadPage, setLoadPage] = React.useState(true);
     const [page, setPage] = React.useState(1);
+    const [pages, setPages] = React.useState(null);
 
     const search = searchRequest && Object.keys(searchRequest).length > 0;
 
@@ -27,39 +29,52 @@ const RequestData = React.memo(props => {
 
     const getRequests = (params) => {
 
+        if (pages && params.page > pages)
+            return null;
+
         if (params.page === 1 && !loading)
             setLoading(true);
 
+        setLoadPage(true);
+
         axios.post('requests/get', params)
             .then(({ data }) => {
-                setRequests(data.requests);
+
+                setPages(data.pages);
+
+                if (params.page === 1)
+                    setRequests(data.requests);
+                else
+                    appendRequests(data.requests);
             })
             .catch(error => {
 
             })
             .then(() => {
                 setLoading(false);
+                setLoadPage(false);
             });
 
     }
 
     React.useEffect(() => {
 
-        if (page && Number(select) > 0) {
+        if (page && Number(select) > 0 || (page > 1 && Number(select) === 0 && searchRequest)) {
             getRequests({
                 page,
                 limit: LIMIT_ROWS_PAGE,
                 tabId: select,
+                search: searchRequest,
             });
         }
-        else if (page && Number(select) === 0 && searchRequest) {
-            // getRequests({
-            //     page,
-            //     limit: LIMIT_ROWS_PAGE,
-            //     tabId: select,
-            //     search: searchRequest,
-            // });
-        }
+        // else if (page && Number(select) === 0 && searchRequest) {
+        //     getRequests({
+        //         page,
+        //         limit: LIMIT_ROWS_PAGE,
+        //         tabId: select,
+        //         search: searchRequest,
+        //     });
+        // }
 
     }, [select, page]);
 
@@ -85,7 +100,11 @@ const RequestData = React.memo(props => {
                 <Message info content="Выберите нужную вкладку слева" />
             </div>}
 
-            {!loading && (select || select === 0) && <RequestsDataTable />}
+            {!loading && (select || select === 0) &&
+                <RequestsDataTable
+                    setPage={setPage}
+                    loadPage={loadPage}
+                />}
 
         </div>
 
@@ -101,7 +120,7 @@ const mapStateToProps = state => ({
 });
 
 const mapActionsToProps = {
-    setRequests, selectTab
+    setRequests, appendRequests, selectTab
 }
 
 export default connect(mapStateToProps, mapActionsToProps)(RequestData);
