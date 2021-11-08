@@ -4,12 +4,14 @@ import { connect } from "react-redux";
 import "./requests.css";
 
 import RequestsData from "./RequestsData";
+import BtnScrollTop from "../UI/BtnScrollTop/BtnScrollTop.jsx";
 
 const Requests = props => {
 
     return <div className="px-3" id="requests-block">
 
         <RequestsData />
+        <BtnScrollTop />
 
     </div>
 

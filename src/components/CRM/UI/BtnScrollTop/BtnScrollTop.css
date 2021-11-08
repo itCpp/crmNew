@@ -1,0 +1,21 @@
+.btn-scrolll-top {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    padding: .5rem;
+    border-radius: 50%;
+    border: 1px solid #ebeeff;
+    cursor: pointer;
+    background-color: #ffffff;
+    opacity: 0;
+    transform: translateY(100px);
+    transition: all .5s ease;
+}
+.btn-scrolll-top:hover {
+    background-color: #f1f3ff;
+}
+
+.btn-scrolll-top.showBtn {
+    opacity: 1;
+    transform: translateY(0)
+}

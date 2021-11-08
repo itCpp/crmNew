@@ -24,6 +24,7 @@ const RequestData = React.memo(props => {
     const search = searchRequest && Object.keys(searchRequest).length > 0;
 
     React.useEffect(() => {
+        setRequests([]);
         setPage(1);
     }, [select]);
 
