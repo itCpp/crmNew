@@ -1,0 +1,270 @@
+
+#requests-block {
+    flex-grow: 1;
+}
+
+.fields input,
+.request-edit-cell-body input {
+    font-size: 1rem !important;
+    max-height: 38px;
+}
+
+.my-large {
+    width: 90% !important;
+    max-width: 1200px !important;
+}
+
+.request-row > td {
+    position: relative;
+    font-weight: 100;
+}
+#requests-header-row > th,
+.request-row > td {
+    padding: .5rem !important;
+}
+
+.request-cell-edit,
+.request-cell-edit-in-block {
+    display: none;
+    padding: 2px;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    right: 2px;
+    margin-top: -6px;
+    line-height: 12px;
+    background-color: #ffffff8e;
+    z-index: 100;
+    border-radius: .25rem;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.request-row > td:hover .request-cell-edit,
+.cell-block:hover .request-cell-edit-in-block {
+    opacity: 1;
+}
+
+.request-cell-edit > i.icon,
+.request-cell-edit-in-block > i.icon {
+    opacity: .6;
+    font-size: 12px;
+    margin: 0 !important;
+}
+
+.request-cell-edit:hover > i.icon,
+.request-cell-edit-in-block:hover > i.icon {
+    opacity: 1;
+}
+
+.request-edit-cell {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #ffffff;
+    border-radius: .25rem;
+    border: 1px solid var(--border-color);
+    z-index: 100;
+    width: 230px;
+}
+
+.request-edit-cell-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .25rem .5rem;
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 700;
+}
+.request-edit-cell-header i.icon {
+    opacity: .6;
+    cursor: pointer;
+}
+.request-edit-cell-header i.icon:hover {
+    opacity: 1;
+}
+.request-edit-cell-body {
+    padding: .5rem .5rem;
+}
+
+.request-edit-cell-body .disabled.field {
+    opacity: 1 !important;
+}
+
+.my-form .disabled {
+    opacity: .7 !important;
+}
+
+.pin-btn-select {
+    width: 90px;
+    padding: .7rem .5rem !important;
+    margin: .25rem !important;
+}
+
+.dropdown-change-sector .error-message {
+    white-space: normal !important;
+}
+
+.dropdown-change-sector.loading > .divider {
+    margin-right: 8px;
+}
+
+.request-row-select-item {
+    padding: .7rem 1.1rem!important;
+    white-space: normal;
+    word-wrap: normal;
+    cursor: pointer;
+    font-size: 100%;
+}
+.request-row-select-item.active {
+    font-weight: 700;
+}
+
+.request-row {
+    font-size: 90%;
+}
+.request-row:hover {
+    background: #fafcff;
+}
+
+/** Оформление записи */
+.request-row-theme-1 { background-color: #ffff81; }
+.request-row-theme-1:hover { background-color: #ffff4f; }
+
+/** Оформление слива */
+.request-row-theme-2 { background-color: #bf4346; color: #ffffff; }
+.request-row-theme-2:hover { background-color: #bd2c2e; }
+
+/** Оформление слива */
+.request-row-theme-3 { background-color: #8084e4; color: #ffffff; }
+.request-row-theme-3:hover { background-color: #686cd8; }
+
+/** Оформление Бракованой заявки */
+.request-row-theme-4 { background-color: #656464; color: #ffffff; }
+.request-row-theme-4:hover { background-color: #545454; }
+
+/** Оформление Недозвона */
+.request-row-theme-5 { background-color: #c7c7c7; }
+.request-row-theme-5:hover { background-color: #bababa; }
+
+/** Оформление Бесплатной консультации */
+.request-row-theme-6 { background-color: #ffba01; }
+.request-row-theme-6:hover { background-color: #f8b600; }
+
+/** Оформление Прихода */
+.request-row-theme-7 { background-color: #68ae00; color: #ffffff; }
+.request-row-theme-7:hover { background-color: #61a200; }
+
+/** Оформление Онлайн заявки */
+.request-row-theme-8 { background-color: #8d52cb; color: #ffffff; }
+.request-row-theme-8:hover { background-color: #8246c2; }
+
+/** Оформление Онлайн прихода */
+.request-row-theme-9 { background-color: #20aa8a; color: #ffffff; }
+.request-row-theme-9:hover { background-color: #209b7e; }
+
+/** Оформление Онлайн договора */
+.request-row-theme-10 { background-color: #5790c1; color: #ffffff; }
+.request-row-theme-10:hover { background-color: #4a83b5; }
+
+/** Оформление Вторички */
+.request-row-theme-11 { background-color: #795548; color: #ffffff; }
+.request-row-theme-11:hover { background-color: #6f4b3e; }
+
+.loader-requests {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -3px;
+    text-align: center;
+    min-height: 19px;
+    margin: .25rem auto .5rem;
+}
+
+.transition.updateRow {
+    -webkit-animation-name: updateRow;
+    animation-name: updateRow;
+}
+
+.request-row {
+    transition-duration: .1s;
+}
+.updateRequestRow {
+    opacity: .3 !important;
+}
+.createRequestRow {
+    transform: scaleX(.9);
+}
+
+@-webkit-keyframes updateRow {
+    from  { opacity: 0 !important; }
+    30% { opacity: .3 !important; }
+    100% { opacity: 1 !important; }
+}
+@keyframes updateRow {
+    from { opacity: 0 !important; }
+    to  { opacity: 1 !important; }
+}
+
+.to-copy-text:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+.to-copy-text.copyed {
+    animation: updateRow .3s;
+}
+
+.search-form {
+    display: flex;
+    flex-direction: column;
+}
+.search-form > * {
+    margin: 0 .5rem .5rem !important;
+}
+
+.button-label-info {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.page-title-box {
+    display: flex;
+    align-items: center;
+}
+
+.page-title-box > *:not(:last-child) {
+    margin-right: 1rem !important;
+}
+
+.page-title-subox > *:not(:last-child) {
+    margin-right: .5rem !important;
+}
+
+.online-user {
+    width: 8px;
+    height: 8px;
+    background-color: chartreuse;
+    border-radius: 50%;
+    margin-right: .3rem;
+}
+
+.wrap-cell {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.wrap-cell-max {
+    max-width: 150px;
+}
+
+.truncate-text-show, .truncate-text {
+    overflow: hidden;
+    line-height: 1.3em;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
+.truncate-text {
+    -webkit-line-clamp: 3; 
+    /* height: 3.8em; */
+}

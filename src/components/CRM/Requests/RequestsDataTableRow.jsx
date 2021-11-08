@@ -31,7 +31,7 @@ const RequestsDataTableRow = React.memo(props => {
                     return classList;
                 });
 
-            }, 300);
+            }, 200);
 
         }
 

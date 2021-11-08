@@ -12,7 +12,7 @@ import { setTopMenu } from "./../../store/interface/actions";
 
 import { Loader, Message } from "semantic-ui-react";
 
-import "./../Requests/requests.css";
+import "./crm.css";
 
 import Menu from "./Menu/Menu";
 import Requests from "./Requests/Requests";

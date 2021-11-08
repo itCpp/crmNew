@@ -1,6 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 
+import "./requests.css";
+
 import RequestsData from "./RequestsData";
 
 const Requests = props => {
