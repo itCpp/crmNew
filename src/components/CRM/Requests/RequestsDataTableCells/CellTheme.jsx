@@ -2,7 +2,7 @@ import { Table, Icon } from "semantic-ui-react";
 
 const CellTheme = props => {
 
-    const { row, setCell } = props;
+    const { row, setCellEdit } = props;
 
     return <Table.Cell>
         
@@ -11,7 +11,7 @@ const CellTheme = props => {
             <Icon name="hashtag" className="opacity-80" />
             <span>{row.theme || <span className="opacity-30">Тема не указана</span>}</span>
 
-            <div className="request-cell-edit-in-block" data-type="theme" onClick={e => setCell(e, row)}>
+            <div className="request-cell-edit-in-block" data-type="theme" onClick={e => setCellEdit(e, row)}>
                 <Icon name="pencil" />
             </div>
 
@@ -22,7 +22,7 @@ const CellTheme = props => {
             <Icon name="comment alternate outline" className="opacity-80" />
             <span>{row.comment_first || <span className="opacity-30">Комментария нет</span>}</span>
 
-            {row.permits.requests_comment_first && <div className="request-cell-edit-in-block" data-type="commentFirst" onClick={e => setCell(e, row)}>
+            {row.permits.requests_comment_first && <div className="request-cell-edit-in-block" data-type="commentFirst" onClick={e => setCellEdit(e, row)}>
                 <Icon name="pencil" />
             </div>}
 

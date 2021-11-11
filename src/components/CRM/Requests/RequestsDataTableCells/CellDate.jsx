@@ -3,7 +3,7 @@ import { Table, Icon } from "semantic-ui-react";
 
 const CellDate = memo(props => {
 
-    const { row, setCell } = props;
+    const { row, setCellEdit } = props;
 
     return <Table.Cell style={{ minWidth: "125px" }}>
 
@@ -33,7 +33,7 @@ const CellDate = memo(props => {
             </div>
         }
 
-        <div className="request-cell-edit" data-type="date" onClick={e => setCell(e, row)}>
+        <div className="request-cell-edit" data-type="date" onClick={e => setCellEdit(e, row)}>
             <Icon name="pencil" />
         </div>
 

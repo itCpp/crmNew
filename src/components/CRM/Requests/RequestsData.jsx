@@ -20,11 +20,13 @@ const RequestData = React.memo(props => {
     const [loadPage, setLoadPage] = React.useState(true);
     const [page, setPage] = React.useState(1);
     const [pages, setPages] = React.useState(null);
+    const [error, setError] = React.useState(null);
 
     const search = searchRequest && Object.keys(searchRequest).length > 0;
 
     React.useEffect(() => {
         setRequests([]);
+        setError(null);
         setPage(1);
     }, [select]);
 
@@ -42,6 +44,7 @@ const RequestData = React.memo(props => {
             .then(({ data }) => {
 
                 setPages(data.pages);
+                setError(null);
 
                 if (params.page === 1)
                     setRequests(data.requests);
@@ -49,7 +52,12 @@ const RequestData = React.memo(props => {
                     appendRequests(data.requests);
             })
             .catch(error => {
+                let message = axios.getError(error);
 
+                if (params.page === 1)
+                    setError(message);
+                else
+                    axios.toast(message, { time: 0 });
             })
             .then(() => {
                 setLoading(false);
@@ -97,11 +105,15 @@ const RequestData = React.memo(props => {
                 <div className="text-center my-4 w-100"><Loader active inline indeterminate /></div>
             }
 
-            {!select && select !== 0 && <div style={{ maxWidth: 666, width: '100%' }} className="mx-auto">
+            {!loading && !select && select !== 0 && <div style={{ maxWidth: 666, width: '100%' }} className="mx-auto">
                 <Message info content="Выберите нужную вкладку слева" />
             </div>}
 
-            {!loading && (select || select === 0) &&
+            {!loading && error && <div style={{ maxWidth: 666, width: '100%' }} className="mx-auto">
+                <Message error content={error} />
+            </div>}
+
+            {!loading && (select || select === 0) && !error &&
                 <RequestsDataTable
                     setPage={setPage}
                     loadPage={loadPage}

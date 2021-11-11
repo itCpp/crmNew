@@ -16,9 +16,9 @@ const BtnScrollTop = memo(props => {
 
     const handleScroll = useCallback(() => {
         if (rootElement.scrollTop > 500) {
-            btn && btn.current.classList.add("showBtn")
+            btn && btn.current.classList.add("showBtn");
         } else {
-            btn && btn.current.classList.remove("showBtn")
+            btn && btn.current.classList.remove("showBtn");
         }
     }, []);
 

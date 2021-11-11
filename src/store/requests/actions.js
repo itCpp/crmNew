@@ -36,6 +36,12 @@ export const requestEdit = data => ({
     payload: data
 });
 
+export const REQUEST_EDIT_CELL = "REQUEST_EDIT_CELL";
+export const requestEditCell = data => ({
+    type: REQUEST_EDIT_CELL,
+    payload: data
+});
+
 export const UPDATE_REQUEST_ROW = "UPDATE_REQUEST_ROW";
 export const updateRequestRow = data => ({
     type: UPDATE_REQUEST_ROW,

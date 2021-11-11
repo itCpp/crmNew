@@ -11,6 +11,7 @@ const defaultState = {
     updates: {},
     counter: {},
     searchRequest: null, // Поисковой запрос
+    editCell: null, // {null|object} Редактирование ячейки
 };
 
 let list = [];
@@ -82,6 +83,9 @@ export const requestsReducer = (state = defaultState, action) => {
 
         case ACTION.REQUEST_EDIT_ID:
             return { ...state, requestEdit: action.payload }
+
+        case ACTION.REQUEST_EDIT_CELL:
+            return { ...state, editCell: action.payload }
 
         case ACTION.SEARCH_REQUEST:
             return { ...state, searchRequest: action.payload }

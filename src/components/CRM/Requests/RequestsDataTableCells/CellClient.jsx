@@ -3,7 +3,7 @@ import { copyPhone } from "./function";
 
 const CellClient = props => {
 
-    const { row, setCell } = props;
+    const { row, setCellEdit } = props;
 
     return <Table.Cell>
 
@@ -32,7 +32,7 @@ const CellClient = props => {
             <div className="to-copy-text">{client.phone}</div>
         </div>)}
 
-        <div className="request-cell-edit" data-type="client" onClick={e => setCell(e, row)}>
+        <div className="request-cell-edit" data-type="client" onClick={e => setCellEdit(e, row)}>
             <Icon name="pencil" />
         </div>
 

@@ -4,15 +4,16 @@
     right: 10px;
     padding: .5rem;
     border-radius: 50%;
-    border: 1px solid #ebeeff;
+    border: 1px solid #313a46;
     cursor: pointer;
-    background-color: #ffffff;
+    background-color: #313a46;
+    color: #ffffff;
     opacity: 0;
     transform: translateY(100px);
     transition: all .5s ease;
 }
 .btn-scrolll-top:hover {
-    background-color: #f1f3ff;
+    background-color: #434d5a;
 }
 
 .btn-scrolll-top.showBtn {

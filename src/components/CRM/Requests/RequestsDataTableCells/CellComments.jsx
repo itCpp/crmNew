@@ -3,7 +3,7 @@ import { Table, Icon } from "semantic-ui-react";
 
 const CellComments = props => {
 
-    const { row, setCell } = props;
+    const { row, setCellEdit } = props;
     const [showComment, setShowComment] = useState(false);
 
     return <Table.Cell>
@@ -15,7 +15,7 @@ const CellComments = props => {
                 {row.comment || <span className="opacity-30">Суть обращения не указана</span>}
             </span>
 
-            <div className="request-cell-edit-in-block" data-type="comment" onClick={e => setCell(e, row)}>
+            <div className="request-cell-edit-in-block" data-type="comment" onClick={e => setCellEdit(e, row)}>
                 <Icon name="pencil" />
             </div>
 
@@ -26,7 +26,7 @@ const CellComments = props => {
             <Icon name="comment" className="opacity-80" />
             <span>{row.comment_urist || <span className="opacity-30">Комментарий юристу не указан</span>}</span>
 
-            <div className="request-cell-edit-in-block" data-type="commentUrist" onClick={e => setCell(e, row)}>
+            <div className="request-cell-edit-in-block" data-type="commentUrist" onClick={e => setCellEdit(e, row)}>
                 <Icon name="pencil" />
             </div>
 
