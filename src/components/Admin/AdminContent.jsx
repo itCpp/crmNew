@@ -10,6 +10,7 @@ import Statuses from './Statuses/Statuses';
 import Tabs from './Tabs/Tabs';
 import Calls from './Calls/Calls';
 import ActiveSip from './Calls/Sip/Active';
+import DistributionCalls from './Calls/Distributions/DistributionCalls';
 
 function AdminContent(props) {
 
@@ -38,6 +39,8 @@ function AdminContent(props) {
         body = <Calls {...props} />
     else if (page == "sips" && permits.dev_calls)
         body = <ActiveSip {...props} />
+    else if (page == "callsqueue" && permits.admin_callsqueue)
+        body = <DistributionCalls {...props} />
 
     return <div className="admin-content-body">
         {body}

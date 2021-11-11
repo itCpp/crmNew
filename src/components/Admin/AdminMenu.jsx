@@ -80,6 +80,11 @@ function AdminMenu(props) {
                     <span>Колл-центры</span>
                 </NavLink>
 
+                <NavLink to="/admin/callsqueue" className="admin-menu-point" onClick={changePage}>
+                    <Icon name="random" />
+                    <span>Направление звоков</span>
+                </NavLink>
+
                 <NavLink to="/admin/sources" className="admin-menu-point" onClick={changePage}>
                     <Icon name="fork" />
                     <span>Источники</span>

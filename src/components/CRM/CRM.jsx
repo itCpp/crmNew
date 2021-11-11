@@ -220,7 +220,10 @@ const CRM = props => {
 
         <Menu />
 
-        <Requests />
+        <div className="my-4 mx-auto w-100" style={{ maxWidth: "550px" }}>
+            <Message info content="Раздел заявок в разработке" className="mx-1" />
+        </div >
+        {/* <Requests /> */}
 
     </div>
 
