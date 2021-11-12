@@ -1,5 +1,9 @@
 import React from "react";
+import axios from "./../../../../utils/axios-header";
 import { useSelector, useDispatch } from "react-redux";
+import { requestEditCell } from "./../../../../store/requests/actions";
+
+import { Placeholder, Icon } from "semantic-ui-react";
 
 import RequestEditClient from "./RequestEditCell/RequestEditClient";
 import RequestEditComment from "./RequestEditCell/RequestEditComment";
@@ -10,47 +14,160 @@ import RequestEditTheme from "./RequestEditCell/RequestEditTheme";
 
 const RequestEditCell = props => {
 
+    const dispatch = useDispatch();
     const { editCell } = useSelector(state => state.requests);
     const modal = React.useRef();
+
+    const [loading, setLoading] = React.useState(true);
+    const [saveLoad, setSaveLoad] = React.useState(false);
+
+    const [error, setError] = React.useState(null);
+    const [formdata, setFormdata] = React.useState([]);
+    const [permits, setPermits] = React.useState({});
+
+    const closeRequestEditCell = React.useCallback(() => {
+        dispatch(requestEditCell(null));
+        document.removeEventListener('click', closeRequestEditCell);
+    }, [editCell]);
 
     React.useEffect(() => {
 
         if (modal.current && editCell?.id) {
-            modal.current.classList.add('show');
-            modal.current.style.top = editCell?.pageY;
-            modal.current.style.right = editCell?.pageX;
 
-            console.log(editCell, modal);
+            document.addEventListener('click', closeRequestEditCell);
+
+            modal.current.classList.add('show');
+
+            modal.current.style.top = `${editCell?.pageY || 0}px`;
+            modal.current.style.left = `${editCell?.pageX || 0}px`;
+
+            // const clientHeight = document.documentElement.clientHeight;
+            // if (clientHeight < (editCell?.pageY || 0) + modal.current.clientHeight) {
+            //     css.y = (css.y + (clientHeight - (css.y + modal.clientHeight))) - 5;
+            // }
+
+            setLoading(true);
+
+            axios.post('requests/getRow', {
+                id: editCell?.id
+            }).then(({ data }) => {
+
+                setError(null);
+
+                setFormdata({
+                    request: data.request,
+                    addresses: [{ id: null, name: "Не указан" }, ...data.offices].map((office, key) => ({
+                        key,
+                        text: office.name,
+                        value: office.id,
+                        disabled: office.active === 0 ? true : false
+                    })),
+                    cities: [null, ...data.cities].map((row, key) => ({
+                        key, value: row, text: row || "Не определен"
+                    })),
+                    themes: [null, ...data.themes].map((row, key) => ({
+                        key, value: row, text: row || "Не определена"
+                    })),
+                });
+
+                setPermits(data.permits);
+
+            }).catch(e => {
+                setError(axios.getError(e));
+            }).then(() => {
+                setLoading(false);
+                setSaveLoad(false);
+            });
         }
+        else if (modal.current && !editCell?.id) {
+            modal.current.classList.remove('show');
+            document.removeEventListener('click', closeRequestEditCell);
+        }
+
+        return () => document.removeEventListener('click', closeRequestEditCell);
 
     }, [editCell]);
 
     return <div className="request-edit-cell-modal" ref={modal}>
-        <RequestEditSwitch
+
+        {loading && <RequestEditCellLoading />}
+
+        {!loading && !error && <RequestEditSwitch
             editCell={editCell}
-        />
+            loading={loading}
+            formdata={formdata}
+            permits={permits}
+            saveLoad={saveLoad}
+        />}
+
     </div>
 
 }
 
+export const RequestEditCellLoading = () => {
+    return <>
+        <div className="request-edit-cell-header">
+            <Placeholder className="w-100">
+                <Placeholder.Header>
+                    <Placeholder.Line length='full' />
+                </Placeholder.Header>
+            </Placeholder>
+        </div>
+        <div className="request-edit-cell-body">
+            <Placeholder className="w-100">
+                <Placeholder.Header>
+                    <Placeholder.Line />
+                    <Placeholder.Line length="full" />
+                    <Placeholder.Line length="very short" />
+                </Placeholder.Header>
+            </Placeholder>
+        </div>
+    </>
+}
+
+export const RequestEditCellModalHeader = props => {
+
+    const dispatch = useDispatch();
+
+    return <div className="request-edit-cell-header">
+        <span className="flex-grow-1 header-for-drag">#{props?.formdata?.request?.id || null}</span>
+        <span><Icon name="close" onClick={() => dispatch(requestEditCell(null))} /></span>
+    </div>
+}
+
 const RequestEditSwitch = props => {
+
+    let body = null;
 
     switch (props?.editCell?.type) {
         case "date":
-            return <RequestEditDate {...props} />
-        case "client":
-            return <RequestEditClient {...props} />
-        case "theme":
-            return <RequestEditTheme {...props} />
-        case "commentFirst":
-            return <RequestEditCommentFirst {...props} />
-        case "comment":
-            return <RequestEditComment {...props} />
-        case "commentUrist":
-            return <RequestEditCommentUrist {...props} />
+            body = <RequestEditDate {...props} />
+            break;
+        // case "client":
+        //     body = <RequestEditClient {...props} />
+        //     break;
+        // case "theme":
+        //     body = <RequestEditTheme {...props} />
+        //     break;
+        // case "commentFirst":
+        //     body = <RequestEditCommentFirst {...props} />
+        //     break;
+        // case "comment":
+        //     body = <RequestEditComment {...props} />
+        //     break;
+        // case "commentUrist":
+        //     body = <RequestEditCommentUrist {...props} />
+        //     break;
         default:
-            return null;
+            body = <div className="request-edit-cell-body text-center">
+                <small>Форма не определена</small>
+            </div>;
     }
+
+    return <>
+        <RequestEditCellModalHeader {...props} />
+        {body}
+    </>
 
 }
 
