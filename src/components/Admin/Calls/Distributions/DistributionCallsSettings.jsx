@@ -136,7 +136,7 @@ const DistributionCallsSettings = props => {
 
         {rows.map(row => <div key={`only_${row.id}`} className="my-2">
             <Checkbox
-                label={`Только ${row.name}`}
+                label={`Только ${row.name} (#${row.id})`}
                 checked={checked === `only_${row.id}`}
                 onChange={changeChecked}
                 value={`only_${row.id}`}

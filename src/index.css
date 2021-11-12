@@ -18,6 +18,13 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+code {
+  padding: .2em .4em;
+  margin: 0;
+  font-size: 85%;
+  background-color: #ddf4ff;
+  border-radius: 6px;
+}
 
 .loading-page {
   position: absolute;

@@ -1,0 +1,3 @@
+.list-admin .item {
+    border-color: var(--border-admin-segment) !important;
+}
