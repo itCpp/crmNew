@@ -5,6 +5,7 @@ const defaultState = {
     tabs: [],
     select: null,
     selectedUpdate: false,
+    requestsLoading: false,
     requests: [],
     requestsIds: [],
     requestEdit: null, // Объект редактируемой заявки
@@ -31,14 +32,24 @@ export const requestsReducer = (state = defaultState, action) => {
         case ACTION.SELECTED_UPDATE_TAB:
             return { ...state, selectedUpdate: action.payload }
 
+        case ACTION.SET_REQUESTS_LOADING:
+            return { ...state, requestsLoading: action.payload }
+
         case ACTION.SET_REQUESTS:
-            return { ...state, requests: action.payload, updates: {}, requestsIds: getIdList(action.payload) }
+            return {
+                ...state,
+                requests: action.payload,
+                updates: {},
+                requestsIds: getIdList(action.payload),
+                requestsLoading: false,
+            }
 
         case ACTION.APPEND_REQUESTS:
             return {
                 ...state,
                 requests: [...state.requests, ...action.payload],
-                requestsIds: getIdList(state.requests)
+                requestsIds: getIdList(state.requests),
+                requestsLoading: false,
             }
 
         case ACTION.UPDATE_REQUEST_ROW:

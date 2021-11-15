@@ -18,6 +18,12 @@ export const selectedUpdateTab = data => ({
     payload: data
 });
 
+export const SET_REQUESTS_LOADING = "SET_REQUESTS_LOADING";
+export const setRequestsLoading = data => ({
+    type: SET_REQUESTS_LOADING,
+    payload: data
+});
+
 export const SET_REQUESTS = "SET_REQUESTS";
 export const setRequests = data => ({
     type: SET_REQUESTS,

@@ -1,7 +1,13 @@
 import React from "react";
 import axios from "./../../../utils/axios-header";
 import { connect } from "react-redux";
-import { LIMIT_ROWS_PAGE, setRequests, appendRequests, selectTab } from "./../../../store/requests/actions";
+import {
+    LIMIT_ROWS_PAGE,
+    setRequests,
+    appendRequests,
+    selectTab,
+    setRequestsLoading
+} from "./../../../store/requests/actions";
 
 import { Loader, Message } from "semantic-ui-react";
 
@@ -11,14 +17,14 @@ import RequestsDataTable from "./RequestsDataTable";
 
 const RequestData = React.memo(props => {
 
-    const { select, selectTab } = props;
+    const { select, selectTab, selectedUpdate } = props;
     const { searchRequest } = props;
-    const { setRequests, appendRequests } = props;
+    const { setRequests, appendRequests, setRequestsLoading } = props;
     const { requestEdit } = props;
 
     const [loading, setLoading] = React.useState(true);
-    const [loadPage, setLoadPage] = React.useState(true);
-    const [page, setPage] = React.useState(1);
+    const [loadPage, setLoadPage] = React.useState(false);
+    const [page, setPage] = React.useState(0);
     const [pages, setPages] = React.useState(null);
     const [error, setError] = React.useState(null);
 
@@ -26,7 +32,9 @@ const RequestData = React.memo(props => {
 
     const getRequests = (params) => {
 
-        if (pages && params.page > pages)
+        params.page = params.page === 0 ? 1 : params.page;
+
+        if ((pages && params.page > pages) || loadPage)
             return null;
 
         if (params.page === 1 && !loading) {
@@ -66,13 +74,17 @@ const RequestData = React.memo(props => {
 
         setError(null);
         setLoading(true);
-        setPage(page => page === 1 ? 0 : 1);
+        setRequestsLoading(true);
 
-    }, [select]);
+        setTimeout(() => {
+            setPage(page => page === 1 ? 0 : 1);
+        }, 50);
+
+    }, [select, selectedUpdate]);
 
     React.useEffect(() => {
 
-        if (page && Number(select) > 0 || (page > 1 && Number(select) === 0 && searchRequest)) {
+        if (Number(select) > 0 || (page > 1 && Number(select) === 0 && searchRequest)) {
             getRequests({
                 page: page,
                 limit: LIMIT_ROWS_PAGE,
@@ -124,13 +136,14 @@ const RequestData = React.memo(props => {
 
 const mapStateToProps = state => ({
     select: state.requests.select,
+    selectedUpdate: state.requests.selectedUpdate,
     tabs: state.requests.tabs,
     requestEdit: state.requests.requestEdit,
     searchRequest: state.requests.searchRequest,
 });
 
 const mapActionsToProps = {
-    setRequests, appendRequests, selectTab
+    setRequests, appendRequests, selectTab, setRequestsLoading
 }
 
 export default connect(mapStateToProps, mapActionsToProps)(RequestData);

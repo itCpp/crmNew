@@ -1,25 +1,24 @@
 import React from "react";
 import { connect } from "react-redux";
-import { selectTab, setSearchRequest, requestEditCell } from "./../../../store/requests/actions";
+import { selectTab, setSearchRequest, selectedUpdateTab } from "./../../../store/requests/actions";
 import { Icon } from "semantic-ui-react";
 
 const MenuTabs = props => {
 
-    const { selectMenu, setSearchRequest, requestEditCell } = props;
+    const { selectMenu, setSearchRequest, requestsLoading } = props;
     const { tabs } = props;
-    const { select, selectTab } = props;
+    const { select, selectTab, selectedUpdate, selectedUpdateTab } = props;
     const { counter } = props;
 
     // console.log("MenuTabs", props);
 
     const setSelect = id => {
 
-        // if (id === select)
-        //     return selectedUpdateTab(true);
+        if (id === select)
+            return selectedUpdateTab(!selectedUpdate);
 
         selectTab(id);
         setSearchRequest(null);
-        // requestEditCell(null);
 
         localStorage.setItem('select_tab', id);
 
@@ -28,7 +27,6 @@ const MenuTabs = props => {
     React.useEffect(() => {
         if (tabs.length && !tabs.find(i => i.id === select)) {
             setSelect(null);
-            // requestEditCell(null);
         }
     }, []);
 
@@ -57,7 +55,7 @@ const MenuTabs = props => {
                 key={tab.id}
                 title={tab.name_title || tab.name}
                 className={className.join(" ")}
-                onClick={() => setSelect(tab.id)}
+                onClick={() => requestsLoading ? null : setSelect(tab.id)}
             >
                 <span className="select-point">
                     <Icon
@@ -77,9 +75,11 @@ const MenuTabs = props => {
 const mapStateToProps = state => ({
     tabs: state.requests.tabs,
     select: state.requests.select,
+    selectedUpdate: state.requests.selectedUpdate,
     counter: state.requests.counter,
+    requestsLoading: state.requests.requestsLoading,
 });
 
 export default connect(mapStateToProps, {
-    selectTab, setSearchRequest, requestEditCell
+    selectTab, setSearchRequest, selectedUpdateTab
 })(MenuTabs);
