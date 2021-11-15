@@ -13,7 +13,7 @@
     padding: .5rem 1rem;
     background: #ffffff;
     border-bottom: 1px solid var(--border-admin-segment);
-    z-index: 100;
+    z-index: 500;
 }
 
 .header-menu-link {

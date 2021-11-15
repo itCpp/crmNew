@@ -18,6 +18,7 @@ const RequestEditCell = props => {
     const dispatch = useDispatch();
     const { editCell } = useSelector(state => state.requests);
     const modal = React.useRef();
+    const timeout = React.useRef();
 
     const [loading, setLoading] = React.useState(true);
 
@@ -29,26 +30,30 @@ const RequestEditCell = props => {
     const [formdata, setFormdata] = React.useState([]);
     const [permits, setPermits] = React.useState({});
 
-    // const closeRequestEditCell = React.useCallback(() => {
-    //     dispatch(requestEditCell(null));
-    //     document.removeEventListener('click', closeRequestEditCell);
-    // }, [editCell]);
+    const closeRequestEditCell = React.useCallback(() => {
+        timeout.current = setTimeout(() => {
+            dispatch(requestEditCell(null));
+            document.body.removeEventListener('click', closeRequestEditCell);
+        }, 50);
+    }, []);
 
     React.useEffect(() => {
 
         if (modal.current && editCell?.id) {
 
-            // document.addEventListener('click', closeRequestEditCell);
+            timeout.current && clearTimeout(timeout.current);
+            document.body.addEventListener('click', closeRequestEditCell);
 
             modal.current.classList.add('show');
 
-            modal.current.style.top = `${editCell?.pageY || 0}px`;
-            modal.current.style.left = `${editCell?.pageX || 0}px`;
+            let top = editCell?.pageY || 0,
+                left = (editCell?.pageX || 0) - (modal?.current?.clientWidth || 0),
+                height = modal?.current?.clientHeight || 0;
 
-            // const clientHeight = document.documentElement.clientHeight;
-            // if (clientHeight < (editCell?.pageY || 0) + modal.current.clientHeight) {
-            //     css.y = (css.y + (clientHeight - (css.y + modal.clientHeight))) - 5;
-            // }
+            const scrollHeight = document.documentElement.scrollHeight;
+
+            modal.current.style.top = `${top}px`;
+            modal.current.style.left = `${left}px`;
 
             setLoading(true);
 
@@ -77,6 +82,13 @@ const RequestEditCell = props => {
 
                 setPermits(data.permits);
 
+                setTimeout(() => {
+                    height = modal?.current?.clientHeight || 0;
+                    if (scrollHeight < (top + height)) {
+                        modal.current.style.top = `${(scrollHeight - height - 10)}px`;
+                    }
+                }, 100);
+
             }).catch(e => {
                 setError(axios.getError(e));
             }).then(() => {
@@ -86,10 +98,10 @@ const RequestEditCell = props => {
         }
         else if (modal.current && !editCell?.id) {
             modal.current.classList.remove('show');
-            // document.removeEventListener('click', closeRequestEditCell);
+            document.body.removeEventListener('click', closeRequestEditCell);
         }
 
-        // return () => document.removeEventListener('click', closeRequestEditCell);
+        return () => document.body.removeEventListener('click', closeRequestEditCell);
 
     }, [editCell]);
 

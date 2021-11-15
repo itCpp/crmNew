@@ -19,7 +19,7 @@ const MenuTabs = props => {
 
         selectTab(id);
         setSearchRequest(null);
-        requestEditCell(null);
+        // requestEditCell(null);
 
         localStorage.setItem('select_tab', id);
 
@@ -28,7 +28,7 @@ const MenuTabs = props => {
     React.useEffect(() => {
         if (tabs.length && !tabs.find(i => i.id === select)) {
             setSelect(null);
-            requestEditCell(null);
+            // requestEditCell(null);
         }
     }, []);
 

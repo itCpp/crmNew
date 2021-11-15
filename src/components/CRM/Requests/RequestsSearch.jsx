@@ -47,7 +47,7 @@ const RequestsSearch = React.memo(props => {
         dispatch(selectTab(tabId > 0 ? tabId : null));
         dispatch(setRequests([]));
         dispatch(setSearchRequest(null));
-        dispatch(requestEditCell(null));
+        // dispatch(requestEditCell(null));
 
     }, []);
 
@@ -55,7 +55,7 @@ const RequestsSearch = React.memo(props => {
 
         if (open) {
             document.addEventListener('click', close);
-            dispatch(requestEditCell(null));
+            // dispatch(requestEditCell(null));
         }
         else {
             document.removeEventListener('click', close);
