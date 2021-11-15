@@ -1,7 +1,6 @@
-import { memo } from "react";
 import { Table, Icon } from "semantic-ui-react";
 
-const CellDate = memo(props => {
+const CellDate = props => {
 
     const { row, setCellEdit } = props;
 
@@ -39,6 +38,6 @@ const CellDate = memo(props => {
 
     </Table.Cell>
 
-});
+};
 
 export default CellDate;

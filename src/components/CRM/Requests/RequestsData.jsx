@@ -24,32 +24,28 @@ const RequestData = React.memo(props => {
 
     const search = searchRequest && Object.keys(searchRequest).length > 0;
 
-    React.useEffect(() => {
-        setRequests([]);
-        setError(null);
-        setPage(1);
-    }, [select]);
-
     const getRequests = (params) => {
 
         if (pages && params.page > pages)
             return null;
 
-        if (params.page === 1 && !loading)
+        if (params.page === 1 && !loading) {
             setLoading(true);
+        }
 
         setLoadPage(true);
 
         axios.post('requests/get', params)
             .then(({ data }) => {
 
-                setPages(data.pages);
-                setError(null);
-
                 if (params.page === 1)
                     setRequests(data.requests);
                 else
                     appendRequests(data.requests);
+
+                setPages(data.pages);
+                setError(null);
+
             })
             .catch(error => {
                 let message = axios.getError(error);
@@ -68,24 +64,24 @@ const RequestData = React.memo(props => {
 
     React.useEffect(() => {
 
+        setError(null);
+        setLoading(true);
+        setPage(page => page === 1 ? 0 : 1);
+
+    }, [select]);
+
+    React.useEffect(() => {
+
         if (page && Number(select) > 0 || (page > 1 && Number(select) === 0 && searchRequest)) {
             getRequests({
-                page,
+                page: page,
                 limit: LIMIT_ROWS_PAGE,
                 tabId: select,
                 search: searchRequest,
             });
         }
-        // else if (page && Number(select) === 0 && searchRequest) {
-        //     getRequests({
-        //         page,
-        //         limit: LIMIT_ROWS_PAGE,
-        //         tabId: select,
-        //         search: searchRequest,
-        //     });
-        // }
 
-    }, [select, page]);
+    }, [page]);
 
     React.useEffect(() => {
         if (search) {
@@ -117,7 +113,8 @@ const RequestData = React.memo(props => {
                 <RequestsDataTable
                     setPage={setPage}
                     loadPage={loadPage}
-                />}
+                />
+            }
 
         </div>
 

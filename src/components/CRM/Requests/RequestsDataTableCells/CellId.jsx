@@ -1,8 +1,7 @@
-import { memo } from "react";
 import { TableCell, Icon } from "semantic-ui-react";
 import QueryTypeIcon from "./Elements/QueryTypeIcon";
 
-const CellId = memo(props => {
+const CellId = props => {
 
     const { row } = props;
 
@@ -26,6 +25,6 @@ const CellId = memo(props => {
 
     </TableCell>
 
-});
+};
 
 export default CellId;
