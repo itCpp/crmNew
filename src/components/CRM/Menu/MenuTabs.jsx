@@ -1,11 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
-import { selectTab, setSearchRequest } from "./../../../store/requests/actions";
+import { selectTab, setSearchRequest, requestEditCell } from "./../../../store/requests/actions";
 import { Icon } from "semantic-ui-react";
 
 const MenuTabs = props => {
 
-    const { selectMenu, setSearchRequest } = props;
+    const { selectMenu, setSearchRequest, requestEditCell } = props;
     const { tabs } = props;
     const { select, selectTab } = props;
     const { counter } = props;
@@ -19,13 +19,17 @@ const MenuTabs = props => {
 
         selectTab(id);
         setSearchRequest(null);
+        requestEditCell(null);
+
         localStorage.setItem('select_tab', id);
 
     }
 
     React.useEffect(() => {
-        if (tabs.length && !tabs.find(i => i.id === select))
+        if (tabs.length && !tabs.find(i => i.id === select)) {
             setSelect(null);
+            requestEditCell(null);
+        }
     }, []);
 
     return <div
@@ -77,5 +81,5 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-    selectTab, setSearchRequest
+    selectTab, setSearchRequest, requestEditCell
 })(MenuTabs);

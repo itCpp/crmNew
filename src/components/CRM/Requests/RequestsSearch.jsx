@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { LIMIT_ROWS_PAGE, setRequests, setSearchRequest, selectTab } from "../../../store/requests/actions";
+import { LIMIT_ROWS_PAGE, setRequests, setSearchRequest, selectTab, requestEditCell } from "../../../store/requests/actions";
 import { Button, Dropdown, Icon, Form, Label } from "semantic-ui-react";
 
 const RequestsSearch = React.memo(props => {
@@ -25,7 +25,7 @@ const RequestsSearch = React.memo(props => {
 
         setSearch(params);
         setActive(Object.keys(params).length > 0);
-        
+
     }
 
     const onKeyUp = e => {
@@ -47,12 +47,15 @@ const RequestsSearch = React.memo(props => {
         dispatch(selectTab(tabId > 0 ? tabId : null));
         dispatch(setRequests([]));
         dispatch(setSearchRequest(null));
+        dispatch(requestEditCell(null));
+
     }, []);
 
     React.useEffect(() => {
 
         if (open) {
             document.addEventListener('click', close);
+            dispatch(requestEditCell(null));
         }
         else {
             document.removeEventListener('click', close);

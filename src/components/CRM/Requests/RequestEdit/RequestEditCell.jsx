@@ -1,9 +1,10 @@
+import _ from "lodash";
 import React from "react";
 import axios from "./../../../../utils/axios-header";
 import { useSelector, useDispatch } from "react-redux";
-import { requestEditCell } from "./../../../../store/requests/actions";
+import { requestEditCell, updateRequestRow } from "./../../../../store/requests/actions";
 
-import { Placeholder, Icon } from "semantic-ui-react";
+import { Placeholder, Icon, Button } from "semantic-ui-react";
 
 import RequestEditClient from "./RequestEditCell/RequestEditClient";
 import RequestEditComment from "./RequestEditCell/RequestEditComment";
@@ -19,22 +20,25 @@ const RequestEditCell = props => {
     const modal = React.useRef();
 
     const [loading, setLoading] = React.useState(true);
+
+    const [save, setSave] = React.useState(false);
     const [saveLoad, setSaveLoad] = React.useState(false);
 
     const [error, setError] = React.useState(null);
+    const [errors, setErrors] = React.useState({});
     const [formdata, setFormdata] = React.useState([]);
     const [permits, setPermits] = React.useState({});
 
-    const closeRequestEditCell = React.useCallback(() => {
-        dispatch(requestEditCell(null));
-        document.removeEventListener('click', closeRequestEditCell);
-    }, [editCell]);
+    // const closeRequestEditCell = React.useCallback(() => {
+    //     dispatch(requestEditCell(null));
+    //     document.removeEventListener('click', closeRequestEditCell);
+    // }, [editCell]);
 
     React.useEffect(() => {
 
         if (modal.current && editCell?.id) {
 
-            document.addEventListener('click', closeRequestEditCell);
+            // document.addEventListener('click', closeRequestEditCell);
 
             modal.current.classList.add('show');
 
@@ -53,6 +57,7 @@ const RequestEditCell = props => {
             }).then(({ data }) => {
 
                 setError(null);
+                setErrors({});
 
                 setFormdata({
                     request: data.request,
@@ -81,12 +86,50 @@ const RequestEditCell = props => {
         }
         else if (modal.current && !editCell?.id) {
             modal.current.classList.remove('show');
-            document.removeEventListener('click', closeRequestEditCell);
+            // document.removeEventListener('click', closeRequestEditCell);
         }
 
-        return () => document.removeEventListener('click', closeRequestEditCell);
+        // return () => document.removeEventListener('click', closeRequestEditCell);
 
     }, [editCell]);
+
+    React.useEffect(() => {
+
+        if (save) {
+
+            setSaveLoad(true);
+
+            axios.post('requests/saveCell', {
+                ...(formdata?.request || {}),
+                __cell: editCell?.type
+            }).then(({ data }) => {
+                dispatch(updateRequestRow(data.request));
+                dispatch(requestEditCell(null));
+            }).catch(e => {
+                axios.toast(e, { time: 10000 });
+                setErrors(axios.getErrors(e));
+                setSaveLoad(false);
+            });
+
+        }
+
+        return () => setSave(false);
+
+    }, [save]);
+
+    const changeData = (e, data) => {
+
+        const { name, value } = data;
+
+        setFormdata(prev => ({
+            ...prev,
+            request: {
+                ...prev.request,
+                [name]: value,
+            }
+        }));
+
+    }
 
     return <div className="request-edit-cell-modal" ref={modal}>
 
@@ -96,8 +139,12 @@ const RequestEditCell = props => {
             editCell={editCell}
             loading={loading}
             formdata={formdata}
+            setFormdata={setFormdata}
             permits={permits}
+            setSave={setSave}
             saveLoad={saveLoad}
+            errors={errors}
+            changeData={changeData}
         />}
 
     </div>
@@ -135,6 +182,25 @@ export const RequestEditCellModalHeader = props => {
     </div>
 }
 
+export const RequestEditCellSaveButton = props => {
+
+    const { setSave } = props;
+
+    return <Button
+        fluid={props.fluid || true}
+        size={props.size || "tiny"}
+        color={props.color || "green"}
+        content={props.children || "Сохранить"}
+        onClick={() => setSave(true)}
+    />
+
+}
+
+export const caseSensitiveSearch = (options, query) => {
+    const re = new RegExp(_.escapeRegExp(query))
+    return options.filter((opt) => re.test(opt.text))
+}
+
 const RequestEditSwitch = props => {
 
     let body = null;
@@ -143,21 +209,21 @@ const RequestEditSwitch = props => {
         case "date":
             body = <RequestEditDate {...props} />
             break;
-        // case "client":
-        //     body = <RequestEditClient {...props} />
-        //     break;
-        // case "theme":
-        //     body = <RequestEditTheme {...props} />
-        //     break;
-        // case "commentFirst":
-        //     body = <RequestEditCommentFirst {...props} />
-        //     break;
-        // case "comment":
-        //     body = <RequestEditComment {...props} />
-        //     break;
-        // case "commentUrist":
-        //     body = <RequestEditCommentUrist {...props} />
-        //     break;
+        case "client":
+            body = <RequestEditClient {...props} />
+            break;
+        case "theme":
+            body = <RequestEditTheme {...props} />
+            break;
+        case "commentFirst":
+            body = <RequestEditCommentFirst {...props} />
+            break;
+        case "comment":
+            body = <RequestEditComment {...props} />
+            break;
+        case "commentUrist":
+            body = <RequestEditCommentUrist {...props} />
+            break;
         default:
             body = <div className="request-edit-cell-body text-center">
                 <small>Форма не определена</small>
