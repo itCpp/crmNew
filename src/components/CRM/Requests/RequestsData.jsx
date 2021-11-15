@@ -32,14 +32,8 @@ const RequestData = React.memo(props => {
 
     const getRequests = (params) => {
 
-        params.page = params.page === 0 ? 1 : params.page;
-
         if ((pages && params.page > pages) || loadPage)
             return null;
-
-        if (params.page === 1 && !loading) {
-            setLoading(true);
-        }
 
         setLoadPage(true);
 
@@ -70,6 +64,11 @@ const RequestData = React.memo(props => {
 
     }
 
+    /**
+     * Думал как сделать обновление вкладки при клике по этой же вкладке
+     * Решил использовать неполное число страницы, чтобы заставить
+     * срабатывать эффект, завиящий от смены страницы
+     */
     React.useEffect(() => {
 
         setError(null);
@@ -77,7 +76,7 @@ const RequestData = React.memo(props => {
         setRequestsLoading(true);
 
         setTimeout(() => {
-            setPage(page => page === 1 ? 0 : 1);
+            setPage(page => page === 1 ? 1.1 : 1);
         }, 50);
 
     }, [select, selectedUpdate]);

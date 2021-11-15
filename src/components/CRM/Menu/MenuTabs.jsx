@@ -10,8 +10,6 @@ const MenuTabs = props => {
     const { select, selectTab, selectedUpdate, selectedUpdateTab } = props;
     const { counter } = props;
 
-    // console.log("MenuTabs", props);
-
     const setSelect = id => {
 
         if (id === select)
@@ -19,6 +17,7 @@ const MenuTabs = props => {
 
         selectTab(id);
         setSearchRequest(null);
+        selectedUpdateTab(!selectedUpdate);
 
         localStorage.setItem('select_tab', id);
 
