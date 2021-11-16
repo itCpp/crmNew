@@ -147,7 +147,7 @@ const RequestEditCell = props => {
 
     }
 
-    return <div className="request-edit-cell-modal" ref={modal} id="request-edit-cell-modal">
+    return <div className="request-edit-cell-modal shadow" ref={modal} id="request-edit-cell-modal">
 
         {loading && <RequestEditCellLoading />}
 

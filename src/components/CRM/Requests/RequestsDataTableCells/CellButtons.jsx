@@ -1,31 +1,33 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { requestEdit } from "../../../../store/requests/actions";
-import { Table, Icon } from "semantic-ui-react";
+import { Table, Icon, Dropdown } from "semantic-ui-react";
 
 const CellButtons = props => {
 
     const { row } = props;
     const dispatch = useDispatch();
-    const [clicked, setClicked] = useState(null);
 
-    useEffect(() => {
-        clicked && setTimeout(() => setClicked(null), 500);
-    }, [clicked]);
+    return <Table.Cell style={{ maxWidth: 25 }}>
 
-    return <Table.Cell>
+        <div className="d-flex flex-column justify-content-center align-items-center">
 
-        <div className="d-flex justify-content-center align-items-center">
+            <Dropdown icon="ellipsis vertical" className="m-1 button-icon-dropdown" pointing="top right" direction="left">
+                <Dropdown.Menu style={{ marginTop: 4, marginRight: -6 }}>
+                    <Dropdown.Item icon="edit" text="Редактировать" onClick={() => dispatch(requestEdit(row))} />
+                    <Dropdown.Item icon="file audio" text="Аудиозаписи" disabled />
+                    <Dropdown.Item icon="mail" text="Отправить СМС" disabled />
+                    <Dropdown.Item icon="history" text="История изменений" disabled />
+                </Dropdown.Menu>
+            </Dropdown>
+
             <Icon
-                name={clicked === "edit" ? "spinner" : "edit"} 
-                onClick={() => {
-                    dispatch(requestEdit(row));
-                    setClicked("edit");
-                }}
+                name="edit"
+                onClick={() => dispatch(requestEdit(row))}
                 title="Редактировать заявку"
-                className="button-icon"
-                // loading={clicked === "edit"}
+                className="button-icon m-1"
             />
+
         </div>
 
     </Table.Cell>

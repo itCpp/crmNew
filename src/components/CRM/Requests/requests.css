@@ -305,3 +305,11 @@
     75% { transform: scale(1.2); }
     100% { transform: scale(1); }
 }
+
+.button-icon-dropdown > i.icon {
+    opacity: .7;
+}
+
+.button-icon-dropdown > i.icon:hover {
+    opacity: 1;
+}
