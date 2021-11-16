@@ -35,6 +35,9 @@ const RequestData = React.memo(props => {
         if ((pages && params.page > pages) || loadPage)
             return null;
 
+        if ((params.page === 1 || params.page === 1.1) && !loading)
+            setLoading(true);
+
         setLoadPage(true);
 
         axios.post('requests/get', params)
@@ -94,7 +97,7 @@ const RequestData = React.memo(props => {
             });
         }
 
-    }, [page]);
+    }, [page, searchRequest]);
 
     React.useEffect(() => {
         if (search) {

@@ -3,6 +3,20 @@ import { connect } from "react-redux";
 import { selectTab, setSearchRequest, selectedUpdateTab } from "./../../../store/requests/actions";
 import { Icon } from "semantic-ui-react";
 
+const CounterRow = React.memo(props => {
+
+    const { count } = props;
+    const counter = React.useRef();
+
+    React.useEffect(() => {
+        counter.current && counter.current.classList.add('counter-updated');
+        setTimeout(() => counter.current && counter.current.classList.remove('counter-updated'), 300);
+    }, [count]);
+
+    return count && <small ref={counter}>{count}</small>
+
+})
+
 const MenuTabs = props => {
 
     const { selectMenu, setSearchRequest, requestsLoading } = props;
@@ -62,7 +76,7 @@ const MenuTabs = props => {
                     />
                 </span>
                 <span>{tab.name}</span>
-                <small>{counter[`tab${tab.id}`]?.count || ""}</small>
+                <CounterRow count={counter[`tab${tab.id}`]?.count || null} />
             </div>
         })}
 

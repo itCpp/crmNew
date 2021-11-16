@@ -24,11 +24,7 @@ const RequestsDataTableRow = React.memo(props => {
         }));
     }, []);
 
-    console.log("RequestsDataTableRow", row);
-
     React.useEffect(() => {
-
-        console.log(row);
 
         if (firstRender) {
             setFirstRender(false);
