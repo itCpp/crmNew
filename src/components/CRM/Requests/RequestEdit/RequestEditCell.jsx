@@ -30,11 +30,15 @@ const RequestEditCell = props => {
     const [formdata, setFormdata] = React.useState([]);
     const [permits, setPermits] = React.useState({});
 
-    const closeRequestEditCell = React.useCallback(() => {
+    const closeRequestEditCell = React.useCallback((e) => {
+
+        if (modal.current && modal.current.contains(e.target)) return;
+
         timeout.current = setTimeout(() => {
             dispatch(requestEditCell(null));
             document.body.removeEventListener('click', closeRequestEditCell);
         }, 50);
+
     }, []);
 
     React.useEffect(() => {
@@ -143,7 +147,7 @@ const RequestEditCell = props => {
 
     }
 
-    return <div className="request-edit-cell-modal" ref={modal}>
+    return <div className="request-edit-cell-modal" ref={modal} id="request-edit-cell-modal">
 
         {loading && <RequestEditCellLoading />}
 

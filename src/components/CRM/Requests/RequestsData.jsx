@@ -24,7 +24,7 @@ const RequestData = React.memo(props => {
 
     const [loading, setLoading] = React.useState(true);
     const [loadPage, setLoadPage] = React.useState(false);
-    const [page, setPage] = React.useState(0);
+    const [page, setPage] = React.useState(1);
     const [pages, setPages] = React.useState(null);
     const [error, setError] = React.useState(null);
 
@@ -40,13 +40,15 @@ const RequestData = React.memo(props => {
         axios.post('requests/get', params)
             .then(({ data }) => {
 
-                if (params.page === 1)
+                if (params.page === 1 || params.page === 1.1)
                     setRequests(data.requests);
                 else
                     appendRequests(data.requests);
 
                 setPages(data.pages);
                 setError(null);
+
+                window.requestPermits = data.permits;
 
             })
             .catch(error => {

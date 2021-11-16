@@ -17,7 +17,6 @@ const MenuTabs = props => {
 
         selectTab(id);
         setSearchRequest(null);
-        selectedUpdateTab(!selectedUpdate);
 
         localStorage.setItem('select_tab', id);
 

@@ -1,16 +1,16 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Icon, Label } from "semantic-ui-react";
+import { Icon, Label, Button } from "semantic-ui-react";
 import RequestsSearch from "./../RequestsSearch";
+import RequestAdd from "./RequestAdd";
 
 const RequestsTitle = React.memo(props => {
 
-    const select = useSelector(state => state.requests.select);
-    const tabs = useSelector(state => state.requests.tabs);
-    const counts = useSelector(state => state.requests.counter);
+    const { select, tabs, counter } = useSelector(state => state.requests);
+    const [add, setAdd] = React.useState(false);
 
     const tab = tabs.find(item => item.id === select);
-    const count = tab && counts && counts[`tab${tab.id}`];
+    const count = tab && counter && counter[`tab${tab.id}`];
 
     return <div className="d-flex justify-content-between align-items-center">
 
@@ -40,6 +40,18 @@ const RequestsTitle = React.memo(props => {
         </div>
 
         <div>
+            {window?.requestPermits?.requests_add && <>
+                <Button
+                    icon="plus"
+                    color="green"
+                    circular
+                    title="Создать заявку"
+                    basic
+                    onClick={() => setAdd(true)}
+                />
+                {add && <RequestAdd setOpen={setAdd} />}
+            </>}
+
             <RequestsSearch {...props} />
         </div>
 
