@@ -1,5 +1,4 @@
 import * as ACTION from './actions'
-// import createRequestRow from "./createRequestRow";
 
 const defaultState = {
     tabs: [],
@@ -13,6 +12,7 @@ const defaultState = {
     counter: {},
     searchRequest: null, // Поисковой запрос
     editCell: null, // {null|object} Редактирование ячейки
+    addPhoneShow: null, // {null|number} Модальное окно добавления номера телефона
 };
 
 let list = [];
@@ -73,6 +73,20 @@ export const requestsReducer = (state = defaultState, action) => {
 
             return { ...state, requests: requests, updates }
 
+        case ACTION.UPDATE_CLIENT_REQUEST_ROW:
+
+            let updateClients = [];
+
+            state.requests.forEach((item, key) => {
+                updateClients.push(item.id === action.payload.id ? {
+                    ...item,
+                    clients: action.payload.clients,
+                    updated_at: new Date(),
+                } : item);
+            });
+
+            return { ...state, requests: updateClients }
+
         case ACTION.CREATE_REQUEST_ROW:
             list = [action.payload, ...state.requests];
             return { ...state, requests: list, requestsIds: getIdList(list) }
@@ -100,6 +114,9 @@ export const requestsReducer = (state = defaultState, action) => {
 
         case ACTION.SEARCH_REQUEST:
             return { ...state, searchRequest: action.payload }
+
+        case ACTION.ADD_PHONE_SHOW:
+            return { ...state, addPhoneShow: action.payload }
 
         default:
             return state;

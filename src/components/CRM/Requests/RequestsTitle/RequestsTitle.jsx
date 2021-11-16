@@ -1,8 +1,10 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Icon, Label, Button } from "semantic-ui-react";
+
 import RequestsSearch from "./../RequestsSearch";
 import RequestAdd from "./RequestAdd";
+import RequestAddPhone from "./RequestAddPhone";
 
 const RequestsTitle = React.memo(props => {
 
@@ -13,6 +15,8 @@ const RequestsTitle = React.memo(props => {
     const count = tab && counter && counter[`tab${tab.id}`];
 
     return <div className="d-flex justify-content-between align-items-center">
+
+        <RequestAddPhone />
 
         <div className="page-title-box">
 

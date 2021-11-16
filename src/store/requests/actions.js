@@ -85,3 +85,15 @@ export const setSearchRequest = data => ({
     type: SEARCH_REQUEST,
     payload: data
 });
+
+export const ADD_PHONE_SHOW = "ADD_PHONE_SHOW";
+export const setAddPhoneShow = data => ({
+    type: ADD_PHONE_SHOW,
+    payload: data
+});
+
+export const UPDATE_CLIENT_REQUEST_ROW = "UPDATE_CLIENT_REQUEST_ROW";
+export const updateClientsRequestRow = data => ({
+    type: UPDATE_CLIENT_REQUEST_ROW,
+    payload: data
+});

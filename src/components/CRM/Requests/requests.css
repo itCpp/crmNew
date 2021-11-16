@@ -218,21 +218,24 @@
 }
 
 @-webkit-keyframes updateRow {
-    from  { opacity: 0 !important; }
-    30% { opacity: .3 !important; }
-    100% { opacity: 1 !important; }
+    10% { opacity: 0 !important; }
+    100%  { opacity: 1 !important; }
 }
 @keyframes updateRow {
-    from { opacity: 0 !important; }
-    to  { opacity: 1 !important; }
+    10% { opacity: 0 !important; }
+    100%  { opacity: 1 !important; }
 }
 
+.to-copy-text {
+    transition: .1s;
+}
 .to-copy-text:hover {
     cursor: pointer;
     text-decoration: underline;
 }
 .to-copy-text.copyed {
-    animation: updateRow .3s;
+    /* animation: updateRow .3s; */
+    opacity: .3;
 }
 
 .search-form {
