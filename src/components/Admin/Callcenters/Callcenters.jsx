@@ -34,7 +34,7 @@ function Callcenters() {
         return () => setUpdate(null);
     }, [update]);
 
-    return <>
+    return <div className="segment-compact">
 
         <div className="admin-content-segment d-flex justify-content-between align-items-center">
 
@@ -77,7 +77,7 @@ function Callcenters() {
             : null
         }
 
-    </>
+    </div>
 
 }
 
