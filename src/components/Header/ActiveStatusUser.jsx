@@ -36,9 +36,11 @@ const ActiveStatusUser = props => {
             />
         </ButtonHeader>
 
-        <ButtonHeader disabled>
+        {/* <ButtonHeader disabled> */}
+        <span className="ml-2 mt-1">
             <Icon name="briefcase" color={worktime?.color || "grey"} />
-        </ButtonHeader>
+        </span>
+        {/* </ButtonHeader> */}
 
     </>
 }

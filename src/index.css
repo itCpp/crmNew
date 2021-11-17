@@ -130,3 +130,19 @@ hr {
 .opacity-70 { opacity: .7 !important; }
 .opacity-80 { opacity: .8 !important; }
 .opacity-90 { opacity: .9 !important; }
+
+.slide-to-right {
+  animation: slide-to-right .2s;
+}
+@keyframes slide-to-right {
+  from { opacity: 1; }
+  to { transform: translate(100px); opacity: 0; }
+}
+
+.slide-out-left {
+  animation: slide-out-left .2s;
+}
+@keyframes slide-out-left {
+  from { transform: translate(-100px); opacity: 0; }
+  to { opacity: 1; }
+}

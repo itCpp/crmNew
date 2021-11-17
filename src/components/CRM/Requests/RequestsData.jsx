@@ -77,8 +77,11 @@ const RequestData = React.memo(props => {
     React.useEffect(() => {
 
         setError(null);
-        setLoading(true);
-        setRequestsLoading(true);
+
+        if (select !== null) {
+            setLoading(true);
+            setRequestsLoading(true);
+        }
 
         setTimeout(() => {
             setPage(page => page === 1 ? 1.1 : 1);
@@ -117,7 +120,7 @@ const RequestData = React.memo(props => {
                 <div className="text-center my-4 w-100"><Loader active inline indeterminate /></div>
             }
 
-            {!loading && !select && select !== 0 && <div style={{ maxWidth: 666, width: '100%' }} className="mx-auto">
+            {select === null && <div style={{ maxWidth: 666, width: '100%' }} className="mx-auto">
                 <Message info content="Выберите нужную вкладку слева" />
             </div>}
 
