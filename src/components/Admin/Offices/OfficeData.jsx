@@ -1,7 +1,14 @@
 import React from "react";
+import _ from "lodash";
 import axios from "./../../../utils/axios-header";
 
-import { Icon, Message, Form, Button, Grid, Segment } from "semantic-ui-react";
+import { Icon, Message, Form, Button, Grid, Dropdown } from "semantic-ui-react";
+
+// const stateOptions = _.map(addressDefinitions.state, (state, index) => ({
+//     key: addressDefinitions.state_abbr[index],
+//     text: state,
+//     value: addressDefinitions.state_abbr[index],
+// }));
 
 const OfficeData = props => {
 
@@ -13,7 +20,10 @@ const OfficeData = props => {
     const [errors, setErrors] = React.useState({});
 
     const [formdata, setFormdata] = React.useState({});
+    const [statuses, setStatuses] = React.useState([]);
     const [save, setSave] = React.useState(false);
+
+    const [hash, setHash] = React.useState(null);
 
     // React.useEffect(() => {
     //     if (office && segment.current) {
@@ -38,6 +48,8 @@ const OfficeData = props => {
                 forSetting: true
             }).then(({ data }) => {
                 setFormdata(data.office);
+                setHash(JSON.stringify(data.office));
+                setStatuses(data.statuses);
             }).catch(e => {
                 setError(axios.getError(e));
             }).then(() => {
@@ -56,6 +68,8 @@ const OfficeData = props => {
         setFormdata(prev => ({ ...prev, [name]: value }));
 
     }, []);
+
+    const setSelected = React.useCallback(value => onChange(null, { name: 'statuses', value }), []);
 
     React.useEffect(() => {
 
@@ -81,6 +95,11 @@ const OfficeData = props => {
                     return prev;
 
                 });
+
+                setFormdata(data.office);
+                setHash(JSON.stringify(data.office));
+
+                setErrors({});
 
             }).catch(e => {
                 axios.toast(e);
@@ -135,15 +154,31 @@ const OfficeData = props => {
                 disabled={!loading && (error ? true : false)}
             />
 
-            <Form.Input
-                label="Короткий адрес"
-                placeholder="Нпример: ул. Моховая, д. 1"
-                name="addr"
-                value={formdata.addr || ""}
-                error={errors.addr ? true : false}
-                onChange={onChange}
-                disabled={!loading && (error ? true : false)}
-            />
+            <Form.Group>
+
+                <Form.Input
+                    label="Короткий адрес"
+                    placeholder="Наример: ул. Моховая, д. 1"
+                    name="addr"
+                    value={formdata.addr || ""}
+                    error={errors.addr ? true : false}
+                    onChange={onChange}
+                    disabled={!loading && (error ? true : false)}
+                    width={10}
+                />
+
+                <Form.Input
+                    label="Телефон секретаря"
+                    placeholder="Укажите номер телефана секретаря"
+                    name="tel"
+                    value={formdata.tel || ""}
+                    error={errors.tel ? true : false}
+                    onChange={onChange}
+                    disabled={!loading && (error ? true : false)}
+                    width={6}
+                />
+
+            </Form.Group>
 
             <Form.TextArea
                 label="Полный адрес"
@@ -185,20 +220,68 @@ const OfficeData = props => {
                 </Grid.Row>
             </Grid>
 
+            <StatusesDropdown
+                statuses={statuses}
+                selectedStatuses={formdata.statuses || []}
+                setSelectedStatuses={setSelected}
+            />
+
         </Form>
 
-        <div className="text-center mt-3">
+        <div className="mt-3 d-flex justify-content-between align-items-center">
+            <Button
+                color="blue"
+                content="Отмена"
+                onClick={() => setOffice(false)}
+                icon="arrow left"
+                labelPosition="left"
+                disabled={loading}
+            />
             <Button
                 color="green"
                 content="Сохранить"
                 icon="save"
                 labelPosition="right"
-                disabled={loading || error}
+                disabled={loading || error || (hash === JSON.stringify(formdata))}
                 onClick={() => setSave(true)}
             />
         </div>
 
     </div>
+
+}
+
+const StatusesDropdown = props => {
+
+    const { statuses, selectedStatuses, setSelectedStatuses } = props;
+    const [searchQuery, setSearchQuery] = React.useState("");
+
+    const handleChange = (e, { searchQuery, value }) => {
+        setSearchQuery(searchQuery);
+        setSelectedStatuses(value);
+    }
+
+    const handleSearchChange = (e, { searchQuery }) => setSearchQuery(searchQuery);
+
+    return <>
+    <div className="mt-3 mb-1"><b>Статусы заявок для подготовки шаблона</b></div>
+    <Dropdown
+        fluid
+        multiple
+        onChange={handleChange}
+        onSearchChange={handleSearchChange}
+        options={statuses.map(row => ({
+            key: row.id,
+            value: row.id,
+            text: row.name,
+        }))}
+        placeholder='Статусы для подготовки шаблона'
+        search
+        searchQuery={searchQuery}
+        selection
+        value={selectedStatuses}
+    />
+    </>
 
 }
 
