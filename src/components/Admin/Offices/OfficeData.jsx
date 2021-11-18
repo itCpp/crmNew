@@ -4,11 +4,7 @@ import axios from "./../../../utils/axios-header";
 
 import { Icon, Message, Form, Button, Grid, Dropdown } from "semantic-ui-react";
 
-// const stateOptions = _.map(addressDefinitions.state, (state, index) => ({
-//     key: addressDefinitions.state_abbr[index],
-//     text: state,
-//     value: addressDefinitions.state_abbr[index],
-// }));
+import OfficeDataSettings from "./OfficeDataSettings";
 
 const OfficeData = props => {
 
@@ -21,6 +17,8 @@ const OfficeData = props => {
 
     const [formdata, setFormdata] = React.useState({});
     const [statuses, setStatuses] = React.useState([]);
+    const [gates, setGates] = React.useState([]);
+    const [sectors, setSectors] = React.useState([]);
     const [save, setSave] = React.useState(false);
 
     const [hash, setHash] = React.useState(null);
@@ -47,9 +45,17 @@ const OfficeData = props => {
                 id: office,
                 forSetting: true
             }).then(({ data }) => {
+
+                if (data?.office?.settings && data.office.settings.length === 0)
+                    data.office.settings = [{}];
+
                 setFormdata(data.office);
+
                 setHash(JSON.stringify(data.office));
                 setStatuses(data.statuses);
+                setSectors(data.sectors);
+                setGates(data.gates);
+
             }).catch(e => {
                 setError(axios.getError(e));
             }).then(() => {
@@ -78,6 +84,9 @@ const OfficeData = props => {
             setLoading(true);
 
             axios.post('dev/saveOffice', formdata).then(({ data }) => {
+
+                if (data?.office?.settings && data.office.settings.length === 0)
+                    data.office.settings = [{}];
 
                 setOffices(prev => {
 
@@ -226,6 +235,13 @@ const OfficeData = props => {
                 setSelectedStatuses={setSelected}
             />
 
+            <OfficeDataSettings
+                formdata={formdata}
+                onChange={onChange}
+                gates={gates}
+                sectors={sectors}
+            />
+
         </Form>
 
         <div className="mt-3 d-flex justify-content-between align-items-center">
@@ -264,23 +280,23 @@ const StatusesDropdown = props => {
     const handleSearchChange = (e, { searchQuery }) => setSearchQuery(searchQuery);
 
     return <>
-    <div className="mt-3 mb-1"><b>Статусы заявок для подготовки шаблона</b></div>
-    <Dropdown
-        fluid
-        multiple
-        onChange={handleChange}
-        onSearchChange={handleSearchChange}
-        options={statuses.map(row => ({
-            key: row.id,
-            value: row.id,
-            text: row.name,
-        }))}
-        placeholder='Статусы для подготовки шаблона'
-        search
-        searchQuery={searchQuery}
-        selection
-        value={selectedStatuses}
-    />
+        <div className="mt-3 mb-1"><b>Статусы заявок для подготовки шаблона</b></div>
+        <Dropdown
+            fluid
+            multiple
+            onChange={handleChange}
+            onSearchChange={handleSearchChange}
+            options={statuses.map(row => ({
+                key: row.id,
+                value: row.id,
+                text: row.name,
+            }))}
+            placeholder='Статусы для подготовки шаблона'
+            search
+            searchQuery={searchQuery}
+            selection
+            value={selectedStatuses}
+        />
     </>
 
 }
