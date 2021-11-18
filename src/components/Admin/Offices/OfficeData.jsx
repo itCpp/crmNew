@@ -5,7 +5,7 @@ import { Icon, Message, Form, Button, Grid, Segment } from "semantic-ui-react";
 
 const OfficeData = props => {
 
-    const { office, offices, setOffice } = props;
+    const { office, setOffices, setOffice } = props;
     const segment = React.useRef();
 
     const [loading, setLoading] = React.useState(true);
@@ -13,6 +13,7 @@ const OfficeData = props => {
     const [errors, setErrors] = React.useState({});
 
     const [formdata, setFormdata] = React.useState({});
+    const [save, setSave] = React.useState(false);
 
     // React.useEffect(() => {
     //     if (office && segment.current) {
@@ -55,6 +56,44 @@ const OfficeData = props => {
         setFormdata(prev => ({ ...prev, [name]: value }));
 
     }, []);
+
+    React.useEffect(() => {
+
+        if (save) {
+
+            setLoading(true);
+
+            axios.post('dev/saveOffice', formdata).then(({ data }) => {
+
+                setOffices(prev => {
+
+                    if (formdata.id) {
+                        prev.forEach((row, i) => {
+                            if (row.id === data.office.id) {
+                                prev[i] = { ...row, ...data.office }
+                            }
+                        });
+                    }
+                    else {
+                        prev.unshift(data.office);
+                    }
+
+                    return prev;
+
+                });
+
+            }).catch(e => {
+                axios.toast(e);
+                setErrors(axios.getErrors(e));
+            }).then(() => {
+                setLoading(false);
+            });
+
+        }
+
+        return () => setSave(false);
+
+    }, [save]);
 
     return <div className="admin-content-segment" ref={segment}>
 
@@ -130,6 +169,7 @@ const OfficeData = props => {
                             error={errors.sms ? true : false}
                             onChange={onChange}
                             disabled={!loading && (error ? true : false)}
+                            style={{ height: '100%' }}
                         />
                     </Grid.Column>
                     <Grid.Column width={4}>
@@ -139,7 +179,7 @@ const OfficeData = props => {
                             <div><code>${`{time}`}</code> <small>время записи</small></div>
                             <div><code>${`{pin}`}</code> <small>оператор</small></div>
                             <div><code>${`{id}`}</code> <small>номер заявки</small></div>
-                            <div><code>${`{phone}`}</code> <small>номер секретаря</small></div>
+                            <div><code>${`{tel}`}</code> <small>номер секретаря</small></div>
                         </div>
                     </Grid.Column>
                 </Grid.Row>
@@ -154,6 +194,7 @@ const OfficeData = props => {
                 icon="save"
                 labelPosition="right"
                 disabled={loading || error}
+                onClick={() => setSave(true)}
             />
         </div>
 
