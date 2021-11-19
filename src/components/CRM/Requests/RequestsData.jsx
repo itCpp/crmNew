@@ -14,11 +14,12 @@ import { Loader, Message } from "semantic-ui-react";
 import RequestEdit from "./RequestEdit/RequestEdit";
 import RequestsTitle from "./RequestsTitle/RequestsTitle";
 import RequestsDataTable from "./RequestsDataTable";
+import RequestSendSms from "./RequestSendSms";
 
 const RequestData = React.memo(props => {
 
     const { select, selectTab, selectedUpdate } = props;
-    const { searchRequest } = props;
+    const { searchRequest, sendSms } = props;
     const { setRequests, appendRequests, setRequestsLoading } = props;
     const { requestEdit } = props;
 
@@ -111,6 +112,7 @@ const RequestData = React.memo(props => {
     return <div id="requests-block">
 
         {requestEdit && <RequestEdit />}
+        {sendSms && <RequestSendSms />}
 
         <RequestsTitle getRequests={getRequests} />
 
@@ -147,6 +149,7 @@ const mapStateToProps = state => ({
     tabs: state.requests.tabs,
     requestEdit: state.requests.requestEdit,
     searchRequest: state.requests.searchRequest,
+    sendSms: state.requests.sendSms,
 });
 
 const mapActionsToProps = {

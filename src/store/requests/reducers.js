@@ -13,6 +13,7 @@ const defaultState = {
     searchRequest: null, // Поисковой запрос
     editCell: null, // {null|object} Редактирование ячейки
     addPhoneShow: null, // {null|number} Модальное окно добавления номера телефона
+    sendSms: null,
 };
 
 let list = [];
@@ -117,6 +118,9 @@ export const requestsReducer = (state = defaultState, action) => {
 
         case ACTION.ADD_PHONE_SHOW:
             return { ...state, addPhoneShow: action.payload }
+
+        case ACTION.SET_SEND_SMS:
+            return { ...state, sendSms: action.payload }
 
         default:
             return state;

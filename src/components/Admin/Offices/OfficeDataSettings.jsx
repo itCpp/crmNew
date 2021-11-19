@@ -3,8 +3,8 @@ import { Form, Button } from "semantic-ui-react";
 
 const TYPE_SELECT = [
     { text: "Тип настройки", value: null },
-    { text: "Шлюз по умолчанию", value: "gate_default" },
-    { text: "Шлюз для сектора", value: "gate_for_sector" },
+    { text: "Шлюз СМС по умолчанию", value: "gate_default" },
+    { text: "Шлюз СМС для сектора", value: "gate_for_sector" },
     { text: "Телефон секретаря для сектора", value: "phone_secretary_for_sector" },
 ];
 
@@ -22,17 +22,17 @@ const OfficeDataSettings = React.memo(props => {
 
         onChange(null, { name: "settings", value: rows });
 
-    }, []);
+    }, [rows]);
 
     const addRow = React.useCallback(() => {
         rows.push({});
         onChange(null, { name: "settings", value: rows });
-    }, []);
+    }, [rows]);
 
     const removeRow = React.useCallback((key) => {
         delete (rows[key]);
         onChange(null, { name: "settings", value: rows });
-    }, []);
+    }, [rows]);
 
     return <div className="mt-3 mb-3">
 
@@ -112,7 +112,7 @@ const OfficeDataSettingsForm = props => {
             </>
         case "phone_secretary_for_sector":
             return <>
-                <SelectGate {...props} />
+                <SelectSector {...props} />
                 <InputValue {...props} placeholder="Укажите телефон" />
             </>
         default:

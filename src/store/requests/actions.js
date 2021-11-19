@@ -97,3 +97,9 @@ export const updateClientsRequestRow = data => ({
     type: UPDATE_CLIENT_REQUEST_ROW,
     payload: data
 });
+
+export const SET_SEND_SMS = "SET_SEND_SMS";
+export const setSendSms = data => ({
+    type: SET_SEND_SMS,
+    payload: data
+});
