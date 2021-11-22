@@ -21,6 +21,13 @@ import './App.css';
 
 import Routes from './components/Routes';
 
+const appUserEvent = data => {
+    
+    if (data.alert)
+        axios.toast(null, data.alert);
+
+}
+
 function App(props) {
 
     const { userData, setLogin, setUserData, setUserPermits } = props;
@@ -65,7 +72,8 @@ function App(props) {
                 .listen('Users\\ChangeUserWorkTime', data => {
                     console.log(data);
                     props.setUserWorkTime(data.worktime);
-                });
+                })
+                .listen('AppUserEvent', appUserEvent);
 
         }
         else if (!userData?.id) {
