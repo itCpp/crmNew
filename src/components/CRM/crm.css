@@ -119,3 +119,7 @@
 .request-button-control > button > i.icon {
     font-size: 120%;
 }
+
+.ui.form .disabled {
+    opacity: .8 !important;
+}

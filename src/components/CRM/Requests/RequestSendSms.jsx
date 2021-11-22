@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSendSms } from "../../../store/requests/actions";
 import axios from "./../../../utils/axios-header";
 
-import { Modal, Form, Message, Button } from "semantic-ui-react";
+import { Modal, Form, Message, Button, Grid, Header, Icon } from "semantic-ui-react";
+import moment from "./../../../utils/moment";
 
 const RequestSendSms = props => {
 
@@ -11,6 +12,7 @@ const RequestSendSms = props => {
     const dispatch = useDispatch();
 
     const [load, setLoad] = React.useState(false);
+    const [loadMessages, setLoadMessages] = React.useState(false);
     const [error, setError] = React.useState(false);
     const [errors, setErrors] = React.useState({});
 
@@ -19,11 +21,14 @@ const RequestSendSms = props => {
     const [request, setRequest] = React.useState({});
     const [send, setSend] = React.useState(false);
 
+    const [messages, setMessages] = React.useState([]);
+
     React.useEffect(() => {
 
         if (sendSms) {
 
             setLoad(true);
+            setLoadMessages(true);
             setError(false);
             setErrors({});
 
@@ -35,10 +40,12 @@ const RequestSendSms = props => {
                 });
                 setRequest(data.request);
                 setPhones(data.phones);
+                setMessages(data.messages);
             }).catch(e => {
                 setError(axios.getError(e));
             }).then(() => {
                 setLoad(false);
+                setLoadMessages(false);
             });
 
         }
@@ -53,6 +60,7 @@ const RequestSendSms = props => {
 
             axios.post('requests/sendSms', formdata).then(() => {
                 dispatch(setSendSms(null));
+                // setLoad(false);
             }).catch(e => {
                 axios.toast(e);
                 setErrors(axios.getErrors(e));
@@ -70,67 +78,108 @@ const RequestSendSms = props => {
         centered={false}
         onClose={() => dispatch(setSendSms(null))}
         closeIcon
-        size="tiny"
     >
 
-        <Modal.Header>Отправить смс #{sendSms}</Modal.Header>
+        <Modal.Header>Сообщения</Modal.Header>
 
-        <Modal.Content>
+        <Modal.Content className="sms-content">
 
             {error && <Message error content={error} />}
 
-            {request?.client_name && <h3>{request.client_name}</h3>}
+            <Grid columns={2}>
+                <Grid.Row>
+                    <Grid.Column width={7}>
 
-            <Form loading={load}>
+                        <Header
+                            as="h3"
+                            content={`Заявка #${sendSms}`}
+                            subheader={request.client_name || null}
+                        />
 
-                {phones && phones.length > 0 && <Form.Select
-                    label="Выберите телефон для отправки"
-                    placeholder="Выберите телефон"
-                    name="phone"
-                    value={formdata.phone || ""}
-                    onChange={(e, { name, value }) => setFormdata(p => ({ ...p, [name]: value }))}
-                    disabled={error ? true : false}
-                    options={phones.map((phone, i) => ({
-                        key: i,
-                        text: phone.phone,
-                        value: phone.id,
-                    }))}
-                    error={errors.phone ? true : false}
-                />}
+                        <Form loading={load}>
 
-                <Form.TextArea
-                    label="Текст сообщения"
-                    placeholder="Введите текст СМС"
-                    rows={5}
-                    name="message"
-                    value={formdata.message || ""}
-                    onChange={(e, { name, value }) => setFormdata(p => ({ ...p, [name]: value }))}
-                    disabled={error ? true : false}
-                    error={errors.message ? true : false}
-                />
+                            <Form.Select
+                                label="Выберите телефон для отправки"
+                                placeholder="Выберите телефон"
+                                name="phone"
+                                value={formdata.phone || ""}
+                                onChange={(e, { name, value }) => setFormdata(p => ({ ...p, [name]: value }))}
+                                disabled={(error ? true : false) || phones.length <= 1}
+                                options={phones.map((phone, i) => ({
+                                    key: i,
+                                    text: phone.phone,
+                                    value: phone.id,
+                                }))}
+                                error={errors.phone ? true : false}
+                            />
 
-            </Form>
+                            <Form.TextArea
+                                label="Текст сообщения"
+                                placeholder="Введите текст СМС"
+                                rows={7}
+                                name="message"
+                                value={formdata.message || ""}
+                                onChange={(e, { name, value }) => setFormdata(p => ({ ...p, [name]: value }))}
+                                disabled={error ? true : false}
+                                error={errors.message ? true : false}
+                            />
+
+                        </Form>
+
+                        <Button
+                            icon="send"
+                            labelPosition="right"
+                            content="Отправить"
+                            color="green"
+                            disabled={
+                                load
+                                || (error ? true : false)
+                                || (!formdata?.message)
+                                || (formdata?.message && formdata.message.length === 0)
+                            }
+                            onClick={() => setSend(true)}
+                            fluid
+                            className="mt-2"
+                        />
+
+                    </Grid.Column>
+
+                    <Grid.Column width={9} className="scrolling-sms d-flex flex-column-reverse">
+
+                        {loadMessages && <div className="loading-messages">Загрузка сообщений...</div>}
+                        {!loadMessages && messages.length === 0 && <div className="loading-messages">Сообщений нет</div>}
+                        {!loadMessages && messages.map(m => <SmsRow key={m.message_id} row={m} />)}
+
+                    </Grid.Column>
+
+                </Grid.Row>
+            </Grid>
 
         </Modal.Content>
 
-        <Modal.Actions>
-            <Button
-                icon="send"
-                labelPosition="right"
-                content="Отправить"
-                color="green"
-                disabled={
-                    load
-                    || (error ? true : false)
-                    || (!formdata?.message)
-                    || (formdata?.message && formdata.message.length === 0)
-                }
-                onClick={() => setSend(true)}
-            />
-        </Modal.Actions>
-
     </Modal>;
 
+}
+
+const SmsRow = props => {
+
+    const { row } = props;
+
+    let className = [`sms-row`, `w-100`, `sms-row-${row.direction}`];
+
+    return <div className={className.join(' ')}>
+        {row.created_pin && <span className="sms-title">{row.created_pin}</span>}
+        <span className="sms-message">{row.message}</span>
+        <span className="sms-date">
+            {row.response && (row.response?.Response !== "Success" || row.response?.ResponseCode !== 200) && <span className="text-danger">{row.response?.Message || "Ошибка" + (row.response?.ResponseCode ? ` ${row.response.ResponseCode}` : "")}</span>}
+            <span className="sms-created-at">{moment(row.created_at).format("DD.MM.YYYY HH:mm")}</span>
+            {row.response?.Response && row.response.Response === "Success" && <span><Icon name="check" color="blue" /></span>}
+            {row.direction === "out" && !row.response && <span className="text-primary">Отправка...</span>}
+        </span>
+        {row.failed_at && <div className="sms-failed">
+            <Icon name="warning sign" />
+        </div>}
+    </div>
 }
 
 export default RequestSendSms;

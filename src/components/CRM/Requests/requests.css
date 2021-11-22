@@ -313,3 +313,73 @@
 .button-icon-dropdown > i.icon:hover {
     opacity: 1;
 }
+
+.sms-row {
+    position: relative;
+    margin: .5rem 0;
+    padding: .6rem 1rem 1rem;
+    border: 1px solid #f0f0f0;
+    border-radius: .5rem;
+    font-size: 80%;
+    max-width: 85%;
+    background: #f8f8f8;
+}
+
+.sms-row-in {
+    margin-left: auto;
+}
+.sms-row-out {
+    margin-right: auto;
+    background: #fffff4;
+    border-color: #ffffde;
+}
+
+.sms-row .sms-title {
+    padding-right: .6rem;
+    font-weight: 700;
+}
+
+.sms-row .sms-failed {
+    position: absolute;
+    color: red;
+    top: 50%;
+    margin-top: -8px;
+}
+
+.sms-row.sms-row-in .sms-failed {
+    left: -2rem;
+}
+.sms-row.sms-row-out .sms-failed {
+    right: -2rem;
+}
+
+.sms-date {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    bottom: 3px;
+    right: 4px;
+    font-size: 80%;
+}
+
+.sms-date :not(:last-child) {
+    margin-right: .25rem;
+}
+
+.scrolling-sms {
+    max-height: calc(70vh);
+    overflow: auto;
+}
+
+.loading-messages {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: .5;
+    font-weight: 700;
+}
