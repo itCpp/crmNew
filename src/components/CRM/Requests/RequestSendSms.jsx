@@ -168,17 +168,35 @@ const SmsRow = props => {
     let className = [`sms-row`, `w-100`, `sms-row-${row.direction}`];
 
     return <div className={className.join(' ')}>
+
         {row.created_pin && <span className="sms-title">{row.created_pin}</span>}
+
         <span className="sms-message">{row.message}</span>
+
         <span className="sms-date">
-            {row.response && (row.response?.Response !== "Success" || row.response?.ResponseCode !== 200) && <span className="text-danger">{row.response?.Message || "Ошибка" + (row.response?.ResponseCode ? ` ${row.response.ResponseCode}` : "")}</span>}
-            <span className="sms-created-at">{moment(row.created_at).format("DD.MM.YYYY HH:mm")}</span>
-            {row.response?.Response && row.response.Response === "Success" && <span><Icon name="check" color="blue" /></span>}
-            {row.direction === "out" && !row.response && <span className="text-primary">Отправка...</span>}
+
+            {row.response && (row.response?.Response !== "Success" || row.response?.ResponseCode !== 200) && <span className="text-danger opacity-70">{row.response?.Message || "Ошибка" + (row.response?.ResponseCode ? ` ${row.response.ResponseCode}` : "")}</span>}
+
+            <span className="sms-created-at opacity-70">{moment(row.created_at).format("DD.MM.YYYY HH:mm")}</span>
+
+            {row.response?.Response && row.response.Response === "Success" && <span>
+                <Icon name="check" color="green" fitted />
+            </span>}
+
+            {row.direction === "out" && !row.response && !row.failed_at && <span>
+                <Icon name="wait" color="blue" fitted />
+            </span>}
+
+            {row.failed_at && <span>
+                <Icon name="warning sign" color="red" fitted />
+            </span>}
+
         </span>
-        {row.failed_at && <div className="sms-failed">
+
+        {/* {row.failed_at && <div className="sms-failed">
             <Icon name="warning sign" />
-        </div>}
+        </div>} */}
+
     </div>
 }
 
