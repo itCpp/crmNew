@@ -16,16 +16,19 @@ import "./crm.css";
 
 import Menu from "./Menu/Menu";
 import Requests from "./Requests/Requests";
+import Queues from "./Queues";
 
 const CRM = props => {
 
     const { user, setTabList, selectTab, setTopMenu } = props;
     const page = props.match.path;
+    const content = React.useRef();
 
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(false);
 
     const [selectMenu, setSelectMenu] = React.useState([]);
+    const [permits, setPermits] = React.useState({});
     const [searchProcess, setSearchProcess] = React.useState(false);
 
     const openSubMenu = name => {
@@ -49,13 +52,10 @@ const CRM = props => {
 
         const { row } = data;
         props.updateRequestRow(row);
-        // console.log(data);
 
     }, []);
 
     const getRowForTab = id => {
-
-        console.log(searchProcess);
 
         if (searchProcess) return;
 
@@ -147,6 +147,7 @@ const CRM = props => {
             setTopMenu(data.topMenu);
 
             window.requestPermits = data.permits;
+            setPermits(data.permits);
 
             // Информаирование по всем доступным заявкам
             if (
@@ -207,6 +208,11 @@ const CRM = props => {
 
     }, []);
 
+    if (page === "/queues" && permits.queues_access)
+        content.current = <Queues />
+    else
+        content.current = <Requests />
+
     if (loading)
         return <div className="text-center my-4"><Loader active inline /></div>
 
@@ -223,7 +229,7 @@ const CRM = props => {
         {/* <div className="my-4 mx-auto w-100" style={{ maxWidth: "550px" }}>
             <Message info content="Раздел заявок в разработке" className="mx-1" />
         </div > */}
-        <Requests />
+        {content.current}
 
     </div>
 

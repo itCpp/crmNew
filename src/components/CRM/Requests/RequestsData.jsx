@@ -109,7 +109,7 @@ const RequestData = React.memo(props => {
         }
     }, [search]);
 
-    return <div id="requests-block">
+    return <div>
 
         {requestEdit && <RequestEdit />}
         {sendSms && <RequestSendSms />}

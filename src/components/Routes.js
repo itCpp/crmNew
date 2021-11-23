@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import NotFound from './NotFound';
 import Auth from './Auth/Auth';
 import Header from './Header/Header';
-import Requests from './CRM/CRM';
+import Crm from './CRM/CRM';
 import Admin from './Admin/AdminMain';
 
 export default function Routes(props) {
@@ -22,8 +22,11 @@ export default function Routes(props) {
 
             <Switch>
 
-                <Route exact path="/" component={Requests} />
-                <Route exact path="/user/:id" component={Requests} />
+                <Route exact path="/" component={Crm} />
+                <Route exact path="/requests" component={Crm} />
+                <Route exact path="/queues" component={Crm} />
+
+                <Route exact path="/user/:id" component={Crm} />
 
                 <Route exact path="/admin" component={Admin} />
                 <Route exact path="/admin/:page" component={Admin} />

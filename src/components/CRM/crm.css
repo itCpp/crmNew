@@ -123,3 +123,11 @@
 .ui.form .disabled {
     opacity: .8 !important;
 }
+
+.message-center-block {
+    display: block;
+    margin-right: auto !important;
+    margin-left: auto !important;
+    width: 100%;
+    max-width: 666px;
+}

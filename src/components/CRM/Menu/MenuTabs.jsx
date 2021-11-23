@@ -22,9 +22,12 @@ const MenuTabs = props => {
     const { selectMenu, setSearchRequest, requestsLoading } = props;
     const { tabs } = props;
     const { select, selectTab, selectedUpdate, selectedUpdateTab } = props;
-    const { counter } = props;
+    const { counter, push } = props;
 
     const setSelect = id => {
+
+        if (selectMenu.indexOf('requests') < 0)
+            push("/requests");
 
         if (id === select)
             return selectedUpdateTab(!selectedUpdate);
@@ -42,10 +45,12 @@ const MenuTabs = props => {
         }
     }, []);
 
-    return <div
-        className={`menu-list-block ${(select || select === 0) ? "menu-list-block-active" : ""}`}
-        data-active={selectMenu && selectMenu.indexOf('requests') >= 0 ? true : false}
-    >
+    let classNames = ["menu-list-block"];
+
+    if ((select || select === 0) && (selectMenu === "/" || selectMenu.indexOf('requests') >= 0))
+        classNames.push('menu-list-block-active');
+
+    return <div className={classNames.join(' ')}>
 
         <div className="menu-list-row title">
 
@@ -60,7 +65,7 @@ const MenuTabs = props => {
 
             let className = ["menu-list-row sub-row"];
 
-            if (select === tab.id)
+            if (select === tab.id && classNames.indexOf('menu-list-block-active') >= 0)
                 className.push("tab-list-active");
 
             return <div
