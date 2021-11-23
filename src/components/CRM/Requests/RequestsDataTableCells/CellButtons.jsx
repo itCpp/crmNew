@@ -16,7 +16,7 @@ const CellButtons = props => {
                 <Dropdown.Menu style={{ marginTop: 4, marginRight: -6 }}>
                     <Dropdown.Item icon="edit" text="Редактировать" onClick={() => dispatch(requestEdit(row))} />
                     <Dropdown.Item icon="file audio" text="Аудиозаписи" disabled />
-                    <Dropdown.Item icon="mail" text="Отправить СМС" onClick={() => dispatch(setSendSms(row.id))} />
+                    <Dropdown.Item icon="mail" text="СМС сообщения" onClick={() => dispatch(setSendSms(row.id))} />
                     <Dropdown.Item icon="history" text="История изменений" disabled />
                 </Dropdown.Menu>
             </Dropdown>
