@@ -1,0 +1,12 @@
+.sms-group > *:not(:first-child) {
+    margin-top: 1rem !important;
+}
+
+.sms-rows {
+    border-radius: .5rem;
+    padding: 0 1rem;
+}
+
+.sms-rows:hover {
+    background-color: #f8f6ff;
+}

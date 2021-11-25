@@ -13,8 +13,6 @@ const Menu = props => {
     const [selectMenu, setSelectMenu] = React.useState(path);
     const { counter } = useSelector(state => state.requests);
 
-    console.log(counter);
-
     React.useEffect(() => setSelectMenu(path), [path]);
 
     return <>
@@ -23,17 +21,28 @@ const Menu = props => {
 
         <div className="request-main-menu">
 
-            {permits.queues_access && <Link to="/queues" className={`menu-list-row title ${selectMenu === "/queues" ? 'tab-list-active' : ''}`}>
-                <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
-                    <span>
-                        <Icon name="random" />
-                        <span>Очереди</span>
-                    </span>
-                    <CounterRow count={counter?.queue?.count || null} />
-                </div>
-            </Link>}
-
             <div className="nav-bar">
+
+                {permits.queues_access && <Link to="/queues" className={`menu-list-row title ${selectMenu === "/queues" ? 'tab-list-active' : ''}`}>
+                    <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
+                        <span>
+                            <Icon name="random" />
+                            <span>Очереди</span>
+                        </span>
+                        <CounterRow count={counter?.queue?.count || null} />
+                    </div>
+                </Link>}
+
+                {permits.sms_access && <Link to="/sms" className={`menu-list-row title ${selectMenu === "/sms" ? 'tab-list-active' : ''}`}>
+                    <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
+                        <span>
+                            <Icon name="mail" />
+                            <span>СМС сообщения</span>
+                        </span>
+                        <CounterRow count={counter?.sms?.count || null} />
+                    </div>
+                </Link>}
+
                 <MenuTabs
                     selectMenu={selectMenu}
                     push={props.history.push}

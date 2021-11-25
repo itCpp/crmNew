@@ -66,14 +66,24 @@ const Queues = props => {
 
     }, [create, drop])
 
-    return <div className="p-3 w-100" id="queues-root">
+    return <div className="pb-3 px-2 w-100" id="queues-root">
+
+        <div className="d-flex justify-content-between align-items-center">
+            <div className="page-title-box">
+                <h4 className="page-title">Очередь текстовых заявок</h4>
+            </div>
+        </div>
 
         <div className="block-card mb-3 px-2">
 
             {!loading && error && <Message error content={error} className="message-center-block" />}
             {loading && <div><Loader active inline="centered" /></div>}
 
-            {!loading && !error && <Table basic="very" collapsing compact selectable={queues.length > 0}>
+            {!loading && !error && queues.length === 0 && <div className="opacity-50 text-center my-4">
+                <strong>Данных ещё нет</strong>
+            </div>}
+
+            {!loading && !error && queues.length > 0 && <Table basic="very" collapsing compact selectable={queues.length > 0}>
 
                 <Table.Header>
                     <Table.Row textAlign="center">
@@ -89,12 +99,6 @@ const Queues = props => {
                 </Table.Header>
 
                 <Table.Body>
-                    {queues.length === 0 && <Table.Row>
-                        <Table.Cell className="opacity-50" textAlign="center" colSpan={8}>
-                            <strong>Данных ещё нет</strong>
-                        </Table.Cell>
-                    </Table.Row>}
-
                     {queues.map(row => <Table.Row
                         key={row.id}
                         textAlign="center"
