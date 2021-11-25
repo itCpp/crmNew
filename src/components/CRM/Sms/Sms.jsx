@@ -88,6 +88,8 @@ const Sms = props => {
 
             {!loading && load && <div><Loader active inline="centered" size="tiny" indeterminate /></div>}
 
+            {!loading && !load && !error && stop && <div className="text-center opacity-50"><small>Это все сообщения</small></div>}
+
         </div>
 
     </div>
@@ -97,12 +99,23 @@ const SmsRow = React.memo(props => {
 
     const { sms } = props;
 
-    //angle double right
-
     let error = null;
 
     if (sms.response && sms.response?.Response !== "Success") {
         error = sms.response?.Message || `Ошибка ${sms.response?.ResponseCode}`;
+    }
+
+    let name = sms.phone,
+        gate = sms.gateName || null;
+
+    if (gate && sms.channel)
+        gate += "@" + sms.channel;
+
+    if (sms.direction === "in") {
+        name = <>{sms.phone}<Icon name="angle right" className="mx-1" />{gate}</>
+    }
+    if (sms.direction === "out") {
+        name = <>{gate}<Icon name="angle right" className="mx-1" />{sms.phone}</>
     }
 
     return <div className="d-flex align-items-center mx-2 sms-rows">
@@ -129,15 +142,18 @@ const SmsRow = React.memo(props => {
 
             <Comment.Content>
 
-                <Comment.Author as="b">{sms.phone}</Comment.Author>
+                <Comment.Author as="b">{name}</Comment.Author>
 
-                <Comment.Metadata>
-                    {sms.created_pin && <div>
-                        <b>@{sms.created_pin}</b>
-                        {sms.author && <span> {sms.author}</span>}
-                    </div>}
-                    <div>{moment(sms.created_at).format("YYYY.MM.DD в HH:mm")}</div>
+                <Comment.Metadata style={{ float: "right" }}>
+                    <div>{moment(sms.created_at).format("DD.MM.YYYY в HH:mm")}</div>
                 </Comment.Metadata>
+
+                {(sms.created_pin || sms.author) && <div>
+                    <Comment.Metadata className="ml-0">
+                        {sms.created_pin && <b>@{sms.created_pin} </b>}
+                        {sms.author && <span>{sms.author}</span>}
+                    </Comment.Metadata>
+                </div>}
 
                 <Comment.Text>
                     {sms.message}
