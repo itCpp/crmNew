@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { selectTab, setSearchRequest, selectedUpdateTab } from "./../../../store/requests/actions";
 import { Icon } from "semantic-ui-react";
 
-const CounterRow = React.memo(props => {
+export const CounterRow = React.memo(props => {
 
     const { count } = props;
     const counter = React.useRef();
