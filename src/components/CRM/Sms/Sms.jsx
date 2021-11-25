@@ -15,18 +15,22 @@ const Sms = props => {
     const [sms, setSms] = React.useState([]);
     const [page, setPage] = React.useState(1);
     const [stop, setStop] = React.useState(false);
+    const [lastView, setLastView] = React.useState(null);
 
     const getSms = page => {
 
         setLoad(true);
         setPage(page);
 
-        axios.post('sms/get', { page }).then(({ data }) => {
+        axios.post('sms/get', { page, lastView }).then(({ data }) => {
 
             setSms(p => page === 1 ? data.messages : [...p, ...data.messages]);
 
             if (data.next > data.pages)
                 setStop(true);
+
+            if (page === 1)
+                setLastView(data.view_at);
 
         }).catch(e => {
             setError(axios.getError(e));
@@ -171,7 +175,7 @@ const SmsRow = React.memo(props => {
 
         </Comment>
 
-        {sms.new_sms && <Label circular color="red" empty />}
+        {sms.new_sms && <Label circular color="red" empty className="ml-2" title="Новое сообщение" />}
 
     </div>
 
