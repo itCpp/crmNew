@@ -13,9 +13,8 @@ const Queues = props => {
 
     const [queues, setQueues] = React.useState([]);
 
-    const [create, setCreate] = React.useState(false);
-    const [drop, setDrop] = React.useState(false);
-    const [load, setLoad] = React.useState(false);
+    const [create, setCreate] = React.useState(null);
+    const [drop, setDrop] = React.useState(null);
 
     React.useEffect(() => {
 
@@ -31,6 +30,42 @@ const Queues = props => {
 
     }, []);
 
+    React.useEffect(() => {
+
+        if (create || drop) {
+
+            axios.post('queues/done', {
+                create, drop
+            }).then(({ data }) => {
+                setQueues(q => {
+                    q.forEach((r, i) => {
+                        if (r.id === data.queue.id) {
+                            q[i] = data.queue;
+                        }
+                    });
+                    return q;
+                });
+
+                if (data?.added?.requestId) {
+                    axios.toast(null, {
+                        type: "success",
+                        description: <>Создана заявка <b>#{data.added.requestId}</b></>,
+                        time: 3000,
+                        icon: "plus",
+                    });
+                }
+
+            }).catch(e => {
+                axios.toast(e);
+            }).then(() => {
+                create && setCreate(null);
+                drop && setDrop(null);
+            });
+
+        }
+
+    }, [create, drop])
+
     return <div className="p-3 w-100" id="queues-root">
 
         <div className="block-card mb-3 px-2">
@@ -38,7 +73,7 @@ const Queues = props => {
             {!loading && error && <Message error content={error} className="message-center-block" />}
             {loading && <div><Loader active inline="centered" /></div>}
 
-            {!loading && !error && <Table basic="very" collapsing compact selectable>
+            {!loading && !error && <Table basic="very" collapsing compact selectable={queues.length > 0}>
 
                 <Table.Header>
                     <Table.Row textAlign="center">
@@ -54,7 +89,19 @@ const Queues = props => {
                 </Table.Header>
 
                 <Table.Body>
-                    {queues.map(row => <Table.Row key={row.id} textAlign="center">
+                    {queues.length === 0 && <Table.Row>
+                        <Table.Cell className="opacity-50" textAlign="center" colSpan={8}>
+                            <strong>Данных ещё нет</strong>
+                        </Table.Cell>
+                    </Table.Row>}
+
+                    {queues.map(row => <Table.Row
+                        key={row.id}
+                        textAlign="center"
+                        disabled={row.done_type ? true : false}
+                        positive={row.done_type === 1}
+                        negative={row.done_type === 2}
+                    >
                         <Table.Cell>{row.id}</Table.Cell>
                         <Table.Cell>{moment(row.created_at).format("DD.MM.YYYY HH:mm:ss")}</Table.Cell>
                         <Table.Cell>{row.phone}</Table.Cell>
@@ -72,7 +119,7 @@ const Queues = props => {
                                 title="Добавить заявку"
                                 onClick={() => (create || drop) ? null : setCreate(row.id)}
                                 loading={create === row.id}
-                                disabled={create === row.id || drop === row.id}
+                                disabled={create === row.id || drop === row.id || (row.done_type && true)}
                             />
                             <Button
                                 icon="minus"
@@ -83,7 +130,7 @@ const Queues = props => {
                                 title="Отклонить очередь"
                                 onClick={() => (create || drop) ? null : setDrop(row.id)}
                                 loading={drop === row.id}
-                                disabled={create === row.id || drop === row.id}
+                                disabled={create === row.id || drop === row.id || (row.done_type && true)}
                             />
                         </Table.Cell>
                     </Table.Row>)}
