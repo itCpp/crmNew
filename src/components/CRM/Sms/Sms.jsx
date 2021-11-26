@@ -1,12 +1,13 @@
 import React from "react";
 import axios from "./../../../utils/axios-header";
 import moment from "./../../../utils/moment";
+import { Link } from "react-router-dom";
 
 import { Message, Loader, Comment, Icon, Label } from "semantic-ui-react";
 
 import "./sms.css";
 
-const Sms = props => {
+const Sms = () => {
 
     const [loading, setLoading] = React.useState(true);
     const [load, setLoad] = React.useState(true);
@@ -168,7 +169,7 @@ const SmsRow = React.memo(props => {
                 </Comment.Text>
 
                 {sms.requests && sms.requests.length > 0 && <Comment.Actions className="mb-2">
-                    {sms.requests.map(r => <Comment.Action key={`${sms.id}_${r.id}`}>#{r.id}</Comment.Action>)}
+                    {sms.requests.map(r => <Link key={`${sms.id}_${r.id}`} to={`/requests?id=${r.id}`}>#{r.id}</Link>)}
                 </Comment.Actions>}
 
             </Comment.Content>

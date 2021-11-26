@@ -46,6 +46,7 @@ const Menu = props => {
                 <MenuTabs
                     selectMenu={selectMenu}
                     push={props.history.push}
+                    replace={props.history.replace}
                 />
             </div>
 

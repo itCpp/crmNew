@@ -4,8 +4,12 @@ import axios from "./../../utils/axios-header";
 import { connect } from 'react-redux';
 
 import {
-    setTabList, selectTab, selectedUpdateTab,
-    updateRequestRow, createRequestRow, dropRequestRow,
+    setTabList,
+    selectTab,
+    selectedUpdateTab,
+    updateRequestRow,
+    createRequestRow,
+    dropRequestRow,
     counterUpdate
 } from "./../../store/requests/actions";
 import { setTopMenu } from "./../../store/interface/actions";
@@ -21,7 +25,7 @@ import Sms from "./Sms";
 
 const CRM = props => {
 
-    const { user, setTabList, selectTab, setTopMenu } = props;
+    const { user, setTabList, selectTab, setTopMenu, searchRequest } = props;
     const page = props.match.path;
     const content = React.useRef();
 
@@ -30,7 +34,6 @@ const CRM = props => {
 
     const [selectMenu, setSelectMenu] = React.useState([]);
     const [permits, setPermits] = React.useState({});
-    const [searchProcess, setSearchProcess] = React.useState(false);
 
     const openSubMenu = name => {
 
@@ -56,9 +59,13 @@ const CRM = props => {
 
     }, []);
 
-    const getRowForTab = id => {
+    console.log(1, searchRequest);
 
-        if (searchProcess) return;
+    const getRowForTab = React.useCallback(id => {
+
+        console.log(2, searchRequest);
+
+        if (searchRequest && Object.keys(searchRequest).length > 0) return;
 
         axios.post('requests/getRowForTab', {
             id: id,
@@ -67,7 +74,7 @@ const CRM = props => {
             data.row && props.createRequestRow(data.row);
         });
 
-    };
+    }, [searchRequest]);
 
     const updateRequestRowForPin = React.useCallback(data => {
 
@@ -90,9 +97,10 @@ const CRM = props => {
             description: <p>Вам назначена новая заявка <b>#{row}</b></p>
         });
 
+        console.log(3, searchRequest);
         getRowForTab(row);
 
-    }, [searchProcess]);
+    }, [searchRequest]);
 
     /** Обработка новой заявки */
     const createdNewRequest = React.useCallback(data => {
@@ -102,7 +110,7 @@ const CRM = props => {
 
         result?.created && getRowForTab(row);
 
-    }, [searchProcess]);
+    }, [searchRequest]);
 
     const createdNewRequestForSector = React.useCallback(data => {
 
@@ -244,6 +252,7 @@ const mapStateToProps = state => ({
     tabs: state.requests.tabs,
     select: state.requests.select,
     counter: state.requests.counter,
+    searchRequest: state.requests.searchRequest,
 });
 
 const mapActions = {

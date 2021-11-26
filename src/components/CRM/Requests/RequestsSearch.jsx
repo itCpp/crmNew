@@ -1,16 +1,17 @@
 import React from "react";
+import { withRouter } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { LIMIT_ROWS_PAGE, setRequests, setSearchRequest, selectTab, requestEditCell } from "../../../store/requests/actions";
 import { Button, Dropdown, Icon, Form, Label } from "semantic-ui-react";
 
 const RequestsSearch = React.memo(props => {
 
-    const { getRequests } = props;
+    const { getRequests, history } = props;
     const dispatch = useDispatch();
     const { searchRequest } = useSelector(state => state.requests);
 
     const [open, setOpen] = React.useState(false);
-    const [search, setSearch] = React.useState({});
+    const [search, setSearch] = React.useState(searchRequest || {});
     const [start, setStart] = React.useState(false);
     const [active, setActive] = React.useState(false);
 
@@ -38,11 +39,29 @@ const RequestsSearch = React.memo(props => {
 
     }
 
+    const historyAppend = data => {
+
+        let path = "/requests";
+
+        const searchParams = new URLSearchParams;
+
+        for (let k in data)
+            searchParams.append(k, data[k]);
+
+        let search = searchParams.toString();
+
+        if (search)
+            path += `?${search}`;
+
+        history.push(path);
+    }
+
     const searchCansel = React.useCallback(() => {
         let tabId = Number(localStorage.getItem('select_tab'));
 
         setOpen(false);
         setSearch({});
+        historyAppend({});
 
         dispatch(selectTab(tabId > 0 ? tabId : null));
         dispatch(setRequests([]));
@@ -70,8 +89,10 @@ const RequestsSearch = React.memo(props => {
             dispatch(setRequests([]));
             dispatch(setSearchRequest(search));
 
-            if (typeof search == "object" && Object.keys(search).length > 0)
+            if (typeof search == "object" && Object.keys(search).length > 0) {
+                historyAppend(search);
                 getRequests({ search: search, page: 1, tabId: 0, limit: LIMIT_ROWS_PAGE });
+            }
         }
 
         return () => setStart(false);
@@ -191,4 +212,4 @@ const RequestsSearch = React.memo(props => {
 
 });
 
-export default RequestsSearch;
+export default withRouter(RequestsSearch);

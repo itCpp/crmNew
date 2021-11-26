@@ -89,7 +89,20 @@ export const requestsReducer = (state = defaultState, action) => {
             return { ...state, requests: updateClients }
 
         case ACTION.CREATE_REQUEST_ROW:
-            list = [action.payload, ...state.requests];
+            if (state.searchRequest)
+                return { ...state }
+
+            list = [...state.requests];
+
+            if (!list.find(item => item.id === action.payload.id))
+                list.unshift(action.payload);
+            else {
+                list.forEach((r, i) => {
+                    if (r.id === action.payload.id)
+                        list[i] = action.payload;
+                });
+            }
+
             return { ...state, requests: list, requestsIds: getIdList(list) }
 
         case ACTION.DROP_REQUEST_ROW:

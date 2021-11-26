@@ -22,12 +22,14 @@ const MenuTabs = props => {
     const { selectMenu, setSearchRequest, requestsLoading } = props;
     const { tabs } = props;
     const { select, selectTab, selectedUpdate, selectedUpdateTab } = props;
-    const { counter, push } = props;
+    const { counter, push, replace } = props;
 
     const setSelect = id => {
 
         if (selectMenu.indexOf('requests') < 0)
             push("/requests");
+        else
+            replace("/requests");
 
         if (id === select)
             return selectedUpdateTab(!selectedUpdate);
