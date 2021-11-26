@@ -143,9 +143,10 @@
 
 .request-row {
     font-size: 90%;
+    background: #fafdff;
 }
 .request-row:hover {
-    background: #fafcff;
+    background: #f5f8ff;
 }
 
 /** Оформление записи */
@@ -304,6 +305,11 @@
     50% { transform: scale(.7); }
     75% { transform: scale(1.2); }
     100% { transform: scale(1); }
+}
+
+.counter-new-data {
+    color: #ffa500;
+    font-weight: 900;
 }
 
 .button-icon-dropdown > i.icon {

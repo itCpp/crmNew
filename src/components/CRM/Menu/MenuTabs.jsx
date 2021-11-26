@@ -5,13 +5,24 @@ import { Icon } from "semantic-ui-react";
 
 export const CounterRow = React.memo(props => {
 
-    const { count } = props;
+    const { count, update } = props;
     const counter = React.useRef();
 
     React.useEffect(() => {
         counter.current && counter.current.classList.add('counter-updated');
         setTimeout(() => counter.current && counter.current.classList.remove('counter-updated'), 300);
     }, [count]);
+
+    React.useEffect(() => {
+
+        if (update) {
+            counter.current && counter.current.classList.add('counter-new-data');
+        }
+        else {
+            counter.current && counter.current.classList.remove('counter-new-data');
+        }
+
+    }, [update]);
 
     return count && <small ref={counter}>{count}</small>
 

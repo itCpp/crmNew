@@ -49,7 +49,10 @@ const Menu = props => {
                             <Icon name="call" />
                             <span>Вторичные звонки</span>
                         </span>
-                        <CounterRow count={counter?.sms?.count || null} />
+                        <CounterRow
+                            count={counter?.secondcalls?.count || null}
+                            update={counter?.secondcalls?.update || null}
+                        />
                     </div>
                 </Link>}
 
