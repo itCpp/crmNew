@@ -59,11 +59,7 @@ const CRM = props => {
 
     }, []);
 
-    console.log(1, searchRequest);
-
     const getRowForTab = React.useCallback(id => {
-
-        console.log(2, searchRequest);
 
         if (searchRequest && Object.keys(searchRequest).length > 0) return;
 
@@ -97,7 +93,6 @@ const CRM = props => {
             description: <p>Вам назначена новая заявка <b>#{row}</b></p>
         });
 
-        console.log(3, searchRequest);
         getRowForTab(row);
 
     }, [searchRequest]);

@@ -208,7 +208,7 @@
 }
 
 .request-row {
-    transition-duration: .1s;
+    transition-duration: .15s;
 }
 .updateRequestRow {
     opacity: .3 !important;

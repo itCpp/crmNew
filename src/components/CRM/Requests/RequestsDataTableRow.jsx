@@ -10,10 +10,10 @@ const RequestsDataTableRow = React.memo(props => {
     const dispatch = useDispatch();
 
     let classList = ["request-row"];
-    row.status?.theme && classList.push(`request-row-theme-${row.status.theme}`);
 
     const [className, setClassName] = React.useState(classList);
     const [firstRender, setFirstRender] = React.useState(true);
+    const [classNameTheme, setClassNameTheme] = React.useState(`request-row-theme-${row.status?.theme || 0}`);
 
     const setCellEdit = React.useCallback((e, data) => {
         dispatch(requestEditCell({
@@ -31,6 +31,7 @@ const RequestsDataTableRow = React.memo(props => {
         }
         else if (!firstRender) {
             setClassName(list => [...list, 'updateRequestRow']);
+            setClassNameTheme(`request-row-theme-${row.status?.theme || 0}`);
 
             setTimeout(() => {
 
@@ -47,9 +48,9 @@ const RequestsDataTableRow = React.memo(props => {
 
         }
 
-    }, [row.updated_at]);
+    }, [row]);
 
-    return <Table.Row className={className.join(' ')} verticalAlign="top">
+    return <Table.Row className={[...className, classNameTheme].join(' ')} verticalAlign="top">
         <Cell.Id row={row} />
         <Cell.Date row={row} setCellEdit={setCellEdit} />
         <Cell.Operator row={row} />
