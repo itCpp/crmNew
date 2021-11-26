@@ -150,7 +150,7 @@ const SmsRow = React.memo(props => {
                 <Comment.Author as="b">{name}</Comment.Author>
 
                 <Comment.Metadata style={{ float: "right" }}>
-                    <div>{moment(sms.created_at).format("DD.MM.YYYY в HH:mm")}</div>
+                    <div>{sms.sent_at && moment(sms.sent_at).format("DD.MM.YYYY в HH:mm")}</div>
                 </Comment.Metadata>
 
                 {(sms.created_pin || sms.author) && <div>

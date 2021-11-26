@@ -22,6 +22,7 @@ import Menu from "./Menu/Menu";
 import Requests from "./Requests/Requests";
 import Queues from "./Queues";
 import Sms from "./Sms";
+import SecondCalls from "./SecondCalls";
 
 const CRM = props => {
 
@@ -216,6 +217,8 @@ const CRM = props => {
         content.current = <Queues />
     else if (page === "/sms" && permits.sms_access)
         content.current = <Sms />
+    else if (page === "/secondcalls" && permits.second_calls_access)
+        content.current = <SecondCalls />
     else
         content.current = <Requests />
 

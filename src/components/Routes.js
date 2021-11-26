@@ -26,6 +26,7 @@ export default function Routes(props) {
                 <Route exact path="/requests" component={Crm} />
                 <Route exact path="/queues" component={Crm} />
                 <Route exact path="/sms" component={Crm} />
+                <Route exact path="/secondcalls" component={Crm} />
 
                 <Route exact path="/user/:id" component={Crm} />
 

@@ -43,6 +43,16 @@ const Menu = props => {
                     </div>
                 </Link>}
 
+                {permits.second_calls_access && <Link to="/secondcalls" className={`menu-list-row title ${selectMenu === "/secondcalls" ? 'tab-list-active' : ''}`}>
+                    <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
+                        <span>
+                            <Icon name="call" />
+                            <span>Вторичные звонки</span>
+                        </span>
+                        <CounterRow count={counter?.sms?.count || null} />
+                    </div>
+                </Link>}
+
                 <MenuTabs
                     selectMenu={selectMenu}
                     push={props.history.push}
