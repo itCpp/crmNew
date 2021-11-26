@@ -106,36 +106,38 @@ const Queues = props => {
                         positive={row.done_type === 1}
                         negative={row.done_type === 2}
                     >
-                        <Table.Cell>{row.id}</Table.Cell>
+                        <Table.Cell className="px-2">{row.id}</Table.Cell>
                         <Table.Cell>{moment(row.created_at).format("DD.MM.YYYY HH:mm:ss")}</Table.Cell>
                         <Table.Cell>{row.phone}</Table.Cell>
                         <Table.Cell>{row.name}</Table.Cell>
-                        <Table.Cell>{row.comment}</Table.Cell>
-                        <Table.Cell>{row.site || row?.request_data?.site}</Table.Cell>
+                        <Table.Cell textAlign="left"><small>{row.comment}</small></Table.Cell>
+                        <Table.Cell className="text-nowrap">{row.site || row?.request_data?.site}</Table.Cell>
                         <Table.Cell>{row.ip}</Table.Cell>
                         <Table.Cell>
-                            <Button
-                                icon="plus"
-                                size="mini"
-                                basic
-                                circular
-                                color="green"
-                                title="Добавить заявку"
-                                onClick={() => (create || drop) ? null : setCreate(row.id)}
-                                loading={create === row.id}
-                                disabled={create === row.id || drop === row.id || (row.done_type && true)}
-                            />
-                            <Button
-                                icon="minus"
-                                size="mini"
-                                basic
-                                circular
-                                color="red"
-                                title="Отклонить очередь"
-                                onClick={() => (create || drop) ? null : setDrop(row.id)}
-                                loading={drop === row.id}
-                                disabled={create === row.id || drop === row.id || (row.done_type && true)}
-                            />
+                            <div className="d-flex px-2 align-items-center">
+                                <Button
+                                    icon="plus"
+                                    size="mini"
+                                    basic
+                                    circular
+                                    color="green"
+                                    title="Добавить заявку"
+                                    onClick={() => (create || drop) ? null : setCreate(row.id)}
+                                    loading={create === row.id}
+                                    disabled={create === row.id || drop === row.id || (row.done_type && true)}
+                                />
+                                <Button
+                                    icon="minus"
+                                    size="mini"
+                                    basic
+                                    circular
+                                    color="red"
+                                    title="Отклонить очередь"
+                                    onClick={() => (create || drop) ? null : setDrop(row.id)}
+                                    loading={drop === row.id}
+                                    disabled={create === row.id || drop === row.id || (row.done_type && true)}
+                                />
+                            </div>
                         </Table.Cell>
                     </Table.Row>)}
                 </Table.Body>
