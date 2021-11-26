@@ -131,7 +131,9 @@ const SecondCallRow = React.memo(props => {
                 </Comment.Text>
 
                 {row.requests && row.requests.length > 0 && <Comment.Actions className="mb-2">
-                    {row.requests.map(r => <Link key={`${row.id}_${r.id}`} to={`/requests?id=${r.id}`}>#{r.id}</Link>)}
+                    {row.requests.map(r => <Link key={`${row.id}_${r.id}`} to={`/requests?id=${r.id}`} className={`request-row-theme-${r.status?.theme || 0} px-2 py-1 rounded`}>
+                        <b>{r.status?.name || "Не обработана"}</b>{' '}<span>#{r.id}</span>
+                    </Link>)}
                 </Comment.Actions>}
 
             </Comment.Content>
