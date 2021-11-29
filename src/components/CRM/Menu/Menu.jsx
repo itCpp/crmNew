@@ -28,6 +28,15 @@ const Menu = props => {
                     replace={props.history.replace}
                 />
 
+                <Link to="/pins" className={`menu-list-row title ${selectMenu === "/pins" ? 'tab-list-active' : ''}`}>
+                    <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
+                        <span>
+                            <Icon name="user circle" />
+                            <span>Операторы</span>
+                        </span>
+                    </div>
+                </Link>
+
                 {permits.queues_access && <Link to="/queues" className={`menu-list-row title ${selectMenu === "/queues" ? 'tab-list-active' : ''}`}>
                     <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                         <span>

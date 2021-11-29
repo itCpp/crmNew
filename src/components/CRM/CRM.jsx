@@ -23,12 +23,29 @@ import Requests from "./Requests/Requests";
 import Queues from "./Queues";
 import Sms from "./Sms";
 import SecondCalls from "./SecondCalls";
+import Operators from "./Operators";
+
+const CrmContent = props => {
+
+    const { page, permits } = props;
+
+    if (page === "/queues" && permits.queues_access)
+        return <Queues />
+    else if (page === "/sms" && permits.sms_access)
+        return <Sms />
+    else if (page === "/secondcalls" && permits.second_calls_access)
+        return <SecondCalls />
+    else if (page === "/pins")
+        return <Operators />
+    else
+        return <Requests />
+
+}
 
 const CRM = props => {
 
     const { user, setTabList, selectTab, setTopMenu, searchRequest } = props;
     const page = props.match.path;
-    const content = React.useRef();
 
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(false);
@@ -213,15 +230,6 @@ const CRM = props => {
 
     }, []);
 
-    if (page === "/queues" && permits.queues_access)
-        content.current = <Queues />
-    else if (page === "/sms" && permits.sms_access)
-        content.current = <Sms />
-    else if (page === "/secondcalls" && permits.second_calls_access)
-        content.current = <SecondCalls />
-    else
-        content.current = <Requests />
-
     if (loading)
         return <div className="text-center my-4"><Loader active inline /></div>
 
@@ -238,7 +246,7 @@ const CRM = props => {
         {/* <div className="my-4 mx-auto w-100" style={{ maxWidth: "550px" }}>
             <Message info content="Раздел заявок в разработке" className="mx-1" />
         </div > */}
-        {content.current}
+        <CrmContent page={page} permits={permits} />
 
     </div>
 

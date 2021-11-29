@@ -35,13 +35,14 @@ const ChangeData = props => {
             icon={value ? null : <Icon name="calendar plus" fitted />}
             content={value}
             style={{ borderRadius: (startDate || endDate) ? 0 : ".25rem" }}
-            className="px-2"
+            className={(startDate || endDate) ? "px-2" : "px-3"}
             disabled={loading}
+            basic={(startDate || endDate) ? false : true}
         />
     });
 
     return (
-        <Button.Group className="btn-group-datepicker" title="Выберите период" size="tiny">
+        <Button.Group className="btn-group-datepicker" title="Выберите период">
             <DatePicker
                 selected={startDate}
                 onChange={(date) => setStartDate(date)}

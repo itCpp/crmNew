@@ -91,12 +91,7 @@ const RequestData = React.memo(props => {
 
     }, [select, selectedUpdate]);
 
-    React.useEffect(() => {
-
-        console.log(period);
-        setPage(page => page === 1 ? 1.1 : 1);
-
-    }, [period]);
+    React.useEffect(() => setPage(page => page === 1 ? 1.1 : 1), [period]);
 
     React.useEffect(() => {
 
