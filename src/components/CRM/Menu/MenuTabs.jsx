@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { selectTab, setSearchRequest, selectedUpdateTab } from "./../../../store/requests/actions";
 import { Icon } from "semantic-ui-react";
 
@@ -65,14 +66,14 @@ const MenuTabs = props => {
 
     return <div className={classNames.join(' ')}>
 
-        <div className="menu-list-row title">
+        <Link to="/requests" className="menu-list-row title">
 
             <div className="menu-list-point">
                 <Icon name="table" />
                 <span>Заявки</span>
             </div>
 
-        </div>
+        </Link>
 
         {tabs.map(tab => {
 

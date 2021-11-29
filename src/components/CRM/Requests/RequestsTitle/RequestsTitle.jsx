@@ -1,10 +1,96 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Icon, Label, Button } from "semantic-ui-react";
+import DatePicker from "./../../../../utils/DatePicker";
+import moment from "./../../../../utils/moment";
 
 import RequestsSearch from "./../RequestsSearch";
 import RequestAdd from "./RequestAdd";
 import RequestAddPhone from "./RequestAddPhone";
+
+const ChangeData = props => {
+
+    const [startDate, setStartDate] = React.useState(null);
+    const [endDate, setEndDate] = React.useState(null);
+    const { setPeriod, loading } = props;
+
+    React.useEffect(() => {
+
+        if (startDate || endDate) {
+            setPeriod([
+                startDate ? moment(startDate).format("YYYY-MM-DD") : null,
+                endDate ? moment(endDate).format("YYYY-MM-DD") : null
+            ]);
+        }
+
+    }, [startDate, endDate]);
+
+    const ButtonDatePicker = React.forwardRef((props, ref) => {
+        const { value, onClick } = props;
+        return <Button
+            onClick={onClick}
+            ref={ref}
+            color={value ? "green" : null}
+            size="tiny"
+            icon={value ? null : <Icon name="calendar plus" fitted />}
+            content={value}
+            style={{ borderRadius: (startDate || endDate) ? 0 : ".25rem" }}
+            className="px-2"
+            disabled={loading}
+        />
+    });
+
+    return (
+        <Button.Group className="btn-group-datepicker" title="Выберите период" size="tiny">
+            <DatePicker
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+                selectsStart
+                startDate={startDate}
+                endDate={endDate}
+                customInput={<ButtonDatePicker />}
+                dateFormat="dd.MM.yyyy"
+                children={<div className="text-center text-warning">Выберите дату начала</div>}
+                popperPlacement="top-end"
+            />
+            {startDate && <>
+                <DatePicker
+                    selected={endDate}
+                    onChange={(date) => setEndDate(date)}
+                    selectsEnd
+                    startDate={startDate}
+                    endDate={endDate}
+                    minDate={startDate}
+                    customInput={<ButtonDatePicker />}
+                    dateFormat="dd.MM.yyyy"
+                    children={<div className="text-center text-warning">Выберите дату окончания</div>}
+                    popperPlacement="top-end"
+                />
+                <Button
+                    color="facebook"
+                    icon={<Icon name="delete calendar" fitted />}
+                    style={{ borderRadius: 0 }}
+                    title="Очистить даты"
+                    className="px-2"
+                    onClick={() => {
+                        setStartDate(null);
+                        setEndDate(null);
+                        setPeriod([null, null]);
+                    }}
+                    disabled={loading}
+                />
+                {/* <Button
+                    color="green"
+                    icon={<Icon name="calendar check" fitted />}
+                    style={{ borderRadius: 0 }}
+                    title="Применить период"
+                    className="px-2"
+                    disabled={loading}
+                /> */}
+            </>}
+        </Button.Group>
+    );
+}
 
 const RequestsTitle = React.memo(props => {
 
@@ -14,7 +100,7 @@ const RequestsTitle = React.memo(props => {
     const tab = tabs.find(item => item.id === select);
     const count = tab && counter && counter[`tab${tab.id}`];
 
-    return <div className="d-flex justify-content-between align-items-center">
+    return <div className="d-flex justify-content-between align-items-center" style={{ zIndex: 1000 }}>
 
         <RequestAddPhone />
 
@@ -43,7 +129,15 @@ const RequestsTitle = React.memo(props => {
 
         </div>
 
-        <div>
+        <div className="d-flex align-items-center">
+
+            <div className="mr-2">
+                <ChangeData
+                    setPeriod={props.setPeriod}
+                    loading={props.loading}
+                />
+            </div>
+
             {window?.requestPermits?.requests_add && <>
                 <Button
                     icon="plus"

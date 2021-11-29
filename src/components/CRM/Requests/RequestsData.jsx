@@ -28,6 +28,7 @@ const RequestData = React.memo(props => {
     const [page, setPage] = React.useState(1);
     const [pages, setPages] = React.useState(null);
     const [error, setError] = React.useState(null);
+    const [period, setPeriod] = React.useState([null, null]);
 
     const search = searchRequest && Object.keys(searchRequest).length > 0;
 
@@ -41,7 +42,7 @@ const RequestData = React.memo(props => {
 
         setLoadPage(true);
 
-        axios.post('requests/get', params)
+        axios.post('requests/get', { ...params, period })
             .then(({ data }) => {
 
                 if (params.page === 1 || params.page === 1.1)
@@ -92,6 +93,13 @@ const RequestData = React.memo(props => {
 
     React.useEffect(() => {
 
+        console.log(period);
+        setPage(page => page === 1 ? 1.1 : 1);
+
+    }, [period]);
+
+    React.useEffect(() => {
+
         if (Number(select) > 0 || (page > 1 && Number(select) === 0 && searchRequest)) {
             getRequests({
                 page: page,
@@ -114,7 +122,11 @@ const RequestData = React.memo(props => {
         {requestEdit && <RequestEdit />}
         {sendSms && <RequestSendSms />}
 
-        <RequestsTitle getRequests={getRequests} />
+        <RequestsTitle
+            getRequests={getRequests}
+            setPeriod={setPeriod}
+            loading={loading || loadPage}
+        />
 
         <div className="block-card mb-3 px-2">
 

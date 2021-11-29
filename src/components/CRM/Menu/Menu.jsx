@@ -22,6 +22,11 @@ const Menu = props => {
         <div className="request-main-menu">
 
             <div className="nav-bar">
+                <MenuTabs
+                    selectMenu={selectMenu}
+                    push={props.history.push}
+                    replace={props.history.replace}
+                />
 
                 {permits.queues_access && <Link to="/queues" className={`menu-list-row title ${selectMenu === "/queues" ? 'tab-list-active' : ''}`}>
                     <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
@@ -55,12 +60,6 @@ const Menu = props => {
                         />
                     </div>
                 </Link>}
-
-                <MenuTabs
-                    selectMenu={selectMenu}
-                    push={props.history.push}
-                    replace={props.history.replace}
-                />
             </div>
 
         </div>
