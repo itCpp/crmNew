@@ -37,6 +37,15 @@ const Menu = props => {
                     </div>
                 </Link>
 
+                <Link to="/rating" className={`menu-list-row title ${selectMenu === "/rating" ? 'tab-list-active' : ''}`}>
+                    <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
+                        <span>
+                            <Icon name="chart bar" />
+                            <span>Рейтинг</span>
+                        </span>
+                    </div>
+                </Link>
+
                 {permits.queues_access && <Link to="/queues" className={`menu-list-row title ${selectMenu === "/queues" ? 'tab-list-active' : ''}`}>
                     <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                         <span>

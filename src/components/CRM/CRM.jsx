@@ -24,6 +24,7 @@ import Queues from "./Queues";
 import Sms from "./Sms";
 import SecondCalls from "./SecondCalls";
 import Operators from "./Operators";
+import Rating from "./Rating";
 
 const CrmContent = props => {
 
@@ -37,6 +38,8 @@ const CrmContent = props => {
         return <SecondCalls />
     else if (page === "/pins")
         return <Operators />
+    else if (page === "/rating")
+        return <Rating />
     else
         return <Requests />
 
