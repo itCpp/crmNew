@@ -1,0 +1,9 @@
+.blocks-table.ui.sortable.table thead th {
+    background: #f1f3ff !important;
+}
+.blocks-table.ui.sortable.table thead th:hover {
+    background: #f5f5ff !important;
+}
+.blocks-table.ui.sortable.table thead th.sorted {
+    background: #f5f5ff !important;
+}

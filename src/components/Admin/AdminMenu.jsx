@@ -70,6 +70,17 @@ function AdminMenu(props) {
             </div>
         }
 
+        {permits.block_dev && <div className="admin-menu-block">
+
+            <h5>Блокировки</h5>
+
+            <NavLink to="/admin/block/statistic" className="admin-menu-point" onClick={changePage}>
+                <Icon name="line graph" />
+                <span>Статистика</span>
+            </NavLink>
+
+        </div>}
+
         {permits.block_dev
             ? <div className="admin-menu-block">
 
@@ -104,8 +115,6 @@ function AdminMenu(props) {
                     <Icon name="building" />
                     <span>Офисы</span>
                 </NavLink>
-
-
 
             </div>
             : null
