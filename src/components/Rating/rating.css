@@ -1,0 +1,17 @@
+.rating-callcenter-row {
+    padding: .5rem 1rem 1rem;
+    border: 1px solid #dbdbdb;
+    border-radius: .5rem;
+    background-color: #ffffff;
+    color: black;
+}
+
+.rating-callcenter-row:not(:last-child) {
+    margin-bottom: 1rem;
+}
+
+.header-rating {
+    margin-bottom: 1rem;
+    font-size: 120%;
+    line-height: 120%;
+}

@@ -4,7 +4,7 @@ const RatingCrm = () => {
 
     return <div className="pb-3 pt-3 px-2 w-100" id="sms-root" style={{ maxWidth: "1000px" }}>
 
-        <div className="block-card mb-3 px-2">
+        <div className="mb-3 px-2">
             <Rating />
         </div>
 
