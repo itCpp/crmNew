@@ -1,7 +1,8 @@
 import React from "react";
 import axios from "./../../../../utils/axios-header";
-import { Header, Loader, Message } from "semantic-ui-react";
+import { Header, Loader, Message, Button } from "semantic-ui-react";
 import FlagIp from "./IP/FlagIp";
+import { setBlockIp } from "./../Block";
 
 export default (props => {
 
@@ -11,6 +12,15 @@ export default (props => {
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
     const [data, setData] = React.useState({});
+    const [loadBlock, setLoadBlock] = React.useState(false);
+
+    const blockIp = async ip => {
+        setLoadBlock(true);
+
+        await setBlockIp({ ips: ip }, console.log, console.log);
+
+        setLoadBlock(false);
+    }
 
     React.useEffect(() => {
 
@@ -25,6 +35,7 @@ export default (props => {
     }, []);
 
     let region = [];
+
     if (data?.ipinfo?.region_name)
         region.push(data?.ipinfo?.region_name);
     if (data?.ipinfo?.city)
@@ -43,7 +54,20 @@ export default (props => {
                 </Header.Subheader>
             </Header>
 
-            {loading && <Loader active inline />}
+            {loading
+                ? <Loader active inline />
+                : <div>
+                    <Button
+                        circular
+                        icon="ban"
+                        basic
+                        color="red"
+                        disabled
+                        onClick={() => blockIp(addr)}
+                        loading={loadBlock}
+                    />
+                </div>
+            }
 
         </div>
 
