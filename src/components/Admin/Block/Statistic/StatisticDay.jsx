@@ -117,6 +117,7 @@ export default (props => {
                     row={row}
                     setBlockIp={props.setBlockIp}
                     setRows={setRows}
+                    history={props.history}
                 />)}
             </Table.Body>
 
@@ -126,7 +127,7 @@ export default (props => {
 
 });
 
-const StatisticDayRow = ({ row, setBlockIp, setRows }) => {
+const StatisticDayRow = ({ row, setBlockIp, setRows, history }) => {
 
     const [load, setLoad] = React.useState(false);
 
@@ -215,6 +216,9 @@ const StatisticDayRow = ({ row, setBlockIp, setRows }) => {
                         color="green"
                         className="button-icon mx-1"
                         title="Статистика по ip-адресу"
+                        onClick={() => {
+                            history.push(`/admin/block/ip?addr=${row.ip}`);
+                        }}
                     />
                 </span>
             </div>
