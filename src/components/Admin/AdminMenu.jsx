@@ -74,6 +74,11 @@ function AdminMenu(props) {
 
             <h5>Блокировки</h5>
 
+            <NavLink to="/admin/block/drive" className="admin-menu-point" onClick={changePage}>
+                <Icon name="ban" />
+                <span>Управление</span>
+            </NavLink>
+
             <NavLink to="/admin/block/statistic" className="admin-menu-point" onClick={changePage}>
                 <Icon name="line graph" />
                 <span>Статистика</span>
