@@ -5,6 +5,7 @@ import { Header, Loader, Message, Button, Grid } from "semantic-ui-react";
 import { setBlockIp } from "./../Block";
 import FlagIp from "./IP/FlagIp";
 import IpSitesCountGraph from "./IP/IpSitesCountGraph";
+import moment from "moment";
 
 export default (props => {
 
@@ -88,6 +89,21 @@ export default (props => {
                         </div>
                     </Grid.Column>
                 </Grid.Row>)}
+
+                {typeof data.textInfo == "object" && data.textInfo.length > 0 && <Grid.Row>
+                    <Grid.Column>
+                        {data.textInfo.map((row, key) => <div key={key} style={{ maxWidth: 650 }}>
+                            <div className="d-flex align-items-center justify-content-between mb-3">
+                                <h3 className="my-0 mx-3">{row.name}</h3>
+                                {row.datetime && <div>
+                                    <small>Обновлено: {moment(row.datetime).format("DD.MM.YYYY HH:mm")}</small>
+                                </div>}
+                            </div>
+                            <pre className="pre border">{row.data}</pre>
+                        </div>)}
+                    </Grid.Column>
+                </Grid.Row>}
+
             </Grid>
 
         </div>}

@@ -173,7 +173,7 @@ const StatisticDayRow = ({ row, setBlockIp, setRows, history }) => {
         textAlign="center"
     >
         <Table.Cell warning={row.autoblock} textAlign="left">
-            {row.ip}
+            <a onClick={() => history.push(`/admin/block/ip?addr=${row.ip}`)} style={{ cursor: "pointer" }}>{row.ip}</a>
         </Table.Cell>
         <Table.Cell textAlign="left">
             {row.host}
