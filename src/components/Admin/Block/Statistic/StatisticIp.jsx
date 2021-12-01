@@ -1,8 +1,10 @@
 import React from "react";
 import axios from "./../../../../utils/axios-header";
-import { Header, Loader, Message, Button } from "semantic-ui-react";
-import FlagIp from "./IP/FlagIp";
+import { Header, Loader, Message, Button, Grid } from "semantic-ui-react";
+
 import { setBlockIp } from "./../Block";
+import FlagIp from "./IP/FlagIp";
+import IpSitesCountGraph from "./IP/IpSitesCountGraph";
 
 export default (props => {
 
@@ -73,6 +75,21 @@ export default (props => {
 
         {!loading && error && <div className="segment-compact">
             <Message error content={error} />
+        </div>}
+
+        {!loading && !error && <div>
+
+            <Grid>
+                {data?.stats?.chart && data.stats.chart.map((chart, key) => <Grid.Row key={key}>
+                    <Grid.Column>
+                        <div className="admin-content-segment">
+                            <Header content={chart.name} as="h3" />
+                            <IpSitesCountGraph data={chart.data || []} />
+                        </div>
+                    </Grid.Column>
+                </Grid.Row>)}
+            </Grid>
+
         </div>}
 
     </div>
