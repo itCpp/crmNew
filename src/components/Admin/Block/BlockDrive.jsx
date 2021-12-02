@@ -9,6 +9,10 @@ export default (props => {
     const [error, setError] = React.useState(null);
     const [rows, setRows] = React.useState([]);
 
+    const [search, setSearch] = React.useState(null);
+    const [startSearch, setStartSearch] = React.useState(false);
+    const timeout = React.useRef();
+
     const getRows = formdata => {
 
         formdata?.search && setLoad(true);
@@ -27,6 +31,26 @@ export default (props => {
         getRows({});
     }, []);
 
+    React.useEffect(() => {
+
+        if (startSearch && (search !== "" && search)) {
+            clearTimeout(timeout.current);
+            getRows({ search });
+        }
+
+        return () => setStartSearch(false);
+
+    }, [startSearch]);
+
+    const onChageSearch = (e, { value }) => {
+
+        setSearch(value);
+        clearTimeout(timeout.current);
+
+        timeout.current = setTimeout(() => getRows({ search: value }), 500);
+
+    }
+
     return <div style={{ maxWidth: 600 }}>
 
         <div className="admin-content-segment d-flex justify-content-between align-items-center">
@@ -43,12 +67,15 @@ export default (props => {
             <Input
                 icon={{
                     name: 'search',
-                    link: !loading && !load
+                    link: !loading && !load,
+                    onClick: () => (!loading && !load) ? setStartSearch(true) : null,
                 }}
                 placeholder="Введите IP-адрес или имя хоста..."
                 className="w-100"
                 disabled={loading}
                 loading={load}
+                value={search || ""}
+                onChange={onChageSearch}
             />
         </div>
 
@@ -71,6 +98,7 @@ export default (props => {
                     toggle
                     checked={row.block === 1}
                     onChange={console.log}
+                    disabled
                 />
 
             </div>)}
