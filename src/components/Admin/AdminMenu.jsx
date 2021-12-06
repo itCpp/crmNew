@@ -10,7 +10,12 @@ function AdminMenu(props) {
 
     const { permits, setSubMenuPoints, setPanelMenuPoints } = props;
 
-    const changePage = () => {
+    const changePage = (e) => {
+
+        if (e.currentTarget.href.indexOf(props.location.pathname) >= 0) {
+            props.history.replace(e.currentTarget.href);
+        }
+
         setPanelMenuPoints(null);
         setSubMenuPoints(null);
     }
@@ -82,6 +87,11 @@ function AdminMenu(props) {
             <NavLink to="/admin/block/statistic" className="admin-menu-point" onClick={changePage}>
                 <Icon name="line graph" />
                 <span>Статистика</span>
+            </NavLink>
+
+            <NavLink to="/admin/block/views" className="admin-menu-point" onClick={changePage}>
+                <Icon name="eye" />
+                <span>Просмотры</span>
             </NavLink>
 
         </div>}

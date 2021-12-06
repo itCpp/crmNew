@@ -2,6 +2,7 @@ import axios from "./../../../utils/axios-header";
 import StatisticDay from "./Statistic/StatisticDay";
 import StatisticIp from "./Statistic/StatisticIp";
 import BlockDrive from "./BlockDrive";
+import Views from "./Views";
 
 import "./block.css";
 
@@ -25,6 +26,8 @@ const Block = props => {
             return <StatisticIp {...props} />;
         case "drive":
             return <BlockDrive {...props} />;
+        case "views":
+            return <Views {...props} />;
         default:
             return <StatisticDay {...props} setBlockIp={setBlockIp} />
     }
