@@ -132,7 +132,7 @@ const ViewsRow = props => {
             platform = <Icon name="android" color="green" />
         else if (row.platform.toLowerCase().indexOf('linux') >= 0)
             platform = <Icon name="linux" color="orange" />
-        else if (row.platform.toLowerCase().indexOf('ios') >= 0)
+        else if (row.platform.toLowerCase().indexOf('ios') >= 0 || row.platform.toLowerCase().indexOf('os x') >= 0)
             platform = <Icon name="apple" color="grey" />
     }
 
