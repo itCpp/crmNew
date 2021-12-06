@@ -147,11 +147,18 @@ const ViewsRow = props => {
             </div>
         </Table.Cell>
         <Table.Cell>
+            {row.referer && <div style={{ maxWidth: 400, wordWrap: "break-word" }} title={`Переход с ${row.referer}`}>
+                <a href={row.referer} target="_blank">{row.referer}</a>
+            </div>}
             <div style={{ maxWidth: 400, wordWrap: "break-word" }}>
+                {row.referer && <Icon name="share" title={`Переход с ${row.referer}`} />}
                 <a href={row.link} target="_blank">{row.link}</a>
             </div>
         </Table.Cell>
         <Table.Cell>
+            {row.desktop && <Icon name="desktop" />}
+            {row.phone && <Icon name="mobile alternate" />}
+            {row.tablet && <Icon name="tablet alternate" />}
             {platform}
             {row.user_agent}</Table.Cell>
     </Table.Row>
