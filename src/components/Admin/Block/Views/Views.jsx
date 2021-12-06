@@ -139,7 +139,7 @@ const ViewsRow = props => {
     return <Table.Row>
         <Table.Cell>{row.site}</Table.Cell>
         <Table.Cell>
-            <pre>{row.robot && <Icon name="android" color="red" title="Это робот зашел" />}{row.ip}</pre>
+            <pre>{row.ip}</pre>
         </Table.Cell>
         <Table.Cell>
             <div style={{ whiteSpace: "nowrap" }}>
@@ -156,9 +156,10 @@ const ViewsRow = props => {
             </div>
         </Table.Cell>
         <Table.Cell>
-            {row.desktop && <Icon name="desktop" />}
-            {row.phone && <Icon name="mobile alternate" />}
-            {row.tablet && <Icon name="tablet alternate" />}
+            {row.robot && <Icon name="android" color="red" title="Это робот зашел" />}
+            {row.desktop && <Icon name="desktop" title={row.platform} />}
+            {row.phone && <Icon name="mobile alternate" title={row.platform} />}
+            {row.tablet && <Icon name="tablet alternate" title={row.platform} />}
             {platform}
             {row.user_agent}</Table.Cell>
     </Table.Row>
