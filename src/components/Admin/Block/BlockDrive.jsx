@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "./../../../utils/axios-header";
 import { Header, Loader, Message, Input, Checkbox, Icon } from "semantic-ui-react";
-import { replaceJSX } from "./../../../utils";
+import { replaceJSX, Highlighted } from "./../../../utils";
 
 export default (props => {
 
@@ -86,13 +86,20 @@ export default (props => {
         {!loading && !error && rows.length > 0 && <div>
             {rows.map(row => {
 
+                let host = row.host;
+
+                if (search !== "" && search){
+                    // row.host = Highlighted({ text: row.host, highlight: search });
+                    host = <Highlighted text={row.host} highlight={search} />
+                }
+
                 return <div key={row.id} className="d-flex justify-content-between align-items-center admin-content-segment">
 
                     <h4 className="m-0">
                         {row.block === 1 && <Icon name="ban" color="red" title="Заблокировано" />}
                         {row.is_hostname === 0
-                            ? <a style={{ cursor: "pointer" }} onClick={() => props.history.push(`/admin/block/ip?addr=${row.host}`)}>{row.host}</a>
-                            : row.host
+                            ? <a style={{ cursor: "pointer" }} onClick={() => props.history.push(`/admin/block/ip?addr=${row.host}`)}>{host}</a>
+                            : host
                         }
 
                     </h4>
