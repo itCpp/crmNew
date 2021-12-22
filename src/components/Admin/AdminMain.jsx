@@ -12,12 +12,12 @@ function Admin(props) {
 
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(false);
-    const [adminPermits, setAdminPermits] = React.useState({});
+    const [response, setResponse] = React.useState({});
 
     React.useEffect(() => {
 
         axios.post('admin/start').then(({ data }) => {
-            setAdminPermits(data.permits);
+            setResponse(data);
             setError(false);
         }).catch(error => {
             setError(axios.getError(error));
@@ -34,8 +34,8 @@ function Admin(props) {
         return <div className="text-danger text-center mt-4"><strong>{error}</strong></div>
 
     return <div className="admin-content">
-        <AdminMenu permits={adminPermits} />
-        <AdminContent {...props} permits={adminPermits} />
+        <AdminMenu permits={response.permits} />
+        <AdminContent {...props} {...response} />
     </div>;
 
 }

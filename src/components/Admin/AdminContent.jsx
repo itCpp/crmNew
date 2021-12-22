@@ -3,6 +3,7 @@ import { withRouter } from "react-router";
 import Roles from './Developer/Roles/Roles';
 import Permits from './Developer/Permits/Permits';
 
+import Dashboard from "./Dashboard";
 import Users from './Users/Users';
 import Callcenters from './Callcenters/Callcenters';
 import SourcesAndResources from './Sources/SourcesAndResources';
@@ -19,9 +20,7 @@ function AdminContent(props) {
     const { permits } = props;
     const page = props.match?.params?.page || "main";
 
-    let body = <div className="text-center">
-        <h1>Админпанель</h1>
-    </div>
+    let body = <Dashboard {...props} />
 
     if (page == "roles" && permits.dev_roles)
         body = <Roles />
