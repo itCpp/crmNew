@@ -10,6 +10,8 @@ export default (props => {
     const [top, setTop] = React.useState(0);
     const [sort, setSort] = React.useState({});
 
+    const searchParams = new URLSearchParams(props.location.search);
+
     const startSort = column => {
 
         let direction = column === sort.column
@@ -32,6 +34,21 @@ export default (props => {
         setTop(header?.offsetHeight || 0);
 
         axios.post('dev/block/statistic').then(({ data }) => {
+
+            let column = searchParams.get('column');
+            let direction = searchParams.get('direction');
+
+            if (column && direction) {
+
+                data.rows.sort((a, b) => {
+                    return direction === "ascending"
+                        ? a[column] - b[column]
+                        : b[column] - a[column]
+                });
+
+                setSort({ column, direction });
+            }
+
             setRows(data.rows);
         }).catch(e => {
             setError(axios.getError(e));
@@ -40,6 +57,23 @@ export default (props => {
         });
 
     }, []);
+
+    React.useEffect(() => {
+
+        if (Object.keys(sort).length > 0) {
+
+            for (let i in sort)
+                searchParams.set(i, sort[i]);
+
+            let search = searchParams.toString();
+
+            if (search !== "") {
+                props.history.replace(`${props.location.pathname}?${search}`)
+            }
+
+        }
+
+    }, [sort]);
 
     return <div className="pb-3">
 
@@ -199,14 +233,14 @@ const StatisticDayRow = ({ row, setBlockIp, setRows, history }) => {
         <Table.Cell>
             <span className={row.all > 0 ? 'opacity-100' : 'opacity-30'}>{row.all || 0}</span>
         </Table.Cell>
-        <Table.Cell className="position-relative">
+        <Table.Cell className="position-relative" warning={row.blocked && !row.blocked_on}>
             <div className="d-flex justify-content-center align-items-center">
                 <span>
                     <Icon
                         name={row.blocked_on ? "minus square" : "ban"}
                         color={row.blocked_on ? "orange" : "red"}
                         className="button-icon mx-1"
-                        title={row.blocked ? "Разблокировать" : "Заблокировать ip адрес"}
+                        title={row.blocked_on ? "Разблокировать" : (row.blocked ? "Включить блокировку" : "Заблокировать ip адрес")}
                         onClick={() => blockIp(row.ip)}
                     />
                 </span>
@@ -216,9 +250,16 @@ const StatisticDayRow = ({ row, setBlockIp, setRows, history }) => {
                         color="green"
                         className="button-icon mx-1"
                         title="Статистика по ip-адресу"
-                        onClick={() => {
-                            history.push(`/admin/block/ip?addr=${row.ip}`);
-                        }}
+                        onClick={() => history.push(`/admin/block/ip?addr=${row.ip}`)}
+                    />
+                </span>
+                <span>
+                    <Icon
+                        name="eye"
+                        color="black"
+                        className="button-icon mx-1"
+                        title="Все просмотры страниц сайтов с ip"
+                        onClick={() => history.push(`/admin/block/views?ip=${row.ip}`)}
                     />
                 </span>
             </div>

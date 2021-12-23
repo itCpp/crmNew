@@ -32,7 +32,7 @@ export default (props => {
 
     React.useEffect(() => {
         getRows({});
-    }, []);
+    }, [props.location.key]);
 
     React.useEffect(() => {
 

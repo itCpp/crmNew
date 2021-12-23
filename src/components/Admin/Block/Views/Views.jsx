@@ -1,7 +1,8 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import axios from "./../../../../utils/axios-header";
 import { Header, Loader, Message, Table, Pagination, Icon } from "semantic-ui-react";
-import moment from "moment";
+import ViewsRow from "./ViewsRow";
 
 const Views = props => {
 
@@ -17,13 +18,20 @@ const Views = props => {
 
     const [rows, setRows] = React.useState([]);
 
+    const searchParams = new URLSearchParams(props.location.search);
+    const filterIp = searchParams.get('ip');
+
     const getRows = (params = {}) => {
 
         if (loadingPage) return;
 
         setLoadginPage(true);
 
-        axios.post('dev/block/getViews', { ...params, start }).then(({ data }) => {
+        axios.post('dev/block/getViews', {
+            ...params,
+            start,
+            ip: filterIp,
+        }).then(({ data }) => {
             setLoadingError(null);
             setStart(data.start);
             setRows(data.rows);
@@ -90,6 +98,8 @@ const Views = props => {
                     key={`${page}_${row.id}`}
                     row={row}
                     loadingPage={loadingPage}
+                    history={props.history}
+                    filterIp={filterIp}
                 />)}
             </Table.Body>
 
@@ -119,50 +129,4 @@ const Views = props => {
 
 }
 
-const ViewsRow = props => {
-
-    const { row } = props;
-
-    let platform = null;
-
-    if (row.platform && row.user_agent) {
-        if (row.platform.toLowerCase().indexOf('windows') >= 0)
-            platform = <Icon name="windows" color="blue" />
-        else if (row.platform.toLowerCase().indexOf('android') >= 0)
-            platform = <Icon name="android" color="green" />
-        else if (row.platform.toLowerCase().indexOf('linux') >= 0)
-            platform = <Icon name="linux" color="grey" />
-        else if (row.platform.toLowerCase().indexOf('ios') >= 0 || row.platform.toLowerCase().indexOf('os x') >= 0)
-            platform = <Icon name="apple" color="grey" />
-    }
-
-    return <Table.Row>
-        <Table.Cell>{row.site}</Table.Cell>
-        <Table.Cell>
-            <pre>{row.ip}</pre>
-        </Table.Cell>
-        <Table.Cell>
-            <div style={{ whiteSpace: "nowrap" }}>
-                {moment(row.created_at).format("DD.MM.YYYY HH:mm:ss")}
-            </div>
-        </Table.Cell>
-        <Table.Cell>
-            {row.referer && <div style={{ maxWidth: 400, wordWrap: "break-word" }} title={`Переход с ${row.referer}`}>
-                <a href={row.referer} target="_blank">{row.referer}</a>
-            </div>}
-            <div style={{ maxWidth: 400, wordWrap: "break-word" }}>
-                {row.referer && <Icon name="share" title={`Переход с ${row.referer}`} />}
-                <a href={row.link} target="_blank">{row.link}</a>
-            </div>
-        </Table.Cell>
-        <Table.Cell>
-            {row.robot && <Icon name="android" color="red" title="Это робот зашел" />}
-            {row.desktop && <Icon name="desktop" title={row.platform} />}
-            {row.phone && <Icon name="mobile alternate" title={row.platform} />}
-            {row.tablet && <Icon name="tablet alternate" title={row.platform} />}
-            {platform}
-            {row.user_agent}</Table.Cell>
-    </Table.Row>
-}
-
-export default Views;
+export default withRouter(Views);
