@@ -1,8 +1,9 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import axios from "./../../../utils/axios-header";
 import moment from "./../../../utils/moment";
 
-import { Message, Loader, Table, Button } from "semantic-ui-react";
+import { Message, Loader, Table, Button, Icon } from "semantic-ui-react";
 
 import "./queues.css";
 
@@ -90,8 +91,7 @@ const Queues = props => {
                         <Table.HeaderCell className="py-2">#id</Table.HeaderCell>
                         <Table.HeaderCell className="py-2">Дата поступления</Table.HeaderCell>
                         <Table.HeaderCell className="py-2">Телефон</Table.HeaderCell>
-                        <Table.HeaderCell className="py-2">ФИО</Table.HeaderCell>
-                        <Table.HeaderCell className="py-2">Комментарий</Table.HeaderCell>
+                        <Table.HeaderCell className="py-2">ФИО и комментарий</Table.HeaderCell>
                         <Table.HeaderCell className="py-2">Сайт</Table.HeaderCell>
                         <Table.HeaderCell className="py-2">IP</Table.HeaderCell>
                         <Table.HeaderCell className="py-2" />
@@ -108,13 +108,44 @@ const Queues = props => {
                     >
                         <Table.Cell className="px-2">{row.id}</Table.Cell>
                         <Table.Cell>{moment(row.created_at).format("DD.MM.YYYY HH:mm:ss")}</Table.Cell>
-                        <Table.Cell>{row.phone}</Table.Cell>
-                        <Table.Cell>{row.name}</Table.Cell>
-                        <Table.Cell textAlign="left"><small>{row.comment}</small></Table.Cell>
-                        <Table.Cell className="text-nowrap">{row.site || row?.request_data?.site}</Table.Cell>
-                        <Table.Cell>{row.ip}</Table.Cell>
+                        <Table.Cell>
+                            <div className="d-flex align-items-center justify-content-center">
+                                <span>{row.phone}</span>
+                                <span>
+                                    <Icon
+                                        name="search"
+                                        className="ml-1"
+                                        link
+                                        title="Искать заявки по номеру телефона"
+                                        onClick={() => props.history.push(`/requests?phone=${row.phone}`)}
+                                    />
+                                </span>
+                            </div>
+                        </Table.Cell>
+                        <Table.Cell textAlign="left">
+                            {row.name && <div>{row.name}</div>}
+                            {row.comment && <small>{row.comment}</small>}
+                        </Table.Cell>
+                        <Table.Cell className="text-nowrap">
+                            <a href={`//${row.site || row?.request_data?.site}`} target="_blank">{row.site || row?.request_data?.site} <Icon name="external alternate" className="ml-1" /></a>
+                        </Table.Cell>
+                        <Table.Cell>
+                            <div>{row.ip}</div>
+                            {row.hostname && <small>{row.hostname}</small>}
+                        </Table.Cell>
                         <Table.Cell>
                             <div className="d-flex px-2 align-items-center">
+                                <Button
+                                    icon="minus"
+                                    size="mini"
+                                    basic
+                                    circular
+                                    color="red"
+                                    title="Отклонить запрос"
+                                    onClick={() => (create || drop) ? null : setDrop(row.id)}
+                                    loading={drop === row.id}
+                                    disabled={create === row.id || drop === row.id || (row.done_type && true)}
+                                />
                                 <Button
                                     icon="plus"
                                     size="mini"
@@ -124,17 +155,6 @@ const Queues = props => {
                                     title="Добавить заявку"
                                     onClick={() => (create || drop) ? null : setCreate(row.id)}
                                     loading={create === row.id}
-                                    disabled={create === row.id || drop === row.id || (row.done_type && true)}
-                                />
-                                <Button
-                                    icon="minus"
-                                    size="mini"
-                                    basic
-                                    circular
-                                    color="red"
-                                    title="Отклонить очередь"
-                                    onClick={() => (create || drop) ? null : setDrop(row.id)}
-                                    loading={drop === row.id}
                                     disabled={create === row.id || drop === row.id || (row.done_type && true)}
                                 />
                             </div>
@@ -149,4 +169,4 @@ const Queues = props => {
     </div>;
 }
 
-export default Queues;
+export default withRouter(Queues);

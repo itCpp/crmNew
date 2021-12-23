@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "./../../utils/axios-header";
+import { withRouter } from "react-router-dom";
 
 import { connect } from 'react-redux';
 
@@ -26,7 +27,7 @@ import SecondCalls from "./SecondCalls";
 import Operators from "./Operators";
 import Rating from "./Rating";
 
-const CrmContent = props => {
+const CrmContent = withRouter(props => {
 
     const { page, permits } = props;
 
@@ -43,7 +44,7 @@ const CrmContent = props => {
     else
         return <Requests />
 
-}
+});
 
 const CRM = props => {
 

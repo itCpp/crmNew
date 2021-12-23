@@ -91,8 +91,8 @@ const ActiveSip = props => {
             </div>
         }
 
-        {rows.map(row => <ActiveRow key={row.extension} row={row} period={period} />)}
-        {rows && rows.length === 0 && <div className="text-center my-5 opacity-50">Данных нет</div>}
+        {!load && rows.map(row => <ActiveRow key={row.extension} row={row} period={period} />)}
+        {!load && rows && rows.length === 0 && <div className="text-center my-5 opacity-50">Данных нет</div>}
 
         {load && <Loader inline="centered" active />}
 
