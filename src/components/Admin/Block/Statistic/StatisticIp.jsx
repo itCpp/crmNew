@@ -20,7 +20,28 @@ export default (props => {
     const blockIp = async ip => {
         setLoadBlock(true);
 
-        await setBlockIp({ ips: ip }, console.log, console.log);
+        await setBlockIp(
+            { ip: ip },
+            data => {
+                if (data?.row?.block === 1) {
+                    axios.toast(`IP заблокирован`, {
+                        title: ip,
+                        type: "warning",
+                        icon: "ban",
+                    });
+                }
+                else if (data?.row?.block === 0) {
+                    axios.toast(`IP удален из блокировок`, {
+                        title: ip,
+                        type: "warning",
+                        icon: "check",
+                    });
+                }
+
+                setData(prev => ({ ...prev, block: data.row }));
+            },
+            e => axios.toast(e)
+        );
 
         setLoadBlock(false);
     }
@@ -62,10 +83,11 @@ export default (props => {
                 : <div>
                     <Button
                         circular
-                        icon="ban"
+                        icon={data?.block?.block === 1 ? "minus circle" : "ban"}
+                        title={data?.block?.block === 1 ? "Снять блокировку" : "Заблокировать"}
                         basic
-                        color="red"
-                        disabled
+                        color={data?.block?.block === 1 ? "red" : "green"}
+                        disabled={loadBlock}
                         onClick={() => blockIp(addr)}
                         loading={loadBlock}
                     />

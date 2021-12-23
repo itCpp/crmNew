@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "./../../../utils/axios-header";
 import { Header, Loader, Message, Input, Checkbox, Icon } from "semantic-ui-react";
+import { setBlockIp } from "./Block";
 import { replaceJSX, Highlighted } from "./../../../utils";
 
 export default (props => {
@@ -13,6 +14,7 @@ export default (props => {
     const [search, setSearch] = React.useState(null);
     const [startSearch, setStartSearch] = React.useState(false);
     const timeout = React.useRef();
+    const [changeBlock, setChangeBlock] = React.useState(false);
 
     const getRows = formdata => {
 
@@ -52,6 +54,34 @@ export default (props => {
 
     }
 
+    const setBlock = (e, { id, checked, value }) => {
+        if (changeBlock?.id) return;
+        setChangeBlock({ id, checked, ip: value });
+    }
+
+    React.useEffect(async () => {
+
+        if (changeBlock?.id) {
+            await setBlockIp(
+                changeBlock,
+                data => {
+                    setRows(prev => {
+                        prev.forEach((row, i) => {
+                            if (row.id === data.row.id) {
+                                prev[i] = data.row;
+                            }
+                        });
+                        return prev;
+                    });
+                },
+                e => axios.toast(e)
+            );
+
+            setChangeBlock(null);
+        }
+
+    }, [changeBlock]);
+
     return <div style={{ maxWidth: 600 }}>
 
         <div className="admin-content-segment d-flex justify-content-between align-items-center">
@@ -88,8 +118,7 @@ export default (props => {
 
                 let host = row.host;
 
-                if (search !== "" && search){
-                    // row.host = Highlighted({ text: row.host, highlight: search });
+                if (search !== "" && search) {
                     host = <Highlighted text={row.host} highlight={search} />
                 }
 
@@ -107,8 +136,10 @@ export default (props => {
                     <Checkbox
                         toggle
                         checked={row.block === 1}
-                        onChange={console.log}
-                        disabled
+                        onChange={setBlock}
+                        id={row.id}
+                        disabled={changeBlock?.id && row.id === changeBlock.id}
+                        value={row.host}
                     />
 
                 </div>
