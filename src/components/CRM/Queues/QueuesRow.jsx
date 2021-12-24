@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Button, Icon, Label } from "semantic-ui-react";
+import { Table, Button, Icon, Label, Header } from "semantic-ui-react";
 import moment from "moment";
 import Flag from "../../Admin/Block/Statistic/IP/FlagIp";
 
@@ -13,7 +13,7 @@ const getIpTitle = data => {
 
 const QueuesRow = props => {
 
-    const { row, history, checkIp } = props;
+    const { row, history, checkIp, blockIp } = props;
     const { drop, setDrop } = props;
     const { create, setCreate } = props;
 
@@ -62,7 +62,26 @@ const QueuesRow = props => {
                         />
                     </span>
                 }
-                <div>{row.ip}</div>
+                <Header
+                    as="span"
+                    color={row.ipBlocked ? "red" : "black"}
+                    size="tiny"
+                    className="m-0"
+                    style={{ fontWeight: 200 }}
+                    content={row.ip}
+                    disabled={row.ipInfoLoading || row.ipBlockedLoading}
+                />
+                <span className="ml-2">
+                    <Icon
+                        name={row.ipBlocked ? "minus square" : "ban"}
+                        color={row.ipBlocked ? "orange" : "red"}
+                        title={row.ipBlocked ? "Снять блокировку" : "Заблокировать"}
+                        fitted
+                        onClick={() => blockIp(row.ip, row.id)}
+                        link={!row.ipBlockedLoading}
+                        disabled={row.ipBlockedLoading}
+                    />
+                </span>
             </div>
             {row.hostname && <small className="text-nowrap">{row.hostname}</small>}
         </Table.Cell>

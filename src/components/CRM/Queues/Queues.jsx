@@ -4,7 +4,7 @@ import axios from "./../../../utils/axios-header";
 import throttle from "lodash/throttle";
 import { Message, Loader, Table, Icon } from "semantic-ui-react";
 import QueuesRow from "./QueuesRow";
-import { getIpInfo } from "./../../Admin/Block/Statistic/IP/getIpInfo";
+import { getIpInfo, setBlockIp } from "./../../Admin/Block";
 
 import "./queues.css";
 
@@ -145,14 +145,42 @@ const Queues = props => {
         await getIpInfo(ip, data => {
             setQueues(q => {
                 q.forEach((r, i) => {
+                    if (r.id === id) {
+                        q[i].ipInfoLoading = false;
+                    }
                     if (r.ip === data.ip) {
                         q[i].ipInfo = data;
-                        q[i].ipInfoLoading = false;
                     }
                 });
                 return [...q];
             });
         });
+    }
+
+    const blockIp = async (ip, id) => {
+
+        setQueues(q => {
+            q.forEach((r, i) => {
+                if (r.id === id) {
+                    q[i].ipBlockedLoading = true;
+                }
+            });
+            return [...q];
+        });
+
+        await setBlockIp({ ip }, data => {
+            setQueues(q => {
+                q.forEach((r, i) => {
+                    if (r.id === id) {
+                        q[i].ipBlockedLoading = false;
+                    }
+                    if (r.ip === data.row.host) {
+                        q[i].ipBlocked = data.blocked_on;
+                    }
+                });
+                return [...q];
+            });
+        }, e => axios.toast(e));
     }
 
     return <div className="pb-3 px-2 w-100" id="queues-root">
@@ -210,6 +238,7 @@ const Queues = props => {
                         row={row}
                         history={props.history}
                         checkIp={checkIp}
+                        blockIp={blockIp}
                         create={create}
                         setCreate={setCreate}
                         drop={drop}
