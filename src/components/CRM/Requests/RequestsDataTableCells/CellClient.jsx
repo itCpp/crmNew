@@ -5,7 +5,7 @@ import { Table, Icon } from "semantic-ui-react";
 
 const PhoneRow = props => {
 
-    const { phone } = props;
+    const { phone, client, rowId } = props;
     const number = useRef();
 
     const copyPhone = useCallback((phone) => {
@@ -14,7 +14,7 @@ const PhoneRow = props => {
         setTimeout(() => number.current && number.current.classList.remove('copyed'), 100);
     }, []);
 
-    return <div onClick={() => copyPhone(phone)} className="d-flex align-items-center">
+    return <div onClick={() => copyPhone(client.hidden ? `+${rowId}s${client.id}` : phone)} className="d-flex align-items-center">
         <div>
             <Icon name="copy" className="button-icon" title="Скопировать номер телефона" />
         </div>
@@ -46,7 +46,9 @@ const CellClient = props => {
 
         {row.clients && row.clients.map(client => <PhoneRow
             key={`client_${row.id}_${client.id}`}
+            rowId={row.id}
             phone={client.phone}
+            client={client}
         />)}
 
         <div className="button-icon" title="Добавить номер телефона" onClick={() => dispatch(setAddPhoneShow(row.id))}>
