@@ -27,8 +27,8 @@ const QueuesRow = props => {
         <Table.Cell>{moment(row.created_at).format("DD.MM.YYYY HH:mm:ss")}</Table.Cell>
         <Table.Cell>
             <div className="d-flex align-items-center justify-content-center">
-                <span>{row.phone}</span>
-                <span>
+                <span className="text-nowrap">{row.phone}</span>
+                {row.show_phone && <span>
                     <Icon
                         name="search"
                         className="ml-1"
@@ -36,7 +36,7 @@ const QueuesRow = props => {
                         title="Искать заявки по номеру телефона"
                         onClick={() => history.push(`/requests?phone=${row.phone}`)}
                     />
-                </span>
+                </span>}
             </div>
         </Table.Cell>
         <Table.Cell textAlign="left">

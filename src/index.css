@@ -163,3 +163,44 @@ hr {
   background: rgba(34,34,34,0.03);
   border: 1px solid rgba(34,34,34,0.2);
 }
+
+.global-error {
+  position: fixed;
+  z-index: 10000;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #ffe9e9d4;
+  text-align: center;
+  padding: 1rem 5rem;
+  color: #500808;
+}
+.global-error-code {
+  font-size: 10rem;
+  line-height: 10rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+.global-error-message {
+  font-size: 1.2rem;
+  line-height: 1.3rem;
+  font-weight: 500;
+}
+.global-error-remark {
+  margin: 1rem auto 0;
+  max-width: 400px;
+}
+
+.god-mode-global-off {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding: .5rem 1rem;
+  background-color: #fc0;
+  border-top: 1px solid var(--border-color);
+  z-index: 10000;
+}

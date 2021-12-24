@@ -22,7 +22,7 @@ import './App.css';
 import Routes from './components/Routes';
 
 const appUserEvent = data => {
-    
+
     if (data.alert)
         axios.toast(null, data.alert);
 
@@ -32,6 +32,7 @@ function App(props) {
 
     const { userData, setLogin, setUserData, setUserPermits } = props;
     const [loading, setLoading] = React.useState(true);
+    const [globalError, setGlobalError] = React.useState(null);
 
     React.useEffect(async () => {
 
@@ -49,6 +50,8 @@ function App(props) {
 
             if (error?.response?.status === 401)
                 setLogin(false);
+            else
+                setGlobalError(error);
 
         }).then(async () => {
             setLoading(false);
@@ -102,7 +105,7 @@ function App(props) {
 
     return <>
         <SemanticToastContainer position="bottom-left" />
-        <Routes {...props} />
+        <Routes {...props} globalError={globalError} />
     </>
 
 }

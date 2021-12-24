@@ -183,7 +183,18 @@ const Queues = props => {
                 });
                 return [...q];
             });
-        }, e => axios.toast(e));
+        }, e => {
+            setQueues(q => {
+                q.forEach((r, i) => {
+                    if (r.id === id) {
+                        q[i].ipBlockedLoading = false;
+                    }
+                });
+                return [...q];
+            });
+
+            axios.toast(e);
+        });
     }
 
     return <div className="pb-3 px-2 w-100" id="queues-root">

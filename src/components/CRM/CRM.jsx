@@ -202,12 +202,11 @@ const CRM = props => {
                 window.forEcho = echo;
 
             }
+
             // Информирование по личным заявкам
-            else {
-                window.Echo && window.Echo.private(`App.Requests.${window.userPin}`)
-                    .listen('Requests\\UpdateRequestRowForPin', updateRequestRowForPin)
-                    .listen('Requests\\UpdateRequestRow', updateRequestRow);
-            }
+            window.Echo && window.Echo.private(`App.Requests.${window.userPin}`)
+                .listen('Requests\\UpdateRequestRowForPin', updateRequestRowForPin)
+                .listen('Requests\\UpdateRequestRow', updateRequestRow);
 
             if (data.intervalCounter) {
                 counterUpdateInterval = setInterval(checkCounter, data.intervalCounter);
@@ -226,7 +225,8 @@ const CRM = props => {
 
             if (window.forEcho && window.Echo)
                 window.Echo.leave(`App.Requests.All.${window.forEcho}`);
-            else if (window.Echo)
+
+            if (window.Echo)
                 window.Echo.leave(`App.Requests.${window.userPin}`);
 
             clearInterval(counterUpdateInterval);

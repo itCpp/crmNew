@@ -1,15 +1,20 @@
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
-import NotFound from './NotFound';
 import Auth from './Auth/Auth';
 import Header from './Header/Header';
 import Crm from './CRM/CRM';
 import Admin from './Admin/AdminMain';
 
+import GlobalError from "./Errors/GlobalError";
+import NotFound from './NotFound';
+
 export default function Routes(props) {
 
-    const { login } = props;
+    const { login, globalError } = props;
+
+    if (globalError)
+        return <GlobalError error={globalError} />
 
     if (!login)
         return <Auth />

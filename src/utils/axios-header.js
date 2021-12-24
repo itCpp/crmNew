@@ -39,7 +39,7 @@ instance.interceptors.request.use(function (config) {
  * @param {function|null} Отладочная функция
  * @returns
  */
-instance.getError = (error, type = "message", callback = null) => {
+export const getError = (error, type = "message", callback = null) => {
 
     const response = {}
 
@@ -86,6 +86,8 @@ instance.getError = (error, type = "message", callback = null) => {
     return response[type] || null;
 
 }
+
+instance.getError = getError;
 
 /** Вывод объекта ошибок при валидации данных */
 instance.getErrors = error => error?.response?.data?.errors || {}
