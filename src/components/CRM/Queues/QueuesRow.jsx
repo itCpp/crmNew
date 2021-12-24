@@ -74,7 +74,7 @@ const QueuesRow = props => {
                 <span className="ml-2">
                     <Icon
                         name={row.ipBlocked ? "minus square" : "ban"}
-                        color={row.ipBlocked ? "orange" : "red"}
+                        color={row.ipBlocked ? "red" : "orange"}
                         title={row.ipBlocked ? "Снять блокировку" : "Заблокировать"}
                         fitted
                         onClick={() => blockIp(row.ip, row.id)}

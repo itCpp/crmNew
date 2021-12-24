@@ -238,7 +238,7 @@ const StatisticDayRow = ({ row, setBlockIp, setRows, history }) => {
                 <span>
                     <Icon
                         name={row.blocked_on ? "minus square" : "ban"}
-                        color={row.blocked_on ? "orange" : "red"}
+                        color={row.blocked_on ? "red" : "orange"}
                         className="button-icon mx-1"
                         title={row.blocked_on ? "Разблокировать" : (row.blocked ? "Включить блокировку" : "Заблокировать ip адрес")}
                         onClick={() => blockIp(row.ip)}

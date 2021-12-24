@@ -2,9 +2,10 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import axios from "./../../../utils/axios-header";
 import throttle from "lodash/throttle";
-import { Message, Loader, Table, Icon } from "semantic-ui-react";
+import { Message, Loader, Table, Icon, Button } from "semantic-ui-react";
 import QueuesRow from "./QueuesRow";
 import { getIpInfo, setBlockIp } from "./../../Admin/Block";
+import RequestAdd from "./../Requests/RequestsTitle/RequestAdd";
 
 import "./queues.css";
 
@@ -23,6 +24,7 @@ const Queues = props => {
 
     const [total, setTotal] = React.useState(null);
     const [top, setTop] = React.useState(0);
+    const [add, setAdd] = React.useState(false);
 
     const [showDone, setShowDone] = React.useState(false);
 
@@ -228,7 +230,20 @@ const Queues = props => {
                         <Table.HeaderCell className="p-2">ФИО и комментарий</Table.HeaderCell>
                         <Table.HeaderCell className="p-2">Сайт</Table.HeaderCell>
                         <Table.HeaderCell className="p-2">IP</Table.HeaderCell>
-                        <Table.HeaderCell className="p-2"></Table.HeaderCell>
+                        <Table.HeaderCell className="p-2">
+                            {window?.requestPermits?.requests_add && <>
+                                <Button
+                                    icon="plus"
+                                    color="green"
+                                    circular
+                                    title="Создать заявку"
+                                    basic
+                                    onClick={() => setAdd(true)}
+                                    size="small"
+                                />
+                                {add && <RequestAdd setOpen={setAdd} />}
+                            </>}
+                        </Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
 
