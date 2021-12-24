@@ -2,7 +2,7 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import axios from "./../../../utils/axios-header";
 import moment from "./../../../utils/moment";
-
+import throttle from "lodash/throttle";
 import { Message, Loader, Table, Button, Icon } from "semantic-ui-react";
 
 import "./queues.css";
@@ -13,23 +13,75 @@ const Queues = props => {
     const [error, setError] = React.useState(false);
 
     const [queues, setQueues] = React.useState([]);
+    const [page, setPage] = React.useState(1);
+    const [load, setLoad] = React.useState(false);
+    const [stop, setStop] = React.useState(false);
 
     const [create, setCreate] = React.useState(null);
     const [drop, setDrop] = React.useState(null);
 
-    React.useEffect(() => {
+    const getQueues = (formdata = {}) => {
 
-        setLoading(true);
+        setLoad(true);
+        setPage(formdata.page || 1);
 
-        axios.post('queues/getQueues').then(({ data }) => {
-            setQueues(data.queues);
+        axios.post('queues/getQueues', formdata).then(({ data }) => {
+
+            setQueues(prev => formdata.page > 1 ? [...prev, ...data.queues] : data.queues);
+
+            setStop(data.next > data.pages);
+
         }).catch(e => {
             setError(axios.getError(e));
         }).then(() => {
             setLoading(false);
+            setLoad(false);
         });
+    }
 
-    }, []);
+    const scroll = React.useCallback(throttle(e => {
+
+        const el = document.getElementById('queues-root');
+        if (!el) return;
+
+        let data = {
+            offsetHeight: document.documentElement.offsetHeight,
+            scrollHeight: document.documentElement.scrollHeight,
+            scrollTop: document.documentElement.scrollTop,
+        }
+
+        const scrolled = data.scrollTop + data.offsetHeight > data.scrollHeight - 200;
+
+        console.log({ page, loading, load, stop, scrolled });
+
+        if (scrolled && !loading && !load && !stop)
+            getQueues({ page: page + 1 });
+
+    }, 500), [page, loading, load, stop]);
+
+    React.useEffect(async () => {
+
+        if (page > 1)
+            await setStop(true);
+
+        setLoading(true);
+        getQueues({ page: 1 });
+
+        return () => {
+            document.removeEventListener('scroll', scroll);
+        }
+
+    }, [props.location.key]);
+
+    React.useEffect(() => {
+
+        document.addEventListener('scroll', scroll);
+
+        return () => {
+            document.removeEventListener('scroll', scroll);
+        }
+
+    }, [page, loading, load, stop]);
 
     React.useEffect(() => {
 
@@ -78,7 +130,6 @@ const Queues = props => {
         <div className="block-card mb-3 px-2">
 
             {!loading && error && <Message error content={error} className="message-center-block" />}
-            {loading && <div><Loader active inline="centered" /></div>}
 
             {!loading && !error && queues.length === 0 && <div className="opacity-50 text-center my-4">
                 <strong>Данных ещё нет</strong>
@@ -102,6 +153,7 @@ const Queues = props => {
                     {queues.map(row => <Table.Row
                         key={row.id}
                         textAlign="center"
+                        verticalAlign="top"
                         disabled={row.done_type ? true : false}
                         positive={row.done_type === 1}
                         negative={row.done_type === 2}
@@ -163,6 +215,8 @@ const Queues = props => {
                 </Table.Body>
 
             </Table>}
+
+            {(loading || load) && <div><Loader active inline="centered" /></div>}
 
         </div>
 
