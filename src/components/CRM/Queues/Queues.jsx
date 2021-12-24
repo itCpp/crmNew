@@ -1,17 +1,17 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import axios from "./../../../utils/axios-header";
-import moment from "./../../../utils/moment";
 import throttle from "lodash/throttle";
-import { Message, Loader, Table, Icon, Label } from "semantic-ui-react";
+import { Message, Loader, Table, Icon } from "semantic-ui-react";
 import QueuesRow from "./QueuesRow";
+import { getIpInfo } from "./../../Admin/Block/Statistic/IP/getIpInfo";
 
 import "./queues.css";
 
 const Queues = props => {
 
     const [loading, setLoading] = React.useState(true);
-    const [error, setError] = React.useState(false);
+    const [error, setError] = React.useState(null);
 
     const [queues, setQueues] = React.useState([]);
     const [page, setPage] = React.useState(1);
@@ -40,6 +40,7 @@ const Queues = props => {
 
             setStop(data.next > data.pages);
             setTotal(data.total);
+            setError(null);
 
         }).catch(e => {
             setError(axios.getError(e));
@@ -130,6 +131,30 @@ const Queues = props => {
 
     }, [create, drop])
 
+    const checkIp = async (ip, id) => {
+
+        setQueues(q => {
+            q.forEach((r, i) => {
+                if (r.id === id) {
+                    q[i].ipInfoLoading = true;
+                }
+            });
+            return [...q];
+        });
+
+        await getIpInfo(ip, data => {
+            setQueues(q => {
+                q.forEach((r, i) => {
+                    if (r.ip === data.ip) {
+                        q[i].ipInfo = data;
+                        q[i].ipInfoLoading = false;
+                    }
+                });
+                return [...q];
+            });
+        });
+    }
+
     return <div className="pb-3 px-2 w-100" id="queues-root">
 
         <div className="d-flex justify-content-between align-items-center">
@@ -184,6 +209,7 @@ const Queues = props => {
                         key={row.id}
                         row={row}
                         history={props.history}
+                        checkIp={checkIp}
                         create={create}
                         setCreate={setCreate}
                         drop={drop}

@@ -5,11 +5,11 @@ const names = ['ad', 'andorra', 'ae', 'united arab emirates', 'uae', 'af', 'afgh
 
 export default (props => {
 
-    const { name } = props;
+    const name = String(props.name || "").toLowerCase();
 
     if (names.indexOf(name) < 0)
         return null;
 
-    return <Flag {...props} />
+    return <Flag {...props} name={name} />
 
 });

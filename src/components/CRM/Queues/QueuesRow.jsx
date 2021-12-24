@@ -1,10 +1,19 @@
 import React from "react";
 import { Table, Button, Icon, Label } from "semantic-ui-react";
 import moment from "moment";
+import Flag from "../../Admin/Block/Statistic/IP/FlagIp";
+
+const getIpTitle = data => {
+    let title = [];
+    if (data?.country_code) title.push(data.country_code);
+    if (data?.region_name) title.push(data.region_name);
+    if (data?.city) title.push(data.city);
+    return title.length > 0 ? title.join(', ') : null;
+}
 
 const QueuesRow = props => {
 
-    const { row, history } = props;
+    const { row, history, checkIp } = props;
     const { drop, setDrop } = props;
     const { create, setCreate } = props;
 
@@ -38,8 +47,24 @@ const QueuesRow = props => {
             <a href={`//${row.site || row?.request_data?.site}`} target="_blank">{row.site || row?.request_data?.site} <Icon name="external alternate" className="ml-1" /></a>
         </Table.Cell>
         <Table.Cell>
-            <div>{row.ip}</div>
-            {row.hostname && <small>{row.hostname}</small>}
+            <div className="d-flex justify-content-center align-items-center" title={getIpTitle(row.ipInfo || {})}>
+                {row.ipInfo
+                    ? <Flag
+                        name={row.ipInfo.country_code}
+                    />
+                    : <span>
+                        <Icon
+                            name="question circle outline"
+                            title="Проверить IP"
+                            onClick={() => checkIp(row.ip, row.id)}
+                            link={!row.ipInfoLoading}
+                            disabled={row.ipInfoLoading}
+                        />
+                    </span>
+                }
+                <div>{row.ip}</div>
+            </div>
+            {row.hostname && <small className="text-nowrap">{row.hostname}</small>}
         </Table.Cell>
         <Table.Cell className="px-2 text-center">
             {row.done_type
@@ -79,6 +104,6 @@ const QueuesRow = props => {
         </Table.Cell>
     </Table.Row>
 
-}
+};
 
 export default QueuesRow;
