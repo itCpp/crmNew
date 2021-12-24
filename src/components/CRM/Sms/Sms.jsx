@@ -150,7 +150,11 @@ const SmsRow = React.memo(props => {
                 <Comment.Author as="b">{name}</Comment.Author>
 
                 <Comment.Metadata style={{ float: "right" }}>
-                    <div>{sms.sent_at && moment(sms.sent_at).format("DD.MM.YYYY в HH:mm")}</div>
+                    <div className="d-flex align-items-center">
+                        <span>{sms.sent_at && moment(sms.sent_at).format("DD.MM.YYYY в HH:mm")}</span>
+                        {sms.new_sms && <Label circular color="orange" empty className="ml-2" title="Новое сообщение" size="mini"/>}
+                    </div>
+                    
                 </Comment.Metadata>
 
                 {(sms.created_pin || sms.author) && <div>
@@ -175,8 +179,6 @@ const SmsRow = React.memo(props => {
             </Comment.Content>
 
         </Comment>
-
-        {sms.new_sms && <Label circular color="red" empty className="ml-2" title="Новое сообщение" />}
 
     </div>
 
