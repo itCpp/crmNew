@@ -3,7 +3,8 @@ import { withRouter } from "react-router-dom";
 import axios from "./../../../utils/axios-header";
 import moment from "./../../../utils/moment";
 import throttle from "lodash/throttle";
-import { Message, Loader, Table, Button, Icon } from "semantic-ui-react";
+import { Message, Loader, Table, Icon, Label } from "semantic-ui-react";
+import QueuesRow from "./QueuesRow";
 
 import "./queues.css";
 
@@ -20,16 +21,25 @@ const Queues = props => {
     const [create, setCreate] = React.useState(null);
     const [drop, setDrop] = React.useState(null);
 
+    const [total, setTotal] = React.useState(null);
+    const [top, setTop] = React.useState(0);
+
+    const [showDone, setShowDone] = React.useState(false);
+
     const getQueues = (formdata = {}) => {
 
         setLoad(true);
         setPage(formdata.page || 1);
 
-        axios.post('queues/getQueues', formdata).then(({ data }) => {
+        axios.post('queues/getQueues', {
+            ...formdata,
+            done: showDone,
+        }).then(({ data }) => {
 
             setQueues(prev => formdata.page > 1 ? [...prev, ...data.queues] : data.queues);
 
             setStop(data.next > data.pages);
+            setTotal(data.total);
 
         }).catch(e => {
             setError(axios.getError(e));
@@ -52,14 +62,15 @@ const Queues = props => {
 
         const scrolled = data.scrollTop + data.offsetHeight > data.scrollHeight - 200;
 
-        console.log({ page, loading, load, stop, scrolled });
-
         if (scrolled && !loading && !load && !stop)
             getQueues({ page: page + 1 });
 
     }, 500), [page, loading, load, stop]);
 
     React.useEffect(async () => {
+
+        const header = document.getElementById('header-menu');
+        setTop(header?.offsetHeight || 0);
 
         if (page > 1)
             await setStop(true);
@@ -71,7 +82,7 @@ const Queues = props => {
             document.removeEventListener('scroll', scroll);
         }
 
-    }, [props.location.key]);
+    }, [props.location.key, showDone]);
 
     React.useEffect(() => {
 
@@ -123,7 +134,26 @@ const Queues = props => {
 
         <div className="d-flex justify-content-between align-items-center">
             <div className="page-title-box">
-                <h4 className="page-title">Очередь текстовых заявок</h4>
+                <h4 className="page-title d-flex align-items-center">
+                    <span className="mx-2">
+                        <Icon
+                            name={showDone ? "check square" : "square outline"}
+                            color={showDone ? "green" : "black"}
+                            fitted
+                            link
+                            title={showDone ? "Отобразить не обработанные" : "Отобразить обработанные"}
+                            size="large"
+                            onClick={() => setShowDone(prev => !prev)}
+                        />
+                    </span>
+                    {showDone
+                        ? <span>Завршенные запросы очереди</span>
+                        : <span>Очередь текстовых заявок</span>
+                    }
+                    {/* {total && <span className="mx-2">
+                        <Label content={total} color="green" size="tiny" />
+                    </span>} */}
+                </h4>
             </div>
         </div>
 
@@ -137,81 +167,28 @@ const Queues = props => {
 
             {!loading && !error && queues.length > 0 && <Table basic="very" collapsing compact selectable={queues.length > 0}>
 
-                <Table.Header>
+                <Table.Header style={{ top, zIndex: 100 }} className="position-sticky header-ququeue">
                     <Table.Row textAlign="center">
-                        <Table.HeaderCell className="py-2">#id</Table.HeaderCell>
-                        <Table.HeaderCell className="py-2">Дата поступления</Table.HeaderCell>
-                        <Table.HeaderCell className="py-2">Телефон</Table.HeaderCell>
-                        <Table.HeaderCell className="py-2">ФИО и комментарий</Table.HeaderCell>
-                        <Table.HeaderCell className="py-2">Сайт</Table.HeaderCell>
-                        <Table.HeaderCell className="py-2">IP</Table.HeaderCell>
-                        <Table.HeaderCell className="py-2" />
+                        <Table.HeaderCell className="p-2">#id</Table.HeaderCell>
+                        <Table.HeaderCell className="p-2">Дата поступления</Table.HeaderCell>
+                        <Table.HeaderCell className="p-2">Телефон</Table.HeaderCell>
+                        <Table.HeaderCell className="p-2">ФИО и комментарий</Table.HeaderCell>
+                        <Table.HeaderCell className="p-2">Сайт</Table.HeaderCell>
+                        <Table.HeaderCell className="p-2">IP</Table.HeaderCell>
+                        <Table.HeaderCell className="p-2"></Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
 
                 <Table.Body>
-                    {queues.map(row => <Table.Row
+                    {queues.map(row => <QueuesRow
                         key={row.id}
-                        textAlign="center"
-                        verticalAlign="top"
-                        disabled={row.done_type ? true : false}
-                        positive={row.done_type === 1}
-                        negative={row.done_type === 2}
-                    >
-                        <Table.Cell className="px-2">{row.id}</Table.Cell>
-                        <Table.Cell>{moment(row.created_at).format("DD.MM.YYYY HH:mm:ss")}</Table.Cell>
-                        <Table.Cell>
-                            <div className="d-flex align-items-center justify-content-center">
-                                <span>{row.phone}</span>
-                                <span>
-                                    <Icon
-                                        name="search"
-                                        className="ml-1"
-                                        link
-                                        title="Искать заявки по номеру телефона"
-                                        onClick={() => props.history.push(`/requests?phone=${row.phone}`)}
-                                    />
-                                </span>
-                            </div>
-                        </Table.Cell>
-                        <Table.Cell textAlign="left">
-                            {row.name && <div>{row.name}</div>}
-                            {row.comment && <small>{row.comment}</small>}
-                        </Table.Cell>
-                        <Table.Cell className="text-nowrap">
-                            <a href={`//${row.site || row?.request_data?.site}`} target="_blank">{row.site || row?.request_data?.site} <Icon name="external alternate" className="ml-1" /></a>
-                        </Table.Cell>
-                        <Table.Cell>
-                            <div>{row.ip}</div>
-                            {row.hostname && <small>{row.hostname}</small>}
-                        </Table.Cell>
-                        <Table.Cell>
-                            <div className="d-flex px-2 align-items-center">
-                                <Button
-                                    icon="minus"
-                                    size="mini"
-                                    basic
-                                    circular
-                                    color="red"
-                                    title="Отклонить запрос"
-                                    onClick={() => (create || drop) ? null : setDrop(row.id)}
-                                    loading={drop === row.id}
-                                    disabled={create === row.id || drop === row.id || (row.done_type && true)}
-                                />
-                                <Button
-                                    icon="plus"
-                                    size="mini"
-                                    basic
-                                    circular
-                                    color="green"
-                                    title="Добавить заявку"
-                                    onClick={() => (create || drop) ? null : setCreate(row.id)}
-                                    loading={create === row.id}
-                                    disabled={create === row.id || drop === row.id || (row.done_type && true)}
-                                />
-                            </div>
-                        </Table.Cell>
-                    </Table.Row>)}
+                        row={row}
+                        history={props.history}
+                        create={create}
+                        setCreate={setCreate}
+                        drop={drop}
+                        setDrop={setDrop}
+                    />)}
                 </Table.Body>
 
             </Table>}
