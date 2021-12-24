@@ -6,6 +6,7 @@ import { Message, Loader, Table, Icon, Button } from "semantic-ui-react";
 import QueuesRow from "./QueuesRow";
 import { getIpInfo, setBlockIp } from "./../../Admin/Block";
 import RequestAdd from "./../Requests/RequestsTitle/RequestAdd";
+import BtnScrollTop from "../UI/BtnScrollTop/BtnScrollTop.jsx";
 
 import "./queues.css";
 
@@ -266,6 +267,8 @@ const Queues = props => {
             {(loading || load) && <div><Loader active inline="centered" /></div>}
 
         </div>
+
+        <BtnScrollTop />
 
     </div>;
 }
