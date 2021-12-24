@@ -43,12 +43,14 @@ const QueuesRow = props => {
         </Table.Cell>
         <Table.Cell className="px-2 text-center">
             {row.done_type
-                ? <Label title={row.doneInfo} className="d-flex">
-                    <span>
-                        {row.done_type === 1 && <Icon name="check" color="green" />}
-                        {row.done_type === 2 && <Icon name="ban" color="red" />}
-                    </span>
-                    {row.done_pin}
+                ? <Label title={row.doneInfo}>
+                    <div className="d-flex">
+                        <span>
+                            {row.done_type === 1 && <Icon name="check" color="green" />}
+                            {row.done_type === 2 && <Icon name="ban" color="red" />}
+                        </span>
+                        {row.done_pin}
+                    </div>
                 </Label>
                 : <div className="d-flex justify-content-center align-items-center">
                     <Button

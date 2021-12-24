@@ -1,6 +1,6 @@
 {
   "name": "crm_call_admin",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "private": true,
   "dependencies": {
     "@antv/g2plot": "^2.3.40",
