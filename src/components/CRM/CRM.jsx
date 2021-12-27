@@ -38,7 +38,7 @@ const CrmContent = withRouter(props => {
     else if (page === "/secondcalls" && permits.second_calls_access)
         return <SecondCalls />
     else if (page === "/pins")
-        return <Operators />
+        return <Operators update={props.location.key} />
     else if (page === "/rating")
         return <Rating />
     else
