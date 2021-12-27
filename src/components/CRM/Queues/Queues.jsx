@@ -53,6 +53,28 @@ const Queues = props => {
         });
     }
 
+    const queueUpdateRow = ({ queue }) => {
+        setQueues(prev => {
+            prev.forEach((row, i) => {
+                if (row.id === queue.id) {
+                    prev[i] = {...row, ...queue};
+                }
+            });
+            return [...prev];
+        });
+    }
+
+    React.useEffect(() => {
+
+        window.Echo && window.Echo.private(`App.Queues`)
+            .listen('QueueUpdateRow', queueUpdateRow);
+
+        return () => {
+            window.Echo && window.Echo.leave(`App.Queues`);
+        }
+
+    }, []);
+
     const scroll = React.useCallback(throttle(e => {
 
         const el = document.getElementById('queues-root');
