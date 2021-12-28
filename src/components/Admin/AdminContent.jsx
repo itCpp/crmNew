@@ -14,6 +14,7 @@ import ActiveSip from './Calls/Sip/Active';
 import DistributionCalls from './Calls/Distributions/DistributionCalls';
 import Offices from './Offices/Offices';
 import Block from './Block';
+import Routes from './API/Routes';
 
 function AdminContent(props) {
 
@@ -46,6 +47,8 @@ function AdminContent(props) {
         body = <Offices {...props} />
     else if (page == "block" && permits.dev_block)
         body = <Block {...props} />
+    else if (page == "routes" && permits.dev_block)
+        body = <Routes {...props} />
 
     return <div className="admin-content-body">
         {body}

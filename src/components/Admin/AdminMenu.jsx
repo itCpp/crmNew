@@ -135,6 +135,17 @@ function AdminMenu(props) {
             : null
         }
 
+        {permits.block_dev && <div className="admin-menu-block">
+
+            <h5>API</h5>
+
+            <NavLink to="/admin/routes" className="admin-menu-point" onClick={changePage}>
+                <Icon name="road" />
+                <span>Маршрутизация</span>
+            </NavLink>
+
+        </div>}
+
     </div>
 
 }

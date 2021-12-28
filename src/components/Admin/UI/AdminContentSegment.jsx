@@ -1,10 +1,20 @@
+import { Header, Loader } from "semantic-ui-react";
+
 export default (props => {
 
-    let className = ["admin-content-segment"];
-    props.className && className.push(props.className);
+    const { loading } = props;
+    const { header, className } = props;
 
-    return <div className={className.join(' ')}>
-        {props.children}
+    let classNames = ["admin-content-segment"];
+    className && classNames.push(className);
+
+    return <div className={classNames.join(' ')}>
+
+        {typeof header == "object" && <Header {...header} />}
+
+        {!loading && props.children}
+        {loading && <Loader active inline="centered" className="my-2" />}
+
     </div>
 
 });
