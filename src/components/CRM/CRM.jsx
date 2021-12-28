@@ -20,14 +20,16 @@ import { Loader, Message } from "semantic-ui-react";
 import "./crm.css";
 
 import Menu from "./Menu/Menu";
+
 import Requests from "./Requests/Requests";
 import Queues from "./Queues";
 import Sms from "./Sms";
 import SecondCalls from "./SecondCalls";
 import Operators from "./Operators";
 import Rating from "./Rating";
+import User from "./User";
 
-const CrmContent = withRouter(props => {
+const CrmContent = React.memo(withRouter(props => {
 
     const { page, permits } = props;
 
@@ -41,10 +43,12 @@ const CrmContent = withRouter(props => {
         return <Operators update={props.location.key} />
     else if (page === "/rating")
         return <Rating />
+    else if (page === "/user/:id")
+        return <User {...props} />
     else
         return <Requests />
 
-});
+}));
 
 const CRM = props => {
 

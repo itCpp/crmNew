@@ -77,10 +77,10 @@ function Header(props) {
                 <ActiveStatusUser {...props} />
 
                 {mode ?
-                    <span>
+                    <span className="mt-1">
                         <Icon
                             name="secret user"
-                            className="text-primary"
+                            color="blue"
                             title="Имитация пользователя"
                         />
                     </span>
