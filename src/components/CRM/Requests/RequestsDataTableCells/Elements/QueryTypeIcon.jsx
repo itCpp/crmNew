@@ -14,7 +14,7 @@ const QueryTypeIcon = memo(({ query_type }) => {
     if (query_type === "call")
         icon = <Icon name="call square" title="Звонок" />
     else if (query_type === "text")
-        icon = <Icon name="comment alternate" title="Тектовая заявка" />
+        icon = <Icon name="envelope square" title="Тектовая заявка" />
 
     return icon;
 

@@ -43,10 +43,12 @@ const CrmContent = React.memo(withRouter(props => {
         return <Operators update={props.location.key} />
     else if (page === "/rating")
         return <Rating />
+    else if (page === "/requests")
+        return <Requests />
     else if (page === "/user/:id")
         return <User {...props} />
     else
-        return <Requests />
+        return <User {...props} />
 
 }));
 

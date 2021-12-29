@@ -38,6 +38,11 @@ const MenuTabs = props => {
 
     const setSelect = id => {
 
+        localStorage.setItem('select_tab', id);
+
+        if (id === null)
+            return null;
+
         if (selectMenu.indexOf('requests') < 0)
             push("/requests");
         else
@@ -49,8 +54,6 @@ const MenuTabs = props => {
         selectTab(id);
         setSearchRequest(null);
 
-        localStorage.setItem('select_tab', id);
-
     }
 
     React.useEffect(() => {
@@ -61,7 +64,7 @@ const MenuTabs = props => {
 
     let classNames = ["menu-list-block"];
 
-    if ((select || select === 0) && (selectMenu === "/" || selectMenu.indexOf('requests') >= 0))
+    if ((select || select === 0) && (/*selectMenu === "/requests" || */selectMenu.indexOf('requests') >= 0))
         classNames.push('menu-list-block-active');
 
     return <div className={classNames.join(' ')}>
