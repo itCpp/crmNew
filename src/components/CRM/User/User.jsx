@@ -2,8 +2,12 @@ import React from "react";
 import { useSelector } from "react-redux";
 import axios from "./../../../utils/axios-header";
 import { Message, Loader, Grid, Header } from "semantic-ui-react";
+import { Segment } from "../UI";
 import Chart from "./ChartData";
 import Rating from "./Rating";
+import Alerts from "./Alerts/index";
+
+import "./mydata.css";
 
 const User = props => {
 
@@ -48,10 +52,11 @@ const User = props => {
 
                 {data.rating && <Rating data={data.rating} />}
 
+                {data.alerts && <Alerts data={data.alerts} />}
+
                 <Grid.Row columns={2}>
                     <Grid.Column>
-                        <div className="block-card mb-3 px-3">
-                            <Header as="h5">Количество приходов</Header>
+                        <Segment header={{ as: "h5", content: "Количество приходов", subheader: "Приходы за последние дни" }}>
                             {data.charts?.comings && data.charts.comings.length > 0
                                 ? <Chart
                                     data={data.charts.comings}
@@ -63,11 +68,10 @@ const User = props => {
                                     text="Данных о Ваших приходах нет"
                                 />
                             }
-                        </div>
+                        </Segment>
                     </Grid.Column>
                     <Grid.Column>
-                        <div className="block-card mb-3 px-3">
-                            <Header as="h5">Количество выданных заявок</Header>
+                        <Segment header={{ as: "h5", content: "Количество выданных заявок", subheader: "Общее количество выданных заявок за каждый день" }}>
                             {data.charts?.requests && data.charts.requests.length > 0
                                 ? <Chart
                                     data={data.charts.requests}
@@ -80,12 +84,10 @@ const User = props => {
                                     text="Заявки еще не выдавались"
                                 />
                             }
-                        </div>
+                        </Segment>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-
-
 
         </>}
 
