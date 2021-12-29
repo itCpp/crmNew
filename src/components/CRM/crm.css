@@ -131,3 +131,9 @@
     width: 100%;
     max-width: 666px;
 }
+
+.pre-data {
+    margin: .25rem 0 0;
+    font-size: 120%;
+    line-height: 120%;
+}

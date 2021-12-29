@@ -11,6 +11,7 @@ const User = props => {
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
     const [data, setData] = React.useState({});
+    const height = 150;
 
     React.useEffect(() => {
 
@@ -51,13 +52,34 @@ const User = props => {
                     <Grid.Column>
                         <div className="block-card mb-3 px-3">
                             <Header as="h5">Количество приходов</Header>
-                            <Chart data={data.charts?.comings} title="Приходы" />
+                            {data.charts?.comings && data.charts.comings.length > 0
+                                ? <Chart
+                                    data={data.charts.comings}
+                                    title="Приходы"
+                                    height={height}
+                                />
+                                : <EmptyChart
+                                    height={height}
+                                    text="Данных о Ваших приходах нет"
+                                />
+                            }
                         </div>
                     </Grid.Column>
                     <Grid.Column>
                         <div className="block-card mb-3 px-3">
                             <Header as="h5">Количество выданных заявок</Header>
-                            <Chart data={data.charts?.requests} title="Заявки" color="#fc0" />
+                            {data.charts?.requests && data.charts.requests.length > 0
+                                ? <Chart
+                                    data={data.charts.requests}
+                                    title="Заявки"
+                                    color="#fc0"
+                                    height={height}
+                                />
+                                : <EmptyChart
+                                    height={height}
+                                    text="Заявки еще не выдавались"
+                                />
+                            }
                         </div>
                     </Grid.Column>
                 </Grid.Row>
@@ -68,6 +90,17 @@ const User = props => {
         </>}
 
     </div>
+}
+
+const EmptyChart = ({ text, height }) => {
+    return <div
+        className="d-flex justify-content-center align-items-center"
+        style={{
+            height: height || 200,
+            opacity: 0.5,
+        }}
+        children={text || "Данных нет"}
+    />
 }
 
 export default User;

@@ -12,7 +12,7 @@ const Rating = ({ data }) => {
                 </div>
                 <div className="w-100">
                     <div><strong>Заявки</strong></div>
-                    <pre className="m-0">{data.requestsAll || 0}/{data.requests || 0}</pre>
+                    <pre className="pre-data" title="Всего / Московские">{data.requestsAll || 0}/{data.requests || 0}</pre>
                 </div>
             </Segment>
         </Grid.Column>
@@ -23,7 +23,7 @@ const Rating = ({ data }) => {
                 </div>
                 <div className="w-100">
                     <div><strong>Приходы</strong></div>
-                    <pre className="m-0">{data.comings || 0}</pre>
+                    <pre className="pre-data">{data.comings || 0}</pre>
                 </div>
             </Segment>
         </Grid.Column>
@@ -34,7 +34,7 @@ const Rating = ({ data }) => {
                 </div>
                 <div className="w-100">
                     <div><strong>Место</strong></div>
-                    <pre className="m-0">{data.position || 0}</pre>
+                    <pre className="pre-data">{data.position || 0}</pre>
                 </div>
             </Segment>
         </Grid.Column>
@@ -45,7 +45,7 @@ const Rating = ({ data }) => {
                 </div>
                 <div className="w-100">
                     <div><strong>КПД</strong></div>
-                    <pre className="m-0">{data.kpd || 0}%</pre>
+                    <pre className="pre-data">{data.kpd || 0}%</pre>
                 </div>
             </Segment>
         </Grid.Column>
@@ -56,7 +56,7 @@ const Rating = ({ data }) => {
                 </div>
                 <div className="w-100">
                     <div><strong>К выплате</strong></div>
-                    <pre className="m-0">{data.itogo || 0}</pre>
+                    <pre className="pre-data">{data.itogo || 0}</pre>
                 </div>
             </Segment>
         </Grid.Column>

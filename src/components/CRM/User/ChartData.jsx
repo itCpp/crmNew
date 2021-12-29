@@ -2,7 +2,7 @@ import React from "react";
 import { Area } from '@antv/g2plot';
 import moment from "moment";
 
-const Chart = ({ data, title, color }) => {
+const Chart = ({ data, title, color, height }) => {
 
     const div = React.useRef();
     const plot = React.useRef();
@@ -31,7 +31,7 @@ const Chart = ({ data, title, color }) => {
                     };
                 },
             },
-            height: 300,
+            height: height || 200,
             color: color || '#a8ddb5',
         });
 
