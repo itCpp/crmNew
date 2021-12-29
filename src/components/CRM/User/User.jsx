@@ -1,7 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import axios from "./../../../utils/axios-header";
-import { Message, Loader } from "semantic-ui-react";
+import { Message, Loader, Grid, Header } from "semantic-ui-react";
+import Chart from "./ChartData";
+import Rating from "./Rating";
 
 const User = props => {
 
@@ -39,8 +41,31 @@ const User = props => {
 
         {!loading && error && <Message content={error} error style={{ maxWidth: 600 }} />}
 
-        {!loading && !error && <div className="block-card mb-3 px-2">
-        </div>}
+        {!loading && !error && <>
+
+            <Grid>
+
+                {data.rating && <Rating data={data.rating} />}
+
+                <Grid.Row columns={2}>
+                    <Grid.Column>
+                        <div className="block-card mb-3 px-3">
+                            <Header as="h5">Количество приходов</Header>
+                            <Chart data={data.charts?.comings} title="Приходы" />
+                        </div>
+                    </Grid.Column>
+                    <Grid.Column>
+                        <div className="block-card mb-3 px-3">
+                            <Header as="h5">Количество выданных заявок</Header>
+                            <Chart data={data.charts?.requests} title="Заявки" color="#fc0" />
+                        </div>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+
+
+
+        </>}
 
     </div>
 }

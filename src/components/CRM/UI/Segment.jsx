@@ -1,14 +1,15 @@
 import { Header, Loader } from "semantic-ui-react";
+import './ui.css';
 
 export default (props => {
 
     const { loading } = props;
     const { header, className } = props;
 
-    let classNames = ["block-card"];
+    let classNames = ["segmend-card"];
     className && classNames.push(className);
 
-    return <div className={classNames.join(' ')}>
+    return <div className={classNames.join(' ')} style={{ ...(props.style || {}) }}>
 
         {typeof header == "object" && <Header {...header} />}
 

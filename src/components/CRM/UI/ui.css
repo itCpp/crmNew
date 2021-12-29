@@ -1,0 +1,11 @@
+.segmend-card {
+    position: relative;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    border: none;
+    box-shadow: 0 0 35px 0 rgb(154 161 171 / 15%);
+}
