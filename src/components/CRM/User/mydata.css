@@ -1,3 +1,15 @@
 .segment-list-row {
     cursor: pointer;
 }
+
+.notifications .comment {
+    padding-top: .25rem !important;
+}
+.notifications .comment .text {
+    padding-bottom: .25rem;
+}
+.notifications .comment:hover {
+    cursor: pointer;
+    border-radius: .25rem;
+    background: #ededed;
+}

@@ -5,11 +5,15 @@ export default (props => {
 
     const { loading } = props;
     const { header, className } = props;
+    const style = props.style || {};
 
     let classNames = ["segmend-card"];
     className && classNames.push(className);
 
-    return <div className={classNames.join(' ')} style={{ ...(props.style || {}) }}>
+    if (props.height)
+        style.height = props.height;
+
+    return <div className={classNames.join(' ')} style={style}>
 
         {typeof header == "object" && <Header {...header} />}
 
