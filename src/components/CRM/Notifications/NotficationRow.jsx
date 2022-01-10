@@ -6,7 +6,7 @@ export const NotificationIcon = ({ type }) => {
 
     if (type === "fine") name = "ruble";
 
-    return <div className="avatar text-center">
+    return <div className="avatar text-center ml-2">
         <Icon name={name} size="big" fitted disabled />
     </div>
 

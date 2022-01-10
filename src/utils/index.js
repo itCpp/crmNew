@@ -1,4 +1,9 @@
 import _ from 'lodash'
+import axios from "./axios-header";
+
+export {
+    axios
+};
 
 export const replaceJSX = (str, find, replace) => {
 

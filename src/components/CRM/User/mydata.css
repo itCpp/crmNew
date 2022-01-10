@@ -13,3 +13,21 @@
     border-radius: .25rem;
     background: #ededed;
 }
+
+.tape-time-laps {
+    position: relative;
+    width: 100%;
+    height: 15px;
+    border-radius: .25rem;
+    background-color: #f3f3f3;
+    overflow: hidden;
+}
+
+.tape-time-laps canvas {
+    position: absolute;
+    max-width: 100%;
+}
+
+.worktimes-tapes > *:not(:last-child) {
+    margin-bottom: 1.3rem;
+}

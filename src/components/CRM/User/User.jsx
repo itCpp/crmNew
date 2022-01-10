@@ -6,6 +6,7 @@ import { Segment } from "../UI";
 import Chart from "./ChartData";
 import Rating from "./Rating";
 import Alerts from "./Alerts/index";
+import TapeTimes from "./TapeTimes/TapeTimes";
 
 import "./mydata.css";
 
@@ -52,24 +53,18 @@ const User = props => {
 
                 {data.rating && <Rating data={data.rating} />}
 
+                {data.worktime && <Grid.Row>
+                    <Grid.Column>
+                        <Segment className="worktimes-tapes">
+                            <TapeTimes data={data.worktime} title="Шкала занятости" />
+                            <TapeTimes data={data.calls} title="Звонки" />
+                        </Segment>
+                    </Grid.Column>
+                </Grid.Row>}
+
                 {data.alerts && <Alerts data={data.alerts} />}
 
                 <Grid.Row columns={2}>
-                    <Grid.Column>
-                        <Segment header={{ as: "h5", content: "Количество приходов", subheader: "Приходы за последние дни" }}>
-                            {data.charts?.comings && data.charts.comings.length > 0
-                                ? <Chart
-                                    data={data.charts.comings}
-                                    title="Приходы"
-                                    height={height}
-                                />
-                                : <EmptyChart
-                                    height={height}
-                                    text="Данных о Ваших приходах нет"
-                                />
-                            }
-                        </Segment>
-                    </Grid.Column>
                     <Grid.Column>
                         <Segment header={{ as: "h5", content: "Количество выданных заявок", subheader: "Общее количество выданных заявок за каждый день" }}>
                             {data.charts?.requests && data.charts.requests.length > 0
@@ -86,6 +81,21 @@ const User = props => {
                             }
                         </Segment>
                     </Grid.Column>
+                    <Grid.Column>
+                        <Segment header={{ as: "h5", content: "Количество приходов", subheader: "Приходы за последние дни" }}>
+                            {data.charts?.comings && data.charts.comings.length > 0
+                                ? <Chart
+                                    data={data.charts.comings}
+                                    title="Приходы"
+                                    height={height}
+                                />
+                                : <EmptyChart
+                                    height={height}
+                                    text="Данных о Ваших приходах нет"
+                                />
+                            }
+                        </Segment>
+                    </Grid.Column>
                 </Grid.Row>
             </Grid>
 
@@ -94,12 +104,14 @@ const User = props => {
     </div>
 }
 
-const EmptyChart = ({ text, height }) => {
+export const EmptyChart = ({ text, height }) => {
     return <div
         className="d-flex justify-content-center align-items-center"
         style={{
             height: height || 200,
             opacity: 0.5,
+            fontSize: "80%",
+            lineHeight: "80%",
         }}
         children={text || "Данных нет"}
     />

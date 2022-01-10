@@ -3,6 +3,7 @@ import { Icon } from "semantic-ui-react";
 import moment from "moment";
 import { withRouter } from "react-router-dom";
 import QueryTypeIcon from "./../../Requests/RequestsDataTableCells/Elements/QueryTypeIcon";
+import { EmptyChart } from "./../User";
 
 const RequestRow = withRouter(props => {
 
@@ -49,6 +50,11 @@ export default (({ requests, height }) => {
         <div className="segmet-list">
             {requests && requests.map((row, i) => <RequestRow key={`${row.id}_new_${i}`} row={row} />)}
         </div>
+
+        {!requests || (requests && requests.length === 0) && <EmptyChart
+            height="100%"
+            text="Вам ещё не поручали заявок"
+        />}
 
     </Segment>;
 

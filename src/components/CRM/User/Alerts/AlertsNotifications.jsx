@@ -2,6 +2,7 @@ import { Segment } from "../../UI";
 import moment from "moment";
 import { Comment, Label } from "semantic-ui-react";
 import { NotificationIcon } from "./../../Notifications/NotficationRow";
+import { EmptyChart } from "./../User";
 
 export default (({ notifications, height }) => {
 
@@ -30,9 +31,10 @@ export default (({ notifications, height }) => {
             </Comment>)}
         </Comment.Group>}
 
-        {count === 0 && <div className="h-100 d-flex justify-content-center align-items-center">
-            <small>Уведомлений еще нет</small>
-        </div>}
+        {count === 0 && <EmptyChart
+            height="100%"
+            text="Уведомлений еще нет"
+        />}
 
     </Segment>;
 
