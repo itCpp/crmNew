@@ -150,6 +150,10 @@
 }
 
 /** Оформление записи */
+.request-row-theme-0 { background-color: #fafdff; }
+.request-row-theme-0:hover { background-color: #f5f8ff; }
+
+/** Оформление записи */
 .request-row-theme-1 { background-color: #ffff81; }
 .request-row-theme-1:hover { background-color: #ffff4f; }
 
