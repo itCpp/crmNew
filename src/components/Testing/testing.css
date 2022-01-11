@@ -1,0 +1,9 @@
+.testing-segment {
+    padding: 1rem;
+    border-radius: .3rem;
+    background: #ffffff;
+}
+
+.testing-list-answers-item {
+    margin-bottom: .25rem;
+}

@@ -28,6 +28,8 @@ const appUserEvent = data => {
 
 }
 
+export const TESTING_URL = "legallyknowledgetest";
+
 function App(props) {
 
     const { userData, setLogin, setUserData, setUserPermits } = props;
@@ -35,6 +37,13 @@ function App(props) {
     const [globalError, setGlobalError] = React.useState(null);
 
     React.useEffect(async () => {
+
+        if (window.location.pathname.indexOf(TESTING_URL) >= 0) {
+            setLogin(true);
+            setLoading(false);
+
+            return null;
+        }
 
         await connectEcho();
 
@@ -105,7 +114,11 @@ function App(props) {
 
     return <>
         <SemanticToastContainer position="bottom-left" />
-        <Routes {...props} globalError={globalError} />
+        <Routes
+            {...props}
+            globalError={globalError}
+            hidden={window.location.pathname.indexOf(TESTING_URL) >= 0}
+        />
     </>
 
 }

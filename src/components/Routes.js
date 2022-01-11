@@ -1,29 +1,31 @@
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { TESTING_URL } from "./../App";
 
 import Auth from './Auth/Auth';
 import Header from './Header/Header';
 import Crm from './CRM/CRM';
 import Admin from './Admin/AdminMain';
+import Testing from './Testing';
 
 import GlobalError from "./Errors/GlobalError";
 import NotFound from './NotFound';
 
 export default function Routes(props) {
 
-    const { login, globalError } = props;
+    const { login, globalError, hidden } = props;
 
     if (globalError)
         return <GlobalError error={globalError} />
 
-    if (!login)
+    if (!login && !hidden)
         return <Auth />
 
     return <BrowserRouter>
 
         <div className="d-flex flex-column" id="sub-root">
 
-            <Header />
+            {!hidden && <Header />}
 
             <Switch>
 
@@ -46,6 +48,8 @@ export default function Routes(props) {
 
                 <Route path="/gates/:type" component={GatesMain} />
                 <Route path="/gates" component={GatesMain} /> */}
+
+                <Route path={`/${TESTING_URL}`} component={Testing} />
 
                 <Route path="*" component={NotFound} />
 

@@ -1,11 +1,13 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import axios from "./../../utils/axios-header";
 import { Loader, Message } from "semantic-ui-react";
 import "./rating.css";
+import moment from "moment";
 
 import RatingUserRow from "./RatingUserRow";
 
-const Rating = () => {
+const Rating = withRouter(props => {
 
     const [loading, setLoading] = React.useState(true);
     const [load, setLoad] = React.useState(true);
@@ -20,7 +22,7 @@ const Rating = () => {
         clear && setError(null);
 
         axios.post('ratings/callcenter', {
-            start: "2021-11-16",
+            toPeriod: true,
         }).then(({ data }) => {
 
             error && setError(null);
@@ -36,7 +38,7 @@ const Rating = () => {
 
     React.useEffect(() => {
         getData(true);
-    }, []);
+    }, [props.location.key]);
 
     return <div>
 
@@ -56,6 +58,6 @@ const Rating = () => {
 
     </div>
 
-}
+});
 
 export default Rating;
