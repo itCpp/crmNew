@@ -1,6 +1,7 @@
 import React from "react";
 import { axios } from "../../utils";
-import { Header, Segment, Loader, Message } from "semantic-ui-react";
+import { Header, Loader, Message } from "semantic-ui-react";
+import moment from "moment";
 
 import "./testing.css";
 import TestingStart from "./TestingStart";
@@ -62,6 +63,41 @@ const Testing = () => {
             process={process}
             setProcess={setProcess}
         />}
+
+        {!loading && !error && process.done_at && <div className="testing-segment mx-auto" style={{ maxWidth: 400 }}>
+
+            <h5>Результаты тестирования</h5>
+
+            <div className="d-flex justify-content-between mb-1">
+                <span>Дата и время создания</span>
+                <strong>{moment(process.created_at).format("DD.MM.YYYY в HH:mm")}</strong>
+            </div>
+            <div className="d-flex justify-content-between mb-1">
+                <span>Количество вопросов</span>
+                <strong>{process.questions_id.length}</strong>
+            </div>
+            <div className="d-flex justify-content-between mb-1">
+                <span>Дата и время начала</span>
+                <strong>{moment(process.start_at).format("DD.MM.YYYY в HH:mm")}</strong>
+            </div>
+            <div className="d-flex justify-content-between mb-1">
+                <span>Дата и время окончания</span>
+                <strong>{moment(process.done_at).format("DD.MM.YYYY в HH:mm")}</strong>
+            </div>
+            <div className="d-flex justify-content-between mb-1">
+                <span>Время тестирования</span>
+                <strong>--:--</strong>
+            </div>
+            <div className="d-flex justify-content-between mb-1">
+                <span>Правильныйх ответов</span>
+                <strong className="text-success">{process.answer_process?.correct || 0}</strong>
+            </div>
+            <div className="d-flex justify-content-between mb-1">
+                <span>Неправильныйх ответов</span>
+                <strong className="text-danger">{process.answer_process?.incorrect || 0}</strong>
+            </div>
+
+        </div>}
 
     </div>
 

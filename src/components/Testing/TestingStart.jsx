@@ -39,7 +39,7 @@ const TestingStart = props => {
         </div>
         <div className="d-flex justify-content-between mb-1">
             <span>Количество вопросов</span>
-            <strong>20</strong>
+            <strong>{process.questions_id.length}</strong>
         </div>
 
         <Button
