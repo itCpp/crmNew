@@ -1,6 +1,7 @@
 import React from "react";
 import { axios } from "../../utils";
 import { Button } from "semantic-ui-react";
+import moment from "moment";
 
 const TestingStart = props => {
 
@@ -26,13 +27,17 @@ const TestingStart = props => {
 
     return <div className="testing-segment mx-auto" style={{ maxWidth: 400 }}>
 
-        <div className="mb-2">
+        <div className="mb-3">
             <span>Здравствуйте</span>!
             {process?.user?.name && <span>, {process.user.name}<strong></strong></span>}
             <div>Для начала тестирования нажмите кнопку <b className="text-success">Начать</b></div>
         </div>
 
-        <div className="d-flex justify-content-between mb-2">
+        <div className="d-flex justify-content-between mb-1">
+            <span>Дата создания</span>
+            <strong>{moment(process.created_at).format("DD.MM.YYYY в HH:mm")}</strong>
+        </div>
+        <div className="d-flex justify-content-between mb-1">
             <span>Количество вопросов</span>
             <strong>20</strong>
         </div>

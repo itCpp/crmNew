@@ -5,6 +5,7 @@ import { Header, Segment, Loader, Message } from "semantic-ui-react";
 import "./testing.css";
 import TestingStart from "./TestingStart";
 import TestingQuestion from "./TestingQuestion";
+import TestingSteps from "./TestingSteps";
 
 const Testing = () => {
 
@@ -39,6 +40,8 @@ const Testing = () => {
             content="Тестирование"
             className="text-center"
         />
+
+        <TestingSteps process={process} />
 
         {loading && <Loader active inline="centered" />}
 

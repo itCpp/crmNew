@@ -37,6 +37,8 @@ const TestingQuestion = props => {
             question: question.id,
         }).then(({ data }) => {
 
+            setLoading(false);
+
             setAnswers([]);
             setError(null);
 
@@ -44,9 +46,8 @@ const TestingQuestion = props => {
             setQuestion(data.question);
 
         }).catch(e => {
-            setError(axios.getError(e));
-        }).then(() => {
             setLoading(false);
+            setError(axios.getError(e));
         });
 
     }
