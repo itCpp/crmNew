@@ -7,3 +7,22 @@
 .testing-list-answers-item {
     margin-bottom: .25rem;
 }
+
+.bad-answers {
+    background: #ffefef;
+    color: #3d3d3d;
+}
+
+.bad-answers .ui.disabled label {
+    opacity: .7 !important;
+}
+.bad-answers .ui.checked.disabled label,
+.bad-answers .ui.checked.disabled label::after {
+    color: #c41717;
+    font-weight: 600;
+}
+.bad-answers .ui.disabled label::before,
+.bad-answers .ui.checked.disabled label::before {
+    background-color: #ffd9d9;
+    border-color: #ffacac;
+}

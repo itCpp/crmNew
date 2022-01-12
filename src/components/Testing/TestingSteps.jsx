@@ -8,18 +8,18 @@ const TestingSteps = ({ process }) => {
         {process.questions_id && process.questions_id.map(row => {
 
             const props = {};
-            const question = process.answer_process?.questions && process.answer_process.questions[row] || {};
+            const question = process.answer_process?.questions && process.answer_process.questions[row] || null;
 
             if (question)
                 props.color = "blue";
 
-            if (question.bad === true)
+            if (process.done_at && question && question.bad === true)
                 props.color = "red";
-            else if (question.bad === false)
+            else if (process.done_at && question && question.bad === false)
                 props.color = "green";
 
             if (process.answer_process?.question === row)
-                props.color = "violet";
+                props.color = "green";
 
             return <Label
                 key={row}
