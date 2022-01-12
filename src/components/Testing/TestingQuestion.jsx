@@ -103,7 +103,7 @@ export const TestingQuestionRow = props => {
 
         {!result && <div className="text-right mt-5">
             <Button
-                content="Дальше"
+                content="Продолжить"
                 onClick={nextQuestion}
                 disabled={(answers || []).length === 0 || loading}
                 loading={loading}

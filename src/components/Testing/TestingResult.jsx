@@ -10,7 +10,8 @@ const TestingResult = props => {
 
         <div className="testing-segment mx-auto" style={{ maxWidth: 400 }}>
 
-            <h5>Результаты тестирования</h5>
+            {process.name && <h4 className="mb-0">{process.name}</h4>}
+            <div className="mb-3"><strong>Результаты тестирования</strong></div>
 
             <div className="d-flex justify-content-between mb-1">
                 <span>Дата и время создания</span>
@@ -33,11 +34,11 @@ const TestingResult = props => {
                 <strong>{secToDate(moment(process.done_at).diff(moment(process.start_at), "seconds"))}</strong>
             </div>
             <div className="d-flex justify-content-between mb-1">
-                <span>Правильныйх ответов</span>
+                <span>Правильных ответов</span>
                 <strong className="text-success">{process.answer_process?.correct || 0}</strong>
             </div>
             <div className="d-flex justify-content-between mb-1">
-                <span>Неправильныйх ответов</span>
+                <span>Неправильных ответов</span>
                 <strong className="text-danger">{process.answer_process?.incorrect || 0}</strong>
             </div>
 
