@@ -36,6 +36,8 @@ function User(props) {
     const [callcenter, setCallcenter] = React.useState(null);
     const [sectors, setSectors] = React.useState([]);
     const [sector, setSector] = React.useState(null);
+    const [positions, setPositions] = React.useState([]);
+    const [position, setPosition] = React.useState(null);
 
     const changeValue = (name, value) => {
 
@@ -112,13 +114,24 @@ function User(props) {
                 },
             })));
 
+            setPositions([{ id: null, name: "Нет должности" }, ...data.positions].map(row => ({
+                key: row.id,
+                text: row.name,
+                value: row.id,
+                onClick: () => {
+                    setPosition(row.id);
+                },
+            })))
+
             let callcenter_id = data.callcenter || null,
-                callcenter_sector_id = data.callcenter_sector_id || null;
+                callcenter_sector_id = data.callcenter_sector_id || null,
+                position_id = data.position || null;
 
             if (data.user) {
                 callcenter_id = data.user.callcenter_id;
                 callcenter_sector_id = callcenter_id ? data.user.callcenter_sector_id : null;
                 setPassword(true);
+                position_id = data.user.position_id;
             }
 
             if (callcenter_id) {
@@ -131,6 +144,7 @@ function User(props) {
 
             setCallcenter(callcenter_id);
             setSector(callcenter_sector_id);
+            setPosition(position_id);
 
             setFormdata(data.user
                 ? { ...data.user }
@@ -162,6 +176,7 @@ function User(props) {
                 pin: pin,
                 callcenter_id: callcenter,
                 callcenter_sector_id: sector,
+                position_id: position,
             };
 
             axios.post('admin/saveUser', request).then(({ data }) => {
@@ -264,6 +279,15 @@ function User(props) {
                         name="callcenter_sector_id"
                         disabled={errorInput === "callcenter_id" ? true : false || callcenter === null ? true : false}
                         error={errors.callcenter_sector_id || false}
+                    />
+                    <Form.Select
+                        fluid
+                        label="Должность"
+                        options={positions}
+                        placeholder="Укажите должность"
+                        value={position}
+                        name="position_id"
+                        error={errors.position_id || false}
                     />
                 </Form.Group>
 
