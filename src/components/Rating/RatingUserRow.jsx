@@ -1,7 +1,10 @@
 import React from "react";
-import { Header, Grid, Statistic, Popup } from "semantic-ui-react";
+import { Header, Grid, Icon, Popup } from "semantic-ui-react";
+import moment from "moment";
 
 const RatingUserRow = props => {
+
+    const [show, setShow] = React.useState(false);
 
     const { row } = props;
     const className = ['rating-callcenter-row'];
@@ -11,17 +14,21 @@ const RatingUserRow = props => {
 
     return <div className={className.join(' ')}>
 
-        <Header
-            as="h4"
-            content={row.name}
-            subheader={<div className="sub header">
-                <span>{row.pin}</span>
-                {row.pinOld && <span className="opacity-70 ml-2">({row.pinOld})</span>}
-                {row.sector && <b className="ml-2">{row.sector.name}</b>}
-            </div>}
-        />
+        <div className="d-flex justify-content-between align-items-center mb-4">
+            <Header
+                as="h4"
+                className="m-0"
+                content={row.name}
+                subheader={<div className="sub header">
+                    <span>{row.pin}</span>
+                    {row.pinOld && <span className="opacity-70 ml-2">({row.pinOld})</span>}
+                    {row.sector && <b className="ml-2">{row.sector.name}</b>}
+                </div>}
+            />
+            {row.salary > 0 && <Header as="h1" className="m-0 opacity-80" content={row.salary} />}
+        </div>
 
-        <Grid columns="equal">
+        <Grid columns="equal" className="position-relative">
 
             <Grid.Row>
 
@@ -110,7 +117,7 @@ const RatingUserRow = props => {
                             <Popup
                                 content="Бонусы начисляются по усмотрению руководства"
                                 trigger={<span>
-                                    <b>{row.bonuses || 0}<span className="text-danger">*</span></b> руб
+                                    <b>{row.bonuses || 0}</b> руб<b className="text-danger">*</b>
                                 </span>}
                                 position="top center"
                                 size="mini"
@@ -118,14 +125,45 @@ const RatingUserRow = props => {
                         </div>
                         <div>
                             <span>К выдаче</span>
-                            <span><b>{row.result || 0}</b> руб</span>
+                            <span><b>{row.salary || 0}</b> руб</span>
                         </div>
                     </div>
                 </Grid.Column>
 
             </Grid.Row>
 
+            {row.dates && row.dates.length > 0 && <div className={show ? `rating-show-dates showing` : `rating-show-dates`} title="Посмотреть подробные данные за отдельный день">
+                <Icon name="chevron down" fitted onClick={() => setShow(show => !show)} />
+            </div>}
+
         </Grid>
+
+        {show && <Grid
+            className="mt-3 mb-2 px-3 rating-dates"
+            columns="equal"
+            divided="vertically"
+            textAlign="center"
+        >
+
+            <Grid.Row>
+                <Grid.Column><strong>Дата</strong></Grid.Column>
+                <Grid.Column><strong>Заявки</strong></Grid.Column>
+                <Grid.Column><strong>Москва</strong></Grid.Column>
+                <Grid.Column><strong>Приходы</strong></Grid.Column>
+                <Grid.Column><strong>Бонус приходов</strong></Grid.Column>
+                <Grid.Column><strong>Касса</strong></Grid.Column>
+            </Grid.Row>
+
+            {row.dates.map(day => <Grid.Row key={`${row.pin}-${day.timestamp}`}>
+                <Grid.Column><strong>{moment(day.date).format("DD.MM.YYYY")}</strong></Grid.Column>
+                <Grid.Column>{day.requestsAll}</Grid.Column>
+                <Grid.Column>{day.requests}</Grid.Column>
+                <Grid.Column>{day.comings}</Grid.Column>
+                <Grid.Column>{day.bonus_comings}</Grid.Column>
+                <Grid.Column>{day.cahsbox}</Grid.Column>
+            </Grid.Row>)}
+
+        </Grid>}
 
     </div>
 

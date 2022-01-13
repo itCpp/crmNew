@@ -4,11 +4,13 @@
 }
 
 .rating-callcenter-row {
+    position: relative;
     padding: 1rem 1.5rem;
     border: 1px solid var(--rating-border);
     border-radius: .5rem;
     background: var(--rating-background);
     color: black;
+    transition: .3s;
 }
 
 .rating-row-color-blue {
@@ -32,13 +34,18 @@
     color: #5a1d1d;
 }
 .rating-row-color-gray {
+    background: #c5c5c5;
     border-color: #d8d8d8;
-    background-color: #c5c5c5;
     color: #6f6f6f;
 }
 
 .rating-callcenter-row:not(:last-child) {
     margin-bottom: 1rem;
+}
+
+.rating-callcenter-row .ui.header,
+.rating-callcenter-row .sub.header {
+    color: inherit !important;
 }
 
 .rating-info-rows > * {
@@ -47,4 +54,28 @@
 }
 .rating-info-rows > * > *:not(:last-child) {
     margin-right: .7rem;
+}
+
+.rating-show-dates {
+    position: absolute;
+    right: -0.9rem;
+    bottom: .1rem;
+    opacity: .6;
+    cursor: pointer;
+    transition: .3s;
+    z-index: 10;
+}
+.rating-show-dates:hover {
+    opacity: 1;
+}
+
+.rating-show-dates.showing {
+    transform: rotate(540deg);
+}
+
+.rating-dates .row {
+    padding: .5rem 0 !important;
+}
+.rating-dates .column {
+    margin: 0 !important;
 }
