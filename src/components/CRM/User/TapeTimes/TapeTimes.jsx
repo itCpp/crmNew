@@ -92,10 +92,10 @@ export const TapeTimes = props => {
             <canvas ref={canvas} />
         </div>
 
-        <div className="d-flex justify-content-between opacity-50">
+        {data.rows && data.rows.length > 0 && <div className="d-flex justify-content-between opacity-50">
             <small>{data.start && moment(data.start).format("HH:mm")}</small>
             <small>{data.stop && moment(data.stop).format("HH:mm")}</small>
-        </div>
+        </div>}
 
     </div>
 

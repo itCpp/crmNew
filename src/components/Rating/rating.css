@@ -1,17 +1,50 @@
+#rating {
+    --rating-background: #ffffff;
+    --rating-border: #f1f3ff;
+}
+
 .rating-callcenter-row {
-    padding: .5rem 1rem 1rem;
-    border: 1px solid #dbdbdb;
+    padding: 1rem 1.5rem;
+    border: 1px solid var(--rating-border);
     border-radius: .5rem;
-    background-color: #ffffff;
+    background: var(--rating-background);
     color: black;
+}
+
+.rating-row-color-blue {
+    background: #dbd9ff;
+    border-color: #c9c6ff;
+    color: #2e2a82;
+}
+.rating-row-color-green {
+    background: #b4ffb4;
+    border-color: #a3ffa3;
+    color: #2b542b;
+}
+.rating-row-color-yellow {
+    background: #ffffb8;
+    border-color: #ffff8a;
+    color: #5f5f1a;
+}
+.rating-row-color-red {
+    background: #ffcfcf;
+    border-color: #fcc;
+    color: #5a1d1d;
+}
+.rating-row-color-gray {
+    border-color: #d8d8d8;
+    background-color: #c5c5c5;
+    color: #6f6f6f;
 }
 
 .rating-callcenter-row:not(:last-child) {
     margin-bottom: 1rem;
 }
 
-.header-rating {
-    margin-bottom: 1rem;
-    font-size: 120%;
-    line-height: 120%;
+.rating-info-rows > * {
+    display: flex;
+    align-items: center;
+}
+.rating-info-rows > * > *:not(:last-child) {
+    margin-right: .7rem;
 }

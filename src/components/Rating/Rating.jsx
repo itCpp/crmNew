@@ -40,7 +40,7 @@ const Rating = withRouter(props => {
         getData(true);
     }, [props.location.key]);
 
-    return <div>
+    return <div id="rating">
 
         {loading && <Loader inline="centered" active />}
 
