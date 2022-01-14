@@ -60,6 +60,10 @@ const RatingUserRow = props => {
                             <span>Приходов в день</span>
                             <b>{row.comings_in_day}</b>
                         </div>
+                        <div>
+                            <span>За приход</span>
+                            <span><b>{row.coming_one_pay}</b> руб</span>
+                        </div>
                     </div>
                 </Grid.Column>
 
@@ -68,10 +72,6 @@ const RatingUserRow = props => {
                         <div>
                             <span>КПД</span>
                             <span><b>{row.efficiency.toFixed(2)}</b>%</span>
-                        </div>
-                        <div>
-                            <span>Плата за приход</span>
-                            <span><b>{row.coming_one_pay}</b> руб</span>
                         </div>
                         <div>
                             <span>Нагрузка</span>
@@ -91,7 +91,7 @@ const RatingUserRow = props => {
                             <span><b>{row.comings_sum}</b> руб</span>
                         </div>
                         <div>
-                            <span>Бонус за приходы</span>
+                            <span>Бонус приходов</span>
                             <span><b>{row.bonus_comings}</b> руб</span>
                         </div>
                         <div>
@@ -109,6 +109,58 @@ const RatingUserRow = props => {
                     </div>
                 </Grid.Column>
 
+                {row.admin && <Grid.Column>
+                    <div className="rating-info-rows">
+                        <div><b>Сектор{row.sector && ` ${row.sector.name}`}</b></div>
+                        <div>
+                            <span>Заявки</span>
+                            <span><b>{row.admin.requestsAll || 0}</b></span>
+                        </div>
+                        <div>
+                            <span>Москва</span>
+                            <span><b>{row.admin.requests || 0}</b></span>
+                        </div>
+                        <div>
+                            <span>Приходы</span>
+                            <span><b>{row.admin.comings || 0}</b></span>
+                        </div>
+                        <div>
+                            <span>КПД</span>
+                            <span><b>{(row.admin.efficiency || 0).toFixed(2)}</b>%</span>
+                        </div>
+                        <div>
+                            <span>За приход</span>
+                            <span><b>{row.admin_coming_one_pay || 0}</b> руб</span>
+                        </div>
+                    </div>
+                </Grid.Column>}
+
+                {row.chief && <Grid.Column>
+                    <div className="rating-info-rows">
+                        <div><b>Колл-центр</b></div>
+                        <div>
+                            <span>Заявки</span>
+                            <span><b>{row.chief.requestsAll || 0}</b></span>
+                        </div>
+                        <div>
+                            <span>Москва</span>
+                            <span><b>{row.chief.requests || 0}</b></span>
+                        </div>
+                        <div>
+                            <span>Приходы</span>
+                            <span><b>{row.chief.comings || 0}</b></span>
+                        </div>
+                        <div>
+                            <span>КПД</span>
+                            <span><b>{(row.chief.efficiency || 0).toFixed(2)}</b>%</span>
+                        </div>
+                        <div>
+                            <span>За приход</span>
+                            <span><b>{row.chief_coming_one_pay || 0}</b> руб</span>
+                        </div>
+                    </div>
+                </Grid.Column>}
+
                 <Grid.Column>
                     <div className="rating-info-rows">
                         <div><b>Начислено</b></div>
@@ -123,6 +175,14 @@ const RatingUserRow = props => {
                                 size="mini"
                             />
                         </div>
+                        {typeof row.admin_bonus != "undefined" && <div>
+                            <span>Премия</span>
+                            <span><b>{row.admin_bonus || 0}</b> руб</span>
+                        </div>}
+                        {typeof row.chief_bonus != "undefined" && <div>
+                            <span>Премия</span>
+                            <span><b>{row.chief_bonus || 0}</b> руб</span>
+                        </div>}
                         <div>
                             <span>К выдаче</span>
                             <span><b>{row.salary || 0}</b> руб</span>

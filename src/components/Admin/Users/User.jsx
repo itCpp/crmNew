@@ -121,7 +121,7 @@ function User(props) {
                 onClick: () => {
                     setPosition(row.id);
                 },
-            })))
+            })));
 
             let callcenter_id = data.callcenter || null,
                 callcenter_sector_id = data.callcenter_sector_id || null,
