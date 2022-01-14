@@ -3,8 +3,8 @@ import { withRouter } from "react-router-dom";
 import axios from "./../../utils/axios-header";
 import { Loader, Message } from "semantic-ui-react";
 import "./rating.css";
-import moment from "moment";
 
+import CrmStat from "./CrmStat";
 import RatingUserRow from "./RatingUserRow";
 
 const Rating = withRouter(props => {
@@ -14,6 +14,7 @@ const Rating = withRouter(props => {
     const [error, setError] = React.useState(null);
 
     const [users, setUsers] = React.useState([]);
+    const [crmStat, setCrmStat] = React.useState(null);
 
     const getData = (clear = false) => {
 
@@ -27,6 +28,7 @@ const Rating = withRouter(props => {
 
             error && setError(null);
             setUsers(data.users);
+            data.crm && setCrmStat(data.crm);
 
         }).catch(e => {
             setError(axios.getError(e));
@@ -53,6 +55,8 @@ const Rating = withRouter(props => {
         </div>}
 
         {!loading && error && <Message error content={error} />}
+
+        {!loading && crmStat && <CrmStat data={crmStat} />}
 
         {!loading && users.map(row => <RatingUserRow key={row.pin} row={row} />)}
 

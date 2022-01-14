@@ -9,7 +9,7 @@
     border: 1px solid var(--rating-border);
     border-radius: .5rem;
     background: var(--rating-background);
-    color: black;
+    color: #313131;
     transition: .3s;
 }
 
