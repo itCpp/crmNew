@@ -6,6 +6,12 @@ const CrmStat = props => {
     const { data } = props;
 
     return <div className="rating-callcenter-row pt-4">
+
+        <Header
+            as="h5"
+            content="Общая статистика"
+        />
+
         <Grid centered columns="equal">
 
             <Grid.Column textAlign="center">
@@ -34,6 +40,7 @@ const CrmStat = props => {
             </Grid.Column>
 
         </Grid>
+
     </div>
 }
 

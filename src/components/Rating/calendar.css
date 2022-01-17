@@ -1,0 +1,51 @@
+.calendar-content {
+    padding: 0 0.25rem 0.5rem !important;
+    text-align: center;
+    width: 300px;
+}
+
+.calendar-content .row:first-child {
+    padding-bottom: 0.25rem !important;
+}
+.calendar-content .row:last-child {
+    padding-top: 0.25rem !important;
+}
+
+
+.calendar-content .row .column:first-child {
+    padding-right: 0.25rem !important;
+}
+.calendar-content .row .column:last-child {
+    padding-left: 0.25rem !important;
+}
+
+.calendar-cell {
+    padding: .25rem;
+    margin: .1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: .25rem;
+}
+.calendar-cell-active {
+    background: #e8e8ff;
+}
+.calendar-cell:not(.calendar-cell-empty):hover {
+    cursor: pointer;
+    background: #dadaff;
+}
+
+.calendar-cell-holyday {
+    color: #dc143c;
+}
+
+.period-row {
+    display: flex;
+    flex-direction: column;
+    font-family: monospace;
+}
+.week-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

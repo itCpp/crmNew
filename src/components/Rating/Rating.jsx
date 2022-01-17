@@ -6,12 +6,16 @@ import "./rating.css";
 
 import CrmStat from "./CrmStat";
 import RatingUserRow from "./RatingUserRow";
+import RatingHeader from "./RatingHeader";
 
 const Rating = withRouter(props => {
 
     const [loading, setLoading] = React.useState(true);
     const [load, setLoad] = React.useState(true);
     const [error, setError] = React.useState(null);
+
+    const [period, setPeriod] = React.useState({ toPeriod: true });
+    const [dates, setDates] = React.useState({});
 
     const [users, setUsers] = React.useState([]);
     const [crmStat, setCrmStat] = React.useState(null);
@@ -23,12 +27,15 @@ const Rating = withRouter(props => {
         clear && setError(null);
 
         axios.post('ratings/callcenter', {
-            toPeriod: true,
+            toPeriod: period && period.toPeriod,
+            start: period && period.start || null,
+            stop: period && period.stop || null,
         }).then(({ data }) => {
 
             error && setError(null);
             setUsers(data.users);
             data.crm && setCrmStat(data.crm);
+            setDates(data.dates);
 
         }).catch(e => {
             setError(axios.getError(e));
@@ -43,6 +50,13 @@ const Rating = withRouter(props => {
     }, [props.location.key]);
 
     return <div id="rating">
+
+        <RatingHeader
+            loading={loading}
+            period={period}
+            setPeriod={setPeriod}
+            dates={dates}
+        />
 
         {loading && <Loader inline="centered" active />}
 
