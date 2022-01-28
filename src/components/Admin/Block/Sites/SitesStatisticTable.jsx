@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { withRouter } from "react-router-dom";
-import { Loader, Message, Table, Icon } from "semantic-ui-react";
+import { Loader, Message, Table, Icon, Header, Dimmer } from "semantic-ui-react";
 import { axios } from "../../../../utils";
 import AdminContentSegment from "../../UI/AdminContentSegment";
 import { setBlockIp } from "../Block";
@@ -16,9 +16,11 @@ const SitesStatisticTable = props => {
     const [load, setLoad] = useState(null);
     const [error, setError] = useState(null);
     const [rows, setRows] = useState([]);
-    const [chart, setChart] = useState([]);
     const [top, setTop] = useState(0);
     const [sort, setSort] = useState({});
+
+    const [loadChart, setLoadChart] = useState(false);
+    const [chart, setChart] = useState([]);
 
     const startSort = column => {
 
@@ -41,6 +43,8 @@ const SitesStatisticTable = props => {
         if (site) {
 
             setLoading(true);
+            setLoadChart(true);
+            setChart([]);
 
             const header = document.getElementById('header-menu');
             setTop(header?.offsetHeight || 0);
@@ -49,7 +53,6 @@ const SitesStatisticTable = props => {
 
                 setSort({});
                 setRows(data.rows);
-                setChart(data.chart);
                 setError(null);
 
                 let column = searchParams.get('column');
@@ -65,6 +68,14 @@ const SitesStatisticTable = props => {
 
                     setSort({ column, direction });
                 }
+
+                axios.post('dev/block/getChartSite', { site: site }).then(({ data }) => {
+                    setChart(data.chart || []);
+                }).catch(e => {
+                    axios.toast("Ошибка загрузки графика");
+                }).then(() => {
+                    setLoadChart(false);
+                });
 
             }).catch(e => {
                 setError(axios.getError(e));
@@ -138,9 +149,11 @@ const SitesStatisticTable = props => {
             className="mx-auto"
         />}
 
-        <AdminContentSegment>
+        {site && <AdminContentSegment>
+            <Header as="h5" content="График посещений" />
             <Lines data={chart} />
-        </AdminContentSegment>
+            {loadChart && <Dimmer active inverted><Loader /></Dimmer>}
+        </AdminContentSegment>}
 
         {site && <Table compact celled sortable className="blocks-table mb-4">
 
@@ -315,22 +328,29 @@ export const Lines = ({ data }) => {
 
     useEffect(() => {
 
-        plot.current = new Line(div.current, {
-            data,
-            isGroup: true,
-            xField: 'date',
-            yField: 'value',
-            seriesField: 'name',
-            xAxis: {
-                label: {
-                    formatter: date => moment(date).format("DD.MM.YY"),
+        if (!plot.current) {
+
+            plot.current = new Line(div.current, {
+                data,
+                isGroup: true,
+                xField: 'date',
+                yField: 'value',
+                seriesField: 'name',
+                xAxis: {
+                    label: {
+                        formatter: date => moment(date).format("DD.MM.YY"),
+                    }
                 }
-            }
-        });
+            });
 
-        plot.current.render();
+            plot.current.render();
 
-    }, []);
+        }
+        else {
+            plot.current && plot.current.changeData(data);
+        }
+
+    }, [data]);
 
     return <div ref={div}></div>;
 };
