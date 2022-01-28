@@ -6,11 +6,13 @@ import SitesStatisticTable from "./SitesStatisticTable";
 
 const SitesStats = props => {
 
+    const searchParams = new URLSearchParams(props.location.search);
+
     const [loading, setLoading] = React.useState(true);
     const [load, setLoad] = React.useState(false);
     const [error, setError] = React.useState(null);
     const [sites, setSites] = React.useState([]);
-    const [site, setSite] = React.useState(null);
+    const [site, setSite] = React.useState(searchParams.get('site') || null);
 
     React.useEffect(() => {
 
@@ -24,7 +26,7 @@ const SitesStats = props => {
             setLoading(false);
         });
 
-    }, [props.location.key]);
+    }, []);
 
     if (loading) {
         return <Loader inline="centered" active />
@@ -40,7 +42,7 @@ const SitesStats = props => {
 
             <Header
                 content="Статистика по сайтам"
-                subheader="Выберите сайт в правом меню"
+                subheader={"Выберите сайт в правом меню"}
             />
 
             <Dropdown

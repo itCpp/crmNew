@@ -1,16 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { withRouter } from "react-router-dom";
 import { Loader, Message, Table, Icon } from "semantic-ui-react";
 import { axios } from "../../../../utils";
+import AdminContentSegment from "../../UI/AdminContentSegment";
 import { setBlockIp } from "../Block";
+import { Line } from '@antv/g2plot';
+import moment from "moment";
 
 const SitesStatisticTable = props => {
+
+    const searchParams = new URLSearchParams(props.location.search);
 
     const { site, history } = props;
     const { loading, setLoading } = props;
     const [load, setLoad] = useState(null);
     const [error, setError] = useState(null);
     const [rows, setRows] = useState([]);
+    const [chart, setChart] = useState([]);
     const [top, setTop] = useState(0);
     const [sort, setSort] = useState({});
 
@@ -40,8 +46,26 @@ const SitesStatisticTable = props => {
             setTop(header?.offsetHeight || 0);
 
             axios.post('dev/block/sitesStats', { site: site }).then(({ data }) => {
+
+                setSort({});
                 setRows(data.rows);
+                setChart(data.chart);
                 setError(null);
+
+                let column = searchParams.get('column');
+                let direction = searchParams.get('direction');
+
+                if (column && direction) {
+
+                    data.rows.sort((a, b) => {
+                        return direction === "ascending"
+                            ? a[column] - b[column]
+                            : b[column] - a[column]
+                    });
+
+                    setSort({ column, direction });
+                }
+
             }).catch(e => {
                 setError(axios.getError(e));
             }).then(() => {
@@ -51,6 +75,24 @@ const SitesStatisticTable = props => {
         }
 
     }, [site]);
+
+    useEffect(() => {
+
+        if (site)
+            searchParams.set("site", site);
+
+        if (Object.keys(sort).length > 0) {
+            for (let i in sort)
+                searchParams.set(i, sort[i]);
+        }
+
+        let search = searchParams.toString();
+
+        if (search !== "") {
+            props.history.replace(`?${search}`)
+        }
+
+    }, [sort, site]);
 
     const blockIp = async ip => {
 
@@ -95,6 +137,10 @@ const SitesStatisticTable = props => {
             style={{ maxWidth: 600 }}
             className="mx-auto"
         />}
+
+        <AdminContentSegment>
+            <Lines data={chart} />
+        </AdminContentSegment>
 
         {site && <Table compact celled sortable className="blocks-table mb-4">
 
@@ -159,6 +205,15 @@ const SitesStatisticTable = props => {
                 {rows && rows.length > 0 && rows.map(row => <Table.Row
                     key={row.ip}
                     textAlign="center"
+                    negative={row.blocked_on}
+                    warning={!row.blocked_on && row.autoblock}
+                    title={row.blocked
+                        ? "IP адрес имеется в черном списке"
+                        : (!row.blocked && row.autoblock
+                            ? "Автоматически заблокировано после оставления нескольких заявок"
+                            : null
+                        )
+                    }
                 >
                     <Table.Cell
                         warning={row.autoblock}
@@ -212,6 +267,7 @@ const SitesStatisticTable = props => {
                         />}
                     />
                     <Table.Cell
+                        warning={row.blocked && !row.blocked_on}
                         content={<div className="d-flex justify-content-center align-items-center">
                             <span>
                                 <Icon
@@ -251,5 +307,32 @@ const SitesStatisticTable = props => {
     </>
 
 }
+
+export const Lines = ({ data }) => {
+
+    const div = useRef();
+    const plot = useRef();
+
+    useEffect(() => {
+
+        plot.current = new Line(div.current, {
+            data,
+            isGroup: true,
+            xField: 'date',
+            yField: 'value',
+            seriesField: 'name',
+            xAxis: {
+                label: {
+                    formatter: date => moment(date).format("DD.MM.YY"),
+                }
+            }
+        });
+
+        plot.current.render();
+
+    }, []);
+
+    return <div ref={div}></div>;
+};
 
 export default withRouter(SitesStatisticTable);
