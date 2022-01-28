@@ -3,7 +3,7 @@ import StatisticDay from "./Statistic/StatisticDay";
 import StatisticIp from "./Statistic/StatisticIp";
 import BlockDrive from "./BlockDrive";
 import Views from "./Views";
-
+import SitesStats from "./Sites/SitesStats";
 import "./block.css";
 
 export const setBlockIp = async (formdata, done, error) => {
@@ -28,6 +28,8 @@ const Block = props => {
             return <BlockDrive {...props} />;
         case "views":
             return <Views {...props} />;
+            case "sites":
+            return <SitesStats {...props} />;
         default:
             return <StatisticDay {...props} setBlockIp={setBlockIp} />
     }

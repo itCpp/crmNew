@@ -89,6 +89,11 @@ function AdminMenu(props) {
                 <span>Статистика</span>
             </NavLink>
 
+            <NavLink to="/admin/block/sites" className="admin-menu-point" onClick={changePage}>
+                <Icon name="world" />
+                <span>Статистика по сайтам</span>
+            </NavLink>
+
             <NavLink to="/admin/block/views" className="admin-menu-point" onClick={changePage}>
                 <Icon name="eye" />
                 <span>Просмотры</span>
