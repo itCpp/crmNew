@@ -127,8 +127,6 @@ const CalendarDates = props => {
         }
     }
 
-    console.log(days);
-
     return days.map((week, i) => <div key={`${period}_${i}`} className="period-row">
 
         <div className="week-row">
