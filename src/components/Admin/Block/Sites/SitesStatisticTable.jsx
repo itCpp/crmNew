@@ -6,6 +6,8 @@ import AdminContentSegment from "../../UI/AdminContentSegment";
 import { setBlockIp } from "../Block";
 import { Line } from '@antv/g2plot';
 import moment from "moment";
+import FlagIp from "../Statistic/IP/FlagIp";
+import getIpInfo from "../Statistic/IP/getIpInfo";
 
 const SitesStatisticTable = props => {
 
@@ -134,6 +136,31 @@ const SitesStatisticTable = props => {
 
     }
 
+    const checkIp = ip => {
+
+        setRows(prev => {
+            let list = [...prev];
+            list.forEach((row, i) => {
+                if (row.ip === ip)
+                    list[i].info_check = true;
+            });
+            return list;
+        });
+
+        getIpInfo(ip, data => {
+            setRows(prev => {
+                let list = [...prev];
+                list.forEach((row, i) => {
+                    if (row.ip === data.ip)
+                        list[i].info = data;
+                        list[i].info_check = false;
+                });
+                return list;
+            });
+        });
+
+    }
+
     if (loading)
         return <Loader inline="centered" active />
 
@@ -145,17 +172,17 @@ const SitesStatisticTable = props => {
         {!site && <Message
             info
             content="Необходимо выбрать сайт"
-            style={{ maxWidth: 600 }}
+            style={{ maxWidth: 800 }}
             className="mx-auto"
         />}
 
         {site && <AdminContentSegment>
-            <Header as="h5" content="График посещений" />
+            <Header as="h5" content={`График посещений ${site}`} className="mb-3" />
             <Lines data={chart} />
             {loadChart && <Dimmer active inverted><Loader /></Dimmer>}
         </AdminContentSegment>}
 
-        {site && <Table compact celled sortable className="blocks-table mb-4">
+        {site && <Table compact="very" celled sortable className="blocks-table mb-4">
 
             <Table.Header style={{ top, zIndex: 1 }} className="position-sticky" id="header-table-data">
                 <Table.Row>
@@ -231,7 +258,12 @@ const SitesStatisticTable = props => {
                     <Table.Cell
                         warning={row.autoblock}
                         textAlign="left"
-                        content={<div>
+                        content={<div className="d-flex align-items-center">
+                            <span>
+                                {row.info && !row.info_check && <FlagIp name={row.info.country_code} title={`${row.info.region_name}, ${row.info.city}`} />}
+                                {!row.info && !row.info_check && <span className="unknow-flag" title="Проверить информацию" onClick={() => checkIp(row.ip)}></span>}
+                                {row.info_check && <span className="unknow-flag loading" title="Поиск информации"></span>}
+                            </span>
                             <a
                                 onClick={() => history.push(`/admin/block/ip?addr=${row.ip}`)}
                                 style={{ cursor: "pointer" }}
@@ -315,7 +347,8 @@ const SitesStatisticTable = props => {
 
             </Table.Body>
 
-        </Table>}
+        </Table>
+        }
 
     </>
 
@@ -325,32 +358,44 @@ export const Lines = ({ data }) => {
 
     const div = useRef();
     const plot = useRef();
+    const rows = data.map(row => {
+
+        let name = row.name;
+
+        if (row.name === "hosts")
+            name = "Посетители";
+        else if (row.name === "views")
+            name = "Просмотры";
+
+        return { ...row, name }
+    });
 
     useEffect(() => {
 
         if (!plot.current) {
 
             plot.current = new Line(div.current, {
-                data,
+                data: rows,
                 isGroup: true,
                 xField: 'date',
                 yField: 'value',
                 seriesField: 'name',
+                height: 250,
                 xAxis: {
                     label: {
                         formatter: date => moment(date).format("DD.MM.YY"),
                     }
-                }
+                },
             });
 
             plot.current.render();
 
         }
         else {
-            plot.current && plot.current.changeData(data);
+            plot.current && plot.current.changeData(rows);
         }
 
-    }, [data]);
+    }, [rows]);
 
     return <div ref={div}></div>;
 };
