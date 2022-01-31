@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { withRouter } from "react-router-dom";
-import { Loader, Message, Table, Icon, Header, Dimmer } from "semantic-ui-react";
+import { Loader, Message, Table, Icon, Header, Dimmer, Placeholder } from "semantic-ui-react";
 import { axios } from "../../../../utils";
 import AdminContentSegment from "../../UI/AdminContentSegment";
 import { setBlockIp } from "../Block";
@@ -153,7 +153,7 @@ const SitesStatisticTable = props => {
                 list.forEach((row, i) => {
                     if (row.ip === data.ip)
                         list[i].info = data;
-                        list[i].info_check = false;
+                    list[i].info_check = false;
                 });
                 return list;
             });
@@ -262,7 +262,13 @@ const SitesStatisticTable = props => {
                             <span>
                                 {row.info && !row.info_check && <FlagIp name={row.info.country_code} title={`${row.info.region_name}, ${row.info.city}`} />}
                                 {!row.info && !row.info_check && <span className="unknow-flag" title="Проверить информацию" onClick={() => checkIp(row.ip)}></span>}
-                                {row.info_check && <span className="unknow-flag loading" title="Поиск информации"></span>}
+                                {row.info_check && <span className="unknow-flag loading" title="Поиск информации">
+                                    <Placeholder className="h-100">
+                                        <Placeholder.Paragraph>
+                                            <Placeholder.Line />
+                                        </Placeholder.Paragraph>
+                                    </Placeholder>
+                                </span>}
                             </span>
                             <a
                                 onClick={() => history.push(`/admin/block/ip?addr=${row.ip}`)}

@@ -159,7 +159,7 @@
 .unknow-flag.loading {
     opacity: 1;
 }
-.unknow-flag::after {
+.unknow-flag:not(.loading)::after {
     content: "?";
     position: absolute;
     z-index: 1;
@@ -172,7 +172,4 @@
     font-size: 70%;
     font-weight: 700;
     color: #ffffff;
-}
-.unknow-flag.loading::after {
-    content: "...";
 }

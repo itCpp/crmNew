@@ -1,6 +1,8 @@
 import axios from "./../../../../utils/axios-header";
 import React from "react";
-import { Header, Loader, Message, Table, Icon, Dimmer } from "semantic-ui-react";
+import { Header, Loader, Message, Table, Icon, Dimmer, Placeholder } from "semantic-ui-react";
+import FlagIp from "./IP/FlagIp";
+import getIpInfo from "./IP/getIpInfo";
 
 export default (props => {
 
@@ -194,6 +196,31 @@ const StatisticDayRow = ({ row, setBlockIp, setRows, history }) => {
 
     }
 
+    const checkIp = ip => {
+
+        setRows(prev => {
+            let list = [...prev];
+            list.forEach((row, i) => {
+                if (row.ip === ip)
+                    list[i].info_check = true;
+            });
+            return list;
+        });
+
+        getIpInfo(ip, data => {
+            setRows(prev => {
+                let list = [...prev];
+                list.forEach((row, i) => {
+                    if (row.ip === data.ip)
+                        list[i].info = data;
+                    list[i].info_check = false;
+                });
+                return list;
+            });
+        });
+
+    }
+
     return <Table.Row
         negative={row.blocked_on}
         warning={!row.blocked_on && row.autoblock}
@@ -207,10 +234,23 @@ const StatisticDayRow = ({ row, setBlockIp, setRows, history }) => {
         textAlign="center"
     >
         <Table.Cell warning={row.autoblock} textAlign="left">
-            <a onClick={() => history.push(`/admin/block/ip?addr=${row.ip}`)} style={{ cursor: "pointer" }}>{row.ip}</a>
+            <div className="d-flex align-items-center">
+                <span>
+                    {row.info && !row.info_check && <FlagIp name={row.info.country_code} title={`${row.info.region_name}, ${row.info.city}`} />}
+                    {!row.info && !row.info_check && <span className="unknow-flag" title="Проверить информацию" onClick={() => checkIp(row.ip)}></span>}
+                    {row.info_check && <span className="unknow-flag loading" title="Поиск информации">
+                        <Placeholder className="h-100">
+                            <Placeholder.Paragraph>
+                                <Placeholder.Line />
+                            </Placeholder.Paragraph>
+                        </Placeholder>
+                    </span>}
+                </span>
+                <a onClick={() => history.push(`/admin/block/ip?addr=${row.ip}`)} style={{ cursor: "pointer" }}>{row.ip}</a>
+            </div>
         </Table.Cell>
         <Table.Cell textAlign="left">
-            {row.host}
+            <small>{row.host}</small>
         </Table.Cell>
         <Table.Cell>
             <span className={row.visits > 0 ? 'opacity-100' : 'opacity-30'}>{row.visits || 0}</span>
