@@ -20,6 +20,7 @@ const SitesStats = props => {
 
         axios.post('dev/block/sites').then(({ data }) => {
             setSites(data);
+            // setSite(data[0] || null);
         }).catch(e => {
             setError(axios.getError(e));
         }).then(() => {
