@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "./../../../utils/axios-header";
-import { Header, Placeholder, Message, Input, Checkbox, Icon, Pagination } from "semantic-ui-react";
+import { Header, Placeholder, Message, Input, Checkbox, Icon, Pagination, Statistic } from "semantic-ui-react";
 import { setBlockIp } from "./Block";
 import { Highlighted } from "./../../../utils";
 import FlagIp from "./Statistic/IP/FlagIp";
@@ -198,58 +198,102 @@ export default (props => {
                     host = <Highlighted text={row.host} highlight={search} />
                 }
 
-                return <div key={row.id} className="d-flex justify-content-between align-items-center admin-content-segment">
+                return <div key={row.id} className="admin-content-segment mb-2">
 
-                    <Header
-                        disabled={load || false}
-                        as="h4"
-                        content={<div>
-                            {row.is_hostname === 0
-                                ? <a style={{ cursor: "pointer" }} onClick={() => props.history.push(`/admin/block/ip?addr=${row.host}`)}>{host}</a>
-                                : host
-                            }
-                        </div>}
-                        subheader={<div className="sub header d-flex align-items-center">
-                            <span>
-                                {row.info && !row.info_check && <FlagIp name={row.info.country_code} title={`${row.info.region_name}, ${row.info.city}`} />}
-                                {!row.info && !row.info_check && <span className="unknow-flag" title="Проверить информацию" onClick={() => checkIp(row.host)}></span>}
-                                {row.info_check && <span className="unknow-flag loading" title="Поиск информации">
-                                    <Placeholder className="h-100">
-                                        <Placeholder.Paragraph>
-                                            <Placeholder.Line />
-                                        </Placeholder.Paragraph>
-                                    </Placeholder>
-                                </span>}
-                            </span>
-                            {row.hostname || "Хост не определен"}
-                        </div>}
-                        className="m-0"
-                    />
+                    <div className="d-flex justify-content-between align-items-center">
 
-                    <div className="d-flex align-items-center">
-
-                        <span>
-                            <Icon
-                                name={row.block === 1 ? "ban" : "check"}
-                                color={row.block === 1 ? "red" : "green"}
-                                title={row.block === 1 ? "Заблокировано" : "Доступ открыт"}
-                                className="mr-2"
-                                disabled={load || false}
-                            />
-                        </span>
-
-                        <Checkbox
-                            toggle
-                            checked={row.block === 1}
-                            onChange={setBlock}
-                            id={row.id}
-                            disabled={(changeBlock?.id && row.id === changeBlock.id) || load}
-                            value={row.host}
+                        <Header
+                            disabled={load || false}
+                            as="h4"
+                            content={<div>
+                                {row.is_hostname === 0
+                                    ? <a style={{ cursor: "pointer" }} onClick={() => props.history.push(`/admin/block/ip?addr=${row.host}`)}>{host}</a>
+                                    : host
+                                }
+                            </div>}
+                            subheader={<div className="sub header d-flex align-items-center">
+                                <span>
+                                    {row.info && !row.info_check && <FlagIp name={row.info.country_code} title={`${row.info.region_name}, ${row.info.city}`} />}
+                                    {!row.info && !row.info_check && <span className="unknow-flag" title="Проверить информацию" onClick={() => checkIp(row.host)}></span>}
+                                    {row.info_check && <span className="unknow-flag loading" title="Поиск информации">
+                                        <Placeholder className="h-100">
+                                            <Placeholder.Paragraph>
+                                                <Placeholder.Line />
+                                            </Placeholder.Paragraph>
+                                        </Placeholder>
+                                    </span>}
+                                </span>
+                                {row.hostname || "Хост не определен"}
+                            </div>}
+                            className="m-0"
                         />
+
+                        <div className="d-flex align-items-center">
+
+                            <span>
+                                <Icon
+                                    name={row.block === 1 ? "ban" : "check"}
+                                    color={row.block === 1 ? "red" : "green"}
+                                    title={row.block === 1 ? "Заблокировано" : "Доступ открыт"}
+                                    className="mr-2"
+                                    disabled={load || false}
+                                />
+                            </span>
+
+                            <Checkbox
+                                toggle
+                                checked={row.block === 1}
+                                onChange={setBlock}
+                                id={row.id}
+                                disabled={(changeBlock?.id && row.id === changeBlock.id) || load}
+                                value={row.host}
+                            />
+
+                        </div>
 
                     </div>
 
+                    <div className={`d-flex justify-content-between align-items-center mt-3 ${load ? `opacity-30` : `opacity-90`}`}>
+
+                        <div className="mx-2" title="Посещений сегодня">
+                            Посещений <b>{row.visits || 0}</b>
+                        </div>
+
+                        <div className="mx-2" title="Заявок сегодня">
+                            Заявок <b>{row.requests || 0}</b>
+                        </div>
+
+                        <div className="mx-2" title="Блокированные попытки входя за все время">
+                            Блокировано <b>{row.blocks || 0}</b>
+                        </div>
+
+                        <div className="mx-2" title="Посещений за все время">
+                            Все посещения <b>{row.visitsAll || 0}</b>
+                        </div>
+
+                        {/* <Statistic size="mini" title="Посещений сегодня" className="m-0">
+                            <Statistic.Label>Посещений</Statistic.Label>
+                            <Statistic.Value>{row.visits || 0}</Statistic.Value>
+                        </Statistic>
+
+                        <Statistic size="mini" title="Заявок сегодня" className="m-0">
+                            <Statistic.Label>Заявок</Statistic.Label>
+                            <Statistic.Value>{row.requests || 0}</Statistic.Value>
+                        </Statistic>
+
+                        <Statistic size="mini" title="Блокированные попытки входя за все время" className="m-0">
+                            <Statistic.Label>Блокировано</Statistic.Label>
+                            <Statistic.Value>{row.blocks || 0}</Statistic.Value>
+                        </Statistic>
+
+                        <Statistic size="mini" title="Посещений за все время" className="m-0">
+                            <Statistic.Label>Все посещения</Statistic.Label>
+                            <Statistic.Value>{row.visitsAll || 0}</Statistic.Value>
+                        </Statistic> */}
+                    </div>
+
                 </div>
+
             })}
         </div>}
 
