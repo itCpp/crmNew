@@ -1,7 +1,8 @@
 import React from 'react';
 import axios from './utils/axios-header';
 import connectEcho from "./utils/echo-connect";
-
+import Cookies from 'js-cookie';
+import { updateToken } from './utils/echo-connect';
 import { connect } from 'react-redux';
 import {
     setLogin,
@@ -13,12 +14,9 @@ import {
     userLeave,
     setUserWorkTime,
 } from './store/actions';
-
 import { Loader } from 'semantic-ui-react';
 import { SemanticToastContainer } from 'react-semantic-toasts';
-
 import './App.css';
-
 import Routes from './components/Routes';
 
 const appUserEvent = data => {
@@ -47,7 +45,25 @@ function App(props) {
 
         await connectEcho();
 
-        await axios.post('/check').then(async ({ data }) => {
+        const searchParams = new URLSearchParams(window.location.search);
+
+        await axios.post('/check', {}, {
+            headers: {
+                'X-Automatic-Auth': searchParams.get('token')
+            },
+        }).then(async ({ data }) => {
+
+            if (data.token) {
+
+                let tokenKey = process.env.REACT_APP_TOKEN_KEY || "token";
+
+                Cookies.set(tokenKey, data.token, {
+                    domain: process.env.REACT_APP_COOKIE_DOMAIN || window.location.hostname,
+                });
+
+                updateToken(data.token);
+                localStorage.setItem(tokenKey, data.token);
+            }
 
             setLogin(true);
             setUserData(data.user);
