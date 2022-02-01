@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "./../../../../utils/axios-header";
-import { Header, Loader, Message, Button, Grid } from "semantic-ui-react";
+import { Header, Loader, Message, Button, Grid, Statistic, Table } from "semantic-ui-react";
 
 import { setBlockIp } from "./../Block";
 import FlagIp from "./IP/FlagIp";
@@ -102,19 +102,109 @@ export default (props => {
 
         {!loading && !error && <div>
 
+            <div className="admin-content-segment">
+
+                <Header as="h3" content="Общая статистика посещений" className="mb-4" subheader="Данные по всем сайтам за все время" />
+
+                <div className="opacity-70 d-flex justify-content-center mx-4">
+
+                    <Statistic className="mx-4">
+                        <Statistic.Value>{data.generalStats?.visits || 0}</Statistic.Value>
+                        <Statistic.Label>Просмотры<br />сегодня</Statistic.Label>
+                    </Statistic>
+
+                    <Statistic className="mx-4">
+                        <Statistic.Value>{data.generalStats?.visitsAll || 0}</Statistic.Value>
+                        <Statistic.Label>Всего<br />просмотров</Statistic.Label>
+                    </Statistic>
+
+                    <Statistic className="mx-4">
+                        <Statistic.Value>{data.generalStats?.visitsBlock || 0}</Statistic.Value>
+                        <Statistic.Label>Блокировннае<br />входы</Statistic.Label>
+                    </Statistic>
+
+                    <Statistic className="mx-4">
+                        <Statistic.Value>{data.generalStats?.requests || 0}</Statistic.Value>
+                        <Statistic.Label>Заявки<br />сегодня</Statistic.Label>
+                    </Statistic>
+
+                    <Statistic className="mx-4">
+                        <Statistic.Value>{data.generalStats?.requestsAll || 0}</Statistic.Value>
+                        <Statistic.Label>Всего<br />заявок</Statistic.Label>
+                    </Statistic>
+
+                    <Statistic className="mx-4">
+                        <Statistic.Value>{data.generalStats?.queues || 0}</Statistic.Value>
+                        <Statistic.Label>Очередь<br />сегодня</Statistic.Label>
+                    </Statistic>
+
+                    <Statistic className="mx-4">
+                        <Statistic.Value>{data.generalStats?.queuesAll || 0}</Statistic.Value>
+                        <Statistic.Label>Всего заявок<br />в очереди</Statistic.Label>
+                    </Statistic>
+
+                </div>
+
+            </div>
+
+            <div className="admin-content-segment">
+
+                <Header as="h3" content="Посещения на сайтах" className="mb-5" subheader="Статистика посещений по каждому сайту" />
+
+                {typeof data.sitesStats == "object" && <div className="pb-2">
+
+                    {data.sitesStats.length === 0 && <div className="text-center my-5 opacity-50">Данных нет</div>}
+
+                    {data.sitesStats.length > 0 && <Table basic="very" compact>
+
+                        <Table.Header>
+                            <Table.Row textAlign="center">
+                                <Table.HeaderCell textAlign="left">Сайт</Table.HeaderCell>
+                                <Table.HeaderCell>Просмотры сегодня</Table.HeaderCell>
+                                <Table.HeaderCell>Всего просмотров</Table.HeaderCell>
+                                <Table.HeaderCell>Блокированные входы</Table.HeaderCell>
+                                <Table.HeaderCell>Заявки сегодня</Table.HeaderCell>
+                                <Table.HeaderCell>Заявок всего</Table.HeaderCell>
+                                <Table.HeaderCell>Очередь сегодня</Table.HeaderCell>
+                                <Table.HeaderCell>Всего заявок в очереди</Table.HeaderCell>
+                            </Table.Row>
+                        </Table.Header>
+
+                        <Table.Body>
+                            {data.sitesStats.map(row => <Table.Row key={row.site} textAlign="center">
+                                <Table.Cell textAlign="left">{row.site
+                                    ? <a href={`//${row.site}`} target="_blank">{row.site}</a>
+                                    : "Сссылка не определена"
+                                }</Table.Cell>
+                                <Table.Cell>{row.visits}</Table.Cell>
+                                <Table.Cell>{row.visitsAll}</Table.Cell>
+                                <Table.Cell>{row.visitsBlock}</Table.Cell>
+                                <Table.Cell>{row.requests}</Table.Cell>
+                                <Table.Cell>{row.requestsAll}</Table.Cell>
+                                <Table.Cell>{row.queues}</Table.Cell>
+                                <Table.Cell>{row.queuesAll}</Table.Cell>
+                            </Table.Row>)}
+                        </Table.Body>
+
+                    </Table>}
+
+                </div>}
+
+            </div>
+
             <Grid>
-                {data?.stats?.chart && data.stats.chart.map((chart, key) => <Grid.Row key={key}>
+                {/* {data?.stats?.chart && data.stats.chart.map((chart, key) => <Grid.Row key={key}>
                     <Grid.Column>
                         <div className="admin-content-segment">
                             <Header content={chart.name} as="h3" />
                             <IpSitesCountGraph data={chart.data || []} />
                         </div>
                     </Grid.Column>
-                </Grid.Row>)}
+                </Grid.Row>)} */}
 
-                {typeof data.textInfo == "object" && data.textInfo.length > 0 && <Grid.Row>
-                    <Grid.Column>
-                        {data.textInfo.map((row, key) => <div key={key} style={{ maxWidth: 650 }}>
+                {typeof data.textInfo == "object" && data.textInfo.length > 0 && <Grid.Row columns="equal">
+                    {/* <Grid.Column> */}
+                        {data.textInfo.map((row, key) => <Grid.Column key={key}>
                             <div className="d-flex align-items-center justify-content-between mb-3">
                                 <h3 className="my-0 mx-3">{row.name}</h3>
                                 {row.datetime && <div>
@@ -122,8 +212,8 @@ export default (props => {
                                 </div>}
                             </div>
                             <pre className="pre border">{row.data}</pre>
-                        </div>)}
-                    </Grid.Column>
+                        </Grid.Column>)}
+                    {/* </Grid.Column> */}
                 </Grid.Row>}
 
             </Grid>
