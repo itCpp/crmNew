@@ -31,7 +31,9 @@ const Views = props => {
             ...params,
             start,
             ip: filterIp,
+            site: searchParams.get('site'),
         }).then(({ data }) => {
+
             setLoadingError(null);
             setStart(data.start);
             setRows(data.rows);
