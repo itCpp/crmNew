@@ -47,11 +47,11 @@ function App(props) {
 
         await connectEcho();
 
-        let headers = {};
+        let config = {};
         if (searchParams.get('token'))
-            headers['X-Automatic-Auth'] = searchParams.get('token');
+            config.headers = { 'X-Automatic-Auth': searchParams.get('token') };
 
-        await axios.post('/check', {}, headers).then(async ({ data }) => {
+        await axios.post('/check', {}, config).then(async ({ data }) => {
 
             if (data.token) {
 
