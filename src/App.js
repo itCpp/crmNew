@@ -30,6 +30,8 @@ export const TESTING_URL = "legallyknowledgetest";
 
 function App(props) {
 
+    const searchParams = new URLSearchParams(window.location.search);
+
     const { userData, setLogin, setUserData, setUserPermits } = props;
     const [loading, setLoading] = React.useState(true);
     const [globalError, setGlobalError] = React.useState(null);
@@ -45,13 +47,11 @@ function App(props) {
 
         await connectEcho();
 
-        const searchParams = new URLSearchParams(window.location.search);
+        let headers = {};
+        if (searchParams.get('token'))
+            headers['X-Automatic-Auth'] = searchParams.get('token');
 
-        await axios.post('/check', {}, {
-            headers: {
-                'X-Automatic-Auth': searchParams.get('token')
-            },
-        }).then(async ({ data }) => {
+        await axios.post('/check', {}, headers).then(async ({ data }) => {
 
             if (data.token) {
 
@@ -124,7 +124,10 @@ function App(props) {
 
     if (loading) {
         return <div className="loading-page">
-            <Loader active inline="centered" />
+            <div>
+                <Loader active inline="centered" />
+                {searchParams.get('token') && <div className="opacity-50">Проверка авторизации...</div>}
+            </div>
         </div>
     }
 
