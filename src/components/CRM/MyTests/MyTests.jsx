@@ -69,7 +69,7 @@ const MyTests = props => {
                         button_color = "orange";
                     }
 
-                    return <div key={row.uuid} className="mt-3">
+                    return <div key={row.uuid} className="mt-5">
 
                         <div className="d-flex justify-content-between align-items-center mb-2">
                             <Header as="h4" className="m-0">Тест #{row.id}</Header>

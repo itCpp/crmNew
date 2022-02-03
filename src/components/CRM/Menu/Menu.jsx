@@ -52,7 +52,7 @@ const Menu = props => {
                             <Icon name="clipboard check" />
                             <span>Мои тестирования</span>
                         </span>
-                        <CounterRow count={counter?.testings || null} update={true} />
+                        <CounterRow count={counter?.tests || null} update={true} />
                     </div>
                 </Link>
 
