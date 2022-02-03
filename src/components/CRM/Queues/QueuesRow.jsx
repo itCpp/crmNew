@@ -16,12 +16,22 @@ const QueuesRow = props => {
     const { row, history, checkIp, blockIp } = props;
     const { drop, setDrop } = props;
     const { create, setCreate } = props;
+    const [className, setClassName] = React.useState([]);
+
+    // React.useEffect(() => {
+    //     if (row.updated) {
+    //         setTimeout(() => {
+    //             setClassName(names => ([...names, "opacity-50"]));
+    //         }, 500);
+    //     }
+    // }, [row.updated]);
 
     return <Table.Row
         textAlign="center"
         verticalAlign="top"
         positive={row.done_type === 1}
         negative={row.done_type === 2}
+        className={className.join(" ")}
     >
         <Table.Cell className="px-2">{row.id}</Table.Cell>
         <Table.Cell>{moment(row.created_at).format("DD.MM.YYYY HH:mm:ss")}</Table.Cell>

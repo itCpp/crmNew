@@ -34,8 +34,18 @@ const Queues = props => {
         setLoad(true);
         setPage(formdata.page || 1);
 
+        let last = null,
+            first = null;
+
+        if (queues.length && Number(formdata.page || 1) > 1) {
+            last = queues[queues.length - 1].id;
+            first = queues[0].id;
+        }
+
         axios.post('queues/getQueues', {
             ...formdata,
+            first: first,
+            last: last,
             done: showDone,
         }).then(({ data }) => {
 
@@ -57,7 +67,7 @@ const Queues = props => {
         setQueues(prev => {
             prev.forEach((row, i) => {
                 if (row.id === queue.id) {
-                    prev[i] = {...row, ...queue};
+                    prev[i] = { ...row, ...queue };
                 }
             });
             return [...prev];
@@ -130,9 +140,13 @@ const Queues = props => {
                 setQueues(q => {
                     q.forEach((r, i) => {
                         if (r.id === data.queue.id) {
-                            q[i] = data.queue;
+                            q[i] = { ...data.queue, updated: true };
                         }
                     });
+
+                    if (data.append)
+                        q.push(data.append);
+
                     return q;
                 });
 
@@ -283,7 +297,7 @@ const Queues = props => {
 
                 <Table.Body>
                     {queues.map(row => <QueuesRow
-                        key={row.id}
+                        key={row.key || row.id}
                         row={row}
                         history={props.history}
                         checkIp={checkIp}
