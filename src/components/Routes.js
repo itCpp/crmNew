@@ -1,15 +1,14 @@
-import React from 'react'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import { TESTING_URL } from "./../App";
+import React from "react"
+import { BrowserRouter, Route, Switch } from "react-router-dom"
+import { TESTING_URL } from "./Testing";
 
-import Auth from './Auth/Auth';
-import Header from './Header/Header';
-import Crm from './CRM/CRM';
-import Admin from './Admin/AdminMain';
-import Testing from './Testing';
-
+import Auth from "./Auth/Auth";
+import Header from "./Header/Header";
+import Crm from "./CRM/CRM";
+import Admin from "./Admin/AdminMain";
+import Testing from "./Testing";
 import GlobalError from "./Errors/GlobalError";
-import NotFound from './NotFound';
+import NotFound from "./NotFound";
 
 export default function Routes(props) {
 
@@ -36,6 +35,7 @@ export default function Routes(props) {
                 <Route exact path="/secondcalls" component={Crm} />
                 <Route exact path="/pins" component={Crm} />
                 <Route exact path="/rating" component={Crm} />
+                <Route exact path="/mytests" component={Crm} />
 
                 <Route exact path="/user/:id" component={Crm} />
 

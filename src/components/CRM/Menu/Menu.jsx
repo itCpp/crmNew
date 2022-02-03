@@ -46,6 +46,16 @@ const Menu = props => {
                     </div>
                 </Link>
 
+                <Link to="/mytests" className={`menu-list-row title ${selectMenu === "/mytests" ? 'tab-list-active' : ''}`}>
+                    <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
+                        <span>
+                            <Icon name="clipboard check" />
+                            <span>Мои тестирования</span>
+                        </span>
+                        <CounterRow count={counter?.testings || null} update={true} />
+                    </div>
+                </Link>
+
                 {permits.queues_access && <Link to="/queues" className={`menu-list-row title ${selectMenu === "/queues" ? 'tab-list-active' : ''}`}>
                     <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                         <span>

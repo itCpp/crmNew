@@ -28,6 +28,7 @@ import SecondCalls from "./SecondCalls";
 import Operators from "./Operators";
 import Rating from "./Rating";
 import User from "./User";
+import MyTests from "./MyTests";
 
 const CrmContent = React.memo(withRouter(props => {
 
@@ -47,6 +48,8 @@ const CrmContent = React.memo(withRouter(props => {
         return <Requests />
     else if (page === "/user/:id")
         return <User {...props} />
+    else if (page === "/mytests")
+        return <MyTests {...props} />
     else
         return <User {...props} />
 

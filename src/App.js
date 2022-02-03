@@ -18,6 +18,7 @@ import { Loader } from 'semantic-ui-react';
 import { SemanticToastContainer } from 'react-semantic-toasts';
 import './App.css';
 import Routes from './components/Routes';
+import { TESTING_URL } from "./components/Testing";
 
 const appUserEvent = data => {
 
@@ -25,8 +26,6 @@ const appUserEvent = data => {
         axios.toast(null, data.alert);
 
 }
-
-export const TESTING_URL = "legallyknowledgetest";
 
 function App(props) {
 
