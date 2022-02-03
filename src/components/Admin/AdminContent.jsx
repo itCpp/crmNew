@@ -15,6 +15,7 @@ import DistributionCalls from './Calls/Distributions/DistributionCalls';
 import Offices from './Offices/Offices';
 import Block from './Block';
 import Routes from './API/Routes';
+import Settings from "./Settings/Settings";
 
 function AdminContent(props) {
 
@@ -49,6 +50,8 @@ function AdminContent(props) {
         body = <Block {...props} />
     else if (page == "routes" && permits.dev_block)
         body = <Routes {...props} />
+    else if (page == "settings" && permits.dev_block)
+        body = <Settings {...props} />
 
     return <div className="admin-content-body">
         {body}

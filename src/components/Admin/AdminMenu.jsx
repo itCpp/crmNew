@@ -106,19 +106,24 @@ function AdminMenu(props) {
 
                 <h5>Настройки</h5>
 
+                <NavLink to="/admin/settings" className="admin-menu-point" onClick={changePage}>
+                    <Icon name="settings" />
+                    <span>Глобальные настройки</span>
+                </NavLink>
+
                 <NavLink to="/admin/callcenters" className="admin-menu-point" onClick={changePage}>
                     <Icon name="sound" />
                     <span>Колл-центры</span>
-                </NavLink>
-
-                <NavLink to="/admin/callsqueue" className="admin-menu-point" onClick={changePage}>
-                    <Icon name="random" />
-                    <span>Направление звоков</span>
-                </NavLink>
+                </NavLink>              
 
                 <NavLink to="/admin/sources" className="admin-menu-point" onClick={changePage}>
                     <Icon name="fork" />
                     <span>Источники</span>
+                </NavLink>
+
+                <NavLink to="/admin/databases" className="admin-menu-point" onClick={changePage}>
+                    <Icon name="database" />
+                    <span>Базы сайтов</span>
                 </NavLink>
 
                 <NavLink to="/admin/statuses" className="admin-menu-point" onClick={changePage}>
@@ -134,6 +139,11 @@ function AdminMenu(props) {
                 <NavLink to="/admin/office" className="admin-menu-point" onClick={changePage}>
                     <Icon name="building" />
                     <span>Офисы</span>
+                </NavLink>
+
+                <NavLink to="/admin/callsqueue" className="admin-menu-point" onClick={changePage}>
+                    <Icon name="random" />
+                    <span>Направление звоков</span>
                 </NavLink>
 
             </div>
