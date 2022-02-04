@@ -16,6 +16,7 @@ import Offices from './Offices/Offices';
 import Block from './Block';
 import Routes from './API/Routes';
 import Settings from "./Settings/Settings";
+import DataBases from "./DataBases/DataBases";
 
 function AdminContent(props) {
 
@@ -52,6 +53,8 @@ function AdminContent(props) {
         body = <Routes {...props} />
     else if (page == "settings" && permits.dev_block)
         body = <Settings {...props} />
+    else if (page == "databases" && permits.dev_block)
+        body = <DataBases {...props} />
 
     return <div className="admin-content-body">
         {body}
