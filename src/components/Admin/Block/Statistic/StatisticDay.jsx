@@ -294,22 +294,36 @@ const StatisticDayRow = ({ row, setBlockIp, setRows, history }) => {
                     />
                 </span>
                 <span>
-                    <Icon
-                        name="chart bar"
-                        color="green"
-                        className="button-icon mx-1"
-                        title="Статистика по ip-адресу"
-                        onClick={() => history.push(`/admin/block/ip?addr=${row.ip}`)}
-                    />
+                    <a
+                        href={`/admin/block/ip?addr=${row.ip}`}
+                        onClick={e => {
+                            e.preventDefault();
+                            history.push(`/admin/block/ip?addr=${row.ip}`);
+                        }}
+                    >
+                        <Icon
+                            name="chart bar"
+                            color="green"
+                            className="button-icon mx-1"
+                            title="Статистика по ip-адресу"
+                        />
+                    </a>
                 </span>
                 <span>
-                    <Icon
-                        name="eye"
-                        color="black"
-                        className="button-icon mx-1"
-                        title="Все просмотры страниц сайтов с ip"
-                        onClick={() => history.push(`/admin/block/views?ip=${row.ip}`)}
-                    />
+                    <a
+                        href={`/admin/block/views?ip=${row.ip}`}
+                        onClick={e => {
+                            e.preventDefault();
+                            history.push(`/admin/block/views?ip=${row.ip}`);
+                        }}
+                    >
+                        <Icon
+                            name="eye"
+                            color="black"
+                            className="button-icon mx-1"
+                            title="Все просмотры страниц сайтов с ip"
+                        />
+                    </a>
                 </span>
             </div>
 
