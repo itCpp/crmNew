@@ -42,6 +42,7 @@ const SitesStats = props => {
         <AdminContentSegment className="d-flex justify-content-between align-items-center">
 
             <Header
+                as="h2"
                 content="Статистика по сайтам"
                 subheader={"Выберите сайт в правом меню"}
             />
