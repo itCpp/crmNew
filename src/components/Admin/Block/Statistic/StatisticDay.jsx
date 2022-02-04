@@ -95,7 +95,7 @@ export default (props => {
 
         {!error && !loading && rows && rows.length === 0 && <Message info className="text-center">Данных нет</Message>}
 
-        {!error && !loading && rows && rows.length > 0 && <Table compact celled sortable className="blocks-table">
+        {!error && !loading && rows && rows.length > 0 && <Table compact celled sortable className="blocks-table" selectable>
 
             <Table.Header style={{ top, zIndex: 100 }} className="position-sticky">
                 <Table.Row>

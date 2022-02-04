@@ -182,7 +182,7 @@ const SitesStatisticTable = props => {
             {loadChart && <Dimmer active inverted><Loader /></Dimmer>}
         </AdminContentSegment>}
 
-        {site && <Table compact="very" celled sortable className="blocks-table mb-4">
+        {site && <Table compact="very" celled sortable selectable className="blocks-table mb-4">
 
             <Table.Header style={{ top, zIndex: 1 }} className="position-sticky" id="header-table-data">
                 <Table.Row>

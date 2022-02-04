@@ -83,7 +83,7 @@ const Views = props => {
         {loading && <Loader active inline="centered" />}
         {!loading && loadingError && <Message error content={loadingError} />}
 
-        {!loading && !loadingError && rows && rows.length > 0 && <Table celled compact className="blocks-table mb-3">
+        {!loading && !loadingError && rows && rows.length > 0 && <Table celled compact selectable className="blocks-table mb-3">
 
             <Table.Header style={{ top, zIndex: 100 }} className="position-sticky">
                 <Table.Row>
