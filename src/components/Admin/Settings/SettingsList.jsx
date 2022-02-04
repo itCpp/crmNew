@@ -2,7 +2,7 @@ import { List, Icon } from "semantic-ui-react";
 
 const SettingsList = props => {
 
-    const { rows, setRows } = props;
+    const { rows, setRows, edit } = props;
 
     return <div className="admin-content-segment">
 
@@ -27,6 +27,15 @@ const SettingsList = props => {
                         fitted
                         size="large"
                     />}
+                </List.Content>
+
+                <List.Content className="ml-3">
+                    <Icon
+                        name="pencil"
+                        link
+                        fitted
+                        onClick={() => edit(row)}
+                    />
                 </List.Content>
 
             </List.Item>)}

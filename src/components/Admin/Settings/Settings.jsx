@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { axios } from "../../../utils";
 import { Header, Loader, Message } from "semantic-ui-react";
 import SettingsList from "./SettingsList";
+import SettingEdit from "./SettingEdit";
 
 const Settings = props => {
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [rows, setRows] = useState([]);
+    const [row, setRow] = useState(null);
 
     useEffect(() => {
 
@@ -41,6 +43,13 @@ const Settings = props => {
 
         {!loading && !error && <SettingsList
             rows={rows}
+            setRows={setRows}
+            edit={setRow}
+        />}
+
+        {row && <SettingEdit
+            row={row}
+            setShow={setRow}
             setRows={setRows}
         />}
 
