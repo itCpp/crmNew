@@ -41,17 +41,17 @@ const CrmContent = React.memo(withRouter(props => {
         return <Sms />
     else if (page === "/secondcalls" && permits.second_calls_access)
         return <SecondCalls />
-    else if (page === "/pins")
+    else if (page === "/pins" && permits.rating_access)
         return <Operators update={props.location.key} />
-    else if (page === "/rating")
+    else if (page === "/rating" && permits.rating_access)
         return <Rating />
-    else if (page === "/requests")
+    else if (page === "/requests" && permits.requests_access)
         return <Requests />
     else if (page === "/user/:id")
         return <User {...props} />
     else if (page === "/mytests")
         return <MyTests {...props} />
-    else if (page === "/agreements" && permits.client_agreements_access)
+    else if (page === "/agreements" && permits.clients_agreements_access)
         return <AgreementClients {...props} />
     else
         return <User {...props} />
