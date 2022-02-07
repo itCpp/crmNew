@@ -40,6 +40,10 @@ const MyTests = props => {
 
             {!loading && error && <Message error content={error} size="mini" />}
 
+            {!loading && !error && rows && rows.length === 0 &&
+                <div className="my-5 opacity-50 text-center">Тестов еще нет</div>
+            }
+
             {!loading && !error && rows.length > 0 && <div>
 
                 <div className="mb-4 text-center">

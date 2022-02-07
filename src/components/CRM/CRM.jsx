@@ -29,6 +29,7 @@ import Operators from "./Operators";
 import Rating from "./Rating";
 import User from "./User";
 import MyTests from "./MyTests";
+import AgreementClients from "./AgreementClients";
 
 const CrmContent = React.memo(withRouter(props => {
 
@@ -50,6 +51,8 @@ const CrmContent = React.memo(withRouter(props => {
         return <User {...props} />
     else if (page === "/mytests")
         return <MyTests {...props} />
+    else if (page === "/agreements" && permits.client_agreements_access)
+        return <AgreementClients {...props} />
     else
         return <User {...props} />
 

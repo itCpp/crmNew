@@ -88,6 +88,16 @@ const Menu = props => {
                         />
                     </div>
                 </Link>}
+
+                {permits.client_agreements_access && <Link to="/agreements" className={`menu-list-row title ${selectMenu === "/agreements" ? 'tab-list-active' : ''}`}>
+                    <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
+                        <span>
+                            <Icon name="file text" />
+                            <span>Клиенты с договором</span>
+                        </span>
+                    </div>
+                </Link>}
+
             </div>
 
         </div>
