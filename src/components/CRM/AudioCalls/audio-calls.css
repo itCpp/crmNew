@@ -78,7 +78,7 @@
 }
 
 .call-detail-record-direction-out .audio-progress-bar {
-    background-color: #ff9696 !important;
+    background-color: #ff9494 !important;
 }
 
 .audio-player-loader {
@@ -90,4 +90,12 @@
     bottom: 1px;
     z-index: 1;
     border-radius: .25rem;
+}
+
+.call-detail-record-direction-in .audio-player-loader {
+    background-image: linear-gradient(to right,rgba(102,225,102,.6) 0,rgba(102,225,102,.9) 15%,rgba(102,225,102,.6) 30%) !important;
+}
+
+.call-detail-record-direction-out .audio-player-loader {
+    background-image: linear-gradient(to right,rgba(255,148,148,.6) 0,rgba(255,148,148,.9) 15%,rgba(255,148,148,.6) 30%) !important;
 }
