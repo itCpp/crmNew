@@ -45,7 +45,7 @@ const AudioCallsListRow = props => {
         />}
 
         {row.id !== play?.id && <div>
-            {row.duration > 0 && moment.unix(row.duration).utc().format(row.duration >= 3600 ? 'HH:mm:ss' : 'mm:ss')}
+            {moment.unix(row.duration).utc().format(row.duration >= 3600 ? 'HH:mm:ss' : 'mm:ss')}
         </div>}
 
         <div className="call-detail-record-buttons">
