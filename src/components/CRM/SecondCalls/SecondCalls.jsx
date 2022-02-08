@@ -93,7 +93,7 @@ const SecondCalls = () => {
 
             {!loading && load && <div><Loader active inline="centered" size="tiny" indeterminate /></div>}
 
-            {!loading && !load && !error && stop && <div className="text-center opacity-50"><small>Это все звонки</small></div>}
+            {!loading && !load && !error && stop && secondCalls.length > 0 && <div className="text-center opacity-50"><small>Это все звонки</small></div>}
 
         </div>
 

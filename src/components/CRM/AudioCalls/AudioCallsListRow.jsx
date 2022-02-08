@@ -45,12 +45,12 @@ const AudioCallsListRow = props => {
         />}
 
         {row.id !== play?.id && <div>
-            {row.duration && moment.unix(row.duration).utc().format(row.duration >= 3600 ? 'HH:mm:ss' : 'mm:ss')}
+            {row.duration > 0 && moment.unix(row.duration).utc().format(row.duration >= 3600 ? 'HH:mm:ss' : 'mm:ss')}
         </div>}
 
         <div className="call-detail-record-buttons">
 
-            <span>
+            {row.duration > 0 && <span>
                 <Icon
                     name={play?.id === row.id ? "stop" : "play"}
                     title={play?.id === row.id ? "Остановить" : "Воспроизвести"}
@@ -63,7 +63,7 @@ const AudioCallsListRow = props => {
                         duration: row.duration,
                     })}
                 />
-            </span>
+            </span>}
 
             <a href={row.url} download={`audio-call-record-${row.id}.wav`} target="_blank">
                 <Icon

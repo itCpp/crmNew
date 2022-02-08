@@ -12,7 +12,7 @@ const AudioCallsList = props => {
             current = false;
 
         rows.forEach(row => {
-            if (current === true) {
+            if (current === true && row.duration > 0) {
                 next = {
                     url: row.url,
                     id: row.id,

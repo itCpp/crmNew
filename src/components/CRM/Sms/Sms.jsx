@@ -93,7 +93,7 @@ const Sms = () => {
 
             {!loading && load && <div><Loader active inline="centered" size="tiny" indeterminate /></div>}
 
-            {!loading && !load && !error && stop && <div className="text-center opacity-50"><small>Это все сообщения</small></div>}
+            {!loading && !load && !error && stop && sms.length > 0 && <div className="text-center opacity-50"><small>Это все сообщения</small></div>}
 
         </div>
 
