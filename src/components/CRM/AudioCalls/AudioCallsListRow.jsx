@@ -50,20 +50,21 @@ const AudioCallsListRow = props => {
 
         <div className="call-detail-record-buttons">
 
-            {row.duration > 0 && <span>
+            <span>
                 <Icon
                     name={play?.id === row.id ? "stop" : "play"}
                     title={play?.id === row.id ? "Остановить" : "Воспроизвести"}
                     color="grey"
-                    link
+                    link={row.duration > 0}
+                    disabled={row.duration === 0}
                     fitted
-                    onClick={() => setPlay(play?.id === row.id ? null : {
+                    onClick={() => setPlay((play?.id === row.id || row.duration === 0) ? null : {
                         url: row.url,
                         id: row.id,
                         duration: row.duration,
                     })}
                 />
-            </span>}
+            </span>
 
             <a href={row.url} download={`audio-call-record-${row.id}.wav`} target="_blank">
                 <Icon
