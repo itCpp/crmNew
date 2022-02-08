@@ -8,43 +8,47 @@ import CreateStatus from "./CreateStatus";
 import StatusZeronigInfoCell from "./StatusZeronigInfoCell";
 import EditStatus from "./EditStatus";
 
+export const themes = [
+    { text: "Стандартная", value: null },
+    { text: "Тема Записи", value: 1 },
+    { text: "Тема Слива", value: 2 },
+    { text: "Тема Созвона", value: 3 },
+    { text: "Тема Брака", value: 4 },
+    { text: "Тема Недозвона", value: 5 },
+    { text: "Тема БК", value: 6 },
+    { text: "Тема Прихода", value: 7 },
+    { text: "Тема Онлайн заявки", value: 8 },
+    { text: "Тема Онлайн прихода", value: 9 },
+    { text: "Тема Онлайн договора", value: 10 },
+    { text: "Тема Вторички", value: 11 },
+];
+
 const SelectTheme = props => {
 
     const { row, load } = props;
+    let a = themes.find(item => item.value === row.theme);
 
-    const options = [
-        { text: "Стандартная", value: null },
-        { text: "Тема Записи", value: 1 },
-        { text: "Тема Слива", value: 2 },
-        { text: "Тема Созвона", value: 3 },
-        { text: "Тема Брака", value: 4 },
-        { text: "Тема Недозвона", value: 5 },
-        { text: "Тема БК", value: 6 },
-        { text: "Тема Прихода", value: 7 },
-        { text: "Тема Онлайн заявки", value: 8 },
-        { text: "Тема Онлайн прихода", value: 9 },
-        { text: "Тема Онлайн договора", value: 10 },
-        { text: "Тема Вторички", value: 11 },
-    ];
-    return <Dropdown
-        placeholder="Оформление"
-        selection
-        options={options.map((o, i) => ({
-            ...o,
-            key: i,
-            as: () => <div
-                className={`request-row-select-item request-row request-row-theme-${o.value} ${o.value === row.theme ? `active` : ``}`}
-                onClick={() => props.changeTheme({ id: row.id, theme: o.value })}
-            >
-                {o.value === row.theme && <Icon name="check" />}
-                <span>{o.text}</span>
-            </div>,
-        }))}
-        // onChange={(e, { value }) => props.changeTheme({ id: row.id, theme: value })}
-        value={row.theme}
-        disabled={load ? true : false}
-        loading={load === row.id}
-    />
+    return a?.text || "Стандартная";
+
+    // return <Dropdown
+    //     placeholder="Оформление"
+    //     selection
+    //     options={themes.map((o, i) => ({
+    //         ...o,
+    //         key: i,
+    //         as: () => <div
+    //             className={`request-row-select-item request-row request-row-theme-${o.value} ${o.value === row.theme ? `active` : ``}`}
+    //             onClick={() => props.changeTheme({ id: row.id, theme: o.value })}
+    //         >
+    //             {o.value === row.theme && <Icon name="check" />}
+    //             <span>{o.text}</span>
+    //         </div>,
+    //     }))}
+    //     // onChange={(e, { value }) => props.changeTheme({ id: row.id, theme: value })}
+    //     value={row.theme}
+    //     disabled={load ? true : false}
+    //     loading={load === row.id}
+    // />
 }
 
 function Statuses() {
@@ -133,7 +137,7 @@ function Statuses() {
                                 <Table.Row textAlign="center">
                                     <Table.HeaderCell>#id</Table.HeaderCell>
                                     <Table.HeaderCell title="Наименование источника">Статус</Table.HeaderCell>
-                                    <Table.HeaderCell title="Информация об обнулении">Обнуление</Table.HeaderCell>
+                                    <Table.HeaderCell>Настройки</Table.HeaderCell>
                                     <Table.HeaderCell title="Тема оформления строки заявки">Оформление</Table.HeaderCell>
                                     <Table.HeaderCell />
                                 </Table.Row>
@@ -143,7 +147,8 @@ function Statuses() {
                                 {statuses.map(status => <Table.Row key={status.id} textAlign="center" verticalAlign="middle" className={`request-row ${status.theme ? `request-row-theme-${status.theme}` : ``}`}>
                                     <Table.Cell>{status.id}</Table.Cell>
                                     <Table.Cell>{status.name}</Table.Cell>
-                                    <Table.Cell>
+                                    <Table.Cell className="d-flex justify-content-center">
+                                        {status.event_time === 1 && <span><Icon name="clock" title="Требуется время события" className="mr-3" /></span>}
                                         <StatusZeronigInfoCell
                                             zeroing={status.zeroing}
                                             data={status.zeroing_data}

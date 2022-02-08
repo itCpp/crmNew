@@ -1,5 +1,6 @@
 import React from "react";
-import { Form } from "semantic-ui-react";
+import { Form, Dropdown, Icon } from "semantic-ui-react";
+import { themes } from "./Statuses";
 
 function StatusForm(props) {
 
@@ -70,15 +71,41 @@ function StatusForm(props) {
 
     return <Form loading={load}>
 
-        <Form.Input
-            placeholder="Укажите наименование статуса..."
-            label="Наименование статуса"
-            name="name"
-            value={formdata.name || ""}
-            onChange={changeFormdata}
-            disabled={error ? true : false}
-            error={errors.name || false}
-        />
+        <Form.Group widths="equal">
+
+            <Form.Input
+                placeholder="Укажите наименование статуса..."
+                label="Наименование статуса"
+                name="name"
+                value={formdata.name || ""}
+                onChange={changeFormdata}
+                disabled={error ? true : false}
+                error={errors.name || false}
+            />
+
+            <Form.Field>
+                <label>Тема оформления</label>
+                <Dropdown
+                    placeholder="Оформление"
+                    selection
+                    options={themes.map((o, i) => ({
+                        ...o,
+                        key: i,
+                        as: () => <div
+                            className={`request-row-select-item request-row request-row-theme-${o.value} ${o.value === formdata.theme ? `active` : ``}`}
+                            onClick={() => setFormdata({ ...formdata, theme: o.value })}
+                        >
+                            {o.value === formdata.theme && <Icon name="check" />}
+                            <span>{o.text}</span>
+                        </div>,
+                    }))}
+                    // onChange={(e, { value }) => props.changeTheme({ id: row.id, theme: value })}
+                    value={formdata.theme}
+                    disabled={load ? true : false}
+                />
+            </Form.Field>
+
+        </Form.Group>
 
         <Form.Checkbox
             toggle

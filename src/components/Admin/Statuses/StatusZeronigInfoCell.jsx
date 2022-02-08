@@ -9,27 +9,27 @@ function StatusZeronigInfoCell(props) {
 
     if (data.algorithm === "xHour") {
         return <div className="d-flex justify-content-center align-items-center">
-            <span><Icon name="clock outline" color="green" /></span>
+            <span><Icon name="clock outline" /></span>
             <span>Через <code>n</code> часов: <b>{data.algorithm_option}</b></span>
         </div>
     }
 
     if (data.algorithm === "nextDay") {
         return <div className="d-flex justify-content-center align-items-center">
-            <span><Icon name="calendar check outline" color="green" /></span>
+            <span><Icon name="calendar check outline" /></span>
             <span>На следующий день</span>
         </div>
     }
 
     if (data.algorithm === "xDays") {
         return <div className="d-flex justify-content-center align-items-center">
-            <span><Icon name="calendar alternate outline" color="green" /></span>
+            <span><Icon name="calendar alternate outline" /></span>
             <span>Через <code>n</code> дней: <b>{data.algorithm_option}</b></span>
         </div>
     }
 
     return <div className="d-flex justify-content-center align-items-center">
-        <span><Icon name="check" color="green" /></span>
+        <span><Icon name="check" /></span>
         <span>{data.algorithm}</span>
     </div>
 

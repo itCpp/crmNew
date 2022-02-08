@@ -23,7 +23,9 @@ code {
   margin: 0;
   font-size: 85%;
   background-color: #ddf4ff;
-  border-radius: 6px;
+  color: #000000;
+  font-family: monospace;
+  border-radius: 0.25rem;
 }
 
 .loading-page {

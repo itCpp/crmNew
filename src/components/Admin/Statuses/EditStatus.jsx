@@ -1,8 +1,6 @@
 import React from "react";
 import axios from "./../../../utils/axios-header";
-
 import { Button, Modal, Dimmer, Loader, Message } from "semantic-ui-react";
-
 import StatusForm from "./StatusForm";
 
 const EditStatus = props => {
