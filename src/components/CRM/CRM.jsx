@@ -1,9 +1,7 @@
 import React from "react";
 import axios from "./../../utils/axios-header";
 import { withRouter } from "react-router-dom";
-
 import { connect } from 'react-redux';
-
 import {
     setTabList,
     selectTab,
@@ -14,13 +12,9 @@ import {
     counterUpdate
 } from "./../../store/requests/actions";
 import { setTopMenu } from "./../../store/interface/actions";
-
 import { Loader, Message } from "semantic-ui-react";
-
 import "./crm.css";
-
 import Menu from "./Menu/Menu";
-
 import Requests from "./Requests/Requests";
 import Queues from "./Queues";
 import Sms from "./Sms";
@@ -30,6 +24,7 @@ import Rating from "./Rating";
 import User from "./User";
 import MyTests from "./MyTests";
 import AgreementClients from "./AgreementClients";
+import AudioCalls from "./AudioCalls";
 
 const CrmContent = React.memo(withRouter(props => {
 
@@ -264,6 +259,9 @@ const CRM = props => {
         </div > */}
         <CrmContent page={page} permits={permits} />
 
+        {/** Модальное окно просмотра записей разговоров */}
+        {props.showAudioCalls && <AudioCalls data={props.showAudioCalls} />}
+
     </div>
 
 }
@@ -275,6 +273,7 @@ const mapStateToProps = state => ({
     select: state.requests.select,
     counter: state.requests.counter,
     searchRequest: state.requests.searchRequest,
+    showAudioCalls: state.requests.showAudioCalls,
 });
 
 const mapActions = {

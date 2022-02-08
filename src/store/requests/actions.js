@@ -103,3 +103,9 @@ export const setSendSms = data => ({
     type: SET_SEND_SMS,
     payload: data
 });
+
+export const SHOW_AUDIO_CALLS = "SHOW_AUDIO_CALLS";
+export const setShowAudioCall = data => ({
+    type: SHOW_AUDIO_CALLS,
+    payload: data
+});

@@ -14,6 +14,7 @@ const defaultState = {
     editCell: null, // {null|object} Редактирование ячейки
     addPhoneShow: null, // {null|number} Модальное окно добавления номера телефона
     sendSms: null,
+    showAudioCalls: null,
 };
 
 let list = [];
@@ -134,6 +135,9 @@ export const requestsReducer = (state = defaultState, action) => {
 
         case ACTION.SET_SEND_SMS:
             return { ...state, sendSms: action.payload }
+
+        case ACTION.SHOW_AUDIO_CALLS:
+            return { ...state, showAudioCalls: action.payload }
 
         default:
             return state;
