@@ -1,9 +1,10 @@
 import moment from "moment";
 import { Icon } from "semantic-ui-react";
+import AudioPlayer from "./AudioPlayer";
 
 const AudioCallsListRow = props => {
 
-    const { row } = props;
+    const { row, play, setPlay, nextPlay } = props;
     const className = [
         "call-detail-record",
         `call-detail-record-direction-${row.type}`
@@ -37,18 +38,40 @@ const AudioCallsListRow = props => {
 
         </div>
 
-        <div>
-            {row.duration && moment.unix(row.duration).utc().format('HH:mm:ss')}
-        </div>
+        {row.id === play?.id && <AudioPlayer
+            data={play}
+            setPlay={setPlay}
+            nextPlay={nextPlay}
+        />}
+
+        {row.id !== play?.id && <div>
+            {row.duration && moment.unix(row.duration).utc().format(row.duration >= 3600 ? 'HH:mm:ss' : 'mm:ss')}
+        </div>}
 
         <div className="call-detail-record-buttons">
+
+            <span>
+                <Icon
+                    name={play?.id === row.id ? "stop" : "play"}
+                    title={play?.id === row.id ? "Остановить" : "Воспроизвести"}
+                    color="grey"
+                    link
+                    fitted
+                    onClick={() => setPlay(play?.id === row.id ? null : {
+                        url: row.url,
+                        id: row.id,
+                        duration: row.duration,
+                    })}
+                />
+            </span>
 
             <a href={row.url} download={`audio-call-record-${row.id}.wav`} target="_blank">
                 <Icon
                     name="download"
-                    fitted
-                    link
+                    title="Скачать"
                     color="grey"
+                    link
+                    fitted
                 />
             </a>
 
