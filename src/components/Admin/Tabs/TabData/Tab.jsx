@@ -28,7 +28,7 @@ export default function Tab(props) {
     const [saveError, setSaveError] = React.useState(null);
     const [saveErrors, setSaveErrors] = React.useState({});
 
-    const noChange = JSON.stringify(row) === JSON.stringify(formdata);
+    const noChange = JSON.stringify({ ...row, updated_at: null }) === JSON.stringify({ ...formdata, updated_at: null });
 
     const onChange = (...a) => {
         const e = a[1] || a[0].currentTarget;
@@ -181,6 +181,12 @@ export default function Tab(props) {
                     tabs={tabs}
                     setTabs={setTabs}
                     setTab={setRow}
+
+                    row={formdata}
+                    setFormdata={onChange}
+                    loading={save}
+                    error={error}
+                    errors={saveErrors}
                 />
 
                 <div className="admin-content-segment w-100">
