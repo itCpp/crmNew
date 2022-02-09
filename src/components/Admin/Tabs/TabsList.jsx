@@ -9,19 +9,21 @@ import {
 
 import { Message, Loader, Dimmer, Icon, List } from "semantic-ui-react";
 
-const DragHandle = sortableHandle(() => <Icon name="move" className="button-icon" />);
+const DragHandle = sortableHandle(() => <Icon name="move" link title="Переместить строку" />);
 
 const SortableItem = sortableElement(({ tab, pushUrl }) => (
     <List.Item className="tabs-list-hover">
-        <div className="d-flex justify-content-between align-items-center py-2 px-3">
-            <List.Content>
+        <div className="d-flex justify-content-between align-items-center py-2 px-1">
+
+            <List.Content className="d-flex">
                 <DragHandle />
-                <span>{tab.name}</span>
+                <List.Header as="b">{tab.name}</List.Header>
+                {tab.name_title && <small className="ml-3">{tab.name_title}</small>}
             </List.Content>
             <List.Content>
                 <Icon
-                    name="edit outline"
-                    className="button-icon"
+                    name="pencil"
+                    link
                     title="Настройка статуса"
                     onClick={() => pushUrl(`/admin/tabs/${tab.id}`)}
                 />
@@ -58,13 +60,20 @@ function TabsList(props) {
     }
 
     if (!tabs.length)
-        return <Message info content="Создайте первую вкладку" />
+        return <Message info content="Создайте вкладку кликнув на зеленую кнопку с плюсом" />
 
-    return <div className="d-flex justify-content-start align-items-start flex-segments">
+    return <>
+
+        <div className="admin-content-segment">Вкладки можно упорядочить по желанию, для этого необходимо, удерживая левой кнопкой мыши по иконке <Icon name="move" fitted />, переместить строку в нужную позицию. Доступ к влкадкам можно настроить в разделе <b>Roles</b> или в разделе <b>Сотрудники</b>, если необходим индивидуальный доступ</div>
 
         <div className="admin-content-segment pt-4 position-relative">
 
-            <SortableContainer onSortEnd={onSortEnd} useDragHandle lockAxis="y" helperClass="tab-list-move">
+            <SortableContainer
+                onSortEnd={onSortEnd}
+                useDragHandle
+                lockAxis="y"
+                helperClass="tab-list-move"
+            >
                 {tabs.map((tab, index) => (
                     <SortableItem
                         {...props}
@@ -81,7 +90,7 @@ function TabsList(props) {
 
         </div>
 
-    </div>
+    </>
 
 }
 

@@ -1,6 +1,7 @@
 * {
   --border-color: #dededf;
   --width-main-menu: 230px;
+  --bg-body: #fafbfe;
 }
 
 body {
@@ -10,7 +11,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #fafbfe;
+  background: var(--bg-body);
   cursor: default;
   color: #6c757d;
 }
@@ -205,4 +206,36 @@ hr {
   background-color: #fc0;
   border-top: 1px solid var(--border-color);
   z-index: 10000;
+}
+
+.hidden-sticky {
+  position: absolute;
+  background: var(--bg-body);
+  top: -50px;
+  left: -1px;
+  right: -1px;
+  bottom: calc(100% + 1px);
+  z-index: -1;
+}
+
+.hidden-sticky::before {
+  content: "";
+  position: absolute;
+  width: 0.5rem;
+  height: 0.5rem;
+  top: 100%;
+  left: 0;
+  background: radial-gradient(circle at bottom right, transparent 0.5rem, var(--bg-body) 0.5rem);;
+  z-index: -1;
+}
+
+.hidden-sticky::after {
+  content: "";
+  position: absolute;
+  width: 0.5rem;
+  height: 0.5rem;
+  top: 100%;
+  right: 0;
+  background: radial-gradient(circle at bottom left, transparent 0.5rem, var(--bg-body) 0.5rem);
+  z-index: -1;
 }

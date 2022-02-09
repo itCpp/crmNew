@@ -39,7 +39,7 @@ function Tabs(props) {
     }, [props?.match?.params?.type]);
 
     if (tab) {
-        return <Tab 
+        return <Tab
             {...props}
             tab={tab}
             tabs={tabs}
@@ -47,7 +47,7 @@ function Tabs(props) {
         />
     }
 
-    return <>
+    return <div className="segment-compact">
 
         <div className="admin-content-segment d-flex justify-content-between align-items-center">
 
@@ -57,29 +57,23 @@ function Tabs(props) {
                 subheader="Настройка вкладок выбора заявок"
             />
 
-            {loading
-                ? <Loader active inline />
-                : <CreateTab
-                    tabs={tabs}
-                    setTabs={setTabs}
-                />
-            }
+            {loading && <Loader active inline />}
+            {!loading && <CreateTab
+                tabs={tabs}
+                setTabs={setTabs}
+            />}
 
         </div>
 
-        {error
-            ? <Message error content={error} />
-            : (loading
-                ? null
-                : <TabsList
-                    tabs={tabs}
-                    setTabs={setTabs}
-                    pushUrl={props.history.push}
-                />
-            )
-        }
+        {!loading && error && <Message error content={error} />}
 
-    </>
+        {!loading && !error && <TabsList
+            tabs={tabs}
+            setTabs={setTabs}
+            pushUrl={props.history.push}
+        />}
+
+    </div>
 
 }
 

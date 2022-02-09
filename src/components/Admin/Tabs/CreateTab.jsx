@@ -65,7 +65,6 @@ const CreateTab = props => {
             positive={!error ? true : false}
             negative={error ? true : false}
             title="Создать новую вкладку"
-            size="mini"
             circular
             loading={create}
             disabled={create}
