@@ -149,17 +149,11 @@ export default function Tab(props) {
 
                 <TabBasicSettings
                     row={formdata}
+                    statuses={statuses}
                     setFormdata={onChange}
                     loading={save}
                     error={error}
                     errors={saveErrors}
-                />
-
-                <TabStatusesRows
-                    tab={row}
-                    setRow={setRow}
-                    statuses={statuses}
-                    setStatuses={setStatuses}
                 />
 
                 <TabQuerySettings
