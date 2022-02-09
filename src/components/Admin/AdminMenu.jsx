@@ -137,6 +137,11 @@ function AdminMenu(props) {
                 <span>Офисы</span>
             </NavLink>
 
+            <NavLink to="/admin/gates" className="admin-menu-point" onClick={changePage}>
+                <Icon name="signal" />
+                <span>GSM шлюзы</span>
+            </NavLink>
+
             <NavLink to="/admin/callsqueue" className="admin-menu-point" onClick={changePage}>
                 <Icon name="random" />
                 <span>Направление звоков</span>

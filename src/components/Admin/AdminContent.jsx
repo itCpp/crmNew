@@ -1,8 +1,6 @@
 import { withRouter } from "react-router";
-
 import Roles from './Developer/Roles/Roles';
 import Permits from './Developer/Permits/Permits';
-
 import Dashboard from "./Dashboard";
 import Users from './Users/Users';
 import Callcenters from './Callcenters/Callcenters';
@@ -17,6 +15,7 @@ import Block from './Block';
 import Routes from './API/Routes';
 import Settings from "./Settings/Settings";
 import DataBases from "./DataBases/DataBases";
+import Gates from "./Gates";
 
 function AdminContent(props) {
 
@@ -55,6 +54,8 @@ function AdminContent(props) {
         body = <Settings {...props} />
     else if (page == "databases" && permits.dev_block)
         body = <DataBases {...props} />
+    else if (page == "gates" && permits.dev_block)
+        body = <Gates {...props} />
 
     return <div className="admin-content-body">
         {body}
