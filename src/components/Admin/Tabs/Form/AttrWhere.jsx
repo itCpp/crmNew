@@ -9,6 +9,7 @@ export default function AttrWhere(props) {
 
     const { columns, query, changeData } = props;
     const { addWhere, setAddWhere } = props;
+    const { loading, error, errors } = props;
 
     const changeAttrArray = (...a) => {
 
@@ -22,7 +23,6 @@ export default function AttrWhere(props) {
         attr[e.item] = { ...attr[e.item], [e.name]: value };
 
         changeData(null, { name: "attr", value: attr });
-
     }
 
     const changeAttr = (name, value, item) => {
@@ -43,7 +43,6 @@ export default function AttrWhere(props) {
             attr.push({});
 
             changeData(null, { name: "attr", value: attr });
-
         }
 
         return () => setAddWhere(false);
@@ -59,12 +58,14 @@ export default function AttrWhere(props) {
                 changeAttr={changeAttr}
                 value={attr.column || ""}
                 item={i}
+                disabled={loading || error}
             />
             <FormSelectOperators
                 width={6}
                 changeAttr={changeAttr}
                 value={attr.operator || ""}
                 item={i}
+                disabled={loading || error}
             />
             <Form.Input
                 label={i === 0 ? "Значение" : false}
@@ -75,6 +76,7 @@ export default function AttrWhere(props) {
                 value={attr.value || ""}
                 item={i}
                 onChange={changeAttrArray}
+                disabled={loading || error}
             />
 
             {query.attr.length > 1
@@ -86,6 +88,7 @@ export default function AttrWhere(props) {
                     style={{ height: "38px" }}
                     size="mini"
                     basic
+                    disabled={loading || error}
                 />
                 : null
             }

@@ -4,6 +4,7 @@ import FormSelectColumn from "./FormSelectColumn";
 const TabFormSort = props => {
 
     const { columns, query, queryKey, queryEdit, removeQueryRow } = props;
+    const { loading, error, errors } = props;
 
     const changeAttr = (name, value, item) => {
 
@@ -12,7 +13,6 @@ const TabFormSort = props => {
         data[name] = value;
 
         queryEdit(data, item);
-
     }
 
     return <div className="where-row my-3">
@@ -26,6 +26,7 @@ const TabFormSort = props => {
                 value={query.column || ""}
                 item={queryKey}
                 noLabel
+                disabled={loading || error}
             />
 
             <FormSelect
@@ -37,6 +38,7 @@ const TabFormSort = props => {
                 width={10}
                 value={query.by || ""}
                 onChange={(e, { value }) => changeAttr("by", value, queryKey)}
+                disabled={loading || error}
             />
 
             <Button
@@ -46,6 +48,7 @@ const TabFormSort = props => {
                 style={{ height: "38px" }}
                 size="mini"
                 basic
+                disabled={loading || error}
             />
 
         </Form.Group>

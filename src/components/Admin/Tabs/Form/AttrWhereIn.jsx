@@ -8,6 +8,8 @@ import FormSelectColumn from "./FormSelectColumn";
 export default function AttrWhereIn(props) {
 
     const { columns, query, changeData } = props;
+    const { loading, errors } = props;
+    const tabError = props.error;
 
     const [load, setLoad] = React.useState(null);
     const [error, setError] = React.useState(null);
@@ -56,7 +58,6 @@ export default function AttrWhereIn(props) {
         }
 
         changeData(null, { name: "attr", value: attr });
-
     }
 
     const changeAttr = (name, value, item = 0) => {
@@ -67,7 +68,6 @@ export default function AttrWhereIn(props) {
         }
 
         changeAttrArray(null, { name, value, item });
-
     }
 
     React.useEffect(() => {
@@ -115,6 +115,7 @@ export default function AttrWhereIn(props) {
                         changeAttr={changeAttr}
                         value={attr.column || ""}
                         item={0}
+                        disabled={loading || tabError}
                     />
                     <Form.Select
                         label="Список занчений"
@@ -133,6 +134,7 @@ export default function AttrWhereIn(props) {
                         value={attr.preset || ""}
                         loading={load}
                         error={error ? true : false}
+                        disabled={loading || tabError}
                     />
                 </Form.Group>
 
@@ -150,7 +152,8 @@ export default function AttrWhereIn(props) {
                     value={selected}
                     onAddItem={handleAddition}
                     onChange={handleChange}
-                    disabled={load}
+                    disabled={load || loading || tabError}
+                    noResultsMessage="Ничего не найдено."
                 />
 
             </div>

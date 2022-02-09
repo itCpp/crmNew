@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "./../../../../utils/axios-header";
 import { Form, Message, Button, Grid } from "semantic-ui-react";
 import TabFormSort from "./../Form/TabFormSort";
 import TabSql from "./TabSql";
@@ -31,7 +30,9 @@ const TabSortSettings = props => {
     const removeQueryRow = key => {
 
         let data = row.order_by_settings ? [...row.order_by_settings] : [];
-        data.splice(key, 1);
+
+        if (data[key])
+            data.splice(key, 1);
 
         setFormdata(null, { name: "order_by_settings", value: data });
     }
@@ -114,6 +115,7 @@ const TabSortSettings = props => {
                             icon="plus"
                             labelPosition="right"
                             onClick={addQueryRow}
+                            disabled={props.loading}
                         />
                     </Grid.Column>
                 </Grid>

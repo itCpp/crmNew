@@ -5,6 +5,7 @@ import FormSelectColumn from "./FormSelectColumn";
 export default function AttrWhereBetween(props) {
 
     const { columns, query, changeData } = props;
+    const { loading, error, errors } = props;
 
     const changeAttrArray = (...a) => {
 
@@ -22,10 +23,10 @@ export default function AttrWhereBetween(props) {
         if (e.name === "value0" || e.name == "value1") {
 
             let between = attr[e.item].between || [];
-            
+
             if (e.name === "value1")
                 between[1] = value;
-            
+
             if (e.name == "value0")
                 between[0] = value;
 
@@ -56,6 +57,7 @@ export default function AttrWhereBetween(props) {
                 changeAttr={changeAttr}
                 value={attr.column || ""}
                 item={i}
+                disabled={loading || error}
             />
             <Form.Input
                 label={i === 0 ? "Значение от" : false}
@@ -66,6 +68,7 @@ export default function AttrWhereBetween(props) {
                 value={typeof attr.between == "object" ? attr.between[0] : ""}
                 item={i}
                 onChange={changeAttrArray}
+                disabled={loading || error}
             />
             <Form.Input
                 label={i === 0 ? "Значение до" : false}
@@ -76,6 +79,7 @@ export default function AttrWhereBetween(props) {
                 value={typeof attr.between == "object" ? attr.between[1] : ""}
                 item={i}
                 onChange={changeAttrArray}
+                disabled={loading || error}
             />
         </Form.Group> : null)}
 

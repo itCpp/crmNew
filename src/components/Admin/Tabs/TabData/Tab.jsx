@@ -1,13 +1,10 @@
 import React from "react";
 import axios from "./../../../../utils/axios-header";
-
-import { Header, Message, Loader, Placeholder, Icon, Button } from "semantic-ui-react";
-
+import { Header, Message, Loader, Icon, Button } from "semantic-ui-react";
 import TabBasicSettings from "./TabBasicSettings";
 import TabQuerySettings from "./TabQuerySettings";
 import TabPermitsSettings from "./TabPermitsSettings";
 import TabSortSettings from "./TabSortSettings";
-import TabStatusesRows from "./TabStatusesRows";
 
 export default function Tab(props) {
 
@@ -155,30 +152,25 @@ export default function Tab(props) {
                     statuses={statuses}
                     setFormdata={onChange}
                     loading={save}
-                    error={error}
+                    error={error ? true : false}
                     errors={saveErrors}
                 />
 
                 <TabQuerySettings
-                    tab={row}
-                    tabs={tabs}
-                    setTabs={setTabs}
-                    setTab={setRow}
-                    columns={columns}
-                />
-
-                <TabSortSettings
-                    tab={row}
-                    tabs={tabs}
-                    setTabs={setTabs}
-                    setTab={setRow}
-                    columns={columns}
-
                     row={formdata}
                     columns={columns}
                     setFormdata={onChange}
                     loading={save}
-                    error={error}
+                    error={error ? true : false}
+                    errors={saveErrors}
+                />
+
+                <TabSortSettings
+                    row={formdata}
+                    columns={columns}
+                    setFormdata={onChange}
+                    loading={save}
+                    error={error ? true : false}
                     errors={saveErrors}
                 />
 
@@ -190,7 +182,7 @@ export default function Tab(props) {
                     row={formdata}
                     setFormdata={onChange}
                     loading={save}
-                    error={error}
+                    error={error ? true : false}
                     errors={saveErrors}
                 />
 

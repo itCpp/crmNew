@@ -2,7 +2,7 @@ import { Form } from "semantic-ui-react";
 
 export default function FormSelectColumn(props) {
 
-    const { columns, changeAttr, value, item, name, noLabel } = props;
+    const { columns, changeAttr, value, item, name, noLabel, disabled } = props;
 
     const options = columns.map((row, i) => ({
         key: i,
@@ -19,6 +19,7 @@ export default function FormSelectColumn(props) {
         width={props.width || 16}
         value={value || ""}
         required
+        disabled={disabled}
     />
 
 }

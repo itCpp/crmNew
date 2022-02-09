@@ -7,6 +7,7 @@ import FormInputDate from "./FormInputDate";
 export default function AttrWhereDatetime(props) {
 
     const { columns, query, changeData } = props;
+    const { loading, error, errors } = props;
 
     const changeAttrArray = (...a) => {
 
@@ -20,7 +21,6 @@ export default function AttrWhereDatetime(props) {
         attr[e.item] = { ...attr[e.item], [e.name]: value };
 
         changeData(null, { name: "attr", value: attr });
-
     }
 
     const changeAttr = (name, value, item) => {
@@ -36,12 +36,14 @@ export default function AttrWhereDatetime(props) {
                 changeAttr={changeAttr}
                 value={attr.column || ""}
                 item={i}
+                disabled={loading || error}
             />
             <FormSelectOperators
                 width={6}
                 changeAttr={changeAttr}
                 value={attr.operator || ""}
                 item={i}
+                disabled={loading || error}
             />
             <FormInputDate
                 {...props}
@@ -49,6 +51,7 @@ export default function AttrWhereDatetime(props) {
                 item={i}
                 width={10}
                 onChange={changeAttrArray}
+                disabled={loading || error}
             />
         </Form.Group> : null)}
 

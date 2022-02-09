@@ -2,7 +2,7 @@ import { Form } from "semantic-ui-react";
 
 export default function FormInputDate(props) {
 
-    const { query, attr, item, onChange, width } = props;
+    const { query, attr, item, onChange, width, disabled } = props;
 
     let title = "Дата",
         type = "date";
@@ -33,6 +33,7 @@ export default function FormInputDate(props) {
         width={width || 16}
         required
         style={{ maxHeight: "38px" }}
+        disabled={disabled || false}
     />
 
 }

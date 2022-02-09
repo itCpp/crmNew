@@ -6,6 +6,7 @@ import FormSelectOperators from "./FormSelectOperators";
 export default function AttrWhereColumn(props) {
 
     const { columns, query, changeData } = props;
+    const { loading, error, errors } = props;
 
     const changeAttrArray = (...a) => {
 
@@ -35,12 +36,14 @@ export default function AttrWhereColumn(props) {
                 changeAttr={changeAttr}
                 value={attr.column || ""}
                 item={i}
+                disabled={loading || error}
             />
             <FormSelectOperators
                 width={6}
                 changeAttr={changeAttr}
                 value={attr.operator || ""}
                 item={i}
+                disabled={loading || error}
             />
             <FormSelectColumn
                 columns={columns}
@@ -49,6 +52,7 @@ export default function AttrWhereColumn(props) {
                 changeAttr={changeAttr}
                 value={attr.value || ""}
                 item={i}
+                disabled={loading || error}
             />
         </Form.Group> : null)}
 

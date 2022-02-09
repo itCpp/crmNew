@@ -2,7 +2,7 @@ import { Form } from "semantic-ui-react";
 
 export default function FormSelectOperators(props) {
 
-    const { changeAttr, value, item } = props;
+    const { changeAttr, value, item, disabled } = props;
 
     const operators = [
         '=', '>', '<', '>=', '<=', '!=', '<>', 'like', '%like', 'like%', '%like%'
@@ -23,6 +23,7 @@ export default function FormSelectOperators(props) {
         width={props.width || 16}
         value={value}
         required
+        disabeld={disabled || false}
     />
 
 }

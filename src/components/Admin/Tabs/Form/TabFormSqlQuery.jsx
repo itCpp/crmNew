@@ -8,6 +8,8 @@ import FormWhereAttr from "./FormWhereAttr";
 export default function TabFormSqlQuery(props) {
 
     const { query, queryKey, queryEdit, removeQueryRow } = props;
+    const { loading, error, errors } = props;
+
     const [addWhere, setAddWhere] = React.useState(false);
 
     const changeData = (...a) => {
@@ -38,19 +40,20 @@ export default function TabFormSqlQuery(props) {
             <FormSelectWhere
                 {...props}
                 changeData={changeData}
+                disabled={loading || error}
             />
-            {whereForAddAttr.indexOf(query.where) >= 0
-                ? <Button
-                    icon="plus"
-                    color="green"
-                    title="Добавить еще условие"
-                    onClick={() => setAddWhere(true)}
-                    style={{ height: "38px" }}
-                    size="mini"
-                    basic
-                />
-                : null
-            }
+
+            {whereForAddAttr.indexOf(query.where) >= 0 && <Button
+                icon="plus"
+                color="green"
+                title="Добавить еще условие"
+                onClick={() => setAddWhere(true)}
+                style={{ height: "38px" }}
+                size="mini"
+                basic
+                disabled={loading || error}
+            />}
+
             <Button
                 icon="trash"
                 title="Удалить выражение"
@@ -58,18 +61,16 @@ export default function TabFormSqlQuery(props) {
                 style={{ height: "38px" }}
                 size="mini"
                 basic
+                disabled={loading || error}
             />
         </Form.Group>
 
-        {query.where
-            ? <FormWhereAttr
-                {...props}
-                addWhere={addWhere}
-                setAddWhere={setAddWhere}
-                changeData={changeData}
-            />
-            : null
-        }
+        {query.where && <FormWhereAttr
+            {...props}
+            addWhere={addWhere}
+            setAddWhere={setAddWhere}
+            changeData={changeData}
+        />}
 
     </div>
 

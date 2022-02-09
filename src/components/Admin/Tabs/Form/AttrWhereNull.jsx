@@ -7,6 +7,7 @@ import FormSelectColumn from "./FormSelectColumn";
 export default function AttrWhereNull(props) {
 
     const { columns, query, changeData } = props;
+    const { loading, error, errors } = props;
 
     const changeAttrArray = (...a) => {
 
@@ -20,7 +21,6 @@ export default function AttrWhereNull(props) {
         attr[e.item] = { ...attr[e.item], [e.name]: value };
 
         changeData(null, { name: "attr", value: attr });
-
     }
 
     const changeAttr = (name, value, item = 0) => {
@@ -38,6 +38,7 @@ export default function AttrWhereNull(props) {
                         changeAttr={changeAttr}
                         value={attr.column || ""}
                         item={0}
+                        disabled={loading || error}
                     />
                 </Form.Group>
 

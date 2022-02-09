@@ -2,7 +2,7 @@ import { Form } from "semantic-ui-react";
 
 export default function FormSelectWhere(props) {
 
-    const { query, changeData } = props;
+    const { query, changeData, disabled } = props;
 
     const where = [
         // { value: "whereFunction", text: "Логическое выражение" },
@@ -41,6 +41,7 @@ export default function FormSelectWhere(props) {
             name="where"
             value={query.where || ""}
             width={props.width || 16}
+            disabled={disabled || false}
         />
 
     </>
