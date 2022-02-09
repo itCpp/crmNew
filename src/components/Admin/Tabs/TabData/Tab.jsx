@@ -5,6 +5,7 @@ import TabBasicSettings from "./TabBasicSettings";
 import TabQuerySettings from "./TabQuerySettings";
 import TabPermitsSettings from "./TabPermitsSettings";
 import TabSortSettings from "./TabSortSettings";
+import TabSql from "./TabSql";
 
 export default function Tab(props) {
 
@@ -28,8 +29,6 @@ export default function Tab(props) {
     const noChange = JSON.stringify({ ...row, updated_at: null }) === JSON.stringify({ ...formdata, updated_at: null });
 
     const onChange = (...a) => {
-
-        console.log(a);
 
         const e = a[1] || a[0].currentTarget;
         const value = e.type === "checkbox"
@@ -126,6 +125,16 @@ export default function Tab(props) {
             {loading && <div><Loader active inline /></div>}
 
             {!loading && <div>
+                <TabSql
+                    id={row.id}
+                    target={<Button
+                        circular
+                        color="blue"
+                        basic
+                        icon="code"
+                        title="Посмтреть действующий SQL запрос"
+                    />}
+                />
                 <Button
                     icon="save"
                     color="green"

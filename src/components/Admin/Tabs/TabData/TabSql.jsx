@@ -11,6 +11,7 @@ const TabSql = props => {
     const [error, setError] = React.useState(null);
     const [open, setOpen] = React.useState(false);
     const [message, setMessage] = React.useState(false);
+    const [query, setQuery] = React.useState(false);
 
     React.useEffect(() => {
 
@@ -23,8 +24,9 @@ const TabSql = props => {
 
             setLoad(true);
 
-            axios.post('dev/getSql', { id, where, orderBy }).then(({ data }) => {
+            axios.post('dev/tabs/sql', { id, where, orderBy }).then(({ data }) => {
                 setMessage(data.message);
+                setQuery(data.full);
             }).catch(error => {
                 setError(axios.getError(error));
             }).then(() => {
@@ -57,15 +59,30 @@ const TabSql = props => {
 
         <Modal.Header>
             <Icon name="code" style={{ marginRight: "1rem" }} />
-            <span>MySQL запрос</span>
+            <span>SQL запрос</span>
         </Modal.Header>
 
         <Modal.Content className="position-relative">
 
-            {error
-                ? <Message error content={error} className="mb-0" />
-                : <Message info content={message || "Запрос формируется"} className="mb-0" />
-            }
+            {error && <Message error content={error} className="mb-0" />}
+
+            {!error && <pre
+                style={{
+                    whiteSpace: "pre-wrap",
+                    wordWrap: "break-word !important",
+                    color: "#000000"
+                }}
+                children={message || "Запрос формируется..."}
+            />}
+
+            {!error && <pre
+                style={{
+                    whiteSpace: "pre-wrap",
+                    wordWrap: "break-word !important",
+                    color: "#000000"
+                }}
+                children={query || "Полный запрос формируется..."}
+            />}
 
             <Dimmer active={load} inverted>
                 <Loader inverted />
