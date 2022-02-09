@@ -31,6 +31,9 @@ export default function Tab(props) {
     const noChange = JSON.stringify({ ...row, updated_at: null }) === JSON.stringify({ ...formdata, updated_at: null });
 
     const onChange = (...a) => {
+
+        console.log(a);
+
         const e = a[1] || a[0].currentTarget;
         const value = e.type === "checkbox"
             ? e.checked ? 1 : 0
@@ -50,13 +53,13 @@ export default function Tab(props) {
                 getStatuses: true,
             }).then(({ data }) => {
 
-                tabs.find((r, k, a) => {
-                    if (r.id === tab) {
-                        a[k] = data.tab;
-                        setTabs(a);
-                        return true;
-                    }
-                });
+                // tabs.find((r, k, a) => {
+                //     if (r.id === tab) {
+                //         a[k] = data.tab;
+                //         setTabs(a);
+                //         return true;
+                //     }
+                // });
 
                 setRow(data.tab);
                 setFormdata(data.tab);
@@ -170,6 +173,13 @@ export default function Tab(props) {
                     setTabs={setTabs}
                     setTab={setRow}
                     columns={columns}
+
+                    row={formdata}
+                    columns={columns}
+                    setFormdata={onChange}
+                    loading={save}
+                    error={error}
+                    errors={saveErrors}
                 />
 
             </div>
@@ -177,11 +187,6 @@ export default function Tab(props) {
             <div className="d-flex justifycontent-start flex-column flex-segments w-100">
 
                 <TabPermitsSettings
-                    tab={row}
-                    tabs={tabs}
-                    setTabs={setTabs}
-                    setTab={setRow}
-
                     row={formdata}
                     setFormdata={onChange}
                     loading={save}

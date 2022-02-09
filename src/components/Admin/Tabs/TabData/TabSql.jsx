@@ -5,7 +5,7 @@ import { Button, Modal, Dimmer, Loader, Message, Icon } from "semantic-ui-react"
 
 const TabSql = props => {
 
-    const { id, where, orderBy } = props;
+    const { id, where, orderBy, target, fluid } = props;
 
     const [load, setLoad] = React.useState(false);
     const [error, setError] = React.useState(null);
@@ -38,13 +38,14 @@ const TabSql = props => {
     return <Modal
         closeIcon
         open={open}
-        trigger={<Button
-            content="Проверить запрос"
+        trigger={target || <Button
+            content="Проверить SQL запрос"
             title="Проверить сформированный запрос"
             color="blue"
             basic
             icon="code"
             labelPosition="right"
+            fluid={fluid || false}
         />}
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}

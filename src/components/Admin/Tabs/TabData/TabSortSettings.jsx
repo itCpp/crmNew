@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "./../../../../utils/axios-header";
-import { Form, Message, Button } from "semantic-ui-react";
+import { Form, Message, Button, Grid } from "semantic-ui-react";
 import TabFormSort from "./../Form/TabFormSort";
 import TabSql from "./TabSql";
 
@@ -11,44 +11,17 @@ import TabSql from "./TabSql";
  */
 const TabSortSettings = props => {
 
-    const { tab, tabs, setTabs, setTab } = props;
-    const [formdata, setFormdata] = React.useState(tab);
-
-    const [load, setLoad] = React.useState(false);
-    const [globalError, setError] = React.useState(null);
-    const [errors, setErrors] = React.useState({});
-    const [save, setSave] = React.useState(false);
-
-    /**
-     * Функция изменнеия глобальных данных вкладки
-     * 
-     * @param  {...any} a 
-     */
-    const changeFormdata = (...a) => {
-
-        const e = a[1] || a[0].currentTarget;
-
-        const value = e.type === "checkbox"
-            ? e.checked ? 1 : 0
-            : e.value;
-
-        setFormdata({ ...formdata, [e.name]: value });
-
-    }
+    const { row, setFormdata } = props;
 
     /**
      * Добавление строки условия сортировки
      */
     const addQueryRow = () => {
 
-        let data = { ...formdata };
+        let data = row.order_by_settings ? [...row.order_by_settings] : [];
+        data.push({});
 
-        if (!data.order_by_settings)
-            data.order_by_settings = [];
-
-        data.order_by_settings.push({});
-        setFormdata(data);
-
+        setFormdata(null, { name: "order_by_settings", value: data });
     }
 
     /**
@@ -57,10 +30,10 @@ const TabSortSettings = props => {
      */
     const removeQueryRow = key => {
 
-        let data = { ...formdata };
-        data.order_by_settings.splice(key, 1);
-        setFormdata(data);
+        let data = row.order_by_settings ? [...row.order_by_settings] : [];
+        data.splice(key, 1);
 
+        setFormdata(null, { name: "order_by_settings", value: data });
     }
 
     /**
@@ -70,109 +43,80 @@ const TabSortSettings = props => {
      */
     const queryEdit = (query, key) => {
 
-        let data = [...formdata.order_by_settings];
+        let data = [...row.order_by_settings];
         data[key] = query;
 
-        setFormdata({ ...formdata, order_by_settings: data });
-
+        setFormdata(null, { name: "order_by_settings", value: data });
     }
-
-    /** Отслеживание изменнеий данных вкладки */
-    React.useEffect(() => {
-        setFormdata(tab);
-    }, [tab]);
-
-    /** Сохранение изменений в БД */
-    React.useEffect(() => {
-
-        if (save) {
-
-            setLoad(true);
-
-            axios.post('dev/saveTab', formdata).then(({ data }) => {
-
-                setError(false);
-
-                tabs.find((r, k, a) => {
-                    if (r.id === formdata.id) {
-                        a[k] = data.tab;
-                        setTabs(a);
-                        return true;
-                    }
-                });
-
-                setTab(data.tab);
-
-            }).catch(error => {
-                setError(axios.getError(error));
-                setErrors(axios.getErrors(error));
-            }).then(() => {
-                setLoad(false);
-            });
-
-        }
-
-        return () => setSave(false);
-
-    }, [save]);
 
     return <div className="admin-content-segment w-100">
 
         <div className="divider-header">
             <h3>Условия сортировки</h3>
             <div>
-                <Button
-                    circular={true}
-                    size="tiny"
-                    icon="save"
-                    color="green"
-                    basic={tab === formdata}
-                    disabled={tab === formdata}
-                    loading={load}
-                    title="Сохранить изменения"
-                    onClick={() => setSave(true)}
+                <TabSql
+                    id={row.id}
+                    orderBy={row.order_by_settings}
+                    target={<Button
+                        circular
+                        size="mini"
+                        color="blue"
+                        icon="code"
+                        basic
+                        title="Проверить новый запрос"
+                    />}
                 />
             </div>
         </div>
 
         <div className="position-relative mb-2">
 
-            <Message size="mini" className="mt-3" content="Сформируйте условия сортировки строк. По умолчанию сортировка определена по дате добавления заявки (created_at) в порядке возрастания, т.е. новые строки будут всегда в начале таблицы" />
-
-            {globalError
-                ? <Message error content={globalError} />
-                : null
-            }
+            <div>Сформируйте условия сортировки строк. По умолчанию сортировка определена по дате добавления заявки <code>created_at</code> в порядке убывания, т.е. новые строки будут всегда в начале таблицы.</div>
 
             <Form>
 
-                {formdata.order_by_settings && formdata.order_by_settings.length > 0
-                    ? formdata.order_by_settings.map((query, i) => <TabFormSort
+                {row.order_by_settings && row.order_by_settings.length === 0 &&
+                    <Message
+                        info
+                        size="tiny"
+                        className="mt-3"
+                        content="Добавьте условия сортировки строк"
+                    />
+                }
+
+                {row.order_by_settings && row.order_by_settings.length > 0 &&
+                    row.order_by_settings.map((query, i) => <TabFormSort
                         key={i}
                         {...props}
-                        formdata={formdata}
-                        changeFormdata={changeFormdata}
-                        error={false}
-                        errors={errors}
+                        formdata={row}
+                        changeFormdata={setFormdata}
                         query={query}
                         queryKey={i}
                         queryEdit={queryEdit}
                         removeQueryRow={removeQueryRow}
                     />)
-                    : <Message info size="tiny" className="mt-3" content="Добавьте условия сортировки строк" />
                 }
 
-                <div className="text-center">
-                    <Button
-                        content="Добавить условие"
-                        color="green"
-                        basic
-                        icon="plus"
-                        labelPosition="right"
-                        onClick={addQueryRow}
-                    />
-                    <TabSql id={formdata.id} orderBy={formdata.order_by_settings} />
-                </div>
+                <Grid columns="equal">
+                    <Grid.Column>
+                        <TabSql
+                            id={row.id}
+                            orderBy={row.order_by_settings}
+                            fluid={true}
+                        />
+                    </Grid.Column>
+                    <Grid.Column>
+                        <Button
+                            fluid
+                            content="Добавить условие"
+                            color="green"
+                            basic
+                            icon="plus"
+                            labelPosition="right"
+                            onClick={addQueryRow}
+                        />
+                    </Grid.Column>
+                </Grid>
 
             </Form>
 
