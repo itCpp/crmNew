@@ -76,7 +76,7 @@ const TabSortSettings = props => {
 
             <Form>
 
-                {row.order_by_settings && row.order_by_settings.length === 0 &&
+                {((row.order_by_settings && row.order_by_settings.length === 0) || row.order_by_settings === null) &&
                     <Message
                         info
                         size="tiny"

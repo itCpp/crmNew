@@ -71,7 +71,7 @@ export default function TabQuerySettings(props) {
 
             <Form>
 
-                {row.where_settings && row.where_settings.length === 0 &&
+                {((row.where_settings && row.where_settings.length === 0) || row.where_settings === null) &&
                     <Message
                         info
                         size="tiny"
