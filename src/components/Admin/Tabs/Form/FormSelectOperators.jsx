@@ -23,7 +23,7 @@ export default function FormSelectOperators(props) {
         width={props.width || 16}
         value={value}
         required
-        disabeld={disabled || false}
+        disabled={disabled}
     />
 
 }

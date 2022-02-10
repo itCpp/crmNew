@@ -34,7 +34,7 @@ export default function TabBasicSettings(props) {
                     label="Заголовок при наведении на вкладку"
                     name="name_title"
                     value={row.name_title || ""}
-                    onChange={setFormdata}
+                    onChange={(e, { name, value }) => setFormdata(e, { name, value: value === "" ? null : value })}
                     disabled={error ? true : false || loading}
                     error={errors.name_title ? true : false}
                 />

@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "./../../../../utils/axios-header";
-import { Header, Message, Loader, Icon, Button } from "semantic-ui-react";
+import { Header, Message, Loader, Icon, Button, Placeholder } from "semantic-ui-react";
 import TabBasicSettings from "./TabBasicSettings";
 import TabQuerySettings from "./TabQuerySettings";
 import TabPermitsSettings from "./TabPermitsSettings";
@@ -98,7 +98,7 @@ export default function Tab(props) {
 
     return <>
 
-        <div className="admin-content-segment d-flex justify-content-between align-items-center" ref={header} style={{ position: "sticky", zIndex: 100 }}>
+        <div className="admin-content-segment d-flex justify-content-between align-items-center" ref={header} style={{ position: "sticky", zIndex: 100, minHeight: 60 }}>
 
             <div className="hidden-sticky" />
 
@@ -115,7 +115,12 @@ export default function Tab(props) {
                     />
                     <Header
                         as="h2"
-                        content={`Вкладка: ${row?.name || ""}`}
+                        content={<div className="d-flex align-items-center">
+                            <span>Вкладка: {!loading && <>{row.name || "****"}</>}</span>
+                            {loading && <Placeholder style={{ width: 150 }} className="rounded ml-1">
+                                <Placeholder.Image style={{ height: 25 }} />
+                            </Placeholder>}
+                        </div>}
                         subheader={row?.name_title || ""}
                     />
                 </div>
