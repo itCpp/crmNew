@@ -8,24 +8,27 @@ import { useState, useEffect } from "react";
  */
 export const useRequestGetRowSerialize = (data = {}) => {
 
-    const [optionsData, setOptionsData] = useState(data);
+    const [rowData, setRowData] = useState(data);
 
     const [permits, setPermits] = useState({});
     const [statuses, setStatuses] = useState([]);
     const [cities, setCities] = useState([]);
     const [themes, setThemes] = useState([]);
     const [adresses, setAddresses] = useState([]);
+    const [comments, setComments] = useState([]);
 
     useEffect(() => {
 
-        if (optionsData.permits) {
-            setPermits(optionsData.permits);
+        console.log("asdasd")
+
+        if (rowData.permits) {
+            setPermits(rowData.permits);
         }
 
-        if (optionsData.offices) {
+        if (rowData.offices) {
             setAddresses([
                 { id: null, name: "Не указан" },
-                ...optionsData.offices
+                ...rowData.offices
             ].map((office, key) => ({
                 key,
                 text: office.name,
@@ -34,7 +37,7 @@ export const useRequestGetRowSerialize = (data = {}) => {
             })));
         }
 
-        if (optionsData.statuses) {
+        if (rowData.statuses) {
             setStatuses([
                 {
                     text: "Не обработана",
@@ -42,25 +45,29 @@ export const useRequestGetRowSerialize = (data = {}) => {
                     id: 0,
                     disabled: permits?.request_set_null_status ? false : true,
                 },
-                ...optionsData.statuses
+                ...rowData.statuses
             ].map((status, key) => ({
                 ...status, key, value: status.id, text: status.text
             })));
         }
 
-        if (optionsData.cities) {
-            setCities([null, ...optionsData.cities].map((city, key) => ({
+        if (rowData.cities) {
+            setCities([null, ...rowData.cities].map((city, key) => ({
                 key, value: city, text: city || "Не определен"
             })));
         }
 
-        if (optionsData.themes) {
-            setThemes([null, ...optionsData.themes].map((theme, key) => ({
+        if (rowData.themes) {
+            setThemes([null, ...rowData.themes].map((theme, key) => ({
                 key, value: theme, text: theme || "Не определена"
             })));
         }
 
-    }, [optionsData]);
+        if (rowData.comments) {
+            setComments(rowData.comments);
+        }
+
+    }, [rowData]);
 
     return {
         permits,
@@ -68,8 +75,8 @@ export const useRequestGetRowSerialize = (data = {}) => {
         cities,
         themes,
         adresses,
-        optionsData,
-        setOptionsData
+        rowData,
+        setRowData
     }
 
 }

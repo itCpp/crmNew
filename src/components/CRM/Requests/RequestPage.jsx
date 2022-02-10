@@ -3,8 +3,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { requestEditPage, setShowAudioCall } from "../../../store/requests/actions";
 import { Button, Grid, Header, Icon, Loader, Message } from "semantic-ui-react";
-import RequestEditForm from "./RequestEdit/RequestEditForm";
-import { useRequestGetRowSerialize } from "../hooks";
+import RequestPageEditForm from "./ReqquestPage/RequestPageEditForm";
 
 const RequestPage = props => {
 
@@ -13,13 +12,10 @@ const RequestPage = props => {
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
 
-    const { row } = props;
+    const [row, setRow] = React.useState(props.row);
     const [formdata, setFormdata] = React.useState(row);
     const [formdataControl, setFormdataControl] = React.useState(row);
-
-    const { permits, statuses, cities, themes, adresses, setOptionsData } = useRequestGetRowSerialize();
-
-    const changed = JSON.stringify(formdata) !== JSON.stringify(formdataControl);
+    const [data, setData] = React.useState({});
 
     React.useEffect(() => {
 
@@ -32,7 +28,7 @@ const RequestPage = props => {
             setFormdata(data.request);
             setFormdataControl({ ...data.request });
             setError(null);
-            setOptionsData(data);
+            setData(data);
         }).catch(e => {
             setError(axios.getError(e));
         }).then(() => {
@@ -40,6 +36,7 @@ const RequestPage = props => {
         });
 
     }, []);
+
 
     return <div className="mt-3">
 
@@ -78,7 +75,7 @@ const RequestPage = props => {
                         disabled={error ? true : false}
                     />
 
-                    <Button
+                    {/* <Button
                         icon="save"
                         circular
                         basic={!changed}
@@ -86,7 +83,7 @@ const RequestPage = props => {
                         className="mx-1"
                         title="Сохранить изменения"
                         disabled={!changed || error ? true : false}
-                    />
+                    /> */}
 
                 </div>}
 
@@ -103,16 +100,9 @@ const RequestPage = props => {
             <Grid.Row columns="equal">
 
                 <Grid.Column>
-                    <div className="block-card">
-                        <RequestEditForm
-                            formdata={formdata}
-                            permits={permits}
-                            statuses={statuses}
-                            cities={cities}
-                            themes={themes}
-                            adresses={adresses}
-                        />
-                    </div>
+                    <RequestPageEditForm
+                        data={data}
+                    />
                 </Grid.Column>
 
                 <Grid.Column>

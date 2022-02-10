@@ -24,7 +24,7 @@ const RequestEdit = () => {
     const [formdata, setFormdata] = React.useState(row);
     const [control, setControl] = React.useState(row);
 
-    const { permits, statuses, cities, themes, adresses, setOptionsData } = useRequestGetRowSerialize();
+    const { permits, statuses, cities, themes, adresses, setRowData } = useRequestGetRowSerialize();
     const [comments, setComments] = React.useState([]);
 
     const changed = JSON.stringify(formdata) !== JSON.stringify(control);
@@ -38,8 +38,7 @@ const RequestEdit = () => {
             setFormdata(data.request);
             setControl({ ...data.request });
             setComments(data.comments || []);
-
-            setOptionsData(data);
+            setRowData(data);
         }).catch(error => {
             setError(axios.getError(error));
         }).then(() => {
