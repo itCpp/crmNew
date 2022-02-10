@@ -50,7 +50,7 @@ const RequestsDataTableRow = React.memo(props => {
 
     }, [row]);
 
-    return <Table.Row className={[...className, classNameTheme].join(' ')} verticalAlign="top">
+    return <Table.Row className={[...className, classNameTheme].join(' ')} verticalAlign="top" id={`request-table-row-${row.id}`}>
         <Cell.Id row={row} />
         <Cell.Date row={row} setCellEdit={setCellEdit} />
         <Cell.Operator row={row} />

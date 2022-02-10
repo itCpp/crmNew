@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { requestEdit, setSendSms, setShowAudioCall } from "../../../../store/requests/actions";
+import { requestEdit, requestEditPage, setSendSms, setShowAudioCall } from "../../../../store/requests/actions";
 import { Table, Icon, Dropdown } from "semantic-ui-react";
 
 const CellButtons = props => {
@@ -11,7 +11,7 @@ const CellButtons = props => {
 
         <div className="d-flex flex-column justify-content-center align-items-center">
 
-            <Dropdown icon="ellipsis vertical" className="m-1 button-icon-dropdown" pointing="top right" direction="left">
+            <Dropdown icon={{ name: "ellipsis vertical", fitted: true }} className="m-1 button-icon-dropdown" pointing="top right" direction="left">
                 <Dropdown.Menu style={{ marginTop: 4, marginRight: -6 }}>
                     <Dropdown.Item
                         icon="edit"
@@ -36,9 +36,16 @@ const CellButtons = props => {
                 </Dropdown.Menu>
             </Dropdown>
 
-            <Icon
+            {/* <Icon
                 name="edit"
                 onClick={() => dispatch(requestEdit(row))}
+                title="Редактировать заявку"
+                className="button-icon m-1"
+            /> */}
+
+            <Icon
+                name="chevron circle right"
+                onClick={() => dispatch(requestEditPage(row))}
                 title="Редактировать заявку"
                 className="button-icon m-1"
             />

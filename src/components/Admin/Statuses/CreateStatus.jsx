@@ -23,7 +23,6 @@ const CreateStatus = props => {
         positive={!error ? true : false}
         negative={error ? true : false}
         title="Добавить новый статус"
-        size="mini"
         circular
         loading={create}
         disabled={create}

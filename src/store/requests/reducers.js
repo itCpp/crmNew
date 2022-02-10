@@ -8,6 +8,7 @@ const defaultState = {
     requests: [],
     requestsIds: [],
     requestEdit: null, // Объект редактируемой заявки
+    requestEditPage: null, // Объект редактируемой заявки
     updates: {},
     counter: {},
     searchRequest: null, // Поисковой запрос
@@ -123,6 +124,12 @@ export const requestsReducer = (state = defaultState, action) => {
 
         case ACTION.REQUEST_EDIT_ID:
             return { ...state, requestEdit: action.payload }
+
+        case ACTION.REQUEST_EDIT_ID_PAGE:
+            if (action.payload !== false) {
+                window.pageYOffsetEditRequest = window.pageYOffset;
+            }
+            return { ...state, requestEditPage: action.payload }
 
         case ACTION.REQUEST_EDIT_CELL:
             return { ...state, editCell: action.payload }

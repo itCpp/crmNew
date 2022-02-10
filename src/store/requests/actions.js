@@ -42,6 +42,12 @@ export const requestEdit = data => ({
     payload: data
 });
 
+export const REQUEST_EDIT_ID_PAGE = "REQUEST_EDIT_ID_PAGE";
+export const requestEditPage = data => ({
+    type: REQUEST_EDIT_ID_PAGE,
+    payload: data
+});
+
 export const REQUEST_EDIT_CELL = "REQUEST_EDIT_CELL";
 export const requestEditCell = data => ({
     type: REQUEST_EDIT_CELL,

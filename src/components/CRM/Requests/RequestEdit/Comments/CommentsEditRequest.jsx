@@ -77,7 +77,7 @@ const Comments = props => {
 
     }
 
-    return <div className="d-flex flex-column h-100" style={{ maxHeight: 538 }}>
+    return <div className="d-flex flex-column h-100" style={{ maxHeight: 547 }}>
 
         <h5>Комментарии</h5>
 
@@ -103,12 +103,12 @@ const Comments = props => {
                 onKeyDown={onKeyDown}
             />
 
-            <Icon
+            {(comment && comment !== "") && <Icon
                 name="send"
                 className="comment-send"
                 title="Отправить комментарий"
                 onClick={() => !loading && setSend(true)}
-            />
+            />}
 
             {loading && <Dimmer active inverted><Loader active inverted size="small" /></Dimmer>}
 

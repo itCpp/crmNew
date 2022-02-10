@@ -93,7 +93,7 @@ function Statuses() {
 
     }
 
-    return <>
+    return <div className="segment-compact">
 
         {edit
             ? <EditStatus
@@ -184,7 +184,7 @@ function Statuses() {
             )
         }
 
-    </>
+    </div>
 
 }
 
