@@ -19,8 +19,6 @@ export const useRequestGetRowSerialize = (data = {}) => {
 
     useEffect(() => {
 
-        console.log("asdasd")
-
         if (rowData.permits) {
             setPermits(rowData.permits);
         }

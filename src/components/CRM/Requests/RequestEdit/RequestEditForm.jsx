@@ -1,7 +1,9 @@
 import _ from "lodash";
-import { Form, Icon, Dropdown } from "semantic-ui-react";
+import React from "react";
+import { Form, Icon } from "semantic-ui-react";
+import FormMemo from "../../../Form";
 
-const caseSensitiveSearch = (options, query) => {
+export const caseSensitiveSearch = (options, query) => {
     const re = new RegExp(_.escapeRegExp(query))
     return options.filter((opt) => re.test(opt.text))
 }
@@ -10,11 +12,11 @@ const RequestEditForm = props => {
 
     const { loading, formdata, onChange, errors, statuses, cities, themes, adresses, permits } = props;
 
-    const chageData = (...a) => {
+    const changeData = React.useCallback((...a) => {
         if (typeof onChange == "function") {
             onChange(...a);
         }
-    }
+    }, []);
 
     return <Form className="my-form" loading={loading || false}>
 
@@ -25,20 +27,20 @@ const RequestEditForm = props => {
                 width={16}
                 name="client_name"
                 value={formdata?.client_name || ""}
-                onChange={chageData}
+                onChange={changeData}
                 error={errors?.client_name ? true : false}
             />
         </Form.Group>
 
         <Form.Group>
-            <Form.Select
+            <FormMemo.Select
                 label="Статус"
                 placeholder="Укажите статус заявки"
                 width={16}
                 options={statuses || []}
                 name="status_id"
                 value={formdata?.status_id || 0}
-                onChange={chageData}
+                onChange={changeData}
                 error={errors?.status_id ? true : false}
             />
         </Form.Group>
@@ -46,27 +48,27 @@ const RequestEditForm = props => {
         <Form.Group>
             <Form.Field width={8}>
                 <label><Icon name="world" />Город</label>
-                <Dropdown
+                <FormMemo.Dropdown
                     placeholder="Укажите город"
                     search={caseSensitiveSearch}
                     selection
                     options={cities || []}
                     name="region"
                     value={formdata?.region || ""}
-                    onChange={chageData}
+                    onChange={changeData}
                     error={errors?.region ? true : false}
                 />
             </Form.Field>
             <Form.Field width={8}>
                 <label><Icon name="book" />Тематика</label>
-                <Dropdown
+                <FormMemo.Dropdown
                     placeholder="Укажите тематику"
                     search={caseSensitiveSearch}
                     selection
                     options={themes || []}
                     name="theme"
                     value={formdata?.theme || ""}
-                    onChange={chageData}
+                    onChange={changeData}
                     error={errors?.theme ? true : false}
                 />
             </Form.Field>
@@ -75,12 +77,12 @@ const RequestEditForm = props => {
         <Form.Group>
             <Form.Field width={8}>
                 <label><Icon name="map marker alternate" />Адрес</label>
-                <Form.Select
+                <FormMemo.Select
                     placeholder="Укажите адрес офиса"
                     options={adresses || []}
                     name="address"
                     value={formdata?.address || null}
-                    onChange={chageData}
+                    onChange={changeData}
                     error={errors?.address ? true : false}
                     disabled={permits?.requests_addr_change ? false : true}
                 />
@@ -92,7 +94,7 @@ const RequestEditForm = props => {
                     type="date"
                     name="event_date"
                     value={formdata?.event_date || ""}
-                    onChange={chageData}
+                    onChange={changeData}
                     error={errors?.event_date ? true : false}
                 />
             </Form.Field>
@@ -103,7 +105,7 @@ const RequestEditForm = props => {
                     type="time"
                     name="event_time"
                     value={formdata?.event_time || ""}
-                    onChange={chageData}
+                    onChange={changeData}
                     error={errors?.event_time ? true : false}
                 />
             </Form.Field>
@@ -117,7 +119,7 @@ const RequestEditForm = props => {
                 name="comment"
                 rows={5}
                 value={formdata?.comment || ""}
-                onChange={chageData}
+                onChange={changeData}
                 error={errors?.comment ? true : false}
                 style={{ resize: "none" }}
             />
@@ -130,7 +132,7 @@ const RequestEditForm = props => {
                 type="time"
                 name="comment_urist"
                 value={formdata?.comment_urist || ""}
-                onChange={chageData}
+                onChange={changeData}
                 error={errors?.comment_urist ? true : false}
                 style={{ resize: "none" }}
             />
