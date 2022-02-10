@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Message, Checkbox, Radio, Popup } from "semantic-ui-react";
+import { Checkbox, Radio, Popup, Icon } from "semantic-ui-react";
 
 export default function TabBasicSettings(props) {
 
@@ -26,6 +26,17 @@ export default function TabBasicSettings(props) {
 
         <div className="divider-header">
             <h3>Настройки прав доступа</h3>
+            <Popup
+                basic
+                content={<>
+                    <div><b>Публичные настройки</b></div>
+                    <div><small>Данные настройки определяют доступ к заявкам выбранной вкладки. Например во вкладке <b>БК</b> должен быть доступ ко всем заявкам своего сектора, если установить соответсвующую галочку на <b>Отобразить все заявки своего сектора</b>, то сотруднику будут доступны заявки с БК по всему сектору.</small></div>
+                    <div><small>Переключатель <b>Учитывать настройки разрешений сотрудника</b> служит для переопределения выбранных опций. Например, ранее была установлена опция <b>Отобразить все заявки своего сектора</b> и, если у сотрудника имеется разрешение на вывод заявок всего колл-центра, то он получит доступ ко всем заявкам своего колл-центра</small></div>
+                    <div><small><b className="text-danger">Важно!</b> При создании учетной записи сотрудника, необходимо указать колл-центр и сектор к которому он принадлежит, в противном случае опции вывода заявок будут идентичны выводу для администраторов сайта</small></div>
+                </>}
+                trigger={<span><Icon name="info circle" fitted link /></span>}
+                wide="very"
+            />
         </div>
 
         <div className="position-relative mb-2">
