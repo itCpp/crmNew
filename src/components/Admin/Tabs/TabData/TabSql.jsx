@@ -66,23 +66,29 @@ const TabSql = props => {
 
             {error && <Message error content={error} className="mb-0" />}
 
-            {!error && <pre
-                style={{
-                    whiteSpace: "pre-wrap",
-                    wordWrap: "break-word !important",
-                    color: "#000000"
-                }}
-                children={message || "Запрос формируется..."}
-            />}
+            {!error && <>
+                <strong>Короткий запрос с настраиваемыми условиями</strong>
+                <pre
+                    style={{
+                        whiteSpace: "pre-wrap",
+                        wordWrap: "break-word !important",
+                        color: "#000000"
+                    }}
+                    children={message || "Запрос формируется..."}
+                />
+            </>}
 
-            {!error && <pre
-                style={{
-                    whiteSpace: "pre-wrap",
-                    wordWrap: "break-word !important",
-                    color: "#000000"
-                }}
-                children={query || "Полный запрос формируется..."}
-            />}
+            {!error && <>
+                <strong>Полный запрос при выводе заявок</strong>
+                <pre
+                    style={{
+                        whiteSpace: "pre-wrap",
+                        wordWrap: "break-word !important",
+                        color: "#000000"
+                    }}
+                    children={query || "Полный запрос формируется..."}
+                />
+            </>}
 
             <Dimmer active={load} inverted>
                 <Loader inverted />

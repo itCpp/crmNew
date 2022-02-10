@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Dropdown } from "semantic-ui-react";
+import { Icon, Form, Dropdown } from "semantic-ui-react";
 
 export default function TabBasicSettings(props) {
 
@@ -40,7 +40,7 @@ export default function TabBasicSettings(props) {
                 />
 
                 <Form.Field>
-                    <label>Статусы заявок, отображаемые во вкладке</label>
+                    <label><Icon name="check" color="green" />Статусы заявок, отображаемые во вкладке</label>
                     <Dropdown
                         fluid
                         multiple
@@ -59,6 +59,30 @@ export default function TabBasicSettings(props) {
                         value={row.statuses}
                         disabled={error ? true : false || loading}
                         error={errors.statuses ? true : false}
+                        noResultsMessage="Ничего не найдено."
+                    />
+                </Form.Field>
+
+                <Form.Field>
+                    <label><Icon name="times" color="red" />Статусы заявок, скрытые для вывода во вкладке</label>
+                    <Dropdown
+                        fluid
+                        multiple
+                        name="statuses_not"
+                        onChange={setFormdata}
+                        onSearchChange={(e, { searchQuery }) => setSearchQuery(searchQuery)}
+                        options={statuses.map(status => ({
+                            key: status.id,
+                            text: status.name,
+                            value: status.id,
+                        }))}
+                        placeholder="Выберите статусы заявок"
+                        search
+                        searchQuery={searchQuery}
+                        selection
+                        value={row.statuses_not || []}
+                        disabled={error ? true : false || loading}
+                        error={errors.statuses_not ? true : false}
                         noResultsMessage="Ничего не найдено."
                     />
                 </Form.Field>
