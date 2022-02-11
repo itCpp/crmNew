@@ -21,7 +21,7 @@ const RequestRowStatisticComing = props => {
                     color="green"
                 />
 
-                {!coming && <div className="opacity-50 my-3">Приход не найден</div>}
+                {!coming?.date && <div className="opacity-50 my-3">Приход не найден</div>}
 
                 {coming?.date && <div>{moment(coming.date).format("DD MMMM YYYY")}</div>}
                 {coming?.start && <div>Время прихода: <b>{coming.start}</b></div>}

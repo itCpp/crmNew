@@ -22,9 +22,9 @@ const RequestPageEditForm = props => {
 
     const changed = JSON.stringify(formdata) !== JSON.stringify(formdataControl);
 
-    const onChange = React.useCallback((e, { name, value }) => {
+    const onChange = (e, { name, value }) => {
         setFormdata({ ...formdata, [name]: value === "" ? null : value });
-    }, [formdata]);
+    }
 
     React.useEffect(() => {
 
@@ -33,8 +33,8 @@ const RequestPageEditForm = props => {
             axios.post('requests/save', formdata).then(({ data }) => {
                 setSaveError(false);
                 setSaveErrors({});
-                setFormdata({ ...data.request});
-                setFormdataControl({ ...data.request});
+                setFormdata({ ...data.request });
+                setFormdataControl({ ...data.request });
                 dispatch(updateRequestRow(data.request));
             }).catch(e => {
                 axios.toast(e, { time: 15000 });

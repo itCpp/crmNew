@@ -1,6 +1,7 @@
 import { Grid } from "semantic-ui-react";
 import RequestRowStatisticAgreement from "./RequestRowStatisticAgreement";
 import RequestRowStatisticComing from "./RequestRowStatisticComing";
+import RequestRowStatisticQueries from "./RequestRowStatisticQueries";
 
 const RequestRowStatistic = props => {
 
@@ -12,6 +13,8 @@ const RequestRowStatistic = props => {
         <RequestRowStatisticComing {...props} />
 
         <RequestRowStatisticAgreement {...props} />
+
+        <RequestRowStatisticQueries {...props} />
 
     </Grid.Row>
 
