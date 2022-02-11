@@ -18,7 +18,7 @@ const RequestEditForm = props => {
         }
     }, []);
 
-    return <Form className="my-form" loading={loading || false}>
+    return <Form className="my-form" loading={loading || false} id="request-edit-form">
 
         <Form.Group>
             <Form.Input

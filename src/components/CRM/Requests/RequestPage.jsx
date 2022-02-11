@@ -103,9 +103,7 @@ const RequestPage = props => {
             <Grid.Row columns="equal" stretched>
 
                 <Grid.Column>
-                    <RequestPageEditForm
-                        data={data}
-                    />
+                    <RequestPageEditForm data={data} />
                 </Grid.Column>
 
                 <Grid.Column className="h-100">
@@ -114,6 +112,7 @@ const RequestPage = props => {
                             row={row}
                             comments={comments}
                             setComments={setComments}
+                            checkMaxHeight="request-edit-page"
                         />
                     </div>
                 </Grid.Column>

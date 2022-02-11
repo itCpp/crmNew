@@ -4,7 +4,7 @@ import axios from "./../../../../../utils/axios-header";
 import moment from "./../../../../../utils/moment";
 import TextareaAutosize from "react-textarea-autosize";
 import { Icon, Dimmer, Loader } from "semantic-ui-react";
-
+import ReactMarkdown from "react-markdown";
 import "./comments.css";
 
 const CommentRow = React.memo(props => {
@@ -23,7 +23,9 @@ const CommentRow = React.memo(props => {
             <strong>{row.created_pin}</strong>
             {row.created_fio && <span>{' '}{row.created_fio}</span>}
         </div>}
-        <div className="comment-text">{row.comment}</div>
+        <div className="comment-text">
+            <ReactMarkdown>{row.comment}</ReactMarkdown>
+        </div>
         <div className="comment-time">{moment(row.created_at).fromNow()}</div>
     </div>
 
@@ -32,11 +34,28 @@ const CommentRow = React.memo(props => {
 const Comments = props => {
 
     const { row, comments, setComments } = props;
+    const idForm = props.checkMaxHeight || "request-edit-form"
     const user = useSelector(state => state.main.userData);
 
     const [loading, setLoading] = React.useState(false);
     const [send, setSend] = React.useState(false);
     const [comment, setComment] = React.useState(null);
+    const [maxHeight, setMaxHeight] = React.useState(null);
+
+    const style = {
+        maxHeight: maxHeight || "auto",
+    }
+
+    const onKeyDown = e => {
+
+        if (e.keyCode === 13 && e.ctrlKey)
+            return setComment(e.target.value + "\r\n");
+
+        if (e.keyCode === 13 && !e.ctrlKey) {
+            e.preventDefault();
+            !loading && setSend(true);
+        }
+    }
 
     React.useEffect(() => {
 
@@ -64,20 +83,16 @@ const Comments = props => {
 
     }, [send]);
 
-    const onKeyDown = e => {
+    React.useEffect(() => {
 
-        if (e.keyCode === 13 && e.ctrlKey) {
-            return setComment(e.target.value + "\r\n");
+        if (idForm) {
+            const block = document.getElementById(idForm);
+            setMaxHeight(block?.offsetHeight || null);
         }
 
-        if (e.keyCode === 13 && !e.ctrlKey) {
-            e.preventDefault();
-            !loading && setSend(true);
-        }
+    }, [idForm]);
 
-    }
-
-    return <div className="d-flex flex-column h-100" style={props.style ? { ...props.style } : {}}>
+    return <div className="d-flex flex-column h-100" style={props.style ? { ...style, ...props.style } : style}>
 
         <h5>Комментарии</h5>
 
