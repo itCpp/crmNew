@@ -77,7 +77,7 @@ const Comments = props => {
 
     }
 
-    return <div className="d-flex flex-column h-100" style={{ maxHeight: 547 }}>
+    return <div className="d-flex flex-column h-100" style={props.style ? { ...props.style } : {}}>
 
         <h5>Комментарии</h5>
 

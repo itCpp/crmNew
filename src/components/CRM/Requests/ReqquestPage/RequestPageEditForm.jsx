@@ -27,12 +27,12 @@ const RequestPageEditForm = props => {
             adresses={adresses}
             onChange={onChange}
         />
-        <div className="d-flex">
+        <div className="d-flex mt-3">
             <Button
                 content="Отменить"
                 color="blue"
                 basic={!changed}
-                className="mt-3 w-100"
+                className="mr-2 w-100"
                 disabled={!changed || error ? true : false}
                 onClick={() => setFormdata({ ...formdataControl })}
             />
@@ -42,7 +42,7 @@ const RequestPageEditForm = props => {
                 labelPosition="right"
                 color="green"
                 basic={!changed}
-                className="mt-3 w-100"
+                className="m-0 w-100"
                 disabled={!changed || error ? true : false}
             />
         </div>

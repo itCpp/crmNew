@@ -44,7 +44,8 @@ const CellButtons = props => {
             /> */}
 
             <Icon
-                name="chevron circle right"
+                // name="chevron circle right"
+                name="edit"
                 onClick={() => dispatch(requestEditPage(row))}
                 title="Редактировать заявку"
                 className="button-icon m-1"

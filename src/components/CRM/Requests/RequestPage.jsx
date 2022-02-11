@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { requestEditPage, setShowAudioCall } from "../../../store/requests/actions";
 import { Button, Grid, Header, Icon, Loader, Message } from "semantic-ui-react";
 import RequestPageEditForm from "./ReqquestPage/RequestPageEditForm";
+import Comments from "./RequestEdit/Comments/CommentsEditRequest";
 
 const RequestPage = props => {
 
@@ -16,6 +17,7 @@ const RequestPage = props => {
     const [formdata, setFormdata] = React.useState(row);
     const [formdataControl, setFormdataControl] = React.useState(row);
     const [data, setData] = React.useState({});
+    const [comments, setComments] = React.useState([]);
 
     React.useEffect(() => {
 
@@ -29,6 +31,7 @@ const RequestPage = props => {
             setFormdataControl({ ...data.request });
             setError(null);
             setData(data);
+            setComments(data.comments || []);
         }).catch(e => {
             setError(axios.getError(e));
         }).then(() => {
@@ -97,7 +100,7 @@ const RequestPage = props => {
 
         {!loading && !error && <Grid className="mt-3">
 
-            <Grid.Row columns="equal">
+            <Grid.Row columns="equal" stretched>
 
                 <Grid.Column>
                     <RequestPageEditForm
@@ -105,9 +108,13 @@ const RequestPage = props => {
                     />
                 </Grid.Column>
 
-                <Grid.Column>
+                <Grid.Column className="h-100">
                     <div className="block-card">
-
+                        <Comments
+                            row={row}
+                            comments={comments}
+                            setComments={setComments}
+                        />
                     </div>
                 </Grid.Column>
 
