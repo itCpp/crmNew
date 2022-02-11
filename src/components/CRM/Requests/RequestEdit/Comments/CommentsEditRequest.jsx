@@ -9,14 +9,19 @@ import "./comments.css";
 
 const CommentRow = React.memo(props => {
 
-    const { row, user } = props;
+    const { row, user, update } = props;
+    const [createdAt, setCreatedAt] = React.useState(moment(row.created_at).fromNow());
 
-    let className = ["commets-in-modal"];
+    const className = ["commets-in-modal"];
 
     if (Number(row.created_pin) === Number(user.pin))
         className.push("comment-type-my");
     else if (row.type_comment)
         className.push("comment-type-" + row.type_comment);
+
+    React.useEffect(() => {
+        setCreatedAt(moment(row.created_at).fromNow());
+    }, [update]);
 
     return <div className={className.join(' ')} title={moment(row.created_at).format("DD MMMM YYYY в HH:mm")}>
         {row.created_pin && <div className="comment-author">
@@ -26,7 +31,7 @@ const CommentRow = React.memo(props => {
         <div className="comment-text">
             <ReactMarkdown>{row.comment}</ReactMarkdown>
         </div>
-        <div className="comment-time">{moment(row.created_at).fromNow()}</div>
+        <div className="comment-time">{createdAt}</div>
     </div>
 
 });
@@ -42,6 +47,9 @@ const Comments = props => {
     const [comment, setComment] = React.useState(null);
     const [maxHeight, setMaxHeight] = React.useState(null);
 
+    const interval = React.useRef();
+    const [updateTimeComment, setUpdateTimeComment] = React.useState(new Date());
+
     const style = {
         maxHeight: maxHeight || "auto",
     }
@@ -56,6 +64,20 @@ const Comments = props => {
             !loading && setSend(true);
         }
     }
+
+    React.useEffect(() => {
+
+        if (comments && comments.length > 0) {
+            interval.current = setInterval(() => {
+                setUpdateTimeComment(new Date());
+            }, 1000);
+        }
+
+        return () => {
+            clearInterval(interval.current);
+        }
+
+    }, [comments]);
 
     React.useEffect(() => {
 
@@ -96,13 +118,19 @@ const Comments = props => {
 
         <h5>Комментарии</h5>
 
-        <div className="no-comments"><Icon name="mail" /></div>
+        <div className="no-comments">
+            <Icon
+                name="comments"
+                className={comments.length === 0 ? "opacity-100" : "opacity-20"}
+            />
+        </div>
 
         <div className="comments-body">
             {comments.map(comment => <CommentRow
                 key={comment.id}
                 user={user}
                 row={comment}
+                update={updateTimeComment}
             />)}
         </div>
 

@@ -50,8 +50,8 @@ const AudioCalls = props => {
                 {rows && rows.length > 0 && <AudioCallsList rows={rows} />}
 
                 {rows && rows.length === 0 && <div className="opacity-80 text-center my-5">
-                    <div><Icon name="music" fitted size="huge" disabled /></div>
-                    <div className="mt-3">{loading ? "Загрузка..." : "Звонков нет"}</div>
+                    <div><Icon name="volume control phone" fitted size="huge" disabled /></div>
+                    <div className="mt-3">{loading ? "Загрузка..." : "Записей звонков еще нет"}</div>
                 </div>}
 
             </Modal.Description>

@@ -5,6 +5,7 @@ import { requestEditPage, setShowAudioCall } from "../../../store/requests/actio
 import { Button, Grid, Header, Icon, Loader, Message } from "semantic-ui-react";
 import RequestPageEditForm from "./ReqquestPage/RequestPageEditForm";
 import Comments from "./RequestEdit/Comments/CommentsEditRequest";
+import RequestRowStatistic from "./ReqquestPage/RequestRowStatistic";
 
 const RequestPage = props => {
 
@@ -26,6 +27,7 @@ const RequestPage = props => {
         axios.post('requests/getRow', {
             id: row.id,
             getComments: true,
+            getStatistics: true,
         }).then(({ data }) => {
             setFormdata(data.request);
             setFormdataControl({ ...data.request });
@@ -100,10 +102,16 @@ const RequestPage = props => {
 
         {!loading && !error && <Grid className="mt-3">
 
+            <RequestRowStatistic data={data} />
+
             <Grid.Row columns="equal" stretched>
 
                 <Grid.Column>
-                    <RequestPageEditForm data={data} />
+                    <RequestPageEditForm
+                        data={data}
+                        setFormdata={setFormdata}
+                        setFormdataControl={setFormdataControl}
+                    />
                 </Grid.Column>
 
                 <Grid.Column className="h-100">
