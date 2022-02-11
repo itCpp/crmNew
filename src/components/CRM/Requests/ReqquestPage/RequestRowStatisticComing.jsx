@@ -46,7 +46,7 @@ const RequestRowStatisticComing = props => {
 
                 {comings.length > 0 && <div>
 
-                    <div>Всего приходов <b>{comings.length}</b></div>
+                    <div>Всего приходов <b className="text-success">{comings.length}</b></div>
 
                     {last !== null && <>
                         <div className="mt-1">Последний приход:</div>
