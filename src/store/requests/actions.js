@@ -43,7 +43,7 @@ export const requestEdit = data => ({
 });
 
 export const REQUEST_EDIT_ID_PAGE = "REQUEST_EDIT_ID_PAGE";
-export const requestEditPage = data => ({
+export const setRequestEditPage = data => ({
     type: REQUEST_EDIT_ID_PAGE,
     payload: data
 });

@@ -1,7 +1,7 @@
 import axios from "../../../utils/axios-header";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { requestEditPage, setShowAudioCall } from "../../../store/requests/actions";
+import { setRequestEditPage, setShowAudioCall } from "../../../store/requests/actions";
 import { Button, Grid, Header, Icon, Loader, Message } from "semantic-ui-react";
 import RequestPageEditForm from "./ReqquestPage/RequestPageEditForm";
 import Comments from "./RequestEdit/Comments/CommentsEditRequest";
@@ -55,7 +55,7 @@ const RequestPage = props => {
                         link
                         size="big"
                         className="mr-4"
-                        onClick={() => dispatch(requestEditPage(false))}
+                        onClick={() => dispatch(setRequestEditPage(false))}
                         title="Назад к заявкам"
                     />
                 </span>
@@ -109,8 +109,7 @@ const RequestPage = props => {
                 <Grid.Column>
                     <RequestPageEditForm
                         data={data}
-                        setFormdata={setFormdata}
-                        setFormdataControl={setFormdataControl}
+                        setRow={setRow}
                     />
                 </Grid.Column>
 

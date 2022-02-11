@@ -8,7 +8,7 @@ import { useRequestGetRowSerialize } from "../../hooks";
 
 const RequestPageEditForm = props => {
 
-    const { data, error } = props;
+    const { data, setRow, error } = props;
     const { permits, statuses, cities, themes, adresses, setRowData } = useRequestGetRowSerialize(data);
 
     const dispatch = useDispatch();
@@ -31,10 +31,14 @@ const RequestPageEditForm = props => {
         if (save) {
 
             axios.post('requests/save', formdata).then(({ data }) => {
+
                 setSaveError(false);
                 setSaveErrors({});
+
                 setFormdata({ ...data.request });
                 setFormdataControl({ ...data.request });
+                setRow({ ...data.request });
+
                 dispatch(updateRequestRow(data.request));
             }).catch(e => {
                 axios.toast(e, { time: 15000 });

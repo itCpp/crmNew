@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { requestEdit, requestEditPage, setSendSms, setShowAudioCall } from "../../../../store/requests/actions";
+import { requestEdit, setRequestEditPage, setSendSms, setShowAudioCall } from "../../../../store/requests/actions";
 import { Table, Icon, Dropdown } from "semantic-ui-react";
 
 const CellButtons = props => {
@@ -46,7 +46,7 @@ const CellButtons = props => {
             <Icon
                 // name="chevron circle right"
                 name="edit"
-                onClick={() => dispatch(requestEditPage(row))}
+                onClick={() => dispatch(setRequestEditPage(row))}
                 title="Редактировать заявку"
                 className="button-icon m-1"
             />

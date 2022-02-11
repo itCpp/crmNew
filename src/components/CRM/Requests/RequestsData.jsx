@@ -6,11 +6,10 @@ import {
     setRequests,
     appendRequests,
     selectTab,
-    setRequestsLoading
+    setRequestsLoading,
+    setRequestEditPage
 } from "./../../../store/requests/actions";
-
 import { Loader, Message } from "semantic-ui-react";
-
 import RequestEdit from "./RequestEdit/RequestEdit";
 import RequestsTitle from "./RequestsTitle/RequestsTitle";
 import RequestsDataTable from "./RequestsDataTable";
@@ -81,6 +80,7 @@ const RequestData = React.memo(props => {
     React.useEffect(() => {
 
         setError(null);
+        props.setRequestEditPage(null);
 
         if (select !== null) {
             setLoading(true);
@@ -131,6 +131,8 @@ const RequestData = React.memo(props => {
             }, 20);
 
             delete (window.pageYOffsetEditRequest);
+        } else if (requestEditPage === null) {
+            blockCard.current.style.removeProperty('display');
         }
     }, [requestEditPage]);
 
@@ -189,7 +191,7 @@ const mapStateToProps = state => ({
 });
 
 const mapActionsToProps = {
-    setRequests, appendRequests, selectTab, setRequestsLoading
+    setRequests, appendRequests, selectTab, setRequestsLoading, setRequestEditPage
 }
 
 export default connect(mapStateToProps, mapActionsToProps)(RequestData);
