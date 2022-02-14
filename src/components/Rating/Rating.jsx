@@ -58,7 +58,7 @@ const Rating = withRouter(props => {
             dates={dates}
         />
 
-        {/* {loading && <Loader inline="centered" active />} */}
+        {loading && <Loader inline="centered" />}
 
         {!loading && load && <div style={{
             position: "fixed",
