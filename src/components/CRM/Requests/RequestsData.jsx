@@ -14,6 +14,7 @@ import RequestEdit from "./RequestEdit/RequestEdit";
 import RequestsTitle from "./RequestsTitle/RequestsTitle";
 import RequestsDataTable from "./RequestsDataTable";
 import RequestSendSms from "./RequestSendSms";
+import RequestStory from "./RequestStory";
 import RequestPage from "./RequestPage";
 
 const RequestData = React.memo(props => {
@@ -140,13 +141,14 @@ const RequestData = React.memo(props => {
 
         {requestEdit && <RequestEdit />}
         {sendSms && <RequestSendSms />}
-
+        {props.showStoryRequest && <RequestStory row={props.showStoryRequest} />}
         {props.requestEditPage && <RequestPage row={props.requestEditPage} />}
 
         <div ref={blockCard}>
 
             <RequestsTitle
                 getRequests={getRequests}
+                period={period}
                 setPeriod={setPeriod}
                 loading={loading || loadPage}
             />
@@ -188,6 +190,7 @@ const mapStateToProps = state => ({
     searchRequest: state.requests.searchRequest,
     sendSms: state.requests.sendSms,
     requestEditPage: state.requests.requestEditPage,
+    showStoryRequest: state.requests.showStoryRequest,
 });
 
 const mapActionsToProps = {

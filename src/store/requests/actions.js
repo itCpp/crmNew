@@ -115,3 +115,15 @@ export const setShowAudioCall = data => ({
     type: SHOW_AUDIO_CALLS,
     payload: data
 });
+
+export const SHOW_STORY_REQUEST = "SHOW_STORY_REQUEST";
+export const setShowStoryRequest = data => ({
+    type: SHOW_STORY_REQUEST,
+    payload: data
+});
+
+export const REQUEST_START_DATA = "REQUEST_START_DATA";
+export const setStartData = data => ({
+    type: REQUEST_START_DATA,
+    payload: data
+});

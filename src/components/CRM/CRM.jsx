@@ -9,7 +9,8 @@ import {
     updateRequestRow,
     createRequestRow,
     dropRequestRow,
-    counterUpdate
+    counterUpdate,
+    setStartData
 } from "./../../store/requests/actions";
 import { setTopMenu } from "./../../store/interface/actions";
 import { Loader, Message } from "semantic-ui-react";
@@ -173,7 +174,7 @@ const CRM = props => {
             openSubMenu('requests');
         }
 
-        axios.post('requests/start').then(({ data }) => {
+        axios.post('crm/start').then(({ data }) => {
 
             setError(false);
             setTabList(data.tabs);
@@ -181,6 +182,12 @@ const CRM = props => {
 
             window.requestPermits = data.permits;
             setPermits(data.permits);
+
+            props.setStartData({
+                permits: data.permits,
+                statuses: data.statuses,
+                themes: data.themes,
+            });
 
             // Информаирование по всем доступным заявкам
             if (
@@ -284,7 +291,8 @@ const mapActions = {
     updateRequestRow,
     createRequestRow,
     dropRequestRow,
-    counterUpdate
+    counterUpdate,
+    setStartData,
 }
 
 export default connect(mapStateToProps, mapActions)(CRM);

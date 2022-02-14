@@ -1,7 +1,12 @@
 import React from "react";
 import { withRouter } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { LIMIT_ROWS_PAGE, setRequests, setSearchRequest, selectTab, requestEditCell } from "../../../store/requests/actions";
+import {
+    LIMIT_ROWS_PAGE,
+    setRequests,
+    setSearchRequest,
+    selectTab
+} from "../../../store/requests/actions";
 import { Button, Dropdown, Icon, Form, Label } from "semantic-ui-react";
 
 const RequestsSearch = React.memo(props => {
@@ -12,6 +17,7 @@ const RequestsSearch = React.memo(props => {
 
     const [open, setOpen] = React.useState(false);
     const [search, setSearch] = React.useState(searchRequest || {});
+    const [filter, setFilter] = React.useState({});
     const [start, setStart] = React.useState(false);
     const [active, setActive] = React.useState(false);
 
@@ -26,7 +32,6 @@ const RequestsSearch = React.memo(props => {
 
         setSearch(params);
         setActive(Object.keys(params).length > 0);
-
     }
 
     const onKeyUp = e => {
@@ -36,13 +41,11 @@ const RequestsSearch = React.memo(props => {
 
         if (e.keyCode === 13 && Object.keys(search).length > 0)
             return setStart(true);
-
     }
 
     const historyAppend = data => {
 
         let path = "/requests";
-
         const searchParams = new URLSearchParams;
 
         for (let k in data)
@@ -57,6 +60,7 @@ const RequestsSearch = React.memo(props => {
     }
 
     const searchCansel = React.useCallback(() => {
+
         let tabId = Number(localStorage.getItem('select_tab'));
 
         setOpen(false);
@@ -67,7 +71,6 @@ const RequestsSearch = React.memo(props => {
         dispatch(setRequests([]));
         dispatch(setSearchRequest(null));
         // dispatch(requestEditCell(null));
-
     }, []);
 
     React.useEffect(() => {
@@ -106,109 +109,152 @@ const RequestsSearch = React.memo(props => {
 
     }, [searchRequest]);
 
-    return <Dropdown
-        floating
-        trigger={<>
-            <Button
-                icon="search"
-                circular
-                title="Поиск"
-                basic
-                onClick={() => setOpen(true)}
-            />
-            {searchRequest &&
-                <Label
-                    color="red"
+    return <>
+
+        {/* <Dropdown
+            floating
+            trigger={<>
+                <Button
+                    icon="filter"
                     circular
-                    empty
-                    size="mini"
-                    className="button-label-info"
+                    title="Фильтр заявок"
+                    basic
+                    onClick={() => setOpen("filter")}
                 />
-            }
-        </>}
-        icon={null}
-        pointing="top right"
-        open={open}
-    >
-        <Dropdown.Menu style={{ zIndex: 1000 }}>
-            <Dropdown.Header className="d-flex justify-content-between">
-                <div>Поиск</div>
-                <div>
-                    <Icon
-                        name="close"
-                        className="button-icon"
-                        onClick={() => setOpen(false)}
-                    />
-                </div>
-            </Dropdown.Header>
-
-            <Dropdown.Divider />
-
-            <div className="search-form">
-
-                <Form.Input
-                    type="number"
-                    icon="hashtag"
-                    iconPosition="left"
-                    placeholder="ID"
-                    name="id"
-                    value={search.id || ""}
-                    onChange={onChange}
-                    onKeyUp={onKeyUp}
-                />
-
-                <Form.Input
-                    type="text"
-                    icon="phone"
-                    iconPosition="left"
-                    placeholder="Телефон"
-                    name="phone"
-                    value={search.phone || ""}
-                    onChange={onChange}
-                    onKeyUp={onKeyUp}
-                />
-
-                <Form.Input
-                    type="text"
-                    icon="user"
-                    iconPosition="left"
-                    placeholder="ФИО"
-                    name="fio"
-                    value={search.fio || ""}
-                    onChange={onChange}
-                    onKeyUp={onKeyUp}
-                />
-
-                <Form.Input
-                    type="number"
-                    icon="user circle"
-                    iconPosition="left"
-                    placeholder="PIN"
-                    name="pin"
-                    value={search.pin || ""}
-                    onChange={onChange}
-                    onKeyUp={onKeyUp}
-                />
-
                 {searchRequest &&
-                    <Button
-                        color="orange"
-                        content="Отменить поиск"
-                        onClick={() => searchCansel()}
+                    <Label
+                        color="red"
+                        circular
+                        empty
+                        size="mini"
+                        className="button-label-info"
                     />
                 }
+            </>}
+            icon={null}
+            pointing="top right"
+            open={open === "filter"}
+        >
+            <Dropdown.Menu style={{ zIndex: 1000 }}>
+                <Dropdown.Header className="d-flex justify-content-between">
+                    <div>Фильтр заявок</div>
+                    <div>
+                        <Icon
+                            name="close"
+                            className="button-icon"
+                            onClick={() => setOpen(false)}
+                        />
+                    </div>
+                </Dropdown.Header>
 
+            </Dropdown.Menu>
+        </Dropdown> */}
+
+        <Dropdown
+            floating
+            trigger={<>
                 <Button
-                    color="green"
-                    content="Найти"
-                    onClick={() => setStart(true)}
-                    disabled={!active}
+                    icon="search"
+                    circular
+                    title="Поиск"
+                    basic
+                    onClick={() => setOpen("search")}
                 />
+                {searchRequest &&
+                    <Label
+                        color="red"
+                        circular
+                        empty
+                        size="mini"
+                        className="button-label-info"
+                    />
+                }
+            </>}
+            icon={null}
+            pointing="top right"
+            open={open === "search"}
+        >
+            <Dropdown.Menu style={{ zIndex: 1000 }}>
+                <Dropdown.Header className="d-flex justify-content-between">
+                    <div>Поиск</div>
+                    <div>
+                        <Icon
+                            name="close"
+                            className="button-icon"
+                            onClick={() => setOpen(false)}
+                        />
+                    </div>
+                </Dropdown.Header>
 
-            </div>
+                <Dropdown.Divider />
 
-        </Dropdown.Menu>
-    </Dropdown>
+                <div className="search-form">
+
+                    <Form.Input
+                        type="number"
+                        icon="hashtag"
+                        iconPosition="left"
+                        placeholder="ID"
+                        name="id"
+                        value={search.id || ""}
+                        onChange={onChange}
+                        onKeyUp={onKeyUp}
+                    />
+
+                    <Form.Input
+                        type="text"
+                        icon="phone"
+                        iconPosition="left"
+                        placeholder="Телефон"
+                        name="phone"
+                        value={search.phone || ""}
+                        onChange={onChange}
+                        onKeyUp={onKeyUp}
+                    />
+
+                    <Form.Input
+                        type="text"
+                        icon="user"
+                        iconPosition="left"
+                        placeholder="ФИО"
+                        name="fio"
+                        value={search.fio || ""}
+                        onChange={onChange}
+                        onKeyUp={onKeyUp}
+                    />
+
+                    <Form.Input
+                        type="number"
+                        icon="user circle"
+                        iconPosition="left"
+                        placeholder="PIN"
+                        name="pin"
+                        value={search.pin || ""}
+                        onChange={onChange}
+                        onKeyUp={onKeyUp}
+                    />
+
+                    <Button
+                        color="green"
+                        content="Найти"
+                        onClick={() => setStart(true)}
+                        disabled={!active}
+                    />
+
+                    {searchRequest &&
+                        <Button
+                            color="orange"
+                            content="Отменить поиск"
+                            onClick={() => searchCansel()}
+                        />
+                    }
+
+                </div>
+
+            </Dropdown.Menu>
+        </Dropdown>
+
+    </>
 
 });
 

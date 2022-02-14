@@ -6,7 +6,8 @@ import {
     setRequestEditPage,
     setSendSms,
     setShowAudioCall,
-    dropRequestRow
+    dropRequestRow,
+    setShowStoryRequest
 } from "../../../../store/requests/actions";
 import { Table, Icon, Dropdown } from "semantic-ui-react";
 
@@ -56,6 +57,7 @@ const CellButtons = props => {
                     <Dropdown.Item
                         icon="history"
                         text="История изменений"
+                        onClick={() => dispatch(setShowStoryRequest(row))}
                         disabled
                     />
                     {row.uplift_hide_access && <Dropdown.Item

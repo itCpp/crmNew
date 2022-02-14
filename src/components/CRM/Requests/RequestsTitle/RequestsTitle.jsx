@@ -1,48 +1,166 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Icon, Label, Button } from "semantic-ui-react";
+import { Icon, Label, Button, Dropdown, Input } from "semantic-ui-react";
 import DatePicker from "./../../../../utils/DatePicker";
 import moment from "./../../../../utils/moment";
-
 import RequestsSearch from "./../RequestsSearch";
 import RequestAdd from "./RequestAdd";
 import RequestAddPhone from "./RequestAddPhone";
 
 const ChangeData = props => {
 
-    const [startDate, setStartDate] = React.useState(null);
-    const [endDate, setEndDate] = React.useState(null);
-    const { setPeriod, loading } = props;
+    const { period, setPeriod, loading } = props;
+    const [open, setOpen] = React.useState(false);
+    // const [startDate, setStartDate] = React.useState(null);
+    // const [endDate, setEndDate] = React.useState(null);
+
+    const [show, setShow] = React.useState(false);
+    const [start, setStart] = React.useState(period[0] || null);
+    const [stop, setStop] = React.useState(period[1] || null);
+    const { searchRequest } = useSelector(state => state.requests);
+
+    const close = React.useCallback(() => setOpen(false), []);
+
+    React.useEffect(() => {
+        if (open) document.addEventListener('click', close);
+        else document.removeEventListener('click', close);
+    }, [open]);
 
     React.useEffect(() => {
 
-        if (startDate || endDate) {
-            setPeriod([
-                startDate ? moment(startDate).format("YYYY-MM-DD") : null,
-                endDate ? moment(endDate).format("YYYY-MM-DD") : null
-            ]);
+        if (show) {
+            setPeriod([start, stop]);
+            setOpen(false);
         }
 
-    }, [startDate, endDate]);
+        return () => setShow(false);
+    }, [show]);
 
-    const ButtonDatePicker = React.forwardRef((props, ref) => {
-        const { value, onClick } = props;
-        return <Button
-            onClick={onClick}
-            ref={ref}
-            color={value ? "green" : null}
-            size="tiny"
-            icon={value ? null : <Icon name="calendar plus" fitted />}
-            content={value}
-            style={{ borderRadius: (startDate || endDate) ? 0 : ".25rem" }}
-            className={(startDate || endDate) ? "px-2" : "px-3"}
-            disabled={loading}
-            basic={(startDate || endDate) ? false : true}
-        />
-    });
+    React.useEffect(() => {
+        if ((searchRequest ? true : false) === true) {
+            setStart(null);
+            setStop(null);
+        } else if ((searchRequest ? true : false) === false) {
+            setStart(period[0] || null);
+            setStop(period[1] || null);
+        }
+    }, [searchRequest]);
 
-    return (
-        <Button.Group className="btn-group-datepicker" title="Выберите период">
+    // React.useEffect(() => {
+    //     if (startDate || endDate) {
+    //         setPeriod([
+    //             startDate ? moment(startDate).format("YYYY-MM-DD") : null,
+    //             endDate ? moment(endDate).format("YYYY-MM-DD") : null
+    //         ]);
+    //     }
+    // }, [startDate, endDate]);
+
+    // const ButtonDatePicker = React.forwardRef((props, ref) => {
+
+    //     const { value, onClick } = props;
+
+    //     return <Button
+    //         onClick={onClick}
+    //         ref={ref}
+    //         color={value ? "green" : null}
+    //         size="tiny"
+    //         icon={value ? null : <Icon name="calendar plus" fitted />}
+    //         content={value}
+    //         style={{ borderRadius: (startDate || endDate) ? 0 : ".25rem" }}
+    //         className={(startDate || endDate) ? "px-2" : "px-3"}
+    //         disabled={loading}
+    //         basic={(startDate || endDate) ? false : true}
+    //     />
+    // });
+
+    return <>
+
+        <Dropdown
+            icon={null}
+            pointing="top right"
+            trigger={<>
+                <Button
+                    icon="calendar plus"
+                    circular
+                    basic
+                    onClick={() => setOpen(true)}
+                />
+                {period[0] &&
+                    <Label
+                        color="red"
+                        circular
+                        empty
+                        size="mini"
+                        className="button-label-info"
+                    />
+                }
+            </>}
+            disabled={loading || (searchRequest ? true : false)}
+            open={open}
+        >
+            <Dropdown.Menu>
+                <Dropdown.Header className="d-flex justify-content-between">
+                    <div>Период</div>
+                    <div>
+                        <Icon
+                            name="close"
+                            className="button-icon"
+                            onClick={() => setOpen(false)}
+                        />
+                    </div>
+                </Dropdown.Header>
+
+                <Dropdown.Divider />
+
+                <div className="mb-2 mx-2">
+                    <Input
+                        type="date"
+                        label="С"
+                        className="request-filter-date"
+                        value={start || ""}
+                        onChange={(e, { value }) => setStart(value !== "" ? value : null)}
+                    />
+                </div>
+
+                <div className="mb-2 mx-2">
+                    <Input
+                        type="date"
+                        label="По"
+                        className="request-filter-date"
+                        value={stop || ""}
+                        onChange={(e, { value }) => setStop(value !== "" ? value : null)}
+                        disabled={start === null}
+                    />
+                </div>
+
+                <div className="mx-2 mb-2">
+                    <Button
+                        color="green"
+                        content="Применить фильтр"
+                        onClick={() => setShow(true)}
+                        fluid
+                        disabled={start === null}
+                    />
+                </div>
+
+                {period[0] && <div className="mx-2 mb-2">
+                    <Button
+                        color="orange"
+                        content="Отменить фильтр"
+                        onClick={() => {
+                            setStart(null);
+                            setStop(null);
+                            setShow(true);
+                        }}
+                        fluid
+                    />
+                </div>}
+
+            </Dropdown.Menu>
+
+        </Dropdown>
+
+        {/* <Button.Group className="btn-group-datepicker mr-1" title="Выберите период">
             <DatePicker
                 selected={startDate}
                 onChange={(date) => setStartDate(date)}
@@ -80,17 +198,10 @@ const ChangeData = props => {
                     }}
                     disabled={loading}
                 />
-                {/* <Button
-                    color="green"
-                    icon={<Icon name="calendar check" fitted />}
-                    style={{ borderRadius: 0 }}
-                    title="Применить период"
-                    className="px-2"
-                    disabled={loading}
-                /> */}
             </>}
-        </Button.Group>
-    );
+        </Button.Group> */}
+
+    </>
 }
 
 const RequestsTitle = React.memo(props => {
@@ -132,12 +243,15 @@ const RequestsTitle = React.memo(props => {
 
         <div className="d-flex align-items-center">
 
-            <div className="mr-2">
-                <ChangeData
-                    setPeriod={props.setPeriod}
-                    loading={props.loading}
-                />
-            </div>
+            {/* <div className="mr-2"> */}
+            <ChangeData
+                period={props.period}
+                setPeriod={props.setPeriod}
+                loading={props.loading}
+            />
+            {/* </div> */}
+
+            <RequestsSearch {...props} />
 
             {window?.requestPermits?.requests_add && <>
                 <Button
@@ -151,7 +265,6 @@ const RequestsTitle = React.memo(props => {
                 {add && <RequestAdd setOpen={setAdd} />}
             </>}
 
-            <RequestsSearch {...props} />
         </div>
 
     </div>

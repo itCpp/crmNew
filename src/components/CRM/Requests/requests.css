@@ -404,3 +404,11 @@
     opacity: .5;
     font-weight: 700;
 }
+
+.request-filter-date .ui.label.label {
+    min-width: 43px;
+    text-align: center;
+}
+.request-filter-date input {
+    max-height: 36px;
+}

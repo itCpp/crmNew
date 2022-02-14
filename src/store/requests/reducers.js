@@ -16,6 +16,8 @@ const defaultState = {
     addPhoneShow: null, // {null|number} Модальное окно добавления номера телефона
     sendSms: null,
     showAudioCalls: null,
+    showStoryRequest: null, // Флаг открытия модельного окна просомтра истории
+    startData: {},
 };
 
 let list = [];
@@ -145,6 +147,12 @@ export const requestsReducer = (state = defaultState, action) => {
 
         case ACTION.SHOW_AUDIO_CALLS:
             return { ...state, showAudioCalls: action.payload }
+
+        case ACTION.SHOW_STORY_REQUEST:
+            return { ...state, showStoryRequest: action.payload }
+
+        case ACTION.REQUEST_START_DATA:
+            return { ...state, startData: action.payload }
 
         default:
             return state;
