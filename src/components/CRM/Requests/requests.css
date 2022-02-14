@@ -197,6 +197,17 @@
 .request-row-theme-11 { background-color: #795548; color: #ffffff !important; }
 .request-row-theme-11:hover { background-color: #6f4b3e; }
 
+.request-row-theme-2 .ui.loading.dropdown > i.icon:after,
+.request-row-theme-3 .ui.loading.dropdown > i.icon:after,
+.request-row-theme-4 .ui.loading.dropdown > i.icon:after,
+.request-row-theme-7 .ui.loading.dropdown > i.icon:after,
+.request-row-theme-8 .ui.loading.dropdown > i.icon:after,
+.request-row-theme-9 .ui.loading.dropdown > i.icon:after,
+.request-row-theme-10 .ui.loading.dropdown > i.icon:after,
+.request-row-theme-11 .ui.loading.dropdown > i.icon:after {
+    border-color: #fff #a7a7a7 #a7a7a7 !important;
+}
+
 .loader-requests {
     position: absolute;
     left: 0;

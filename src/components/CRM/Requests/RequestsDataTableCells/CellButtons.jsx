@@ -1,17 +1,42 @@
+import React from "react";
+import axios from "../../../../utils/axios-header";
 import { useDispatch } from "react-redux";
-import { requestEdit, setRequestEditPage, setSendSms, setShowAudioCall } from "../../../../store/requests/actions";
+import {
+    requestEdit,
+    setRequestEditPage,
+    setSendSms,
+    setShowAudioCall,
+    dropRequestRow
+} from "../../../../store/requests/actions";
 import { Table, Icon, Dropdown } from "semantic-ui-react";
 
 const CellButtons = props => {
 
     const { row } = props;
     const dispatch = useDispatch();
+    const [loading, setLoading] = React.useState(false);
+    const [hide, setHide] = React.useState(false);
+
+    React.useEffect(() => {
+
+        if (hide) {
+            setLoading(true);
+            axios.post('requests/hideUplift', { id: hide }).then(({ data }) => {
+                dispatch(dropRequestRow(data.request.id));
+            }).catch(e => {
+                axios.toast(e);
+                setLoading(false);
+                setHide(false);
+            });
+        }
+
+    }, [hide]);
 
     return <Table.Cell style={{ maxWidth: 25 }}>
 
         <div className="d-flex flex-column justify-content-center align-items-center">
 
-            <Dropdown icon={{ name: "ellipsis vertical", fitted: true }} className="m-1 button-icon-dropdown" pointing="top right" direction="left">
+            <Dropdown icon={{ name: "ellipsis vertical", fitted: true, style: { minWidth: "15px" }, className: "text-center" }} className="m-1 button-icon-dropdown" pointing="top right" direction="left" loading={loading} lazyLoad>
                 <Dropdown.Menu style={{ marginTop: 4, marginRight: -6 }}>
                     <Dropdown.Item
                         icon="edit"
@@ -33,6 +58,11 @@ const CellButtons = props => {
                         text="История изменений"
                         disabled
                     />
+                    {row.uplift_hide_access && <Dropdown.Item
+                        icon="hide"
+                        text="Скрыть из необработанных"
+                        onClick={() => setHide(row.id)}
+                    />}
                 </Dropdown.Menu>
             </Dropdown>
 
@@ -43,13 +73,16 @@ const CellButtons = props => {
                 className="button-icon m-1"
             /> */}
 
-            <Icon
-                // name="chevron circle right"
-                name="edit"
-                onClick={() => dispatch(setRequestEditPage(row))}
-                title="Редактировать заявку"
-                className="button-icon m-1"
-            />
+            <span>
+                <Icon
+                    // name="chevron circle right"
+                    name="edit"
+                    onClick={() => dispatch(setRequestEditPage(row))}
+                    title="Редактировать заявку"
+                    className="button-icon m-1"
+                    style={{ minWidth: "15px" }}
+                />
+            </span>
 
         </div>
 

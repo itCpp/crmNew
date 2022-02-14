@@ -16,7 +16,7 @@ const RequestRowStatisticComing = props => {
 
                 <Header
                     as="h3"
-                    content="Приход"
+                    content="Приход по заявке"
                     className="mb-1"
                     color="green"
                 />

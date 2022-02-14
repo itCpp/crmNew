@@ -1,7 +1,11 @@
 import axios from "../../../utils/axios-header";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { setRequestEditPage, setShowAudioCall } from "../../../store/requests/actions";
+import {
+    setRequestEditPage,
+    setShowAudioCall,
+    setSendSms
+} from "../../../store/requests/actions";
 import { Button, Grid, Header, Icon, Loader, Message } from "semantic-ui-react";
 import RequestPageEditForm from "./ReqquestPage/RequestPageEditForm";
 import Comments from "./RequestEdit/Comments/CommentsEditRequest";
@@ -68,6 +72,17 @@ const RequestPage = props => {
                 />
 
                 {!loading && <div className="d-flex align-items-center">
+
+                    <Button
+                        icon="mail"
+                        circular
+                        basic
+                        color="yellow"
+                        className="mx-1"
+                        onClick={() => dispatch(setSendSms(row.id))}
+                        title="СМС сообщения в заявке"
+                        disabled={error ? true : false}
+                    />
 
                     <Button
                         icon="file audio"
