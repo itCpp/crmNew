@@ -47,7 +47,7 @@ const Rating = withRouter(props => {
 
     React.useEffect(() => {
         getData(true);
-    }, [props.location.key]);
+    }, [period]);
 
     return <div id="rating">
 
@@ -58,7 +58,7 @@ const Rating = withRouter(props => {
             dates={dates}
         />
 
-        {loading && <Loader inline="centered" active />}
+        {/* {loading && <Loader inline="centered" active />} */}
 
         {!loading && load && <div style={{
             position: "fixed",

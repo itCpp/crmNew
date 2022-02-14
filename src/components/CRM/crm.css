@@ -173,3 +173,7 @@
     font-weight: 700;
     color: #ffffff;
 }
+
+.dropdown-center {
+    left: -50% !important;
+}

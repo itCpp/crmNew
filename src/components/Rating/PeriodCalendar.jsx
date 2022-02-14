@@ -1,5 +1,5 @@
 import React from "react";
-import { Dropdown, Grid, Segment } from "semantic-ui-react";
+import { Dropdown, Grid, Icon } from "semantic-ui-react";
 import moment from "moment";
 import "./calendar.css";
 
@@ -9,10 +9,32 @@ const PeriodCalendar = props => {
     const { period, setPeriod, dates } = props;
 
     const date = dates.start || null;
+    const [select, setSelect] = React.useState(date || moment(new Date).format("YYYY-MM-DD"));
+
+    const [open, setOpen] = React.useState(false);
 
     const claendarIcon = period.toPeriod
         ? { name: "calendar alternate", title: "Периорд", color: "green" }
         : { name: "calendar check", title: "Один день", color: "blue" };
+
+    const mmmmyyyy = moment(select).format("MMMM YYYY");
+
+    const setDate = date => {
+        setPeriod(prev => ({
+            ...prev,
+            toPeriod: false,
+            start: date,
+            stop: date,
+        }));
+        setOpen(false);
+    }
+
+    const close = React.useCallback(() => setOpen(false), []);
+
+    React.useEffect(() => {
+        if (open) document.addEventListener('click', close);
+        else document.removeEventListener('click', close);
+    }, [open]);
 
     return <Dropdown
         text={moment(date).format("DD.MM.YYYY")}
@@ -23,34 +45,87 @@ const PeriodCalendar = props => {
         className="icon mx-1"
         basic
         loading={loading}
+        pointing="top"
+        open={open}
+        onClick={() => !open && !loading && setOpen(true)}
     >
-        <Dropdown.Menu>
+        <Dropdown.Menu className="dropdown-center">
 
             <Dropdown.Header content="Выберите период или дату" />
             <Dropdown.Divider />
 
             <div className="calendar-content">
 
+                <div className="mx-3 mb-3 mt-1 d-flex justify-content-between align-items-center">
+                    <span>
+                        <Icon
+                            name="angle double left"
+                            fitted
+                            link
+                            onClick={() => {
+                                let d = new Date(select);
+                                d.setMonth(d.getMonth() - 1);
+                                setSelect(moment(d).format("YYYY-MM-DD"));
+                            }}
+                        />
+                    </span>
+                    <strong>{mmmmyyyy[0].toUpperCase() + mmmmyyyy.slice(1)}</strong>
+                    <span>
+                        <Icon
+                            name="angle double right"
+                            fitted
+                            link
+                            onClick={() => {
+                                let d = new Date(select);
+                                d.setMonth(d.getMonth() + 1);
+                                setSelect(moment(d).format("YYYY-MM-DD"));
+                            }}
+                        />
+                    </span>
+                </div>
+
                 <Grid columns="equal" divided>
                     <Grid.Row stretched>
                         <Grid.Column width={6}>
-                            <div className="calendar-cell">1 период</div>
+                            <div className={`calendar-cell ${period?.toPeriod && date === moment(select).format("YYYY-MM-01") ? 'calendar-cell-active' : ''}`} onClick={() => {
+                                setOpen(false);
+                                setPeriod(prev => ({
+                                    ...prev,
+                                    toPeriod: true,
+                                    start: moment(select).format("YYYY-MM-01"),
+                                    stop: null,
+                                }));
+                            }}>1 период</div>
                         </Grid.Column>
                         <Grid.Column width={10}>
                             <CalendarDates
-                                date={date}
+                                current={date}
+                                date={select}
                                 period={1}
+                                setDate={setDate}
+                                toPeriod={period?.toPeriod}
                             />
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row stretched>
                         <Grid.Column width={6}>
-                            <div className="calendar-cell">2 период</div>
+                            <div className={`calendar-cell ${period?.toPeriod && date === moment(select).format("YYYY-MM-16") ? 'calendar-cell-active' : ''}`} onClick={() => {
+                                setOpen(false);
+                                setPeriod(prev => ({
+                                    ...prev,
+                                    toPeriod: true,
+                                    start: moment(select).format("YYYY-MM-16"),
+                                    stop: null,
+                                }));
+                            }}>2 период</div>
                         </Grid.Column>
                         <Grid.Column width={10}>
                             <CalendarDates
-                                date={date}
+                                current={date}
+                                date={select}
                                 period={2}
+                                setDate={setDate}
+                                toPeriod={period?.toPeriod}
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -67,10 +142,10 @@ const PeriodCalendar = props => {
 /** Формирование дней недели периода */
 const CalendarDates = props => {
 
-    const { date, period } = props;
+    const { setDate, current, date, period, toPeriod } = props;
 
     const datetime = moment(date);
-    const selected = datetime.format("YYYY-MM-DD");
+    const selected = !toPeriod && moment(current).format("YYYY-MM-DD");
 
     const year = datetime.year();
     const month = datetime.month();
@@ -121,7 +196,7 @@ const CalendarDates = props => {
 
     }
 
-    if (days[w].length < 7) {
+    if (days[w] && days[w].length < 7) {
         for (let d = days[w].length; d < 7; d++) {
             days[w][d] = null;
         }
@@ -148,7 +223,7 @@ const CalendarDates = props => {
                     ? row.date.toString().padStart(2, '0')
                     : <>&nbsp;&nbsp;</>;
 
-                return <div key={d} className={className.join(' ')}>{text}</div>
+                return <div key={d} className={className.join(' ')} onClick={() => row && setDate(row.format)}>{text}</div>
 
             })}
 
