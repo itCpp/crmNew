@@ -21,7 +21,7 @@ const RatingHeader = props => {
         }));
     };
 
-    const changePeriod = (sub) => {
+    const changePeriod = sub => {
 
         let day = date.getDate();
 
@@ -33,7 +33,15 @@ const RatingHeader = props => {
             setDate(date.setDate(16), true);
         } else if (day >= 16 && sub > 0) {
             setDate(date.setMonth(date.getMonth() + 1, 1), true);
+        } else {
+            setDate(date, true);
         }
+    }
+
+    const setCurrent = () => {
+        if (loading) return;
+        if (period.toPeriod) return setDate(date);
+        return changePeriod(0);
     }
 
     return <div className="rating-callcenter-row">
@@ -44,7 +52,7 @@ const RatingHeader = props => {
             <Button.Group
                 basic
                 size="small"
-                className="mr-1"
+                className="mr-2"
                 buttons={[
                     {
                         key: 0,
@@ -68,7 +76,7 @@ const RatingHeader = props => {
             <Button.Group
                 basic
                 size="small"
-                className="ml-1"
+                className="ml-2"
                 buttons={[
                     {
                         key: 1,
@@ -86,6 +94,10 @@ const RatingHeader = props => {
                     },
                 ]}
             />
+        </div>
+
+        <div className="text-center mt-3">
+            <a style={{ cursor: "pointer" }} onClick={setCurrent}>Показать текущий {period?.toPeriod ? "день" : "период"}</a>
         </div>
 
     </div>
