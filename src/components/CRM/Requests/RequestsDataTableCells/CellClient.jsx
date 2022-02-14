@@ -9,9 +9,33 @@ const PhoneRow = props => {
     const number = useRef();
 
     const copyPhone = useCallback((phone) => {
-        navigator.clipboard.writeText(phone);
-        number.current && number.current.classList.add('copyed');
-        setTimeout(() => number.current && number.current.classList.remove('copyed'), 100);
+        if (number.current) {
+
+            // navigator clipboard api needs a secure context (https)
+            if (navigator.clipboard && window.isSecureContext) {
+                // navigator clipboard api method'
+                navigator.clipboard.writeText(phone);
+            } else {
+                // text area method
+                let textArea = document.createElement("textarea");
+                textArea.value = phone;
+                // make the textarea out of viewport
+                textArea.style.position = "fixed";
+                textArea.style.left = "-999999px";
+                textArea.style.top = "-999999px";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                new Promise((res, rej) => {
+                    // here the magic happens
+                    document.execCommand('copy') ? res() : rej();
+                    textArea.remove();
+                });
+            }
+
+            number.current.classList.add('copyed');
+            setTimeout(() => number.current.classList.remove('copyed'), 100);
+        }
     }, []);
 
     return <div onClick={() => copyPhone(client.hidden ? `+${rowId}s${client.id}` : phone)} className="d-flex align-items-center">
