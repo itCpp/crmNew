@@ -6,6 +6,7 @@ import getIpInfo from "./IP/getIpInfo";
 
 export default (props => {
 
+    const { updateRow } = props;
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
     const [rows, setRows] = React.useState([]);
@@ -58,6 +59,26 @@ export default (props => {
         setRows(prev => prev.sort((a, b) => sortable(a, b, column, direction)));
     }
 
+    const onChangeSortColumn = (e, { checked, value }) => {
+
+        const columns = String(sort?.column).split(",");
+        let key = columns.indexOf(value);
+
+        if (checked && !columns.includes(value)) {
+            columns.push(value);
+        } else if (!checked && key >= 0) {
+            columns.splice(key, 1);
+        }
+
+        setSort(prev => ({ ...prev, column: columns.join(",") }));
+        setRows(prev => prev.sort((a, b) => sortable(a, b, columns.join(","), sort.direction)));
+    }
+
+    const onChangeSortDirection = direction => {
+        setSort(prev => ({ ...prev, direction }));
+        setRows(prev => prev.sort((a, b) => sortable(a, b, String(sort.column), direction)));
+    }
+
     React.useEffect(() => {
 
         const header = document.getElementById('header-menu');
@@ -99,25 +120,22 @@ export default (props => {
 
     }, [sort]);
 
-    const onChangeSortColumn = (e, { checked, value }) => {
+    React.useEffect(() => {
 
-        const columns = String(sort?.column).split(",");
-        let key = columns.indexOf(value);
+        if (updateRow?.ip) {
+            setRows(prev => {
 
-        if (checked && !columns.includes(value)) {
-            columns.push(value);
-        } else if (!checked && key >= 0) {
-            columns.splice(key, 1);
+                prev.forEach((row, i) => {
+                    if (row.ip === updateRow.ip) {
+                        prev[i].blocked_client_id = updateRow.block_client_id;
+                    }
+                });
+
+                return prev;
+            });
         }
 
-        setSort(prev => ({ ...prev, column: columns.join(",") }));
-        setRows(prev => prev.sort((a, b) => sortable(a, b, columns.join(","), sort.direction)));
-    }
-
-    const onChangeSortDirection = direction => {
-        setSort(prev => ({ ...prev, direction }));
-        setRows(prev => prev.sort((a, b) => sortable(a, b, String(sort.column), direction)));
-    }
+    }, [updateRow]);
 
     return <div className="pb-3">
 
@@ -142,7 +160,7 @@ export default (props => {
                     icon={null}
                     simple
                     direction="left"
-                    style={{ zIndex: 1001 }}
+                    style={{ zIndex: 101 }}
                     title="Сортировка"
                 >
                     <Dropdown.Menu>
@@ -277,6 +295,7 @@ export default (props => {
 
             <Table.Body>
                 {rows.map(row => <StatisticDayRow
+                    {...props}
                     key={row.ip}
                     row={row}
                     setBlockIp={props.setBlockIp}
@@ -291,7 +310,7 @@ export default (props => {
 
 });
 
-const StatisticDayRow = ({ row, setBlockIp, setRows, history }) => {
+const StatisticDayRow = ({ row, setBlockIp, setRows, history, setAddBlockId }) => {
 
     const [load, setLoad] = React.useState(false);
 
@@ -454,6 +473,15 @@ const StatisticDayRow = ({ row, setBlockIp, setRows, history }) => {
                             title="Все просмотры страниц сайтов с ip"
                         />
                     </a>
+                </span>
+                <span>
+                    <Icon
+                        name={row.blocked_client_id ? "minus square" : "ban"}
+                        color="blue"
+                        className="button-icon mx-1"
+                        title="Заблокировать IP по ID"
+                        onClick={() => setAddBlockId(row)}
+                    />
                 </span>
             </div>
 

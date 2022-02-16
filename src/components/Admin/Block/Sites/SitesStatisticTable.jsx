@@ -13,7 +13,7 @@ const SitesStatisticTable = props => {
 
     const searchParams = new URLSearchParams(props.location.search);
 
-    const { site, history } = props;
+    const { site, history, setAddBlockId, updateRow } = props;
     const { loading, setLoading } = props;
     const [load, setLoad] = useState(null);
     const [error, setError] = useState(null);
@@ -37,6 +37,61 @@ const SitesStatisticTable = props => {
                 ? a[column] - b[column]
                 : b[column] - a[column]
         }));
+
+    }
+
+
+    const blockIp = async ip => {
+
+        if (load) return;
+
+        setLoad(true);
+
+        await setBlockIp(
+            { ip },
+            data => {
+                setRows(prev => {
+
+                    prev.forEach((row, i) => {
+                        if (row.ip === data.row.host || (row.host && row.host.indexOf(data.row.host) >= 0)) {
+                            prev[i].blocked = data.blocked;
+                            prev[i].blocked_on = data.blocked_on;
+                        }
+                    });
+
+                    return prev;
+                });
+
+            },
+            e => axios.toast(e)
+        );
+
+        setLoad(false);
+
+    }
+
+    const checkIp = ip => {
+
+        setRows(prev => {
+            let list = [...prev];
+            list.forEach((row, i) => {
+                if (row.ip === ip)
+                    list[i].info_check = true;
+            });
+            return list;
+        });
+
+        getIpInfo(ip, data => {
+            setRows(prev => {
+                let list = [...prev];
+                list.forEach((row, i) => {
+                    if (row.ip === data.ip)
+                        list[i].info = data;
+                    list[i].info_check = false;
+                });
+                return list;
+            });
+        });
 
     }
 
@@ -107,59 +162,22 @@ const SitesStatisticTable = props => {
 
     }, [sort, site]);
 
-    const blockIp = async ip => {
+    useEffect(() => {
 
-        if (load) return;
-
-        setLoad(true);
-
-        await setBlockIp(
-            { ip },
-            data => {
-                setRows(prev => {
-
-                    prev.forEach((row, i) => {
-                        if (row.ip === data.row.host || (row.host && row.host.indexOf(data.row.host) >= 0)) {
-                            prev[i].blocked = data.blocked;
-                            prev[i].blocked_on = data.blocked_on;
-                        }
-                    });
-
-                    return prev;
-                });
-
-            },
-            e => axios.toast(e)
-        );
-
-        setLoad(false);
-
-    }
-
-    const checkIp = ip => {
-
-        setRows(prev => {
-            let list = [...prev];
-            list.forEach((row, i) => {
-                if (row.ip === ip)
-                    list[i].info_check = true;
-            });
-            return list;
-        });
-
-        getIpInfo(ip, data => {
+        if (updateRow?.ip) {
             setRows(prev => {
-                let list = [...prev];
-                list.forEach((row, i) => {
-                    if (row.ip === data.ip)
-                        list[i].info = data;
-                    list[i].info_check = false;
-                });
-                return list;
-            });
-        });
 
-    }
+                prev.forEach((row, i) => {
+                    if (row.ip === updateRow.ip) {
+                        prev[i].blocked_client_id = updateRow.block_client_id;
+                    }
+                });
+
+                return prev;
+            });
+        }
+
+    }, [updateRow]);
 
     if (loading)
         return <Loader inline="centered" active />
@@ -372,6 +390,15 @@ const SitesStatisticTable = props => {
                                         title="Все просмотры страниц сайтов с ip"
                                     />
                                 </a>
+                            </span>
+                            <span>
+                                <Icon
+                                    name={row.blocked_client_id ? "minus square" : "ban"}
+                                    color="blue"
+                                    className="button-icon mx-1"
+                                    title="Заблокировать IP по ID"
+                                    onClick={() => setAddBlockId(row)}
+                                />
                             </span>
                         </div>}
                     />

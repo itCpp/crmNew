@@ -1,10 +1,12 @@
+import React from "react";
 import axios from "./../../../utils/axios-header";
+import "./block.css";
 import StatisticDay from "./Statistic/StatisticDay";
 import StatisticIp from "./Statistic/StatisticIp";
 import BlockDrive from "./BlockDrive";
 import Views from "./Views";
 import SitesStats from "./Sites/SitesStats";
-import "./block.css";
+import AddBlockAdId from "./AddBlockAdId";
 
 export const setBlockIp = async (formdata, done, error) => {
 
@@ -19,20 +21,53 @@ export const setBlockIp = async (formdata, done, error) => {
 
 const Block = props => {
 
+    let body = null;
     const page = props.match?.params?.type || "statistic";
 
-    switch (page) {
-        case "ip":
-            return <StatisticIp {...props} />;
-        case "drive":
-            return <BlockDrive {...props} />;
-        case "views":
-            return <Views {...props} />;
-            case "sites":
-            return <SitesStats {...props} />;
-        default:
-            return <StatisticDay {...props} setBlockIp={setBlockIp} />
+    const [addBlockId, setAddBlockId] = React.useState(null);
+    const [update, setUpdate] = React.useState(null);
+
+    if (page === "ip") {
+        body = <StatisticIp {...props} />;
     }
+    else if (page === "drive") {
+        body = <BlockDrive
+            {...props}
+            setAddBlockId={setAddBlockId}
+            updateRow={update}
+        />;
+    }
+    else if (page === "views") {
+        body = <Views {...props} />;
+    }
+    else if (page === "sites") {
+        body = <SitesStats
+            {...props}
+            setAddBlockId={setAddBlockId}
+            updateRow={update}
+        />;
+    }
+    else {
+        body = <StatisticDay
+            {...props}
+            setBlockIp={setBlockIp}
+            setAddBlockId={setAddBlockId}
+            updateRow={update}
+        />
+    }
+
+    return <>
+
+        <AddBlockAdId
+            open={addBlockId ? true : false}
+            setOpen={setAddBlockId}
+            row={addBlockId || {}}
+            updateRow={setUpdate}
+        />
+
+        {body}
+
+    </>
 
 }
 

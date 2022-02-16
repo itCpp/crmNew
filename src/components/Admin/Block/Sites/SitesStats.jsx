@@ -66,6 +66,8 @@ const SitesStats = props => {
             site={site}
             loading={load}
             setLoading={setLoad}
+            setAddBlockId={props.setAddBlockId}
+            updateRow={props.updateRow}
         />
 
     </div>

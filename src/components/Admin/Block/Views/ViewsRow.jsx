@@ -56,9 +56,9 @@ const ViewsRow = props => {
         </Table.Cell>
         <Table.Cell>
             {row.robot && row.user_agent && <Icon name="android" color="red" title="Это робот зашел" />}
-            {row.desktop && row.user_agent && <Icon name="desktop" title={row.platform} />}
-            {row.phone && row.user_agent && <Icon name="mobile alternate" title={row.platform} />}
-            {row.tablet && row.user_agent && <Icon name="tablet alternate" title={row.platform} />}
+            {row.desktop && row.user_agent && <Icon name="desktop" title={row.platform || ""} />}
+            {row.phone && row.user_agent && <Icon name="mobile alternate" title={row.platform || ""} />}
+            {row.tablet && row.user_agent && <Icon name="tablet alternate" title={row.platform || ""} />}
             {platform}
             {row.user_agent || <i>Нет информации</i>}
         </Table.Cell>
