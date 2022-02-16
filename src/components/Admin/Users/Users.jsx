@@ -1,14 +1,11 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from './../../../utils/axios-header';
-
 import { connect } from 'react-redux';
-
-import { Header, Button, Input, Message } from 'semantic-ui-react';
-
+import { Header, Button, Input, Message, Grid } from 'semantic-ui-react';
 import './users.css';
 import User from './User';
-import UserRow from './UserRow';
+import UserRow from './UserRowCard';
 import UserRoles from './UserRoles';
 
 function Users(props) {
@@ -116,46 +113,65 @@ function Users(props) {
             ? <Message visible>Ничего не найдено</Message>
             : null
 
-    return <div style={{ maxWidth: "800px" }}>
+    return <div>
 
-        {user
-            ? <User
-                user={user}
-                setUser={setUser}
-                users={users}
-                setUsers={setUsers}
-            />
-            : null
-        }
+        {user && <User
+            user={user}
+            setUser={setUser}
+            users={users}
+            setUsers={setUsers}
+        />}
 
-        {rolesSetting
-            ? <UserRoles
-                user={rolesSetting}
-                setOpen={setRolesSetting}
-                users={users}
-                setUsers={setUsers}
-            />
-            : null
-        }
+        {rolesSetting && <UserRoles
+            user={rolesSetting}
+            setOpen={setRolesSetting}
+            users={users}
+            setUsers={setUsers}
+        />}
 
         <div className="admin-content-segment d-flex align-items-center justify-content-between">
             <Header
                 as="h2"
                 content="Сотрудники"
-                className="mb-0"
+                subheader="Управление учетными записями ЦРМ"
+                className="mb-0 flex-grow-1"
             />
-            <Button
-                icon="plus"
-                title="Добавить сотрудника"
-                color="green"
-                onClick={() => setUser({ new: true })}
-                style={{ marginRight: "0" }}
-                size="mini"
-                circular
-            />
+
+            <div className="d-flex align-items-center">
+
+                <Button
+                    icon="plus"
+                    title="Добавить сотрудника"
+                    color="green"
+                    onClick={() => setUser({ new: true })}
+                    circular
+                    basic
+                />
+
+                <Input
+                    icon={loading ? null : {
+                        name: 'search',
+                        link: true,
+                        onClick: () => getUsers(true),
+                    }}
+                    placeholder='Поиск сотрудника...'
+                    className="ml-3 d-sm-none d-md-block"
+                    loading={loading}
+                    value={search}
+                    onChange={e => setSearch(e.currentTarget.value || "")}
+                    onKeyUp={e => {
+                        if (e.keyCode === 13) {
+                            clearTimeout(searchTimeOut);
+                            getUsers(true);
+                        }
+                    }}
+                />
+
+            </div>
+
         </div>
 
-        <div className="admin-content-segment text-center">
+        <div className="admin-content-segment text-center d-none d-sm-block d-md-none">
             <Input
                 icon={loading ? null : {
                     name: 'search',
@@ -176,7 +192,7 @@ function Users(props) {
             />
         </div>
 
-        {list}
+        <Grid columns={3}>{list}</Grid>
 
     </div>
 

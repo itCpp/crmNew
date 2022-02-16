@@ -14,8 +14,29 @@
     display: block;
     margin: 1rem 0;
     padding: 1rem 1.5rem;
+    border: 1px solid var(--border-admin-segment);
     background: #ffffff;
     border-radius: .5rem;
+}
+
+.users-item.user-fired {
+    border-color: #ffeeee;
+    background-color: #fff4f4;
+}
+
+.users-item.user-online {
+    border-color: #eeffee;
+    background-color: #f5fff4;
+}
+
+.users-item.user-online.user-fired {
+    animation: blink-user-fired 1s infinite step-start;
+}
+
+@keyframes blink-user-fired {
+    25% {border-color: var(--border-admin-segment); background: #ffffff; }
+    50% { border-color: #ffeeee; background-color: #fff4f4; }
+    75% { border-color: #eeffee; background-color: #f5fff4; }
 }
 
 .right-field {
@@ -71,4 +92,12 @@
 }
 .row-rights.row-rights-error:hover {
     background: #ffeded;
+}
+
+.users-cards {
+    flex: 0 0 calc(33.333333% - 0.5rem);
+    max-width: calc(33.333333% - 0.5rem);
+    box-shadow: none !important;
+    border: 1px solid var(--border-admin-segment) !important;
+    margin: .25rem !important;
 }

@@ -97,7 +97,7 @@ const RatingHeader = props => {
         </div>
 
         <div className="text-center mt-3">
-            <a style={{ cursor: "pointer" }} onClick={setCurrent}>Показать текущий {period?.toPeriod ? "день" : "период"}</a>
+            <a style={loading ? { color: "#313131" } : { cursor: "pointer" }} onClick={setCurrent}>Показать текущий {period?.toPeriod ? "день" : "период"}</a>
         </div>
 
     </div>

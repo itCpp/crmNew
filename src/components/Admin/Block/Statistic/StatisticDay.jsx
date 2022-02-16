@@ -164,6 +164,8 @@ export default (props => {
                     title="Сортировка"
                 >
                     <Dropdown.Menu>
+                        <Dropdown.Header>Сортировка</Dropdown.Header>
+                        <Dropdown.Divider />
                         <Dropdown.Item
                             icon="sort content ascending"
                             text="По возрастанию"
