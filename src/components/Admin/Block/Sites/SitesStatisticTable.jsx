@@ -245,15 +245,16 @@ const SitesStatisticTable = props => {
                 {rows && rows.length > 0 && rows.map(row => <Table.Row
                     key={row.ip}
                     textAlign="center"
-                    negative={row.blocked_on}
-                    warning={!row.blocked_on && row.autoblock}
-                    title={row.blocked
+                    negative={!row.our_ip && row.blocked_on}
+                    warning={!row.our_ip && !row.blocked_on && row.autoblock}
+                    positive={row.our_ip}
+                    title={row.our_ip ? "Это наш IP адрес" : (row.blocked
                         ? "IP адрес имеется в черном списке"
                         : (!row.blocked && row.autoblock
                             ? "Автоматически заблокировано после оставления нескольких заявок"
                             : null
                         )
-                    }
+                    )}
                 >
                     <Table.Cell
                         warning={row.autoblock}
@@ -285,6 +286,7 @@ const SitesStatisticTable = props => {
                                 style={{ cursor: "pointer" }}
                                 children={row.ip}
                             />
+                            {row.our_ip && <span><Icon name="check" color="green" className="ml-2 mr-0" title="Наш IP" /></span>}
                         </div>}
                     />
                     <Table.Cell

@@ -350,15 +350,16 @@ const StatisticDayRow = ({ row, setBlockIp, setRows, history }) => {
     }
 
     return <Table.Row
-        negative={row.blocked_on}
-        warning={!row.blocked_on && row.autoblock}
-        title={row.blocked
+        negative={!row.our_ip && row.blocked_on}
+        warning={!row.our_ip && !row.blocked_on && row.autoblock}
+        positive={row.our_ip}
+        title={row.our_ip ? "Это наш IP адрес" : (row.blocked
             ? "IP адрес имеется в черном списке"
             : (!row.blocked && row.autoblock
                 ? "Автоматически заблокировано после оставления нескольких заявок"
                 : null
             )
-        }
+        )}
         textAlign="center"
     >
         <Table.Cell warning={row.autoblock} textAlign="left">
@@ -384,6 +385,7 @@ const StatisticDayRow = ({ row, setBlockIp, setRows, history }) => {
                     </span>}
                 </span>
                 <a onClick={() => history.push(`/admin/block/ip?addr=${row.ip}`)} style={{ cursor: "pointer" }}>{row.ip}</a>
+                {row.our_ip && <span><Icon name="check" color="green" className="ml-2 mr-0" title="Наш IP" /></span>}
             </div>
         </Table.Cell>
         <Table.Cell textAlign="left">
