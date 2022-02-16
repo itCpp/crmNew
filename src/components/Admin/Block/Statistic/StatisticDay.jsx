@@ -1,6 +1,6 @@
 import axios from "./../../../../utils/axios-header";
 import React from "react";
-import { Header, Loader, Message, Table, Icon, Dimmer, Placeholder } from "semantic-ui-react";
+import { Header, Loader, Message, Table, Icon, Dimmer, Placeholder, Dropdown, Checkbox, Button } from "semantic-ui-react";
 import FlagIp from "./IP/FlagIp";
 import getIpInfo from "./IP/getIpInfo";
 
@@ -14,6 +14,40 @@ export default (props => {
 
     const searchParams = new URLSearchParams(props.location.search);
 
+    const sortable = React.useCallback((a, b, column, direction) => {
+
+        let columns = column.split(",");
+
+        let sortable_a = a[column];
+        let sortable_b = b[column];
+
+        for (var i = 0, l = columns.length; i < l; i++) {
+
+            column = columns[i];
+
+            sortable_a = a[column];
+            sortable_b = b[column];
+
+            if (typeof sortable_a == "undefined") return 0;
+
+            if (column === "host" || column === "ip") {
+                sortable_a = String(sortable_a).toLowerCase();
+                sortable_b = String(sortable_b).toLowerCase();
+            }
+
+            if (direction === "ascending") {
+                if (sortable_a > sortable_b) return 1;
+                if (sortable_a < sortable_b) return -1;
+            } else {
+                if (sortable_a > sortable_b) return -1;
+                if (sortable_a < sortable_b) return 1;
+            }
+
+        }
+
+        return 0;
+    }, []);
+
     const startSort = column => {
 
         let direction = column === sort.column
@@ -21,13 +55,7 @@ export default (props => {
             : "descending";
 
         setSort({ column, direction });
-
-        setRows(prev => prev.sort((a, b) => {
-            return direction === "ascending"
-                ? a[column] - b[column]
-                : b[column] - a[column]
-        }));
-
+        setRows(prev => prev.sort((a, b) => sortable(a, b, column, direction)));
     }
 
     React.useEffect(() => {
@@ -41,13 +69,7 @@ export default (props => {
             let direction = searchParams.get('direction');
 
             if (column && direction) {
-
-                data.rows.sort((a, b) => {
-                    return direction === "ascending"
-                        ? a[column] - b[column]
-                        : b[column] - a[column]
-                });
-
+                data.rows.sort((a, b) => sortable(a, b, column, direction));
                 setSort({ column, direction });
             }
 
@@ -77,6 +99,26 @@ export default (props => {
 
     }, [sort]);
 
+    const onChangeSortColumn = (e, { checked, value }) => {
+
+        const columns = String(sort?.column).split(",");
+        let key = columns.indexOf(value);
+
+        if (checked && !columns.includes(value)) {
+            columns.push(value);
+        } else if (!checked && key >= 0) {
+            columns.splice(key, 1);
+        }
+
+        setSort(prev => ({ ...prev, column: columns.join(",") }));
+        setRows(prev => prev.sort((a, b) => sortable(a, b, columns.join(","), sort.direction)));
+    }
+
+    const onChangeSortDirection = direction => {
+        setSort(prev => ({ ...prev, direction }));
+        setRows(prev => prev.sort((a, b) => sortable(a, b, String(sort.column), direction)));
+    }
+
     return <div className="pb-3">
 
         <div className="admin-content-segment d-flex justify-content-between align-items-center">
@@ -85,7 +127,90 @@ export default (props => {
                 as="h2"
                 content="Статистика посещений"
                 subheader={`Статистика посещений за текущий день`}
+                className="flex-grow-1"
             />
+
+            <div>
+
+                <Dropdown
+                    trigger={<Button
+                        basic
+                        icon="sort"
+                        basic
+                        circular
+                    />}
+                    icon={null}
+                    simple
+                    direction="left"
+                    style={{ zIndex: 1001 }}
+                    title="Сортировка"
+                >
+                    <Dropdown.Menu>
+                        <Dropdown.Item
+                            icon="sort content ascending"
+                            text="По возрастанию"
+                            active={String(sort?.direction).indexOf("ascending") >= 0}
+                            onClick={() => onChangeSortDirection("ascending")}
+                        />
+                        <Dropdown.Item
+                            icon="sort content descending"
+                            text="По убыванию"
+                            active={String(sort?.direction).indexOf("descending") >= 0}
+                            onClick={() => onChangeSortDirection("descending")}
+                        />
+                        <Dropdown.Divider />
+                        <Dropdown.Item><Checkbox
+                            onChange={onChangeSortColumn}
+                            value="host"
+                            checked={String(sort?.column).split(",").indexOf("host") >= 0}
+                            label="Хост"
+                        /></Dropdown.Item>
+                        <Dropdown.Item><Checkbox
+                            onChange={onChangeSortColumn}
+                            value="visits"
+                            checked={String(sort?.column).split(",").indexOf("visits") >= 0}
+                            label="Посещений"
+                        /></Dropdown.Item>
+                        <Dropdown.Item><Checkbox
+                            onChange={onChangeSortColumn}
+                            value="requests"
+                            checked={String(sort?.column).split(",").indexOf("requests") >= 0}
+                            label="Заявок"
+                        /></Dropdown.Item>
+                        <Dropdown.Item><Checkbox
+                            onChange={onChangeSortColumn}
+                            value="requestsAll"
+                            checked={String(sort?.column).split(",").indexOf("requestsAll") >= 0}
+                            label="Заявок всего"
+                        /></Dropdown.Item>
+                        <Dropdown.Item><Checkbox
+                            onChange={onChangeSortColumn}
+                            value="queues"
+                            checked={String(sort?.column).split(",").indexOf("queues") >= 0}
+                            label="Очередь"
+                        /></Dropdown.Item>
+                        <Dropdown.Item><Checkbox
+                            onChange={onChangeSortColumn}
+                            value="queuesAll"
+                            checked={String(sort?.column).split(",").indexOf("queuesAll") >= 0}
+                            label="Вся очередь"
+                        /></Dropdown.Item>
+                        <Dropdown.Item><Checkbox
+                            onChange={onChangeSortColumn}
+                            value="drops"
+                            checked={String(sort?.column).split(",").indexOf("drops") >= 0}
+                            label="Блок. входы"
+                        /></Dropdown.Item>
+                        <Dropdown.Item><Checkbox
+                            onChange={onChangeSortColumn}
+                            value="all"
+                            checked={String(sort?.column).split(",").indexOf("all") >= 0}
+                            label="Все посещения"
+                        /></Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+
+            </div>
 
         </div>
 
@@ -95,51 +220,54 @@ export default (props => {
 
         {!error && !loading && rows && rows.length === 0 && <Message info className="text-center">Данных нет</Message>}
 
-        {!error && !loading && rows && rows.length > 0 && <Table compact celled sortable className="blocks-table" selectable>
+        {!error && !loading && rows && rows.length > 0 && <Table sortable compact celled className="blocks-table" selectable>
 
             <Table.Header style={{ top, zIndex: 100 }} className="position-sticky">
                 <Table.Row>
                     <Table.HeaderCell>IP адрес</Table.HeaderCell>
-                    <Table.HeaderCell>Хост</Table.HeaderCell>
+                    <Table.HeaderCell
+                        onClick={() => startSort('host')}
+                        sorted={String(sort?.column).split(",").indexOf("host") >= 0 ? sort.direction : null}
+                    >Хост</Table.HeaderCell>
                     <Table.HeaderCell
                         textAlign="center"
-                        sorted={sort.column === 'visits' ? sort.direction : null}
+                        sorted={String(sort?.column).split(",").indexOf("visits") >= 0 ? sort.direction : null}
                         onClick={() => startSort('visits')}
                         title="Посещения сегодня до блокировки"
                     >Посещений</Table.HeaderCell>
                     <Table.HeaderCell
                         textAlign="center"
-                        sorted={sort.column === 'requests' ? sort.direction : null}
+                        sorted={String(sort?.column).split(",").indexOf("requests") >= 0 ? sort.direction : null}
                         onClick={() => startSort('requests')}
                         title="Зафиксировано оставления заявок через сайты"
                     >Заявок</Table.HeaderCell>
                     <Table.HeaderCell
                         textAlign="center"
-                        sorted={sort.column === 'requestsAll' ? sort.direction : null}
+                        sorted={String(sort?.column).split(",").indexOf("requestsAll") >= 0 ? sort.direction : null}
                         onClick={() => startSort('requestsAll')}
                         title="Заявок за все время"
                     >Заявок всего</Table.HeaderCell>
                     <Table.HeaderCell
                         textAlign="center"
-                        sorted={sort.column === 'queues' ? sort.direction : null}
+                        sorted={String(sort?.column).split(",").indexOf("queues") >= 0 ? sort.direction : null}
                         onClick={() => startSort('queues')}
                         title="Поступило запросов в очередь сегодня"
                     >Очередь</Table.HeaderCell>
                     <Table.HeaderCell
                         textAlign="center"
-                        sorted={sort.column === 'queuesAll' ? sort.direction : null}
+                        sorted={String(sort?.column).split(",").indexOf("queuesAll") >= 0 ? sort.direction : null}
                         onClick={() => startSort('queuesAll')}
                         title="Поступило запросов в очередь за все время"
                     >Вся очередь</Table.HeaderCell>
                     <Table.HeaderCell
                         textAlign="center"
-                        sorted={sort.column === 'drops' ? sort.direction : null}
+                        sorted={String(sort?.column).split(",").indexOf("drops") >= 0 ? sort.direction : null}
                         onClick={() => startSort('drops')}
                         title="Попыток входа на сайт после блокировки"
                     >Блок. входы</Table.HeaderCell>
                     <Table.HeaderCell
                         textAlign="center"
-                        sorted={sort.column === 'all' ? sort.direction : null}
+                        sorted={String(sort?.column).split(",").indexOf("all") >= 0 ? sort.direction : null}
                         onClick={() => startSort('all')}
                         title="Посещения за все время"
                     >Все посещения</Table.HeaderCell>

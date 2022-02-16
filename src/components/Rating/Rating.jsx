@@ -47,7 +47,7 @@ const Rating = withRouter(props => {
 
     React.useEffect(() => {
         getData(true);
-    }, [period]);
+    }, [props.location.key, period]);
 
     return <div id="rating">
 
