@@ -97,21 +97,17 @@ function Users(props) {
         window.location.href = "/";
     }
 
-    const list = users.length
-        ? users.map(row => <UserRow
-            {...props}
-            key={row.id}
-            user={row}
-            setUser={setUser}
-            setBlock={setBlock}
-            blockLoad={blockLoad}
-            search={search}
-            setRoles={setRolesSetting}
-            setGodMode={setGodMode}
-        />)
-        : search && !loading
-            ? <Message visible>Ничего не найдено</Message>
-            : null
+    const list = users.length > 0 && users.map(row => <UserRow
+        {...props}
+        key={row.id}
+        user={row}
+        setUser={setUser}
+        setBlock={setBlock}
+        blockLoad={blockLoad}
+        search={search}
+        setRoles={setRolesSetting}
+        setGodMode={setGodMode}
+    />);
 
     return <div>
 
@@ -193,6 +189,8 @@ function Users(props) {
         </div>
 
         <Grid columns={3}>{list}</Grid>
+
+        {search && users.length === 0 && <div className="mt-5 text-center text-muted opacity-80"><b>Ничего не найдено</b></div>}
 
     </div>
 
