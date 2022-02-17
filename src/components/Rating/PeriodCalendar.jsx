@@ -8,7 +8,7 @@ const PeriodCalendar = props => {
     const { loading } = props;
     const { period, setPeriod, dates } = props;
 
-    const date = dates.start || null;
+    const date = dates?.start || null;
     const [select, setSelect] = React.useState(date || moment(new Date).format("YYYY-MM-DD"));
 
     const [open, setOpen] = React.useState(false);

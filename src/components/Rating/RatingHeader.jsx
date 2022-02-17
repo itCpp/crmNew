@@ -1,10 +1,10 @@
-import { Button, Icon, Dropdown } from "semantic-ui-react";
+import { Button, Dropdown, Loader } from "semantic-ui-react";
 import moment from "moment";
 import PeriodCalendar from "./PeriodCalendar";
 
 const RatingHeader = props => {
 
-    const { loading } = props;
+    const { started, startedError, startedData, loading } = props;
     const { period, setPeriod, dates } = props;
 
     const date = new Date(dates?.start || moment(new Date).format("YYYY-MM-DD"));
@@ -44,17 +44,13 @@ const RatingHeader = props => {
         return changePeriod(0);
     }
 
-    const claendarIcon = period.toPeriod
-        ? { name: "calendar alternate", title: "Периорд", color: "green" }
-        : { name: "calendar check", title: "Один день", color: "blue" };
-
     return <div className="rating-callcenter-row">
 
         <div className="d-flex justify-content-between align-items-center">
 
             <h2 className="m-0 flex-grow-1">Рейтинг</h2>
 
-            <div className="d-flex justify-content-center align-items-center">
+            {started && <div className="d-flex justify-content-center align-items-center">
                 <Button.Group
                     basic
                     size="small"
@@ -100,39 +96,58 @@ const RatingHeader = props => {
                         },
                     ]}
                 />
-            </div>
+            </div>}
+
+            {!started && !startedError && <Loader active inline indeterminate />}
 
         </div>
 
-        <div className="mt-3">
+        {started && <div className="mt-2">
 
-            <div className="d-flex justify-content-end align-items-center">
+            <div className="d-flex justify-content-between align-items-center">
 
-                {/* <a style={loading ? { color: "#313131" } : { cursor: "pointer" }} onClick={setCurrent}>Показать текущий {period?.toPeriod ? "день" : "период"}</a> */}
+                <div>
+                    {startedData?.all_access && <Dropdown
+                        selection
+                        placeholder="Все колл-центры"
+                        options={[{ key: 0, value: null, text: "Все колл-центры" }, ...(startedData?.centers || [])]}
+                        className="ml-0 mr-2"
+                        disabled={loading}
+                        value={period.callcenter || null}
+                        onChange={(e, { value }) => setPeriod(p => ({ ...p, callcenter: value }))}
+                    />}
+                </div>
 
-                <Button
-                    basic
-                    content={`Отобразить текущий ${period?.toPeriod ? "день" : "период"}`}
-                    disabled={loading}
-                    onClick={setCurrent}
-                    icon={{
-                        name: period.toPeriod ? "calendar check" : "calendar alternate",
-                        color: period.toPeriod ? "blue" : "green",
-                    }}
-                />
+                <div className="flex-grow-1 d-flex justify-content-end align-items-center">
 
-                <Button
-                    basic
-                    icon="refresh"
-                    title="Обновить рейтинг"
-                    className="ml-2 mr-0"
-                    disabled={loading}
-                    onClick={() => props.getData(true)}
-                />
+                    {/* <a style={loading ? { color: "#313131" } : { cursor: "pointer" }} onClick={setCurrent}>Показать текущий {period?.toPeriod ? "день" : "период"}</a> */}
+
+                    <Button
+                        basic
+                        content={`Отобразить текущий ${period?.toPeriod ? "день" : "период"}`}
+                        disabled={loading}
+                        onClick={setCurrent}
+                        icon={{
+                            name: period.toPeriod ? "calendar check" : "calendar alternate",
+                            color: period.toPeriod ? "blue" : "green",
+                        }}
+                        className="ml-2 mr-0"
+                    />
+
+                    <Button
+                        basic
+                        icon="refresh"
+                        title="Обновить рейтинг"
+                        className="ml-2 mr-0"
+                        disabled={loading}
+                        onClick={() => props.getData(true)}
+                    />
+
+                </div>
 
             </div>
 
-        </div>
+        </div>}
 
     </div>
 

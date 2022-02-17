@@ -164,6 +164,10 @@ const RatingUserRow = props => {
                 <Grid.Column>
                     <div className="rating-info-rows">
                         <div><b>Начислено</b></div>
+                        {row.oklad_period && <div>
+                            <span>Оклад</span>
+                            <span><b>{row.oklad_period || 0}</b> руб</span>
+                        </div>}
                         <div>
                             <span>Бонусы</span>
                             <Popup

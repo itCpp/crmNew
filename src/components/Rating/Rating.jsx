@@ -10,6 +10,10 @@ import RatingHeader from "./RatingHeader";
 
 const Rating = withRouter(props => {
 
+    const [started, setStarted] = React.useState(false);
+    const [startedError, setStartedError] = React.useState(null);
+    const [startedData, setStartedData] = React.useState({});
+
     const [loading, setLoading] = React.useState(true);
     const [load, setLoad] = React.useState(true);
     const [error, setError] = React.useState(null);
@@ -30,6 +34,7 @@ const Rating = withRouter(props => {
             toPeriod: period && period.toPeriod,
             start: period && period.start || null,
             stop: period && period.stop || null,
+            callcenter: period?.callcenter,
         }).then(({ data }) => {
 
             error && setError(null);
@@ -46,12 +51,26 @@ const Rating = withRouter(props => {
     }
 
     React.useEffect(() => {
+        axios.post('ratings/callcenter/start').then(({ data }) => {
+            setStarted(true);
+            setPeriod(p => ({ ...p, callcenter: data.callcenter || null }));
+            setStartedData(data);
+        }).catch(e => {
+            setStartedError(axios.getError(e));
+        });
+    }, []);
+
+    React.useEffect(() => {
+        if (started === false) return;
         getData(true);
     }, [props.location.key, period]);
 
     return <div id="rating">
 
         <RatingHeader
+            started={started}
+            startedError={startedError}
+            startedData={startedData}
             loading={loading}
             period={period}
             setPeriod={setPeriod}
@@ -59,21 +78,27 @@ const Rating = withRouter(props => {
             getData={getData}
         />
 
-        {loading && <Loader inline="centered" />}
+        {startedError && <Message error content={startedError} />}
 
-        {!loading && load && <div style={{
-            position: "fixed",
-            bottom: 10,
-            right: 10
-        }}>
-            <Loader inline active />
-        </div>}
+        {started && !startedError && <>
 
-        {!loading && error && <Message error content={error} />}
+            {loading && <Loader inline="centered" />}
 
-        {!loading && crmStat && <CrmStat data={crmStat} />}
+            {!loading && load && <div style={{
+                position: "fixed",
+                bottom: 10,
+                right: 10
+            }}>
+                <Loader inline active />
+            </div>}
 
-        {!loading && users.map(row => <RatingUserRow key={row.pin} row={row} />)}
+            {!loading && error && <Message error content={error} />}
+
+            {!loading && crmStat && <CrmStat data={crmStat} />}
+
+            {!loading && users.map(row => <RatingUserRow key={row.pin} row={row} />)}
+
+        </>}
 
     </div>
 
