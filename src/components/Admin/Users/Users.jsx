@@ -188,7 +188,7 @@ function Users(props) {
             />
         </div>
 
-        <Grid columns={3}>{list}</Grid>
+        {users.length > 0 && <Grid columns={3}>{list}</Grid>}
 
         {search && users.length === 0 && <div className="mt-5 text-center text-muted opacity-80"><b>Ничего не найдено</b></div>}
 

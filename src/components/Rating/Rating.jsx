@@ -56,6 +56,7 @@ const Rating = withRouter(props => {
             period={period}
             setPeriod={setPeriod}
             dates={dates}
+            getData={getData}
         />
 
         {loading && <Loader inline="centered" />}
