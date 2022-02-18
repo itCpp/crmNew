@@ -1,5 +1,50 @@
+import React from "react";
 import { Icon, Table, Image, Popup } from "semantic-ui-react";
 import moment from "moment";
+
+const PhoneRow = props => {
+
+    const { phone, number } = props;
+    const block = React.useRef();
+
+    const copyPhone = React.useCallback((phone) => {
+        if (block.current) {
+
+            // navigator clipboard api needs a secure context (https)
+            if (navigator.clipboard && window.isSecureContext) {
+                // navigator clipboard api method'
+                navigator.clipboard.writeText(phone);
+            } else {
+                // text area method
+                let textArea = document.createElement("textarea");
+                textArea.value = phone;
+                // make the textarea out of viewport
+                textArea.style.position = "fixed";
+                textArea.style.left = "-999999px";
+                textArea.style.top = "-999999px";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                new Promise((res, rej) => {
+                    // here the magic happens
+                    document.execCommand('copy') ? res() : rej();
+                    textArea.remove();
+                });
+            }
+
+            block.current.classList.add('copyed');
+            setTimeout(() => block.current.classList.remove('copyed'), 100);
+        }
+    }, []);
+
+    return <div onClick={() => copyPhone(number)} className="d-flex align-items-center">
+        <div>
+            <Icon name="copy" className="button-icon" title="Скопировать номер телефона" />
+        </div>
+        <div className="to-copy-text text-nowrap" ref={block}>{phone}</div>
+    </div>
+
+}
 
 const AgreementsTableRow = props => {
 
@@ -31,6 +76,13 @@ const AgreementsTableRow = props => {
 
         <Table.Cell className="px-2">
             <div>{row.FullNameClient}</div>
+
+            {typeof row.phones == "object" && row.phones.length > 0 && <div className="mt-3">
+                {row.phones.map((phone, i) => <PhoneRow
+                    {...phone}
+                    key={`${phone.number}${row.id}${i}`}
+                />)}
+            </div>}
         </Table.Cell>
 
         <Table.Cell className="px-2">
