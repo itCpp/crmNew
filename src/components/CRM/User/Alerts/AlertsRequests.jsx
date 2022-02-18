@@ -44,17 +44,21 @@ export default (({ requests, height }) => {
         }}
         style={{
             height: height || 400,
+            position: "relative",
         }}
+        className="d-flex flex-column"
     >
 
-        <div className="segmet-list">
-            {requests && requests.map((row, i) => <RequestRow key={`${row.id}_new_${i}`} row={row} />)}
-        </div>
+        <div className="segmet-list h-100">
 
-        {!requests || (requests && requests.length === 0) && <EmptyChart
-            height="100%"
-            text="Вам ещё не поручали заявок"
-        />}
+            {requests && requests.map((row, i) => <RequestRow key={`${row.id}_new_${i}`} row={row} />)}
+
+            {!requests || (requests && requests.length === 0) && <EmptyChart
+                height="100%"
+                text="Вам ещё не поручали заявок"
+            />}
+
+        </div>
 
     </Segment>;
 

@@ -35,13 +35,13 @@ const User = props => {
 
     }, [props.location.key]);
 
-    return <div className="pb-3 px-2 w-100">
+    return <div className="py-3 px-2 w-100">
 
-        <div className="d-flex justify-content-between align-items-center">
+        {/* <div className="d-flex justify-content-between align-items-center">
             <div className="page-title-box">
                 <h4 className="page-title">Мои данные</h4>
             </div>
-        </div>
+        </div> */}
 
         {loading && <div><Loader active inline="centered" /></div>}
 

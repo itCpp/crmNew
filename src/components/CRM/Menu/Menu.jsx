@@ -28,23 +28,23 @@ const Menu = props => {
                     replace={props.history.replace}
                 />
 
-                <Link to="/pins" className={`menu-list-row title ${selectMenu === "/pins" ? 'tab-list-active' : ''}`}>
+                {permits.rating_access && <Link to="/pins" className={`menu-list-row title ${selectMenu === "/pins" ? 'tab-list-active' : ''}`}>
                     <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                         <span>
                             <Icon name="user circle" />
                             <span>Операторы</span>
                         </span>
                     </div>
-                </Link>
+                </Link>}
 
-                <Link to="/rating" className={`menu-list-row title ${selectMenu === "/rating" ? 'tab-list-active' : ''}`}>
+                {permits.rating_access && <Link to="/rating" className={`menu-list-row title ${selectMenu === "/rating" ? 'tab-list-active' : ''}`}>
                     <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                         <span>
                             <Icon name="chart bar" />
                             <span>Рейтинг</span>
                         </span>
                     </div>
-                </Link>
+                </Link>}
 
                 <Link to="/mytests" className={`menu-list-row title ${selectMenu === "/mytests" ? 'tab-list-active' : ''}`}>
                     <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">

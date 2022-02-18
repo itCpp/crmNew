@@ -177,3 +177,9 @@
 .dropdown-center {
     left: -50% !important;
 }
+
+.segmet-list {
+    margin: 0 -1rem;
+    padding: 0 .5rem;
+    overflow-y: auto;
+}

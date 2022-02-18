@@ -1,6 +1,6 @@
 const UserMainData = props => {
 
-    return 123;
+    return null;
 
 }
 
