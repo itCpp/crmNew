@@ -53,27 +53,26 @@ const Rating = withRouter(props => {
     }
 
     React.useEffect(() => {
-
         axios.post('ratings/callcenter/start').then(({ data }) => {
             setStarted(true);
             setPeriod(p => ({ ...p, callcenter: data.callcenter || null }));
             setStartedData(data);
-
-            interval.current = setInterval(() => getData(), 15000);
-
         }).catch(e => {
             setStartedError(axios.getError(e));
         });
+    }, []);
+
+    React.useEffect(() => {
+
+        if (started === false) return;
+
+        getData(true);
+        interval.current = setInterval(() => getData(), 15000);
 
         return () => {
             clearInterval(interval.current);
         }
 
-    }, []);
-
-    React.useEffect(() => {
-        if (started === false) return;
-        getData(true);
     }, [props.location.key, period]);
 
     return <div id="rating">
