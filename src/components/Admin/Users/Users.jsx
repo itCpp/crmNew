@@ -32,8 +32,10 @@ function Users(props) {
 
         axios.post('admin/getUsers', { search }).then(({ data }) => {
             setUsers(data.users);
+            setError(null);
         }).catch(error => {
             setError(axios.getError(error));
+            axios.toast(error);
         }).then(() => {
             setLoading(false);
         });
@@ -161,6 +163,7 @@ function Users(props) {
                             getUsers(true);
                         }
                     }}
+                    error={error ? true : false}
                 />
 
             </div>
@@ -185,6 +188,7 @@ function Users(props) {
                         getUsers(true);
                     }
                 }}
+                error={error ? true : false}
             />
         </div>
 

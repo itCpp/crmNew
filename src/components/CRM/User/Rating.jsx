@@ -33,8 +33,8 @@ const Rating = ({ data }) => {
                     <Icon name="chart bar" size="huge" />
                 </div>
                 <div className="w-100">
-                    <div><strong>Место</strong></div>
-                    <pre className="pre-data">{data.position || 0}</pre>
+                    <div><strong>Место в рейтинге</strong></div>
+                    <pre className="pre-data">{data.place || 0}</pre>
                 </div>
             </Segment>
         </Grid.Column>
@@ -45,7 +45,7 @@ const Rating = ({ data }) => {
                 </div>
                 <div className="w-100">
                     <div><strong>КПД</strong></div>
-                    <pre className="pre-data">{data.kpd || 0}%</pre>
+                    <pre className="pre-data">{data.efficiency || 0}%</pre>
                 </div>
             </Segment>
         </Grid.Column>
@@ -56,7 +56,7 @@ const Rating = ({ data }) => {
                 </div>
                 <div className="w-100">
                     <div><strong>К выплате</strong></div>
-                    <pre className="pre-data">{data.itogo || 0}</pre>
+                    <pre className="pre-data">{data.salary || 0}</pre>
                 </div>
             </Segment>
         </Grid.Column>
