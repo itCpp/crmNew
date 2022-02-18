@@ -61,13 +61,19 @@ function Permits() {
         <Table.Cell><b>{permit.permission}</b></Table.Cell>
         <Table.Cell>{permit.comment}</Table.Cell>
         <Table.Cell textAlign="center" className="cell-icons">
-            <Icon name="edit outline" color="blue" className="button-icon" onClick={() => setEdit(permit)} />
+            <Icon
+                name="pencil"
+                color="blue"
+                fitted
+                link
+                onClick={() => setEdit(permit)}
+            />
             {/* <Icon name="trash" color="red" className="button-icon" /> */}
             {/* <Icon name="search" className="button-icon" /> */}
         </Table.Cell>
     </Table.Row>);
 
-    return <div>
+    return <div className="segment-compact">
 
         <AddPermit
             open={showAdd}
@@ -82,51 +88,47 @@ function Permits() {
                 as="h2"
                 content="Разрешения"
                 subheader="Добавление или удаление разрешений пользотеля или роли для использования в коде API сервера"
+                className="flex-grow-1"
             />
 
-            {loading ? <Loader active inline /> : null}
+            {loading && <Loader active inline />}
+
+            {!loading && <div>
+                <Button
+                    icon="plus"
+                    color="green"
+                    title="Создать новое правило"
+                    onClick={() => setShowAdd(true)}
+                    circular
+                    basic
+                />
+            </div>}
 
         </div>
 
-        {error
-            ? <Message
-                error
-                header="Ошибка"
-                list={[error]}
-            />
-            : null
-        }
+        {error && <Message
+            error
+            header="Ошибка"
+            list={[error]}
+        />}
 
-        {!error && !loading
-            ? <div className="admin-content-segment d-inline-block">
+        {!error && !loading && <div className="admin-content-segment d-inline-block w-100">
 
-                <Table collapsing basic="very" className="my-3" compact>
+            <Table collapsing basic="very" className="my-3 w-100" compact>
 
-                    <Table.Header>
-                        <Table.Row>
-                            <Table.HeaderCell>Permission</Table.HeaderCell>
-                            <Table.HeaderCell>Описание</Table.HeaderCell>
-                            <Table.HeaderCell textAlign="center">
-                                <Button
-                                    icon="plus"
-                                    size="mini"
-                                    color="green"
-                                    title="Создать новое правило"
-                                    onClick={() => setShowAdd(true)}
-                                    circular
-                                    basic
-                                />
-                            </Table.HeaderCell>
-                        </Table.Row>
-                    </Table.Header>
+                <Table.Header>
+                    <Table.Row>
+                        <Table.HeaderCell>Permission</Table.HeaderCell>
+                        <Table.HeaderCell>Описание</Table.HeaderCell>
+                        <Table.HeaderCell />
+                    </Table.Row>
+                </Table.Header>
 
-                    <Table.Body>{tbody}</Table.Body>
+                <Table.Body>{tbody}</Table.Body>
 
-                </Table>
+            </Table>
 
-            </div>
-            : null
-        }
+        </div>}
     </div>
 
 }

@@ -24,6 +24,8 @@ const Rating = withRouter(props => {
     const [users, setUsers] = React.useState([]);
     const [crmStat, setCrmStat] = React.useState(null);
 
+    const interval = React.useRef();
+
     const getData = (clear = false) => {
 
         setLoad(true);
@@ -51,13 +53,22 @@ const Rating = withRouter(props => {
     }
 
     React.useEffect(() => {
+
         axios.post('ratings/callcenter/start').then(({ data }) => {
             setStarted(true);
             setPeriod(p => ({ ...p, callcenter: data.callcenter || null }));
             setStartedData(data);
+
+            interval.current = setInterval(() => getData(), 15000);
+
         }).catch(e => {
             setStartedError(axios.getError(e));
         });
+
+        return () => {
+            clearInterval(interval.current);
+        }
+
     }, []);
 
     React.useEffect(() => {
