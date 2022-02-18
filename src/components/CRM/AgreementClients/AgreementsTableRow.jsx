@@ -1,0 +1,167 @@
+import { Icon, Table, Image, Popup } from "semantic-ui-react";
+import moment from "moment";
+
+const AgreementsTableRow = props => {
+
+    const { row } = props;
+
+    return <Table.Row verticalAlign="top">
+
+        <Table.Cell className="px-2">
+
+            <div className="d-flex align-items-center">
+                {row.icon && <Image
+                    src={row.icon}
+                    width={16}
+                    height={16}
+                    rounded
+                    className="mr-2"
+                />}
+                <div className="text-nowrap">
+                    <span>№<strong>{row.nomerDogovora}</strong></span>
+                    <small> от {moment(row.date).format("DD.MM.YYYY")}</small>
+                </div>
+            </div>
+
+            {row.tematika && <div>{row.tematika}</div>}
+
+            {row.unicIdClient > 0 && <div className="mt-2" title="Номер заявки">#<strong>{row.unicIdClient}</strong></div>}
+
+        </Table.Cell>
+
+        <Table.Cell className="px-2">
+            <div>{row.FullNameClient}</div>
+        </Table.Cell>
+
+        <Table.Cell className="px-2">
+
+            {row.oristFioArr && row.oristFioArr.length > 0 && row.oristFioArr.map(upp => <Popup
+                key={`lawyer_upp_${upp.pin}_${row.id}`}
+                content={upp.fio}
+                size="mini"
+                inverted
+                trigger={<div className="d-flex text-nowrap">
+                    <span>ЮПП</span>
+                    <strong className="ml-2">{upp.pin}</strong>
+                </div>}
+            />)}
+
+            {row.odIspolnitel && <Popup
+                content={row.odIspolnitel.fio}
+                size="mini"
+                inverted
+                trigger={<div className="d-flex text-nowrap">
+                    <span>Предст.</span>
+                    <strong className="ml-2">{row.odIspolnitel.pin}</strong>
+                </div>}
+            />}
+
+        </Table.Cell>
+
+        <Table.Cell className="px-2">
+            {row.comments?.act && row.comments.act.length > 0 && <div>
+                {row.comments.act.map(act => <div key={`act_${act.id}`} style={{ fontSize: "0.8rem" }} className="text-nowrap">
+                    <span>{act?.text?.type}</span>
+                    {act?.text?.date && <span className="opacity-70">{' '}{act.text.date}</span>}
+                    {act?.text?.money && <strong>{' '}{act.text.money}</strong>}
+                </div>)}
+            </div>}
+        </Table.Cell>
+
+        <Table.Cell className="px-2">
+
+            <div className="text-nowrap">
+                <span>Сумма</span>
+                <strong>{' '}{(row.summa || 0) - (row.predstavRashod || 0)}</strong>
+            </div>
+
+            {row.predstavRashod > 0 && <div className="text-nowrap">
+                <span>ПР+Бонус</span>
+                <strong>{' '}{row.predstavRashod || 0}</strong>
+            </div>}
+
+            <div className="text-nowrap">
+                <span>Аванс</span>
+                <strong>{' '}{row.avans || 0}</strong>
+            </div>
+
+            {row.predstavRashodJson && row.predstavRashodJson.length > 0 && <div className="mt-2">
+                {row.predstavRashodJson.map(rash => <div key={`rash_${rash.id}`} style={{ fontSize: "0.8rem" }} className="text-nowrap">
+                    <span>{rash?.name}</span>
+                    {rash?.money && <span className="opacity-70">{' '}{rash.money}</span>}
+                    {rash?.status === "true" && <strong>{' '}оплач</strong>}
+                </div>)}
+            </div>}
+
+        </Table.Cell>
+
+        <Table.Cell className="px-2">
+            {typeof row.comments == "object" && <CellComments
+                row={row}
+                rows={row.comments}
+            />}
+        </Table.Cell>
+
+        <Table.Cell className="px-2">
+            {row.predmetDogovora && <small>{row.predmetDogovora}</small>}
+        </Table.Cell>
+
+        <Table.Cell className="px-2">{row.comment}</Table.Cell>
+
+        <Table.Cell />
+
+    </Table.Row>
+
+}
+
+const CellComments = props => {
+
+    const { row, rows } = props;
+    const comments = [];
+
+    for (let type in rows)
+        comments.push(<CellCommentsType rows={rows[type]} type={type} id={row.id} />);
+
+    return comments.map((b, i) => <div key={`${row.id}_${i}_comments`}>{b}</div>);
+
+}
+
+const CellCommentsType = props => {
+
+    const { type, rows, id } = props;
+    let name = "Комментарии";
+
+    if (type === "act"
+        || type === "predmetDogovora"
+        || type === "odIspolnitel"
+        || rows.length === 0
+    ) return null;
+
+    if (type === 'comment') name = "Комментарии";
+    else if (type === 'commentOKK') name = "Комментарии ОКК";
+    else if (type === 'epodComments') name = "Комментарии ЭПОД";
+    else if (type === 'nachPredComment') name = "Комментарии рук. ОКК";
+    else if (type === 'sytRazgovora') name = "Суть разговора с клиентом";
+    else if (type === 'uppComment') name = "Комментарии ЮПП";
+    else if (type === 'clientComment') name = "Комментарии клиента";
+
+    return <div className="mb-2">
+
+        <div><strong>{name}:</strong></div>
+
+        {rows.map((comment, i) => <div key={`${id}_comment_${type}_${i}`} style={{ fontSize: "0.8rem", lineHeight: "1rem" }} className="mt-1">
+            <Popup
+                content={comment?.author?.fio}
+                trigger={<strong>{comment?.author?.pin}</strong>}
+                size="mini"
+                inverted
+            />
+            <span className="opacity-60">{' '}{moment(comment.created_at).format("DD.MM.YYYY в HH:mm")}</span>
+            <span>{' '}{comment.text}</span>
+        </div>)}
+
+    </div>;
+
+}
+
+export default AgreementsTableRow;

@@ -28,7 +28,7 @@ const RequestRowStatisticQueries = props => {
 
                 <Statistic>
                     <Statistic.Value>{row.source || 0}</Statistic.Value>
-                    <Statistic.Label>Источников</Statistic.Label>
+                    <Statistic.Label>Источники</Statistic.Label>
                 </Statistic>
 
             </Statistic.Group>
