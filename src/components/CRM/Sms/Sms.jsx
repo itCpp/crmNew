@@ -172,7 +172,7 @@ const SmsRow = React.memo(props => {
                     </div>}
                 </Comment.Text>
 
-                {sms.requests && sms.requests.length > 0 && <Comment.Actions className="mb-2">
+                {window?.requestPermits?.requests_access && sms.requests && sms.requests.length > 0 && <Comment.Actions className="mb-2">
                     {sms.requests.map(r => <Link key={`${sms.id}_${r.id}`} to={`/requests?id=${r.id}`}>#{r.id}</Link>)}
                 </Comment.Actions>}
 

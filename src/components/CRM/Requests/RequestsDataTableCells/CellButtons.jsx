@@ -37,7 +37,15 @@ const CellButtons = props => {
 
         <div className="d-flex flex-column justify-content-center align-items-center">
 
-            <Dropdown icon={{ name: "ellipsis vertical", fitted: true, style: { minWidth: "15px" }, className: "text-center" }} className="m-1 button-icon-dropdown" pointing="top right" direction="left" loading={loading} lazyLoad>
+            <Dropdown
+                icon="ellipsis vertical"
+                pointing="top right"
+                direction="left"
+                loading={loading}
+                lazyLoad
+                className="text-center m-1 button-icon-dropdown"
+                style={{ minWidth: "15px" }}
+            >
                 <Dropdown.Menu style={{ marginTop: 4, marginRight: -6 }}>
                     <Dropdown.Item
                         icon="edit"
