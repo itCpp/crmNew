@@ -171,8 +171,8 @@ const AgreementsTableRow = props => {
             />}
         </Table.Cell>
 
-        <Table.Cell className="px-2">
-            {row.predmetDogovora && <small>{row.predmetDogovora}</small>}
+        <Table.Cell className="px-2" style={{ maxWidth: 500 }}>
+            {row.predmetDogovora && <small style={{ fontSize: "0.8rem", lineHeight: "1rem" }}>{row.predmetDogovora}</small>}
         </Table.Cell>
 
         <Table.Cell className="px-2">

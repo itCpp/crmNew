@@ -70,7 +70,7 @@ const AgreementClientEditState = props => {
                 setFormdataControl({});
                 setSaveError(null);
                 setLoadError(null);
-                // setOpen(null);
+                setOpen(null);
 
             }).catch(e => {
                 setSaveError(axios.getError(e));

@@ -2,6 +2,7 @@ import React from "react";
 import { Message, Loader, Dropdown } from "semantic-ui-react";
 import { axios } from "../../../utils";
 import AgreementsTable from "./AgreementsTable";
+import AgreemetnsSearchFrom from "./AgreemetnsSearchFrom";
 import "./agreements.css";
 
 const AgreementClients = props => {
@@ -14,12 +15,16 @@ const AgreementClients = props => {
     const [data, setData] = React.useState({
         rows: [],
     });
+    const [search, setSearch] = React.useState(null);
 
     const getAgreementsRows = params => {
 
         setLoad(true);
 
-        axios.post('agreements', { ...(params || {}), type }).then(({ data }) => {
+        let formdata = {...(params || {})};
+        formdata.type = formdata.search ? "search" : type;
+
+        axios.post('agreements', formdata).then(({ data }) => {
             setData(data);
             error && setError(null);
             window.scrollTo(0, 0);
@@ -38,6 +43,14 @@ const AgreementClients = props => {
         getAgreementsRows({ page: 1 });
     }, [type]);
 
+    React.useEffect(() => {
+        if (search) {
+            getAgreementsRows({ page: 1, search });
+        } else if (search === false) {
+            getAgreementsRows({ page: 1 });
+        }
+    }, [search]);
+
     return <div className="pb-3 px-2 w-100">
 
         <div className="d-flex justify-content-between align-items-center">
@@ -47,6 +60,13 @@ const AgreementClients = props => {
             </div>
 
             {/* {loading && <Loader active inline />} */}
+
+            <AgreemetnsSearchFrom
+                loading={loading}
+                load={load}
+                search={search}
+                setSearch={setSearch}
+            />
 
             <Dropdown
                 options={[
@@ -62,7 +82,7 @@ const AgreementClients = props => {
                 selection
                 style={{ minWidth: 220 }}
                 loading={loading}
-                disabled={!loading && load}
+                disabled={loading || load || (search ? true : false)}
                 value={type}
                 onChange={(e, { value }) => {
                     localStorage.setItem('agreements_type', value);
@@ -77,11 +97,12 @@ const AgreementClients = props => {
         {!loading && !error && <AgreementsTable
             {...data}
             loading={load}
+            search={search}
             setData={setData}
             getAgreementsRows={getAgreementsRows}
         />}
 
-        {load && !loading && <div style={{ position: "fixed", right: 10, bottom: 10 }}>
+        {load && !loading && (data.rows || []).length > 0 && <div style={{ position: "fixed", right: 10, bottom: 10 }}>
             <Loader active inline />
         </div>}
 

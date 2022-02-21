@@ -1,12 +1,12 @@
 import React from "react";
-import { Table } from "semantic-ui-react";
+import { Loader, Table } from "semantic-ui-react";
 import AgreementsTableRow from "./AgreementsTableRow";
 import AgreementsPagination from "./AgreemetnsPagination";
 import AgreementClientEditState from "./AgreementClientEditState";
 
 const AgreementsTable = props => {
 
-    const { rows } = props;
+    const { loading, pages, rows, search } = props;
     const [showEdit, setShowEdit] = React.useState(null);
 
     return <div className="block-card mb-3 px-2">
@@ -19,7 +19,10 @@ const AgreementsTable = props => {
         />
 
         {rows.length === 0 && <div className="my-5 opacity-50 text-center">
-            <strong>Данных нет</strong>
+            {loading
+                ? <Loader active />
+                : <strong>{search ? "Ничего не найдено" : "Данных нет"}</strong>
+            }
         </div>}
 
         {rows.length > 0 && <div>
@@ -49,13 +52,13 @@ const AgreementsTable = props => {
                     />)}
                 </Table.Body>
 
-                <Table.Footer fullWidth>
+                {(pages || 1) > 1 && <Table.Footer fullWidth>
                     <Table.Row>
                         <Table.HeaderCell colSpan={9}>
                             <AgreementsPagination {...props} />
                         </Table.HeaderCell>
                     </Table.Row>
-                </Table.Footer>
+                </Table.Footer>}
 
             </Table>
 
