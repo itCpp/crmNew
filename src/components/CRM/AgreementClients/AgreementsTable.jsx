@@ -1,9 +1,10 @@
-import { Button, Checkbox, Icon, Table } from "semantic-ui-react";
+import { Table } from "semantic-ui-react";
 import AgreementsTableRow from "./AgreementsTableRow";
+import AgreementsPagination from "./AgreemetnsPagination";
 
 const AgreementsTable = props => {
 
-    const { rows } = props;
+    const { loading, rows } = props;
 
     return <div className="block-card mb-3 px-2">
 
@@ -23,7 +24,7 @@ const AgreementsTable = props => {
                         <Table.HeaderCell className="px-2">Акт</Table.HeaderCell>
                         <Table.HeaderCell className="px-2">Сумма и Расходы</Table.HeaderCell>
                         <Table.HeaderCell className="px-2">Комментарии</Table.HeaderCell>
-                        <Table.HeaderCell className="px-2">Предмет дог.</Table.HeaderCell>
+                        <Table.HeaderCell className="px-2">Предмет договора</Table.HeaderCell>
                         <Table.HeaderCell className="px-2">Комментарий колл-цетра</Table.HeaderCell>
                         <Table.HeaderCell className="px-2" />
                     </Table.Row>
@@ -33,29 +34,17 @@ const AgreementsTable = props => {
                     {rows.map((row, key) => <AgreementsTableRow
                         key={key}
                         row={row}
+                        loading={loading}
                     />)}
                 </Table.Body>
 
-                {/* <Table.Footer fullWidth>
+                <Table.Footer fullWidth>
                     <Table.Row>
-                        <Table.HeaderCell colSpan='5'>
-                            <Button
-                                floated='right'
-                                icon
-                                labelPosition='left'
-                                primary
-                                size='small'
-                            >
-                                <Icon name='user' /> Add User
-                            </Button>
-                            <Button size='small'>Approve</Button>
-                            <Button disabled size='small'>
-                                Approve All
-                            </Button>
+                        <Table.HeaderCell colSpan={9}>
+                            <AgreementsPagination {...props} />
                         </Table.HeaderCell>
                     </Table.Row>
-                </Table.Footer> */}
-
+                </Table.Footer>
 
             </Table>
 

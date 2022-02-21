@@ -22,11 +22,11 @@ const Menu = props => {
         <div className="request-main-menu">
 
             <div className="nav-bar">
-                <MenuTabs
+                {permits.requests_access && <MenuTabs
                     selectMenu={selectMenu}
                     push={props.history.push}
                     replace={props.history.replace}
-                />
+                />}
 
                 {permits.rating_access && <Link to="/pins" className={`menu-list-row title ${selectMenu === "/pins" ? 'tab-list-active' : ''}`}>
                     <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">

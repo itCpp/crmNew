@@ -48,9 +48,9 @@ const PhoneRow = props => {
 
 const AgreementsTableRow = props => {
 
-    const { row } = props;
+    const { loading, row } = props;
 
-    return <Table.Row verticalAlign="top">
+    return <Table.Row verticalAlign="top" disabled={loading}>
 
         <Table.Cell className="px-2">
 
@@ -61,6 +61,7 @@ const AgreementsTableRow = props => {
                     height={16}
                     rounded
                     className="mr-2"
+                    disabled={loading}
                 />}
                 <div className="text-nowrap">
                     <span>№<strong>{row.nomerDogovora}</strong></span>
@@ -71,6 +72,17 @@ const AgreementsTableRow = props => {
             {row.tematika && <div>{row.tematika}</div>}
 
             {row.unicIdClient > 0 && <div className="mt-2" title="Номер заявки">#<strong>{row.unicIdClient}</strong></div>}
+
+            {row.coming_date && <div title="Дата и время прихода" className="mt-2 text-nowrap">
+                <div className="d-flex align-items-center">
+                    <span><Icon name="child" /></span>
+                    <span>{moment(row.coming_date).format("DD.MM.YYYY")}</span>
+                </div>
+                <div className="d-flex align-items-center">
+                    <span><Icon name="clock" /></span>
+                    <span>{row.coming_time}</span>
+                </div>
+            </div>}
 
         </Table.Cell>
 
