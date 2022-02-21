@@ -48,9 +48,14 @@ const PhoneRow = props => {
 
 const AgreementsTableRow = props => {
 
-    const { loading, row } = props;
+    const { loading, row, setShowEdit } = props;
 
-    return <Table.Row verticalAlign="top" disabled={loading}>
+    const className = ["clients-agree-row"];
+
+    if (row.color)
+        className.push(row.color);
+
+    return <Table.Row verticalAlign="top" disabled={loading} className={className.join(' ')}>
 
         <Table.Cell className="px-2">
 
@@ -170,9 +175,33 @@ const AgreementsTableRow = props => {
             {row.predmetDogovora && <small>{row.predmetDogovora}</small>}
         </Table.Cell>
 
-        <Table.Cell className="px-2">{row.comment}</Table.Cell>
+        <Table.Cell className="px-2">
+            {typeof row.collComments == "object" && row.collComments.map((comment, i) => <div key={`${row.id}_comment_coll_${i}`} style={{ fontSize: "0.8rem", lineHeight: "1rem" }} className="mt-1">
+                <Popup
+                    content={comment?.author?.fio}
+                    trigger={<strong>{comment?.author?.pin}</strong>}
+                    size="mini"
+                    inverted
+                />
+                <span className="opacity-60">{' '}{moment(comment.created_at).format("DD.MM.YYYY в HH:mm")}</span>
+                <span>{' '}{comment.comment}</span>
+            </div>)}
+            {typeof row.collComments != "object" && row.comment}
+        </Table.Cell>
 
-        <Table.Cell />
+        <Table.Cell className="px-2">
+            <div className="d-flex justify-content-center align-items-center">
+                <span className="mx-1">
+                    <Icon
+                        name="edit"
+                        fitted
+                        link
+                        title="Изменить статус"
+                        onClick={() => setShowEdit(row)}
+                    />
+                </span>
+            </div>
+        </Table.Cell>
 
     </Table.Row>
 

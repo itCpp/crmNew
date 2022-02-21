@@ -1,7 +1,8 @@
 import React from "react";
-import { Message, Loader, Button, Dropdown } from "semantic-ui-react";
+import { Message, Loader, Dropdown } from "semantic-ui-react";
 import { axios } from "../../../utils";
 import AgreementsTable from "./AgreementsTable";
+import "./agreements.css";
 
 const AgreementClients = props => {
 
@@ -49,7 +50,7 @@ const AgreementClients = props => {
 
             <Dropdown
                 options={[
-                    { key: 1, value: "neobr", text: "Необработано" },
+                    { key: 1, value: "neobr", text: "Необработан" },
                     { key: 2, value: "good", text: "Клиент доволен" },
                     { key: 3, value: "check", text: "Отправлен на проверку" },
                     { key: 4, value: "bad", text: "Негатив" },
@@ -76,6 +77,7 @@ const AgreementClients = props => {
         {!loading && !error && <AgreementsTable
             {...data}
             loading={load}
+            setData={setData}
             getAgreementsRows={getAgreementsRows}
         />}
 

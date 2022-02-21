@@ -1,0 +1,30 @@
+.clients-agree-row {
+    background-color: #ffffff;
+}
+.clients-agree-row:hover {
+    background-color: #ededed;
+}
+.clients-agree-row.status-good {
+    background-color: #b1ffa7;
+}
+.clients-agree-row.status-good:hover {
+    background-color: #9aff8d;
+}
+.clients-agree-row.status-check {
+    background-color: #ffdd9f;
+}
+.clients-agree-row.status-check:hover {
+    background-color: #ffd280;
+}
+.clients-agree-row.status-bad {
+    background-color: #ffbcbc;
+}
+.clients-agree-row.status-bad:hover {
+    background-color: #ffa4a4;
+}
+.clients-agree-row.status-nocall {
+    background-color: #d1d1d1;
+}
+.clients-agree-row.status-nocall:hover {
+    background-color: #acacac;
+}

@@ -1,12 +1,22 @@
+import React from "react";
 import { Table } from "semantic-ui-react";
 import AgreementsTableRow from "./AgreementsTableRow";
 import AgreementsPagination from "./AgreemetnsPagination";
+import AgreementClientEditState from "./AgreementClientEditState";
 
 const AgreementsTable = props => {
 
-    const { loading, rows } = props;
+    const { rows } = props;
+    const [showEdit, setShowEdit] = React.useState(null);
 
     return <div className="block-card mb-3 px-2">
+
+        <AgreementClientEditState
+            open={showEdit ? true : false}
+            data={showEdit}
+            setOpen={setShowEdit}
+            setData={props.setData}
+        />
 
         {rows.length === 0 && <div className="my-5 opacity-50 text-center">
             <strong>Данных нет</strong>
@@ -14,7 +24,7 @@ const AgreementsTable = props => {
 
         {rows.length > 0 && <div>
 
-            <Table basic="very" selectable style={{ fontSize: "90%" }}>
+            <Table basic="very" style={{ fontSize: "90%" }}>
 
                 <Table.Header fullWidth>
                     <Table.Row>
@@ -33,8 +43,9 @@ const AgreementsTable = props => {
                 <Table.Body>
                     {rows.map((row, key) => <AgreementsTableRow
                         key={key}
+                        {...props}
                         row={row}
-                        loading={loading}
+                        setShowEdit={setShowEdit}
                     />)}
                 </Table.Body>
 
