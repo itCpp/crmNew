@@ -189,6 +189,11 @@ const CRM = props => {
                 themes: data.themes,
             });
 
+            setTimeout(() => {
+                counterUpdateProcess = false;
+                checkCounter();
+            }, 500);
+
             // Информаирование по всем доступным заявкам
             if (
                 data.permits.requests_all_my_sector // Все заявки сектора
