@@ -23,6 +23,7 @@ const RequestSendSms = props => {
     const [phones, setPhones] = React.useState([]);
     const [request, setRequest] = React.useState({});
     const [send, setSend] = React.useState(false);
+    const [alert, setAlert] = React.useState(null);
 
     const [messages, setMessages] = React.useState([]);
     // const interval = React.useRef();
@@ -76,6 +77,7 @@ const RequestSendSms = props => {
                 setPhones(data.phones);
                 setMessages(data.messages);
                 setPermits(data.permits);
+                setAlert(data.alert);
                 // timeNow = data.now;
             }).catch(e => {
                 setError(axios.getError(e));
@@ -138,7 +140,8 @@ const RequestSendSms = props => {
 
                         {!load && !permits?.requests_send_sms && <Message error content="Вы не можете отправлять СМС сообщения" size="mini" />}
 
-                        {error && <Message error content={error} size="mini" />}
+                        {!load && error && <Message error content={error} size="mini" />}
+                        {!load && alert && <Message info content={alert} size="mini" />}
 
                         <Form loading={load}>
 
