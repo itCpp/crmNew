@@ -26,9 +26,19 @@ const AdQueryInfo = () => {
     }, []);
 
     React.useEffect(() => {
+        return () => dispatch(setShowAdInfo(null));
+    }, []);
+
+    React.useEffect(() => {
 
         if (open) {
+
             setLoading(true);
+            setError(null);
+            setCalls([]);
+            setTexts([]);
+            setIps([]);
+            setCounts({});
 
             axios.post('requests/ad/get', { id: showAdInfo?.id }).then(({ data }) => {
 
@@ -50,12 +60,6 @@ const AdQueryInfo = () => {
             }).then(() => {
                 setLoading(false);
             });
-        } else if (open === null) {
-            setError(null);
-            setCalls([]);
-            setTexts([]);
-            setIps([]);
-            setCounts({});
         }
 
     }, [open]);

@@ -1,5 +1,6 @@
 import { Header, Icon } from "semantic-ui-react";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 const AdQueryTexts = props => {
 
@@ -7,7 +8,7 @@ const AdQueryTexts = props => {
 
     return <div>
 
-        {data.length === 0 && <div className="mx-auto my-4 text-center opacity-50"><strong>Обращений не найдено</strong></div>}
+        {data.length === 0 && <div className="mt-5 mb-4 text-center opacity-50"><strong>Обращений не найдено</strong></div>}
 
         {data.length > 0 && data.map((row, i) => <div key={`call_${i}`} className="bg-light rounded my-1 px-3 py-2">
 
@@ -26,13 +27,14 @@ const AdQueryTexts = props => {
                 </div>}
 
                 <Header
-                    as="h5"
-                    content={row.ip}
+                    content={<h4 className="ui header my-0">
+                        <Link to={`/admin/block/ip?addr=${row.ip}`}>{row.ip}</Link>
+                    </h4>}
                     subheader={row.phone || null}
                     className="mr-3 my-0"
                 />
 
-                {row.id && <span className="mr-3">#{row.id}</span>}
+                {row.id && <Link to={`/requests?id=${row.id}`} className="mr-3">#{row.id}</Link>}
 
                 <Header
                     as="h5"

@@ -7,7 +7,7 @@ const AdQueryTexts = props => {
 
     return <div>
 
-        {data.length === 0 && <div className="mx-auto my-4 text-center opacity-50"><strong>Обращений не найдено</strong></div>}
+        {data.length === 0 && <div className="mt-5 mb-4 text-center opacity-50"><strong>Обращений не найдено</strong></div>}
 
         {data.length > 0 && data.map((row, i) => <div key={`call_${i}`} className="bg-light rounded my-1 px-3 py-2">
 
