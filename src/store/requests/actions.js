@@ -127,3 +127,9 @@ export const setStartData = data => ({
     type: REQUEST_START_DATA,
     payload: data
 });
+
+export const REQUEST_SHOW_AD_INFO = "REQUEST_SHOW_AD_INFO";
+export const setShowAdInfo = data => ({
+    type: REQUEST_SHOW_AD_INFO,
+    payload: data
+});

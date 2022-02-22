@@ -18,6 +18,7 @@ const defaultState = {
     showAudioCalls: null,
     showStoryRequest: null, // Флаг открытия модельного окна просомтра истории
     startData: {},
+    showAdInfo: null,
 };
 
 let list = [];
@@ -153,6 +154,9 @@ export const requestsReducer = (state = defaultState, action) => {
 
         case ACTION.REQUEST_START_DATA:
             return { ...state, startData: action.payload }
+
+        case ACTION.REQUEST_SHOW_AD_INFO:
+            return { ...state, showAdInfo: action.payload }
 
         default:
             return state;
