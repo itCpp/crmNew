@@ -82,7 +82,7 @@ const AdQueryInfo = () => {
     ];
 
     return <Modal
-        header="Обращения по рекламе"
+        header="История обращений"
         open={open}
         centered={false}
         closeIcon={<Icon name="close" link fitted onClick={close} />}
