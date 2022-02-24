@@ -5,9 +5,6 @@ const AgreementsPagination = props => {
     const { pages, current_page, loading } = props;
     const { getAgreementsRows } = props;
 
-    if ((pages || 0) <= 1)
-        return null;
-
     return <Pagination
         activePage={current_page || 1}
         ellipsisItem={{ content: <Icon name="ellipsis horizontal" />, icon: true }}
