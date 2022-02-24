@@ -1,14 +1,14 @@
 import React from "react"
 import { BrowserRouter, Route, Switch } from "react-router-dom"
 import { TESTING_URL } from "./Testing";
-
 import Auth from "./Auth/Auth";
 import Header from "./Header/Header";
-import Crm from "./CRM/CRM";
-import Admin from "./Admin/AdminMain";
-import Testing from "./Testing";
 import GlobalError from "./Errors/GlobalError";
 import NotFound from "./NotFound";
+import { Loader } from "semantic-ui-react";
+const Admin = React.lazy(() => import("./Admin/AdminMain"));
+const Crm = React.lazy(() => import("./CRM/CRM"));
+const Testing = React.lazy(() => import("./Testing"));
 
 export default function Routes(props) {
 
@@ -26,34 +26,37 @@ export default function Routes(props) {
 
             {!hidden && <Header />}
 
-            <Switch>
+            <React.Suspense fallback={<div className="mt-4"><Loader active indeterminate inline="centered" /></div>}>
 
-                <Route exact path="/" component={Crm} />
-                <Route exact path="/requests" component={Crm} />
-                <Route exact path="/queues" component={Crm} />
-                <Route exact path="/sms" component={Crm} />
-                <Route exact path="/secondcalls" component={Crm} />
-                <Route exact path="/pins" component={Crm} />
-                <Route exact path="/rating" component={Crm} />
-                <Route exact path="/mytests" component={Crm} />
-                <Route exact path="/agreements" component={Crm} />
-                <Route exact path="/user/:id" component={Crm} />
+                <Switch>
 
-                <Route exact path="/admin" component={Admin} />
-                <Route exact path="/admin/:page" component={Admin} />
-                <Route exact path="/admin/:page/:type" component={Admin} />
+                    <Route exact path="/" component={Crm} />
+                    <Route exact path="/requests" component={Crm} />
+                    <Route exact path="/queues" component={Crm} />
+                    <Route exact path="/sms" component={Crm} />
+                    <Route exact path="/secondcalls" component={Crm} />
+                    <Route exact path="/pins" component={Crm} />
+                    <Route exact path="/rating" component={Crm} />
+                    <Route exact path="/mytests" component={Crm} />
+                    <Route exact path="/agreements" component={Crm} />
+                    <Route exact path="/user/:id" component={Crm} />
 
-                {/* <Route exact path="/users" component={Users} />
-                <Route exact path="/users/:id" component={UserPage} />
+                    <Route exact path="/admin" component={Admin} />
+                    <Route exact path="/admin/:page" component={Admin} />
+                    <Route exact path="/admin/:page/:type" component={Admin} />
 
-                <Route path="/gates/:type" component={GatesMain} />
-                <Route path="/gates" component={GatesMain} /> */}
+                    {/* <Route exact path="/users" component={Users} /> */}
+                    {/* <Route exact path="/users/:id" component={UserPage} /> */}
+                    {/* <Route path="/gates/:type" component={GatesMain} /> */}
+                    {/* <Route path="/gates" component={GatesMain} /> */}
 
-                <Route path={`/${TESTING_URL}`} component={Testing} />
+                    <Route path={`/${TESTING_URL}`} component={Testing} />
 
-                <Route path="*" component={NotFound} />
+                    <Route path="*" component={NotFound} />
 
-            </Switch>
+                </Switch>
+
+            </React.Suspense>
 
         </div>
 
