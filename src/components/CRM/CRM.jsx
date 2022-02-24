@@ -17,15 +17,23 @@ import { Loader, Message } from "semantic-ui-react";
 import "./crm.css";
 import Menu from "./Menu/Menu";
 import Requests from "./Requests/Requests";
-import Queues from "./Queues";
-import Sms from "./Sms";
-import SecondCalls from "./SecondCalls";
-import Operators from "./Operators";
-import Rating from "./Rating";
+// import Queues from "./Queues";
+// import Sms from "./Sms";
+// import SecondCalls from "./SecondCalls";
+// import Operators from "./Operators";
+// import Rating from "./Rating";
 import User from "./User";
-import MyTests from "./MyTests";
-import AgreementClients from "./AgreementClients";
+// import MyTests from "./MyTests";
+// import AgreementClients from "./AgreementClients";
 import AudioCalls from "./AudioCalls";
+
+const AgreementClients = React.lazy(() => import("./AgreementClients"));
+const Queues = React.lazy(() => import("./Queues"));
+const Sms = React.lazy(() => import("./Sms"));
+const Rating = React.lazy(() => import("./Rating"));
+const SecondCalls = React.lazy(() => import("./SecondCalls"));
+const Operators = React.lazy(() => import("./Operators"));
+const MyTests = React.lazy(() => import("./MyTests"));
 
 const CrmContent = React.memo(withRouter(props => {
 
@@ -266,10 +274,9 @@ const CRM = props => {
 
         <Menu />
 
-        {/* <div className="my-4 mx-auto w-100" style={{ maxWidth: "550px" }}>
-            <Message info content="Раздел заявок в разработке" className="mx-1" />
-        </div > */}
-        <CrmContent page={page} permits={permits} />
+        <React.Suspense fallback={<div className="mt-4 w-100"><Loader active indeterminate inline="centered" /></div>}>
+            <CrmContent page={page} permits={permits} />
+        </React.Suspense>
 
         {/** Модальное окно просмотра записей разговоров */}
         {props.showAudioCalls && <AudioCalls data={props.showAudioCalls} />}
