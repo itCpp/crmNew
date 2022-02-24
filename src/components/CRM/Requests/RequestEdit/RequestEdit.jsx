@@ -48,7 +48,7 @@ const RequestEdit = () => {
     }, []);
 
     const changeData = (e, { name, value }) => {
-        setFormdata({ ...formdata, [name]: value === "" ? null : value });
+        setFormdata(formdata => ({ ...formdata, [name]: value === "" ? null : value }));
     }
 
     React.useEffect(() => {

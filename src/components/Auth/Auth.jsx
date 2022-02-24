@@ -84,6 +84,7 @@ function Auth(props) {
             fluid
             placeholder="Введите Ваш pin или логин"
             ref={input => input && input.focus()}
+            value={loginName || ""}
             onChange={el => setLoginName(el.currentTarget.value || null)}
             onKeyUp={e => e.keyCode === 13 ? setSend(true) : null}
             disabled={loading}

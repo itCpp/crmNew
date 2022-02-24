@@ -13,6 +13,16 @@ function AuthSecret(props) {
 
     const [showPass, setShowPass] = React.useState(false);
 
+    const timeout = React.useRef();
+
+    React.useEffect(() => {
+        timeout.current = setTimeout(authCansel, 90000);
+        return () => {
+            setPassword(null);
+            clearTimeout(timeout.current);
+        }
+    }, []);
+
     React.useEffect(() => {
 
         if (send && password) {
@@ -40,7 +50,7 @@ function AuthSecret(props) {
 
         <div className="mb-2 px-1">Здравствуйте, {props.userName}!</div>
 
-        <input type="hidden" name="login" value={props.loginName} />
+        <input type="hidden" name="login" value={props.loginName || ""} />
 
         <Input
             fluid
@@ -48,6 +58,7 @@ function AuthSecret(props) {
             type={showPass ? "text" : "password"}
             ref={input => input && input.focus()}
             onChange={el => setPassword(el.currentTarget.value || null)}
+            value={password || ""}
             onKeyUp={e => e.keyCode === 13 ? setSend(true) : null}
             disabled={loading}
             icon={<Icon

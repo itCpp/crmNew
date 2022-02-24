@@ -23,7 +23,7 @@ const RequestPageEditForm = props => {
     const changed = JSON.stringify(formdata) !== JSON.stringify(formdataControl);
 
     const onChange = (e, { name, value }) => {
-        setFormdata({ ...formdata, [name]: value === "" ? null : value });
+        setFormdata(formdata => ({ ...formdata, [name]: value === "" ? null : value }));
     }
 
     React.useEffect(() => {
