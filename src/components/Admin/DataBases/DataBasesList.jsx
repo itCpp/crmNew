@@ -24,6 +24,14 @@ const DataBasesList = props => {
                         name="database"
                         color={color}
                         disabled={row?.connected === null}
+                        className="mr-1"
+                    />
+
+                    <List.Icon
+                        name="area chart"
+                        color={row?.stats ? "blue" : "grey"}
+                        disabled={!(row?.stats === true)}
+                        title="Индивидуальная статистика"
                     />
 
                     <List.Content className="flex-grow-1">
