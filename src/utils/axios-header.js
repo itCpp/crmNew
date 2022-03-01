@@ -89,6 +89,14 @@ export const getError = (error, type = "message", callback = null) => {
 
 instance.getError = getError;
 
+instance.setError = (error, callback) => {
+    let message = getError(error);
+    if (typeof callback == "function") {
+        callback(message);
+    }
+    return message;
+}
+
 /** Вывод объекта ошибок при валидации данных */
 instance.getErrors = error => error?.response?.data?.errors || {}
 

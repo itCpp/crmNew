@@ -96,6 +96,11 @@ function AdminMenu(props) {
                 <span>Просмотры</span>
             </NavLink>
 
+            <NavLink to="/admin/block/allStatistic" className={`admin-menu-point ${props.location.pathname.indexOf('/admin/block/ip') >= 0 ? 'active' : ''}`} onClick={changePage}>
+                <Icon name="line graph" />
+                <span>Общая статистика</span>
+            </NavLink>
+
         </div>}
 
         {permits.block_dev && <div className="admin-menu-block">

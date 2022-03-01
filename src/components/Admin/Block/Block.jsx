@@ -7,6 +7,7 @@ import BlockDrive from "./BlockDrive";
 import Views from "./Views";
 import SitesStats from "./Sites/SitesStats";
 import AddBlockAdId from "./AddBlockAdId";
+import AllStatistic from "./AllStatistics";
 
 export const setBlockIp = async (formdata, done, error) => {
 
@@ -46,6 +47,9 @@ const Block = props => {
             setAddBlockId={setAddBlockId}
             updateRow={update}
         />;
+    }
+    else if (page === "allStatistic") {
+        body = <AllStatistic {...props} />
     }
     else {
         body = <StatisticDay
