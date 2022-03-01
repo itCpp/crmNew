@@ -94,7 +94,7 @@ const DataBaseEdit = props => {
 
             {typeof row.connected != "undefined" && <div>
 
-                <div className="d-flex justify-content-between mb-3">
+                <div className="d-flex justify-content-between mb-1">
                     <span>Статус подключения:</span>
                     {row.connected === true && <b className="text-success">Доступна</b>}
                     {row.connected === false && <b className="text-danger">Не доступна</b>}
@@ -103,6 +103,16 @@ const DataBaseEdit = props => {
                 {row.connected_error && <div className="text-danger mb-3"><b>Ошибка БАЗЫ ДАННЫХ</b>: {row.connected_error}</div>}
 
             </div>}
+
+            {row.stats && <div>
+                <div className="d-flex justify-content-between mb-1">
+                    <span>Индивидуальная статистика:</span>
+                    {row.stats_visits && row.stats_visits > 0 && <b className="text-primary">Включена</b>}
+                    {row.stats_visits && row.stats_visits === 0 && <b className="text-warning">Включена и не используется</b>}
+                </div>          
+            </div>}
+
+            {(row.stats || row.connected) && <div className="mb-4"></div>}
 
             <Form loading={save || loading} error={(error || errorLoad) ? true : false} className="mb-0">
 
@@ -169,7 +179,7 @@ const DataBaseEdit = props => {
                     </Form.Field>
 
                     <Form.Field>
-                        <label>Наименование таблицы</label>
+                        <label>Наименование таблицы очереди</label>
                         <Form.Input
                             placeholder="Указать, если отличается"
                             disabled={(errorLoad) ? true : false}
