@@ -29,6 +29,13 @@ code {
   border-radius: 0.25rem;
 }
 
+code.language-sh,
+code.language-php {
+  display: block;
+  width: 100%;
+  padding: .5rem 1rem;
+}
+
 .loading-page {
   position: absolute;
   top: 0;

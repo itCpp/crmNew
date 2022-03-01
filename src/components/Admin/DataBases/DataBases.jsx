@@ -1,21 +1,29 @@
 import { useEffect, useState } from "react";
 import { axios } from "../../../utils";
+import Axios from "axios";
 import { Button, Header, Loader, Message, Icon } from "semantic-ui-react";
 import DataBasesList from "./DataBasesList";
 import DataBaseEdit from "./DataBaseEdit";
+import ReactMarkdown from "react-markdown";
 
-const DataBases = props => {
+const DataBases = () => {
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [rows, setRows] = useState([]);
     const [row, setRow] = useState(null);
+    const [readme, setReadme] = useState(null);
 
     useEffect(() => {
 
         axios.post('dev/databases').then(({ data }) => {
+
             setError(null);
             setRows(data.rows);
+
+            Axios.get("https://raw.githubusercontent.com/Dimanok1989/site-stats/master/README.md")
+                .then(({ data }) => setReadme(data));
+
         }).catch(e => {
             setError(axios.getError(e));
         }).then(() => {
@@ -67,6 +75,10 @@ const DataBases = props => {
             setShow={setRow}
             setRows={setRows}
         />}
+
+        {readme && <div className="admin-content-segment">
+            <ReactMarkdown children={readme} />
+        </div>}
 
     </div>
 

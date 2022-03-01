@@ -97,7 +97,8 @@ const Rating = withRouter(props => {
             {!loading && load && <div style={{
                 position: "fixed",
                 bottom: 10,
-                right: 10
+                right: 10,
+                zIndex: 10,
             }}>
                 <Loader inline active />
             </div>}
