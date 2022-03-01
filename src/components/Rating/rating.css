@@ -39,6 +39,39 @@
     color: #6f6f6f;
 }
 
+.efficiency-bars {
+    margin-right: -.25rem;
+    margin-left: -.25rem;
+}
+.efficiency-bar {
+    width: 50%;
+    height: 4px;
+    border-radius: 2px;
+    margin: 0 .25rem;
+    opacity: .8;
+    overflow: hidden;
+}
+
+.efficiency-bar:hover {
+    opacity: 1;
+}
+
+.efficiency-bar > div {
+    height: 100%;
+}
+.efficiency-bar-comings > div {
+    background: #9b1818;
+}
+.efficiency-bar-agreements > div {
+    background: #0aae18;
+}
+
+.rating-row-color-blue .efficiency-bar { background: #b9b6f0; }
+.rating-row-color-green .efficiency-bar { background: #8ded8d; }
+.rating-row-color-yellow .efficiency-bar { background: #dada62; }
+.rating-row-color-red .efficiency-bar { background: #ffbbbb; }
+.rating-row-color-gray .efficiency-bar { background: #d8d8d8; }
+
 .rating-callcenter-row:not(:last-child) {
     margin-bottom: 1rem;
 }

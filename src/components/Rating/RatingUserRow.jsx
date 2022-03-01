@@ -28,6 +28,15 @@ const RatingUserRow = props => {
             {row.salary > 0 && <Header as="h1" className="m-0 opacity-80" content={row.salary} />}
         </div>
 
+        <div className="mb-3 d-flex justify-content-between efficiency-bars">
+            <div className="efficiency-bar efficiency-bar-comings" title="КПД приходов">
+                <div style={{ width: `${row.efficiency || 0}%` }}></div>
+            </div>
+            <div className="efficiency-bar efficiency-bar-agreements" title="КПД договоров">
+                <div style={{ width: `${row.efficiency_agreement || 0}%` }}></div>
+            </div>
+        </div>
+
         <Grid columns="equal" className="position-relative">
 
             <Grid.Row>
@@ -61,6 +70,10 @@ const RatingUserRow = props => {
                             <b>{row.comings_in_day}</b>
                         </div>
                         <div>
+                            <span>Договоров</span>
+                            <b>{row.agreements?.firsts || 0}</b>
+                        </div>
+                        <div>
                             <span>За приход</span>
                             <span><b>{row.coming_one_pay}</b> руб</span>
                         </div>
@@ -70,8 +83,12 @@ const RatingUserRow = props => {
                 <Grid.Column>
                     <div className="rating-info-rows">
                         <div>
-                            <span>КПД</span>
+                            <span>КПД Приходов</span>
                             <span><b>{row.efficiency.toFixed(2)}</b>%</span>
+                        </div>
+                        <div>
+                            <span>КПД Договоров</span>
+                            <span><b>{row.efficiency_agreement.toFixed(2)}</b>%</span>
                         </div>
                         <div>
                             <span>Нагрузка</span>
