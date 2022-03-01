@@ -51,7 +51,7 @@ const DataBases = props => {
         <div className="admin-content-segment">
             <div>В данном разделе производится настройка баз данных сайтов, к которым будет происходить периодическое подключение и дальнейшее помещение полученных заявок в очередь обработки. <Icon name="database" color="green" fitted /> произведена успешная проверка подключения к базе данных, <Icon name="database" color="red" fitted /> - база данных недоступна, <Icon name="database" color="grey" disabled fitted /> - база данных отключена в настройках</div>
 
-            <div className="mt-2">Индивиудальная статистика по сайту: <Icon name="area chart" color="blue" fitted /> - включена, <Icon name="area chart" color="grey" disabled fitted /> - отключена</div>
+            <div className="mt-2">Индивиудальная статистика по сайту: <Icon name="area chart" color="blue" fitted /> - включена, <Icon name="area chart" color="yellow" fitted /> - включена, но не используется, <Icon name="area chart" color="grey" disabled fitted /> - отключена</div>
         </div>
 
         {!loading && error && <Message error content={error} />}

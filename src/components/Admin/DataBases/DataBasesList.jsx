@@ -29,7 +29,7 @@ const DataBasesList = props => {
 
                     <List.Icon
                         name="area chart"
-                        color={row?.stats ? "blue" : "grey"}
+                        color={row?.stats ? (Number(row?.stats_visits) > 0 ? "blue" : "yellow") : "grey"}
                         disabled={!(row?.stats === true)}
                         title="Индивидуальная статистика"
                     />
