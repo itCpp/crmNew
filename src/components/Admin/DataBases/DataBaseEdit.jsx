@@ -73,7 +73,6 @@ const DataBaseEdit = props => {
         header="Настройки базы данных"
         open={row ? true : false}
         closeOnDimmerClick={false}
-        size="tiny"
         centered={false}
         actions={[
             {
@@ -109,7 +108,7 @@ const DataBaseEdit = props => {
                     <span>Индивидуальная статистика:</span>
                     {row.stats_visits && row.stats_visits > 0 && <b className="text-primary">Включена</b>}
                     {row.stats_visits && row.stats_visits === 0 && <b className="text-warning">Включена и не используется</b>}
-                </div>          
+                </div>
             </div>}
 
             {(row.stats || row.connected) && <div className="mb-4"></div>}
@@ -124,17 +123,33 @@ const DataBaseEdit = props => {
                     onChange={(e, { checked }) => setFormdata(d => ({ ...d, active: checked }))}
                 />
 
-                <Form.Field>
-                    <label>Наименование подключения</label>
-                    <Form.Input
-                        placeholder="Укажите наименование подключения"
-                        disabled={(errorLoad) ? true : false}
-                        name="name"
-                        value={formdata.name || ""}
-                        onChange={onChange}
-                        error={errors.name ? true : false}
-                    />
-                </Form.Field>
+                <Form.Group widths="equal">
+
+                    <Form.Field>
+                        <label>Наименование подключения</label>
+                        <Form.Input
+                            placeholder="Укажите наименование подключения"
+                            disabled={(errorLoad) ? true : false}
+                            name="name"
+                            value={formdata.name || ""}
+                            onChange={onChange}
+                            error={errors.name ? true : false}
+                        />
+                    </Form.Field>
+
+                    <Form.Field>
+                        <label>Домен сайта</label>
+                        <Form.Input
+                            placeholder="Укажите домен сайта"
+                            disabled={(errorLoad) ? true : false}
+                            name="domain"
+                            value={formdata.domain || ""}
+                            onChange={onChange}
+                            error={errors.domain ? true : false}
+                        />
+                    </Form.Field>
+
+                </Form.Group>
 
                 <Form.Group>
 

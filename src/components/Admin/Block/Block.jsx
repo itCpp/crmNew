@@ -7,7 +7,7 @@ import BlockDrive from "./BlockDrive";
 import Views from "./Views";
 import SitesStats from "./Sites/SitesStats";
 import AddBlockAdId from "./AddBlockAdId";
-import AllStatistic from "./AllStatistics";
+import AllStatistic from "./Statistic/AllStatistics";
 
 export const setBlockIp = async (formdata, done, error) => {
 

@@ -2,17 +2,20 @@ import { useEffect, useState } from "react";
 import { Header, Loader, Message } from "semantic-ui-react";
 import { axios } from "../../../../utils";
 import AdminContentSegment from "../../UI/AdminContentSegment";
+import Table from "../StatisticTable/TableData";
 
 const AllStatistic = props => {
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [rows, setRows] = useState([]);
 
     useEffect(() => {
 
         axios.post("dev/block/allstatistics").then(({ data }) => {
 
             setError(null);
+            setRows(data.rows);
 
         }).catch(e => {
             axios.setError(e, setError);
@@ -37,6 +40,8 @@ const AllStatistic = props => {
         </AdminContentSegment>
 
         {error && !loading && <Message content={error} error />}
+
+        {!error && !loading && <Table {...props} rows={rows} />}
 
     </div>
 }
