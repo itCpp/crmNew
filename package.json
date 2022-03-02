@@ -1,6 +1,6 @@
 {
   "name": "crm_mka",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "private": true,
   "dependencies": {
     "@antv/g2plot": "^2.3.40",

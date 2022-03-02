@@ -71,9 +71,12 @@ const BlcokModalSiteRow = props => {
         axios.post('dev/block/setFullBlock', {
             checked, id
         }).then(({ data }) => {
-
+            axios.toast(data.message, {
+                type: "success",
+                title: checked ? "Заблокировано" : "Разблокировано"
+            });
         }).catch(e => {
-
+            axios.toast(e);
         }).then(() => {
             setLoading(false);
         });
