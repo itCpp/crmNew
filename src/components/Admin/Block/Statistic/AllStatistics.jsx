@@ -9,6 +9,7 @@ const AllStatistic = props => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [rows, setRows] = useState([]);
+    const [sites, setSites] = useState([]);
 
     useEffect(() => {
 
@@ -16,6 +17,7 @@ const AllStatistic = props => {
 
             setError(null);
             setRows(data.rows);
+            setSites(data.sites);
 
         }).catch(e => {
             axios.setError(e, setError);
@@ -41,7 +43,11 @@ const AllStatistic = props => {
 
         {error && !loading && <Message content={error} error />}
 
-        {!error && !loading && <Table {...props} rows={rows} />}
+        {!error && !loading && <Table
+            {...props}
+            rows={rows}
+            sites={sites}
+        />}
 
     </div>
 }

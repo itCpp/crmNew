@@ -59,8 +59,19 @@ const TableBodyRow = props => {
                 {row.visits_drop || 0}
             </span>
         </Table.Cell>
-        <Table.Cell>
+        <Table.Cell style={{ fontSize: "120%" }}>
             <div className="d-flex justify-content-center align-items-center">
+
+                <span>
+                    <Icon
+                        name="ban"
+                        color={row.is_blocked ? "red" : "orange"}
+                        className="button-icon mx-1"
+                        title={row.is_blocked ? "Разблокировать" : "Заблокировать ip адрес"}
+                        onClick={() => props.block(row.ip)}
+                    />
+                </span>
+
                 <a
                     href={`/admin/block/ip?addr=${row.ip}`}
                     onClick={e => {
@@ -75,6 +86,7 @@ const TableBodyRow = props => {
                         title="Статистика по ip-адресу"
                     />
                 </a>
+
                 <a
                     href={`/admin/block/views?ip=${row.ip}`}
                     onClick={e => {
@@ -89,6 +101,7 @@ const TableBodyRow = props => {
                         title="Все просмотры страниц сайтов с ip"
                     />
                 </a>
+
             </div>
         </Table.Cell>
     </Table.Row>
