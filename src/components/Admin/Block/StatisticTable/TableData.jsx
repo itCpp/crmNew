@@ -29,7 +29,7 @@ const TableData = props => {
             sortable
             compact
             celled
-            className="blocks-table"
+            className="blocks-table mb-3"
             selectable
             style={{ fontSize: "80%" }}
         >
@@ -55,6 +55,7 @@ const TableData = props => {
                     key={row.ip}
                     row={row}
                     block={setBlock}
+                    setRows={setRows}
                 />)}
             </Table.Body>
 

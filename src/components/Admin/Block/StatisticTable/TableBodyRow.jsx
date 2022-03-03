@@ -1,8 +1,28 @@
-import { Table, Icon } from "semantic-ui-react";
+import { useState, useCallback } from "react";
+import { Table, Icon, Placeholder } from "semantic-ui-react";
+import { FlagIp, getIpInfo } from "../Statistic";
 
 const TableBodyRow = props => {
 
-    const { row } = props;
+    const { row, setRows } = props;
+    const [infoCheck, setInfoCheck] = useState(false);
+
+    const checkIp = useCallback(ip => {
+        setInfoCheck(true);
+        getIpInfo(ip, data => {
+            setInfoCheck(false);
+            setRows(prev => {
+                let rows = [...prev];
+                rows.forEach((row, i) => {
+                    if (row.ip === data.ip) {
+                        rows[i].info = data;
+                        console.log(rows[i]);
+                    }
+                });
+                return rows;
+            });
+        });
+    }, []);
 
     return <Table.Row
         negative={!row.our_ip && row.is_blocked}
@@ -12,7 +32,31 @@ const TableBodyRow = props => {
     >
         <Table.Cell textAlign="left" warning={row.is_autoblock}>
             <div className="d-flex align-items-center">
+
+                {row.info && !infoCheck && <FlagIp
+                    name={row.info.country_code}
+                    title={`${row.info.region_name}, ${row.info.city}`}
+                />}
+
+                {row.info && !infoCheck && typeof row.info.country_code != "string" && <span
+                    className="unknow-flag loading"
+                    title="Информация недоступна"
+                />}
+
+                {!row.info && !infoCheck && <span
+                    className="unknow-flag"
+                    title="Проверить информацию"
+                    onClick={() => checkIp(row.ip)}
+                />}
+
+                {infoCheck && <span
+                    className="unknow-flag loading"
+                    title="Поиск информации"
+                    children={<Placeholder className="h-100 w-100" />}
+                />}
+
                 <span>{row.ip}</span>
+
                 {row.our_ip && <span>
                     <Icon
                         name="check"
@@ -21,6 +65,7 @@ const TableBodyRow = props => {
                         title="Наш IP"
                     />
                 </span>}
+
             </div>
         </Table.Cell>
         <Table.Cell textAlign="left"><small>{row.host}</small></Table.Cell>
@@ -64,8 +109,8 @@ const TableBodyRow = props => {
 
                 <span>
                     <Icon
-                        name="ban"
-                        color={row.is_blocked ? "red" : "orange"}
+                        name={row.is_blocked ? "minus square" : "ban"}
+                        color={row.blocks_all ? "red" : "orange"}
                         className="button-icon mx-1"
                         title={row.is_blocked ? "Разблокировать" : "Заблокировать ip адрес"}
                         onClick={() => props.block(row.ip)}
