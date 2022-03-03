@@ -77,6 +77,13 @@ const DataBaseEdit = props => {
         if (migrate) {
 
             axios.post('dev/databases/migrate', formdata).then(({ data }) => {
+                axios.toast(data.message, {
+                    type: "success",
+                    time: 10000,
+                });
+
+                setFormdata(formdata => ({ ...formdata, migration_update: true, stats: true }));
+                setFormdataControll(formdata => ({ ...formdata, migration_update: true, stats: true }));
 
             }).catch(e => {
                 axios.toast(e);
@@ -110,11 +117,24 @@ const DataBaseEdit = props => {
         }
     ];
 
-    if (!row.stats && row.id) {
+    if (formdata.stats === false && formdata.id) {
         actions.unshift({
             key: "migrate",
             content: "Подключить статистику",
             color: "orange",
+            icon: "database",
+            labelPosition: "right",
+            onClick: () => setMigrate(true),
+            disabled: save || (errorLoad ? true : false) || loading || migrate,
+            loading: migrate,
+        });
+    }
+
+    if (formdata.stats !== false && formdata.id && formdata.migration_update) {
+        actions.unshift({
+            key: "migrate_update",
+            content: "Обновить базу статистики",
+            color: "blue",
             icon: "database",
             labelPosition: "right",
             onClick: () => setMigrate(true),
