@@ -60,8 +60,17 @@ const TableBodyRow = props => {
                     <Icon
                         name="check"
                         color="green"
-                        className="ml-2 mr-0"
+                        className="ml-1 mr-0"
                         title="Наш IP"
+                    />
+                </span>}
+
+                {row.is_autoblock && <span>
+                    <Icon
+                        name="window close"
+                        color="yellow"
+                        className="ml-1 mr-0"
+                        title="Автоматическая блокировка"
                     />
                 </span>}
 

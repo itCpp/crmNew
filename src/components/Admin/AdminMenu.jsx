@@ -86,6 +86,11 @@ function AdminMenu(props) {
                 <span>Статистика</span>
             </NavLink>
 
+            <NavLink to="/admin/block/allStatistic" className={`admin-menu-point ${props.location.pathname.indexOf('/admin/block/ip') >= 0 ? 'active' : ''}`} onClick={changePage}>
+                <Icon name="line graph" />
+                <span>Общая статистика</span>
+            </NavLink>
+
             <NavLink to="/admin/block/sites" className="admin-menu-point" onClick={changePage}>
                 <Icon name="world" />
                 <span>Статистика по сайтам</span>
@@ -94,11 +99,6 @@ function AdminMenu(props) {
             <NavLink to="/admin/block/views" className="admin-menu-point" onClick={changePage}>
                 <Icon name="eye" />
                 <span>Просмотры</span>
-            </NavLink>
-
-            <NavLink to="/admin/block/allStatistic" className={`admin-menu-point ${props.location.pathname.indexOf('/admin/block/ip') >= 0 ? 'active' : ''}`} onClick={changePage}>
-                <Icon name="line graph" />
-                <span>Общая статистика</span>
             </NavLink>
 
         </div>}

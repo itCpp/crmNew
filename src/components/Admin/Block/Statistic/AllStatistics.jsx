@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Header, Loader, Message } from "semantic-ui-react";
+import { Header, Loader, Message, Icon } from "semantic-ui-react";
 import { axios } from "../../../../utils";
 import AdminContentSegment from "../../UI/AdminContentSegment";
 import Table from "../StatisticTable/TableData";
@@ -57,12 +57,16 @@ const AllStatistic = props => {
 
             {loading && <Loader inline active />}
             {!loading && <div>
-                <DropdownSortable />    
+                <DropdownSortable />
             </div>}
 
         </AdminContentSegment>
 
         {error && !loading && <Message content={error} error />}
+
+        {!error && !loading && <AdminContentSegment>
+            <div>Таблица показывает ифнормацию о посещениях за текущий день. По умолчанию сортировка осуществляется по факту блокировки. <strong className="text-danger">Красным</strong> цветом выдели строки, заблокированные на постоянной основе. <strong className="text-warning">Оранжевым</strong> - автоматически заблокированы до конца дня, также об этом информирует соответсвующая иконка <Icon name="window close" color="yellow" fitted /> рядом с IP. Иконка <Icon name="check" color="green" fitted /> рядом с IP означает принадлежность адреса к белому списку. <Icon name="ban" color="orange" fitted /> - Откроет окно для раздельной блокировки по каждому сайту. <Icon name="minus square" color="orange" fitted /> - IP адрес заблокирован на одном из сайтов. <Icon name="minus square" color="red" fitted /> - IP адрес заблокирован на всех сайтах. <Icon name="chart bar" color="green" fitted /> - Страница со статистикой отдельного IP адреса. <Icon name="eye" color="black" fitted /> - Страница поведения IP адреса на сайте.</div>
+        </AdminContentSegment>}
 
         {!error && !loading && <Table
             {...props}
