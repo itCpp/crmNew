@@ -13,11 +13,17 @@ const DataBaseEdit = props => {
         ...row,
         active: typeof row.active != "undefined" ? row.active : true,
     });
+    const [formdataControll, setFormdataControll] = useState({
+        ...row,
+        active: typeof row.active != "undefined" ? row.active : true,
+    });
     const [showPass, setShowPass] = useState(false);
 
     const [save, setSave] = useState(false);
     const [error, setError] = useState(null);
     const [errors, setErrors] = useState({});
+
+    const [migrate, setMigrate] = useState(false);
 
     useEffect(() => {
 
@@ -28,6 +34,7 @@ const DataBaseEdit = props => {
             axios.post('dev/databases/get', { id: row.id }).then(({ data }) => {
                 setErrorLoad(false);
                 setFormdata(formdata => ({ ...formdata, ...data.row }));
+                setFormdataControll(formdata => ({ ...formdata, ...data.row }));
             }).catch(e => {
                 setErrorLoad(axios.getError(e));
             }).then(() => {
@@ -65,8 +72,55 @@ const DataBaseEdit = props => {
 
     }, [save]);
 
+    useEffect(() => {
+
+        if (migrate) {
+
+            axios.post('dev/databases/migrate', formdata).then(({ data }) => {
+
+            }).catch(e => {
+                axios.toast(e);
+            }).then(() => {
+                setMigrate(false);
+            });
+
+        }
+
+    }, [migrate]);
+
     const onChange = (e, { name, value }) => {
         setFormdata(formdata => ({ ...formdata, [name]: value }));
+    }
+
+    const changed = JSON.stringify(formdata) !== JSON.stringify(formdataControll);
+
+    const actions = [
+        {
+            key: "cansel",
+            content: "Отмена",
+            onClick: () => setShow(null),
+            disabled: save || migrate,
+        },
+        {
+            key: "done",
+            content: "Сохранить",
+            positive: true,
+            onClick: () => setSave(true),
+            disabled: save || (errorLoad ? true : false) || loading || !changed || migrate,
+        }
+    ];
+
+    if (!row.stats && row.id) {
+        actions.unshift({
+            key: "migrate",
+            content: "Подключить статистику",
+            color: "orange",
+            icon: "database",
+            labelPosition: "right",
+            onClick: () => setMigrate(true),
+            disabled: save || (errorLoad ? true : false) || loading || migrate,
+            loading: migrate,
+        });
     }
 
     return <Modal
@@ -74,51 +128,15 @@ const DataBaseEdit = props => {
         open={row ? true : false}
         closeOnDimmerClick={false}
         centered={false}
-        actions={[
-            {
-                key: "cansel",
-                content: "Отмена",
-                onClick: () => setShow(null),
-                disabled: save,
-            },
-            {
-                key: "done",
-                content: "Сохранить",
-                positive: true,
-                onClick: () => setSave(true),
-                disabled: save || (errorLoad ? true : false) || loading,
-            }
-        ]}
+        actions={actions}
         content={<div className="content">
-
-            {typeof row.connected != "undefined" && <div>
-
-                <div className="d-flex justify-content-between mb-1">
-                    <span>Статус подключения:</span>
-                    {row.connected === true && <b className="text-success">Доступна</b>}
-                    {row.connected === false && <b className="text-danger">Не доступна</b>}
-                    {row.connected === null && <b className="text-muted">Отключена</b>}
-                </div>
-                {row.connected_error && <div className="text-danger mb-3"><b>Ошибка БАЗЫ ДАННЫХ</b>: {row.connected_error}</div>}
-
-            </div>}
-
-            {row.stats && <div>
-                <div className="d-flex justify-content-between mb-1">
-                    <span>Индивидуальная статистика:</span>
-                    {row.stats_visits && row.stats_visits > 0 && <b className="text-primary">Включена</b>}
-                    {row.stats_visits && row.stats_visits === 0 && <b className="text-warning">Включена и не используется</b>}
-                </div>
-            </div>}
-
-            {(row.stats || row.connected) && <div className="mb-4"></div>}
 
             <Form loading={save || loading} error={(error || errorLoad) ? true : false} className="mb-0">
 
                 <Checkbox
                     toggle
                     className="mb-3"
-                    label={formdata.active ? "Отключить базу данных" : "Включить базу данных для проверки"}
+                    label={formdata.active ? "Отключить базу данных для проверки очереди заявок" : "Включить базу данных для проверки очереди заявок"}
                     checked={typeof formdata.active == "undefined" ? true : formdata.active}
                     onChange={(e, { checked }) => setFormdata(d => ({ ...d, active: checked }))}
                 />
@@ -241,6 +259,24 @@ const DataBaseEdit = props => {
                     </Form.Field>
 
                 </Form.Group>
+
+                {typeof row.connected != "undefined" && <div className="mt-3">
+                    <div className="d-flex justify-content-between">
+                        <span>Статус подключения:</span>
+                        {row.connected === true && <b className="text-success">Доступна</b>}
+                        {row.connected === false && <b className="text-danger">Не доступна</b>}
+                        {row.connected === null && <b className="text-muted">Отключена</b>}
+                    </div>
+                    {row.connected_error && <div className="text-danger"><b>Ошибка БАЗЫ ДАННЫХ</b>: {row.connected_error}</div>}
+                </div>}
+
+                {row.stats && <div>
+                    <div className="d-flex justify-content-between mt-3">
+                        <span>Индивидуальная статистика:</span>
+                        {row.stats_visits > 0 && <b className="text-primary">Включена</b>}
+                        {row.stats_visits === 0 && <b className="text-warning">Включена и не используется</b>}
+                    </div>
+                </div>}
 
                 <Message error size="tiny" content={errorLoad || error} className="mt-3" />
 

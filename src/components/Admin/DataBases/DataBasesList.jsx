@@ -40,7 +40,8 @@ const DataBasesList = props => {
                     </List.Content>
 
                     <List.Content className="mx-2" style={{ whiteSpace: "nowrap" }}>
-                        <small>Добавлена {moment(row.created_at).format("DD.MM.YYYY в HH:mm")}</small>
+                        <small>{row.domain || `Сайт #${row.id}`}</small>
+                        {/* <small>Добавлена {moment(row.created_at).format("DD.MM.YYYY в HH:mm")}</small> */}
                     </List.Content>
 
                     <List.Content>
