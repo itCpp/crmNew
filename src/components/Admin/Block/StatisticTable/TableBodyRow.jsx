@@ -16,7 +16,6 @@ const TableBodyRow = props => {
                 rows.forEach((row, i) => {
                     if (row.ip === data.ip) {
                         rows[i].info = data;
-                        console.log(rows[i]);
                     }
                 });
                 return rows;

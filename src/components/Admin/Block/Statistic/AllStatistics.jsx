@@ -3,6 +3,7 @@ import { Header, Loader, Message } from "semantic-ui-react";
 import { axios } from "../../../../utils";
 import AdminContentSegment from "../../UI/AdminContentSegment";
 import Table from "../StatisticTable/TableData";
+import useSortable from "../StatisticTable/useSortable";
 
 const AllStatistic = props => {
 
@@ -11,9 +12,26 @@ const AllStatistic = props => {
     const [rows, setRows] = useState([]);
     const [sites, setSites] = useState([]);
 
+    const {
+        sort,
+        setSort,
+        startSort,
+        sortable,
+        searchParams,
+        DropdownSortable
+    } = useSortable({ setRows, ...props });
+
     useEffect(() => {
 
         axios.post("dev/block/allstatistics").then(({ data }) => {
+
+            let column = searchParams.get('column');
+            let direction = searchParams.get('direction');
+
+            if (column && direction) {
+                data.rows.sort((a, b) => sortable(a, b, column, direction));
+                setSort({ column, direction });
+            }
 
             setError(null);
             setRows(data.rows);
@@ -38,6 +56,9 @@ const AllStatistic = props => {
             />
 
             {loading && <Loader inline active />}
+            {!loading && <div>
+                <DropdownSortable />    
+            </div>}
 
         </AdminContentSegment>
 
@@ -45,8 +66,11 @@ const AllStatistic = props => {
 
         {!error && !loading && <Table
             {...props}
+            setRows={setRows}
             rows={rows}
             sites={sites}
+            sort={sort}
+            startSort={startSort}
         />}
 
     </div>
