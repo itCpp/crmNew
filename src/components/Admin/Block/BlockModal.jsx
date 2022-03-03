@@ -4,10 +4,48 @@ import { axios } from "../../../utils";
 
 const BlockModal = props => {
 
-    const { ip, open, close } = props;
+    const { ip, open, close, setRows } = props;
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [sites, setSites] = useState([]);
+
+    const updateRow = data => {
+
+        let is_blocked = false,
+            blocks_all = true;
+
+        setSites(prev => {
+
+            prev.forEach((row, i) => {
+
+                if (row.id === data.id) {
+                    prev[i].is_block = data.checked;
+                }
+
+                if (prev[i].is_block === true)
+                    is_blocked = true;
+
+                if (prev[i].is_block !== true)
+                    blocks_all = false;
+            });
+
+            return prev;
+        });
+
+        if (typeof setRows == "function") {
+            setRows(p => {
+                let rows = [...p];
+
+                rows.forEach((row, i) => {
+                    if (row.ip === data.ip) {
+                        rows[i].blocks_all = blocks_all;
+                        rows[i].is_blocked = is_blocked;
+                    }
+                });
+                return rows;
+            });
+        }
+    }
 
     useEffect(() => {
 
@@ -49,6 +87,8 @@ const BlockModal = props => {
                     {sites.map(row => <BlcokModalSiteRow
                         key={row.id}
                         row={row}
+                        ip={ip}
+                        updateRow={updateRow}
                     />)}
                 </div>}
 
@@ -61,20 +101,21 @@ const BlockModal = props => {
 
 const BlcokModalSiteRow = props => {
 
-    const { row } = props;
+    const { row, ip, updateRow } = props;
     const [loading, setLoading] = useState(false);
 
     const setFullBlock = useCallback((checked, id) => {
 
         setLoading(true);
 
-        axios.post('dev/block/setFullBlock', {
-            checked, id
+        axios.post('dev/block/setblockip', {
+            checked, id, ip
         }).then(({ data }) => {
             axios.toast(data.message, {
                 type: "success",
                 title: checked ? "Заблокировано" : "Разблокировано"
             });
+            updateRow({ ip, id, checked });
         }).catch(e => {
             axios.toast(e);
         }).then(() => {

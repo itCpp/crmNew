@@ -22,6 +22,7 @@ const TableData = props => {
             ip={block}
             open={block !== null}
             close={() => setBlock(null)}
+            setRows={setRows}
         />}
 
         <Table
