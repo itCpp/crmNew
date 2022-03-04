@@ -73,21 +73,25 @@ const DataBaseEdit = props => {
 
             axios.post('dev/databases/migrate', formdata).then(({ data }) => {
 
-                axios.toast(data.message, {
-                    type: "success",
+                axios.toast(null, {
+                    type: data.errors ? "warning" : "success",
                     time: 10000,
+                    description: <div className="mt-1">
+                        <div>{data.message}</div>
+                        <div><b>Ошибочные миграции</b>: <strong>{typeof data.errors == "object" && data.errors.length}</strong></div>
+                    </div>
                 });
 
                 setFormdata(formdata => ({
                     ...formdata,
-                    migration_update: false,
+                    migration_update: data.errors ? true : false,
                     migration_has: true,
                     stats: true,
                 }));
 
                 setFormdataControll(formdata => ({
                     ...formdata,
-                    migration_update: false,
+                    migration_update: data.errors ? true : false,
                     migration_has: true,
                     stats: true,
                 }));

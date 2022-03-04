@@ -46,14 +46,6 @@ const SitesStats = props => {
             setSite={setSite}
         />}
 
-        {/* {!loading && !error && <SitesStatisticTable
-            site={site}
-            loading={load}
-            setLoading={setLoad}
-            setAddBlockId={props.setAddBlockId}
-            updateRow={props.updateRow}
-        />} */}
-
     </div>
 
 }

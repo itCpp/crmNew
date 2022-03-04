@@ -8,6 +8,7 @@ import Views from "./Views";
 import SitesStats from "./Sites/SitesStats";
 import AddBlockAdId from "./AddBlockAdId";
 import AllStatistic from "./Statistic/AllStatistics";
+import { BlockDriveIp, BlockDriveHost } from "./Drive";
 
 export const setBlockIp = async (formdata, done, error) => {
 
@@ -37,6 +38,12 @@ const Block = props => {
             setAddBlockId={setAddBlockId}
             updateRow={update}
         />;
+    }
+    else if (page === "driveip") {
+        body = <BlockDriveIp {...props} />;
+    }
+    else if (page === "drivehost") {
+        body = <BlockDriveHost {...props} />;
     }
     else if (page === "views") {
         body = <Views {...props} />;
