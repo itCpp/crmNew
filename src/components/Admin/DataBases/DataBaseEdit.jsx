@@ -68,10 +68,6 @@ const DataBaseEdit = props => {
     }, [save]);
 
     useEffect(() => {
-        console.log(formdata);
-    }, [formdata]);
-
-    useEffect(() => {
 
         if (migrate) {
 
@@ -312,6 +308,12 @@ const DataBaseEdit = props => {
                 <Message error size="tiny" content={errorLoad || error} className="mt-3" />
 
             </Form>
+
+            {formdata.stat && !loading && !((error || errorLoad) ? true : false) && formdata.queue_table_has !== true && <Message
+                warning
+                content={<div>Отсутствует таблица очереди, для фиксации обращений. Чтобы создать таблицу, можно в поле <b>Наименование таблицы очереди</b> указать новое имя, сохранить изменения, затем вернуть имя в стандартное значение. Таким образом будет создана новая таблица очереди</div>}
+                icon="warning"
+            />}
 
         </div>}
     />
