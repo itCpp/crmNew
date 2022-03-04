@@ -3,7 +3,7 @@ import { Button, Checkbox, Dropdown } from "semantic-ui-react";
 
 const DropdownSortable = props => {
 
-    const { sort, setSort, setRows, sortable } = props;
+    const { sort, setSort, setRows, sortable, disabled } = props;
 
     const direction = String(sort?.direction);
 
@@ -45,6 +45,7 @@ const DropdownSortable = props => {
         direction="left"
         style={{ zIndex: 101 }}
         title="Сортировка"
+        disabled={disabled}
     >
         <Dropdown.Menu>
 
@@ -216,7 +217,8 @@ export default (props => {
         startSort,
         sortable,
         searchParams,
-        DropdownSortable: () => <DropdownSortable
+        DropdownSortable: props => <DropdownSortable
+            {...props}
             sort={sort}
             setSort={setSort}
             setRows={setRows}

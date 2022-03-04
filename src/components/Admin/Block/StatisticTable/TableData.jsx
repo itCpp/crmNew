@@ -5,6 +5,7 @@ import BlockModal from "../BlockModal";
 
 const TableData = props => {
 
+    const { loading } = props;
     const { rows, setRows } = props;
     const { sort, startSort } = props;
 
@@ -95,13 +96,25 @@ const TableData = props => {
             </Table.Header>
 
             <Table.Body>
+
                 {rows.map(row => <TableBodyRow
                     {...props}
                     key={row.ip}
                     row={row}
                     block={setBlock}
                     setRows={setRows}
+                    loading={loading}
                 />)}
+
+                {typeof rows == "object" && rows.length === 0 && <Table.Row>
+                    <Table.Cell
+                        disabled={loading}
+                        textAlign="center"
+                        colSpan={10}
+                        content={<div className="opacity-50 my-5"><b>Данных нет</b></div>}
+                    />
+                </Table.Row>}
+
             </Table.Body>
 
         </Table>

@@ -4,6 +4,7 @@ import { FlagIp, getIpInfo } from "../Statistic";
 
 const TableBodyRow = props => {
 
+    const { loading } = props;
     const { row, setRows } = props;
     const [infoCheck, setInfoCheck] = useState(false);
 
@@ -28,6 +29,7 @@ const TableBodyRow = props => {
         warning={!row.our_ip && !row.is_blocked && row.is_autoblock}
         positive={row.our_ip}
         textAlign="center"
+        disabled={loading}
     >
         <Table.Cell textAlign="left" warning={row.is_autoblock}>
             <div className="d-flex align-items-center">
@@ -54,7 +56,15 @@ const TableBodyRow = props => {
                     children={<Placeholder className="h-100 w-100" />}
                 />}
 
-                <span>{row.ip}</span>
+                <a
+                    href={`/admin/block/ip?addr=${row.ip}`}
+                    onClick={e => {
+                        e.preventDefault();
+                        props.history.push(`/admin/block/ip?addr=${row.ip}`);
+                    }}
+                    style={{ cursor: "pointer" }}
+                    children={row.ip}
+                />
 
                 {row.our_ip && <span>
                     <Icon
@@ -131,14 +141,13 @@ const TableBodyRow = props => {
                         e.preventDefault();
                         props.history.push(`/admin/block/ip?addr=${row.ip}`);
                     }}
-                >
-                    <Icon
+                    children={<Icon
                         name="chart bar"
                         color="green"
                         className="button-icon mx-1"
                         title="Статистика по ip-адресу"
-                    />
-                </a>
+                    />}
+                />
 
                 <a
                     href={`/admin/block/views?ip=${row.ip}`}
@@ -146,14 +155,13 @@ const TableBodyRow = props => {
                         e.preventDefault();
                         props.history.push(`/admin/block/views?ip=${row.ip}`);
                     }}
-                >
-                    <Icon
+                    children={<Icon
                         name="eye"
                         color="black"
                         className="button-icon mx-1"
                         title="Все просмотры страниц сайтов с ip"
-                    />
-                </a>
+                    />}
+                />
 
             </div>
         </Table.Cell>

@@ -2,14 +2,14 @@ import React from "react";
 import { Dropdown, Header, Loader, Message } from "semantic-ui-react";
 import { axios } from "../../../../utils";
 import AdminContentSegment from "../../UI/AdminContentSegment";
-import SitesStatisticTable from "./SitesStatisticTable";
+import Statistics from "./Statistics";
 
 const SitesStats = props => {
 
     const searchParams = new URLSearchParams(props.location.search);
 
     const [loading, setLoading] = React.useState(true);
-    const [load, setLoad] = React.useState(false);
+    const [load, setLoad] = React.useState(true);
     const [error, setError] = React.useState(null);
     const [sites, setSites] = React.useState([]);
     const [site, setSite] = React.useState(searchParams.get('site') || null);
@@ -18,9 +18,9 @@ const SitesStats = props => {
 
         setLoading(true);
 
-        axios.post('dev/block/sites').then(({ data }) => {
-            setSites(data);
-            // setSite(data[0] || null);
+        axios.post('dev/databases/sites').then(({ data }) => {
+            setSites(data.sites);
+            setSite(data.sites && data.sites[0]?.value);
         }).catch(e => {
             setError(axios.getError(e));
         }).then(() => {
@@ -29,46 +29,30 @@ const SitesStats = props => {
 
     }, []);
 
-    if (loading) {
-        return <Loader inline="centered" active />
-    }
-
-    if (error) {
-        return <Message error content={error} style={{ maxWidth: 600 }} className="mx-auto" />
-    }
-
     return <div>
 
-        <AdminContentSegment className="d-flex justify-content-between align-items-center">
+        {error && <Message
+            error
+            content={error}
+            className="mx-auto" />
+        }
 
-            <Header
-                as="h2"
-                content="Статистика по сайтам"
-                subheader={"Выберите сайт в правом меню"}
-            />
+        {!error && <Statistics
+            site={site}
+            loading={load}
+            setLoading={setLoad}
+            sites={sites}
+            site={site}
+            setSite={setSite}
+        />}
 
-            <Dropdown
-                selection
-                placeholder="Выберите сайт"
-                options={sites.map(site => ({
-                    key: site,
-                    text: site,
-                    value: site
-                }))}
-                value={site}
-                onChange={(e, { value }) => setSite(value)}
-                disabled={load}
-            />
-
-        </AdminContentSegment>
-
-        <SitesStatisticTable
+        {/* {!loading && !error && <SitesStatisticTable
             site={site}
             loading={load}
             setLoading={setLoad}
             setAddBlockId={props.setAddBlockId}
             updateRow={props.updateRow}
-        />
+        />} */}
 
     </div>
 
