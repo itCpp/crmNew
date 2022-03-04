@@ -78,7 +78,7 @@ const DataBaseEdit = props => {
                     time: 10000,
                     description: <div className="mt-1">
                         <div>{data.message}</div>
-                        <div><b>Ошибочные миграции</b>: <strong>{typeof data.errors == "object" && data.errors.length}</strong></div>
+                        {data.errors && <div><b>Ошибочные миграции</b>: <strong>{typeof data.errors == "object" && data.errors.length}</strong></div>}
                     </div>
                 });
 
