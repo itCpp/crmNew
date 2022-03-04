@@ -9,14 +9,9 @@ const DataBaseEdit = props => {
     const [loading, setLoading] = useState(false);
     const [errorLoad, setErrorLoad] = useState(null);
 
-    const [formdata, setFormdata] = useState({
-        ...row,
-        active: typeof row.active != "undefined" ? row.active : true,
-    });
-    const [formdataControll, setFormdataControll] = useState({
-        ...row,
-        active: typeof row.active != "undefined" ? row.active : true,
-    });
+    const active = typeof row.active != "undefined" ? row.active : true;
+    const [formdata, setFormdata] = useState({ ...row, active });
+    const [formdataControll, setFormdataControll] = useState({ ...row, active });
     const [showPass, setShowPass] = useState(false);
 
     const [save, setSave] = useState(false);
@@ -73,17 +68,33 @@ const DataBaseEdit = props => {
     }, [save]);
 
     useEffect(() => {
+        console.log(formdata);
+    }, [formdata]);
+
+    useEffect(() => {
 
         if (migrate) {
 
             axios.post('dev/databases/migrate', formdata).then(({ data }) => {
+
                 axios.toast(data.message, {
                     type: "success",
                     time: 10000,
                 });
 
-                setFormdata(formdata => ({ ...formdata, migration_update: true, stats: true }));
-                setFormdataControll(formdata => ({ ...formdata, migration_update: true, stats: true }));
+                setFormdata(formdata => ({
+                    ...formdata,
+                    migration_update: false,
+                    migration_has: true,
+                    stats: true,
+                }));
+
+                setFormdataControll(formdata => ({
+                    ...formdata,
+                    migration_update: false,
+                    migration_has: true,
+                    stats: true,
+                }));
 
             }).catch(e => {
                 axios.toast(e);
@@ -130,7 +141,7 @@ const DataBaseEdit = props => {
         });
     }
 
-    if (formdata.stats !== false && formdata.id && formdata.migration_update) {
+    if (formdata.stats !== false && formdata.id && (formdata.migration_update === true || formdata.migration_has === false)) {
         actions.unshift({
             key: "migrate_update",
             content: "Обновить базу статистики",
