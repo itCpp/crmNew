@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
-import { Dropdown, Header, Loader, Message, Icon } from "semantic-ui-react";
+import { Dropdown, Header, Loader, Message, Dimmer } from "semantic-ui-react";
 import { axios } from "../../../../utils";
 import AdminContentSegment from "../../UI/AdminContentSegment";
 import Table from "../StatisticTable/TableData";
 import useSortable from "../StatisticTable/useSortable";
+import { Lines } from "./Lines";
 
 const Statistic = withRouter(props => {
 
@@ -14,6 +15,9 @@ const Statistic = withRouter(props => {
     const [load, setLoad] = useState(true);
     const [error, setError] = useState(null);
     const [rows, setRows] = useState([]);
+
+    const [loadChart, setLoadChart] = useState(true);
+    const [chart, setChart] = useState([]);
 
     const {
         sort,
@@ -42,6 +46,14 @@ const Statistic = withRouter(props => {
 
                 setError(null);
                 setRows(data.rows);
+
+                axios.post('dev/block/getChartSiteOwnStat', { site }).then(({ data }) => {
+                    setChart(data.chart || []);
+                }).catch(e => {
+                    axios.toast(e);
+                }).then(() => {
+                    setLoadChart(false);
+                });
 
             }).catch(e => {
                 axios.setError(e, setError);
@@ -90,15 +102,25 @@ const Statistic = withRouter(props => {
 
         {error && !loading && <Message content={error} error />}
 
-        {!error && !loading && <Table
-            {...props}
-            setRows={setRows}
-            rows={rows}
-            sites={sites}
-            sort={sort}
-            startSort={startSort}
-            loading={load}
-        />}
+        {!error && !loading && <>
+
+            {site && <AdminContentSegment>
+                <Header as="h5" content="График посещений" className="mb-3" />
+                <Lines data={chart} />
+                {loadChart && <Dimmer active inverted><Loader indeterminate /></Dimmer>}
+            </AdminContentSegment>}
+
+            <Table
+                {...props}
+                setRows={setRows}
+                rows={rows}
+                sites={sites}
+                sort={sort}
+                startSort={startSort}
+                loading={load}
+            />
+
+        </>}
 
     </div>
 });

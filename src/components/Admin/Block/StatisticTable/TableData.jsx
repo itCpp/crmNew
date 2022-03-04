@@ -111,7 +111,7 @@ const TableData = props => {
                         disabled={loading}
                         textAlign="center"
                         colSpan={10}
-                        content={<div className="opacity-50 my-5"><b>Данных нет</b></div>}
+                        content={<div className="opacity-50 my-5"><b>Данных за сегодня нет</b></div>}
                     />
                 </Table.Row>}
 
