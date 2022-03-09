@@ -1,8 +1,24 @@
 import { useCallback, useEffect, useState } from "react";
-import { Button, Checkbox, Header, Input } from "semantic-ui-react";
+import { Button, Checkbox, Header, Icon, Input, Pagination } from "semantic-ui-react";
 import { axios } from "../../../../utils";
 import AdminContentSegment from "../../UI/AdminContentSegment";
 import BlockModal from "../BlockModal";
+
+const PagesPagination = ({ loading, page, pages, getRows }) => <AdminContentSegment className="text-center">
+    <Pagination
+        activePage={page || 1}
+        totalPages={pages}
+        disabled={loading}
+        pointing
+        secondary
+        // ellipsisItem={{ content: <Icon name='ellipsis horizontal' />, icon: true }}
+        firstItem={{ content: <Icon name='angle double left' />, icon: true }}
+        lastItem={{ content: <Icon name='angle double right' />, icon: true }}
+        prevItem={{ content: <Icon name='angle left' />, icon: true }}
+        nextItem={{ content: <Icon name='angle right' />, icon: true }}
+        onPageChange={(e, { activePage }) => getRows({ page: activePage })}
+    />
+</AdminContentSegment>
 
 const BlockDriveIp = props => {
 
@@ -11,6 +27,7 @@ const BlockDriveIp = props => {
 
     const [rows, setRows] = useState([]);
     const [page, setPage] = useState(0);
+    const [pages, setPages] = useState(0);
     const [total, setTotal] = useState(0);
     const [block, setBlock] = useState(null);
 
@@ -21,9 +38,12 @@ const BlockDriveIp = props => {
     const getRows = useCallback(params => {
 
         setLoad(true);
+        setPage(params?.page || 1);
 
         axios.post('dev/block/drive/ip', { ...params, ...filters }).then(({ data }) => {
             setRows(data.rows);
+            setPages(data.pages);
+            setTotal(data.total);
         }).catch(e => {
 
         }).then(() => {
@@ -36,9 +56,9 @@ const BlockDriveIp = props => {
 
     useEffect(() => getRows({}), []);
 
-    useEffect(() => {
-        if (page > 0) getRows({ page });
-    }, [page]);
+    // useEffect(() => {
+    //     if (page > 0) getRows({ page });
+    // }, [page]);
 
     useEffect(() => {
         if (search) getRows({ page: 1, search: searchWord });
@@ -107,6 +127,13 @@ const BlockDriveIp = props => {
 
         </AdminContentSegment>
 
+        {pages > 0 && <PagesPagination
+            pages={pages}
+            page={page}
+            loading={loading || load}
+            getRows={getRows}
+        />}
+
         {rows && rows.length > 0 && rows.map((row, key) => <BlockDriveIpRow
             key={key}
             row={row}
@@ -117,6 +144,13 @@ const BlockDriveIp = props => {
         {rows && !(loading || load) && rows.length === 0 && <AdminContentSegment className="text-center py-5">
             <strong className="opacity-50">Ничего не найдено</strong>
         </AdminContentSegment>}
+
+        {pages > 0 && <PagesPagination
+            pages={pages}
+            page={page}
+            loading={loading || load}
+            getRows={getRows}
+        />}
 
     </div>
 }

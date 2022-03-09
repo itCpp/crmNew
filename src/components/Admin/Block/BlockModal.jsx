@@ -39,9 +39,7 @@ const BlockModal = props => {
                 rows.forEach((row, i) => {
                     if (row.ip === data.ip) {
                         rows[i].blocks_all = blocks_all;
-                        rows[i].isAllBlock = blocks_all;
                         rows[i].is_blocked = is_blocked;
-                        rows[i].isBlock = is_blocked;
                     }
                 });
                 return rows;
