@@ -1,26 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import { Button, Checkbox, Header, Icon, Input, Pagination } from "semantic-ui-react";
+import { Button, Checkbox, Header, Input } from "semantic-ui-react";
 import { axios } from "../../../../utils";
 import AdminContentSegment from "../../UI/AdminContentSegment";
 import BlockModal from "../BlockModal";
+import PagesPagination from "./PagesPagination";
 
-const PagesPagination = ({ loading, page, pages, getRows }) => <AdminContentSegment className="text-center">
-    <Pagination
-        activePage={page || 1}
-        totalPages={pages}
-        disabled={loading}
-        pointing
-        secondary
-        // ellipsisItem={{ content: <Icon name='ellipsis horizontal' />, icon: true }}
-        firstItem={{ content: <Icon name='angle double left' />, icon: true }}
-        lastItem={{ content: <Icon name='angle double right' />, icon: true }}
-        prevItem={{ content: <Icon name='angle left' />, icon: true }}
-        nextItem={{ content: <Icon name='angle right' />, icon: true }}
-        onPageChange={(e, { activePage }) => getRows({ page: activePage })}
-    />
-</AdminContentSegment>
-
-const BlockDriveIp = props => {
+const BlockDriveIp = () => {
 
     const [loading, setLoading] = useState(true);
     const [load, setLoad] = useState(true);
@@ -181,7 +166,9 @@ const BlockDriveIpRow = props => {
             <Header
                 as="a"
                 content={row.ip}
-                subheader={row.hostname}
+                subheader={<div className="sub header d-flex align-items-center">
+                    <span>{row.hostname}</span>
+                </div>}
                 className="flex-grow-1"
                 disabled={loading}
             />

@@ -1,14 +1,17 @@
 import BlockDriveIp from "./BlockDriveIp";
 import BlockDriveHost from "./BlockDriveHost";
+import PagesPagination from "./PagesPagination";
 
 const BlockDrive = {
     BlockDriveIp,
-    BlockDriveHost
+    BlockDriveHost,
+    PagesPagination
 }
 
 export {
     BlockDriveIp,
-    BlockDriveHost
+    BlockDriveHost,
+    PagesPagination
 }
 
 export default BlockDrive;

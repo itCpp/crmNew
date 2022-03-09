@@ -123,7 +123,7 @@ const BlcokModalSiteRow = props => {
         });
     }, []);
 
-    return <div key={row.id} className="d-flex my-3">
+    return <div key={row.id} className="d-flex my-2">
         <div className="flex-grow-1">{row.site}</div>
         <div>
             <Checkbox
