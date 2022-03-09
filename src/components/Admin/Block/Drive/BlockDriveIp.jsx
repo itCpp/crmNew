@@ -127,7 +127,7 @@ const BlockDriveIp = props => {
 
         </AdminContentSegment>
 
-        {pages > 0 && <PagesPagination
+        {pages > 1 && <PagesPagination
             pages={pages}
             page={page}
             loading={loading || load}
@@ -145,7 +145,7 @@ const BlockDriveIp = props => {
             <strong className="opacity-50">Ничего не найдено</strong>
         </AdminContentSegment>}
 
-        {pages > 0 && <PagesPagination
+        {pages > 1 && <PagesPagination
             pages={pages}
             page={page}
             loading={loading || load}
