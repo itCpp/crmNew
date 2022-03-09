@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import { Checkbox, Header, Input } from "semantic-ui-react";
+import { Button, Checkbox, Header, Input } from "semantic-ui-react";
 import { axios } from "../../../../utils";
 import AdminContentSegment from "../../UI/AdminContentSegment";
+import BlockModal from "../BlockModal";
 
 const BlockDriveIp = props => {
 
@@ -11,6 +12,7 @@ const BlockDriveIp = props => {
     const [rows, setRows] = useState([]);
     const [page, setPage] = useState(0);
     const [total, setTotal] = useState(0);
+    const [block, setBlock] = useState(null);
 
     const [searchWord, setSearchWord] = useState("");
     const [search, setSearch] = useState(false);
@@ -44,12 +46,20 @@ const BlockDriveIp = props => {
 
     return <div style={{ maxWidth: 800 }}>
 
+        {block && <BlockModal
+            ip={block}
+            open={block !== null}
+            close={() => setBlock(null)}
+            setRows={setRows}
+        />}
+
         <AdminContentSegment className="d-flex justify-content-between align-items-center">
 
             <Header
                 as="h2"
                 content="Управление блокировками IP"
                 subheader="Блокировка и разблокировка ip адресов"
+                className="flex-grow-1"
             />
 
         </AdminContentSegment>
@@ -58,10 +68,9 @@ const BlockDriveIp = props => {
 
             <Input
                 action={{
-                    color: 'blue',
-                    labelPosition: 'right',
-                    icon: 'search',
-                    content: 'Найти',
+                    color: "blue",
+                    icon: "search",
+                    content: "Найти",
                     onClick: () => (!loading && !load) ? setSearch(true) : null,
                     loading: load,
                 }}
@@ -101,23 +110,60 @@ const BlockDriveIp = props => {
         {rows && rows.length > 0 && rows.map((row, key) => <BlockDriveIpRow
             key={key}
             row={row}
+            loading={loading || load}
+            block={setBlock}
         />)}
+
+        {rows && !(loading || load) && rows.length === 0 && <AdminContentSegment className="text-center py-5">
+            <strong className="opacity-50">Ничего не найдено</strong>
+        </AdminContentSegment>}
 
     </div>
 }
 
 const BlockDriveIpRow = props => {
 
-    const { row } = props;
+    const { row, loading } = props;
+    const button = {
+        icon: "ban",
+        color: "green",
+        title: "Заблокировать",
+    };
+
+    if (row.blocks_all) {
+        button.icon = "minus";
+        button.color = "red";
+        button.title = "Редактировать блокировки по сайтам";
+    } else if (row.is_blocked) {
+        button.icon = "minus";
+        button.color = "orange";
+        button.title = "Редактировать блокировки по сайтам";
+    }
 
     return <AdminContentSegment className="mb-2">
 
-        <Header
-            as="a"
-            content={row.ip}
-        />
+        <div className="d-flex align-items-center">
 
-    </AdminContentSegment>
+            <Header
+                as="a"
+                content={row.ip}
+                subheader={row.hostname}
+                className="flex-grow-1"
+                disabled={loading}
+            />
+
+            <div>
+                <Button
+                    size="mini"
+                    {...button}
+                    disabled={loading}
+                    onClick={() => props.block(row.ip)}
+                />
+            </div>
+
+        </div>
+
+    </AdminContentSegment >
 
 }
 

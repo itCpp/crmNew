@@ -39,7 +39,9 @@ const BlockModal = props => {
                 rows.forEach((row, i) => {
                     if (row.ip === data.ip) {
                         rows[i].blocks_all = blocks_all;
+                        rows[i].isAllBlock = blocks_all;
                         rows[i].is_blocked = is_blocked;
+                        rows[i].isBlock = is_blocked;
                     }
                 });
                 return rows;
@@ -108,7 +110,7 @@ const BlcokModalSiteRow = props => {
 
         setLoading(true);
 
-        axios.post('dev/block/setblockip', {
+        axios.post('dev/block/site/setblockip', {
             checked, id, ip
         }).then(({ data }) => {
             axios.toast(data.message, {
