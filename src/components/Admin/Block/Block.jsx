@@ -24,7 +24,7 @@ export const setBlockIp = async (formdata, done, error) => {
 const Block = props => {
 
     let body = null;
-    const page = props.match?.params?.type || "statistic";
+    const page = props.match?.params?.type || "allStatistic";
 
     const [addBlockId, setAddBlockId] = React.useState(null);
     const [update, setUpdate] = React.useState(null);
@@ -33,11 +33,12 @@ const Block = props => {
         body = <StatisticIp {...props} />;
     }
     else if (page === "drive") {
-        body = <BlockDrive
-            {...props}
-            setAddBlockId={setAddBlockId}
-            updateRow={update}
-        />;
+        body = null;
+        // body = <BlockDrive
+        //     {...props}
+        //     setAddBlockId={setAddBlockId}
+        //     updateRow={update}
+        // />;
     }
     else if (page === "driveip") {
         body = <BlockDriveIp {...props} />;
@@ -59,12 +60,13 @@ const Block = props => {
         body = <AllStatistic {...props} />
     }
     else {
-        body = <StatisticDay
-            {...props}
-            setBlockIp={setBlockIp}
-            setAddBlockId={setAddBlockId}
-            updateRow={update}
-        />
+        body = <AllStatistic {...props} />
+        // body = <StatisticDay
+        //     {...props}
+        //     setBlockIp={setBlockIp}
+        //     setAddBlockId={setAddBlockId}
+        //     updateRow={update}
+        // />
     }
 
     return <>
