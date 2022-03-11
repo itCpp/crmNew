@@ -84,6 +84,14 @@ const BlockModal = props => {
                 </div>}
 
                 {typeof sites == "object" && sites.length > 0 && <div>
+
+                    <Message
+                        info
+                        size="mini"
+                        content={<div>Список сайтов настраивается в разделе <b>Базы сайтов</b>. Для актуальной информации о посещениях, каждый сайт должен иметь свою базу данных статистики.</div>}
+                        className="mb-4"
+                    />
+
                     {sites.map(row => <BlcokModalSiteRow
                         key={row.id}
                         row={row}
@@ -129,9 +137,9 @@ const BlcokModalSiteRow = props => {
             <Checkbox
                 checked={row.is_block}
                 onChange={(e, { checked }) => setFullBlock(checked, row.id)}
-                label="Полная блокировка"
-                toggle
                 disabled={loading}
+                title={row.is_block ? "Разблокировать" : "Заблокировать"}
+                toggle
             />
         </div>
     </div>
