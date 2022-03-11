@@ -120,7 +120,7 @@ const BlockHostModal = props => {
         size="tiny"
         closeIcon={!loading && <Icon name="close" fitted onClick={close} />}
         closeOnEscape={false}
-        closeOnEscape={false}
+        closeOnDimmerClick={false}
         content={<div className="content position-relative">
 
             <Dimmer active={loading} inverted><Loader /></Dimmer>

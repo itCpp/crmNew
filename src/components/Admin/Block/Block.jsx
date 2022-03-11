@@ -34,11 +34,20 @@ const Block = props => {
     }
     else if (page === "drive") {
         body = null;
-        // body = <BlockDrive
+        body = <BlockDrive
+            {...props}
+            setAddBlockId={setAddBlockId}
+            updateRow={update}
+        />;
+    }
+    else if (page === "statistic") {
+        body = null;
+        // body = <StatisticDay
         //     {...props}
+        //     setBlockIp={setBlockIp}
         //     setAddBlockId={setAddBlockId}
         //     updateRow={update}
-        // />;
+        // />
     }
     else if (page === "driveip") {
         body = <BlockDriveIp {...props} />;
@@ -61,12 +70,6 @@ const Block = props => {
     }
     else {
         body = <AllStatistic {...props} />
-        // body = <StatisticDay
-        //     {...props}
-        //     setBlockIp={setBlockIp}
-        //     setAddBlockId={setAddBlockId}
-        //     updateRow={update}
-        // />
     }
 
     return <>

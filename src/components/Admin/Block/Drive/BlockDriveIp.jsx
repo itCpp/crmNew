@@ -4,6 +4,7 @@ import { axios } from "../../../../utils";
 import AdminContentSegment from "../../UI/AdminContentSegment";
 import BlockModal from "../BlockModal";
 import PagesPagination from "./PagesPagination";
+import CreateBlockIp from "./CreateBlockIp";
 
 const BlockDriveIp = () => {
 
@@ -66,6 +67,11 @@ const BlockDriveIp = () => {
                 subheader="Блокировка и разблокировка ip адресов"
                 className="flex-grow-1"
             />
+
+            {!loading && <CreateBlockIp
+                setRows={setRows}
+                setBlock={setBlock}
+            />}
 
         </AdminContentSegment>
 
