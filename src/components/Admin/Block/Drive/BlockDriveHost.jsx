@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { axios } from "../../../../utils";
-import { Button, Header, Loader, Message, Input, Checkbox } from "semantic-ui-react";
+import { axios, Highlighted } from "../../../../utils";
+import { Button, Header, Loader, Message, Input } from "semantic-ui-react";
 import AdminContentSegment from "../../UI/AdminContentSegment";
 import { PagesPagination } from ".";
 import BlockHostModal from "./BlockHostModal";
@@ -113,6 +113,7 @@ const BlockDriveHost = () => {
             row={row}
             loading={loading || load}
             block={setBlock}
+            search={searchWord}
         />)}
 
         {rows && !(loading || load) && rows.length === 0 && <AdminContentSegment className="text-center py-5">
@@ -131,7 +132,7 @@ const BlockDriveHost = () => {
 
 const BlockDriveHostRow = props => {
 
-    const { row, loading } = props;
+    const { row, loading, search } = props;
     const button = {
         icon: "ban",
         color: "green",
@@ -148,13 +149,19 @@ const BlockDriveHostRow = props => {
         button.title = "Редактировать блокировки по сайтам";
     }
 
+    let host = row.host;
+
+    if (search !== "" && search) {
+        host = <Highlighted text={row.host} highlight={search} />
+    }
+
     return <AdminContentSegment className="mb-2">
 
         <div className="d-flex align-items-center">
 
             <Header
                 as="a"
-                content={row.host}
+                content={host}
                 className="flex-grow-1 m-0"
                 disabled={loading}
             />

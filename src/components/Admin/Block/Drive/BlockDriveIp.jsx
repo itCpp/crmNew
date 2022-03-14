@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { Button, Checkbox, Header, Input, Placeholder } from "semantic-ui-react";
-import { axios } from "../../../../utils";
+import { axios, Highlighted } from "../../../../utils";
 import AdminContentSegment from "../../UI/AdminContentSegment";
 import BlockModal from "../BlockModal";
 import PagesPagination from "./PagesPagination";
 import CreateBlockIp from "./CreateBlockIp";
 import { FlagIp, getIpInfo } from "../Statistic";
+import { withRouter } from "react-router-dom";
 
 const BlockDriveIp = () => {
 
@@ -132,6 +133,7 @@ const BlockDriveIp = () => {
             loading={loading || load}
             block={setBlock}
             setRows={setRows}
+            search={searchWord}
         />)}
 
         {rows && !(loading || load) && rows.length === 0 && <AdminContentSegment className="text-center py-5">
@@ -148,9 +150,9 @@ const BlockDriveIp = () => {
     </div>
 }
 
-const BlockDriveIpRow = props => {
+const BlockDriveIpRow = withRouter(props => {
 
-    const { row, loading, setRows } = props;
+    const { row, loading, setRows, search } = props;
     const button = {
         icon: "ban",
         color: "green",
@@ -167,6 +169,12 @@ const BlockDriveIpRow = props => {
         button.icon = "minus";
         button.color = "orange";
         button.title = "Редактировать блокировки по сайтам";
+    }
+
+    let ip = row.ip;
+
+    if (search !== "" && search) {
+        ip = <Highlighted text={row.ip} highlight={search} />
     }
 
     const checkIp = useCallback(ip => {
@@ -193,8 +201,13 @@ const BlockDriveIpRow = props => {
         <div className="d-flex align-items-center">
 
             <Header
-                as="a"
-                content={row.ip}
+                as="h4"
+                content={<div>
+                    {row.is_period
+                        ? ip
+                        : <a style={{ cursor: "pointer" }} onClick={() => props.history.push(`/admin/block/ip?addr=${row.ip}`)}>{ip}</a>
+                    }
+                </div>}
                 subheader={<div className="sub header d-flex align-items-center">
 
                     {checkedIp && <span className="unknow-flag loading" title="Поиск информации">
@@ -241,6 +254,6 @@ const BlockDriveIpRow = props => {
 
     </AdminContentSegment >
 
-}
+});
 
 export default BlockDriveIp;
