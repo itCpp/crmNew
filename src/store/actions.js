@@ -51,3 +51,9 @@ export const setUserWorkTime = data => ({
     type: USER_WORK_TIME,
     payload: data
 });
+
+export const SET_SHOW_MENU = "SET_SHOW_MENU";
+export const setShowMenu = data => ({
+    type: SET_SHOW_MENU,
+    payload: data
+});

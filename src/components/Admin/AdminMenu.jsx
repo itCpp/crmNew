@@ -1,14 +1,28 @@
 import { withRouter } from "react-router";
-import { connect } from 'react-redux';
-import { setSubMenuPoints, setPanelMenuPoints } from './../../store/admin/actions';
-
-import { NavLink } from 'react-router-dom';
-
-import { Icon } from 'semantic-ui-react';
+import { connect } from "react-redux";
+import { setSubMenuPoints, setPanelMenuPoints } from "./../../store/admin/actions";
+import { NavLink } from "react-router-dom";
+import { Icon } from "semantic-ui-react";
+import { useEffect, useState } from "react";
 
 function AdminMenu(props) {
 
-    const { permits, setSubMenuPoints, setPanelMenuPoints } = props;
+    const { permits, setSubMenuPoints, setPanelMenuPoints, showMenu } = props;
+    const [className, setClassName] = useState(["admin-menu slider-menu"]);
+
+    useEffect(() => {
+
+    }, []);
+
+    useEffect(() => {
+
+        if (showMenu && className.indexOf('slider-menu-show') < 0) {
+            setClassName([...className, "slider-menu-show"]);
+        } else if (className.indexOf('slider-menu-show') >= 0) {
+            setClassName(["admin-menu slider-menu"]);
+        }
+
+    }, [showMenu]);
 
     const changePage = (e) => {
 
@@ -20,7 +34,7 @@ function AdminMenu(props) {
         setSubMenuPoints(null);
     }
 
-    return <div className="admin-menu">
+    return <div className={className.join(' ')}>
 
         {(permits.block_dev || permits.admin_users) && <div className="admin-menu-block">
 
@@ -181,6 +195,7 @@ function AdminMenu(props) {
 
 const mapStateToProps = state => ({
     subMenuPoints: state.admin.subMenuPoints,
+    showMenu: state.main.showMenu,
 })
 
 const mapDispatchToProps = {

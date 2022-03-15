@@ -246,3 +246,22 @@ hr {
   background: radial-gradient(circle at bottom left, transparent 0.5rem, var(--bg-body) 0.5rem);
   z-index: -1;
 }
+
+.slider-menu {
+  overflow-y: auto;
+  z-index: 1000;
+  transition: .3s;
+}
+
+@media screen and (max-width: 1400px) {
+  .slider-menu {
+    top: 0 !important;
+    left: -300px !important;
+  }
+  .slider-menu-show {
+    left: 0 !important;
+  }
+  .admin-content-body {
+    margin-left: 0 !important;
+  }
+}
