@@ -7,6 +7,7 @@ import PagesPagination from "./PagesPagination";
 import CreateBlockIp from "./CreateBlockIp";
 import { FlagIp, getIpInfo } from "../Statistic";
 import { withRouter } from "react-router-dom";
+import BlockDriveInfo from "./BlockDriveInfo";
 
 const BlockDriveIp = () => {
 
@@ -76,6 +77,8 @@ const BlockDriveIp = () => {
             />}
 
         </AdminContentSegment>
+
+        <BlockDriveInfo />
 
         <AdminContentSegment>
 

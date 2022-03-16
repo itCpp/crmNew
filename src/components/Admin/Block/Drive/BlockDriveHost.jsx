@@ -4,6 +4,7 @@ import { Button, Header, Loader, Message, Input } from "semantic-ui-react";
 import AdminContentSegment from "../../UI/AdminContentSegment";
 import { PagesPagination } from ".";
 import BlockHostModal from "./BlockHostModal";
+import BlockDriveInfo from "./BlockDriveInfo";
 
 const BlockDriveHost = () => {
 
@@ -78,6 +79,8 @@ const BlockDriveHost = () => {
             />}
 
         </AdminContentSegment>
+
+        <BlockDriveInfo />
 
         <AdminContentSegment>
 

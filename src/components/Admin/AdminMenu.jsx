@@ -126,7 +126,7 @@ function AdminMenu(props) {
 
             <NavLink to="/admin/block/drivehost" className="admin-menu-point" onClick={changePage}>
                 <Icon name="ban" />
-                <span>Управление Хоста</span>
+                <span>Управление Хостами</span>
             </NavLink>
 
             <NavLink to="/admin/block/drive" className="admin-menu-point" onClick={changePage}>
