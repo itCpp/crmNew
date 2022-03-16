@@ -120,7 +120,12 @@ export default (props => {
 
                     <Statistic className="mx-4">
                         <Statistic.Value>{data.generalStats?.visitsBlock || 0}</Statistic.Value>
-                        <Statistic.Label>Блокировннае<br />входы</Statistic.Label>
+                        <Statistic.Label>Блокировнные<br />входы</Statistic.Label>
+                    </Statistic>
+
+                    <Statistic className="mx-4">
+                        <Statistic.Value>{data.generalStats?.visitsBlockAll || 0}</Statistic.Value>
+                        <Statistic.Label>Блокировнных<br />входов всего</Statistic.Label>
                     </Statistic>
 
                     <Statistic className="mx-4">
