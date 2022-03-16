@@ -4,7 +4,7 @@ import moment from "moment";
 
 const ViewsRow = props => {
 
-    const { row, history, filterIp } = props;
+    const { row, history, filterIp, loadingPage } = props;
 
     let platform = null;
 
@@ -19,12 +19,12 @@ const ViewsRow = props => {
             platform = <Icon name="apple" color="grey" />
     }
 
-    return <Table.Row>
+    return <Table.Row disabled={loadingPage} style={{ fontSize: "80%" }} verticalAlign="top">
         <Table.Cell>
-            <a href={`//${row.site}?fromadmin=${window.userId}`} target="_blank">{row.site}</a>
+            <a href={`//${row.site}?fromadmin=${window.userId}`} target="_blank" style={{ opacity: loadingPage ? "0.4" : "1" }}>{row.site}</a>
         </Table.Cell>
         <Table.Cell>
-            <pre className="my-1">{row.ip}</pre>
+            <pre className="mt-0 mb-1">{row.ip}</pre>
             <div>
                 <Icon
                     name="chart bar"
@@ -47,18 +47,46 @@ const ViewsRow = props => {
             </div>
         </Table.Cell>
         <Table.Cell>
-            {row.referer && <div style={{ maxWidth: 400, wordWrap: "break-word" }} title={`Переход с ${row.referer}`} className="mb-2">
+            {row.referer && <div
+                style={{
+                    maxWidth: 400,
+                    wordWrap: "break-word",
+                    opacity: loadingPage ? "0.4" : "1",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                }}
+                title={`Переход с ${row.referer}`}
+                className="mb-2"
+            >
                 <a href={row.referer} target="_blank" title={`Переход с ${row.referer}`}><Icon name="share" />{row.referer}</a>
             </div>}
-            <div style={{ maxWidth: 400, wordWrap: "break-word" }}>
+            <div style={{
+                maxWidth: 400,
+                wordWrap: "break-word",
+                opacity: loadingPage ? "0.4" : "1"
+            }}>
                 <a href={row.link} target="_blank">{row.link}</a>
             </div>
         </Table.Cell>
         <Table.Cell>
-            {row.robot && row.user_agent && <Icon name="android" color="red" title="Это робот зашел" />}
-            {row.desktop && row.user_agent && <Icon name="desktop" title={row.platform || ""} />}
-            {row.phone && row.user_agent && <Icon name="mobile alternate" title={row.platform || ""} />}
-            {row.tablet && row.user_agent && <Icon name="tablet alternate" title={row.platform || ""} />}
+            {row.robot && row.user_agent && <Icon
+                name="android"
+                color="red"
+                title="Это робот зашел"
+            />}
+            {row.desktop && row.user_agent && <Icon
+                name="desktop"
+                title={row.platform || ""}
+            />}
+            {row.phone && row.user_agent && <Icon
+                name="mobile alternate"
+                title={row.platform || ""}
+            />}
+            {row.tablet && row.user_agent && <Icon
+                name="tablet alternate"
+                title={row.platform || ""}
+            />}
             {platform}
             {row.user_agent || <i>Нет информации</i>}
         </Table.Cell>
