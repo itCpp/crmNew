@@ -1,3 +1,7 @@
+#sub-root {
+    min-height: 100vh;
+}
+
 .request-main-menu {
     display: flex;
     flex-direction: column;
@@ -9,22 +13,12 @@
     max-width: var(--width-main-menu);
     min-width: var(--width-main-menu);
     padding: .25rem;
-    /* border-right: 1px solid var(--border-admin-segment); */
+    background: #313a46;
 }
 
 .request-main-menu .nav-bar {
     position: sticky;
     top: 53px;
-}
-
-.bg-request-main-menu {
-    background: #313a46;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    max-width: var(--width-main-menu);
 }
 
 .menu-list-row {

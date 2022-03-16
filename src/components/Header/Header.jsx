@@ -56,7 +56,8 @@ function Header(props) {
                         name="bars"
                         size="large"
                         link
-                        className="mr-3"
+                        className="ml-1 mr-3 header-menu-button"
+                        style={{ marginTop: "3px" }}
                         onClick={() => props.setShowMenu(!props.showMenu)}
                     />
                 </span>

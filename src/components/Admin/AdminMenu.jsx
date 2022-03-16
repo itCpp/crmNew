@@ -1,25 +1,39 @@
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import { setSubMenuPoints, setPanelMenuPoints } from "./../../store/admin/actions";
+import { setShowMenu } from "./../../store/actions";
 import { NavLink } from "react-router-dom";
 import { Icon } from "semantic-ui-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 function AdminMenu(props) {
 
     const { permits, setSubMenuPoints, setPanelMenuPoints, showMenu } = props;
     const [className, setClassName] = useState(["admin-menu slider-menu"]);
+    const menu = useRef();
+
+    const hide = () => {
+        props.setShowMenu(false);
+    }
 
     useEffect(() => {
-
+        return () => {
+            hide();
+            document.body.removeEventListener('click', hide);
+        }
     }, []);
 
     useEffect(() => {
 
         if (showMenu && className.indexOf('slider-menu-show') < 0) {
             setClassName([...className, "slider-menu-show"]);
-        } else if (className.indexOf('slider-menu-show') >= 0) {
+            document.body.addEventListener('click', hide);
+        } else if (!showMenu && className.indexOf('slider-menu-show') >= 0) {
             setClassName(["admin-menu slider-menu"]);
+        }
+
+        return () => {
+            document.body.removeEventListener('click', hide);
         }
 
     }, [showMenu]);
@@ -34,7 +48,22 @@ function AdminMenu(props) {
         setSubMenuPoints(null);
     }
 
-    return <div className={className.join(' ')}>
+    return <div className={className.join(' ')} ref={menu}>
+
+        <div className="header-menu-button mx-2 mt-1 mb-3">
+
+            <span className="mr-3">
+                <Icon
+                    name="chevron circle left"
+                    link
+                    size="large"
+                    className="text-light"
+                />
+            </span>
+
+            <h3 className="m-0 text-light">CRM MKA</h3>
+
+        </div>
 
         {(permits.block_dev || permits.admin_users) && <div className="admin-menu-block">
 
@@ -199,7 +228,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-    setSubMenuPoints, setPanelMenuPoints
+    setSubMenuPoints, setPanelMenuPoints, setShowMenu
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AdminMenu));

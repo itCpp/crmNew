@@ -270,7 +270,7 @@ const CRM = props => {
         </div >
     }
 
-    return <div className="d-flex" style={{ flexGrow: 1 }}>
+    return <div className="d-flex flex-grow-1">
 
         <Menu />
 
