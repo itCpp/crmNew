@@ -131,7 +131,7 @@ export default (props => {
 
     }
 
-    return <div style={{ maxWidth: 600 }}>
+    return <div style={{ maxWidth: 800 }}>
 
         <div className="admin-content-segment d-flex justify-content-between align-items-center">
 
@@ -178,6 +178,8 @@ export default (props => {
                 {total > 0 && <div>Найдено: <b>{total}</b></div>}
             </div>
         </div>
+
+        <Message content={<span>Данный раздел используется для управления блокировки только в базе данных <b>4company</b>, скоро эта база данных будет отключена, а пока она не отключена необходимо отключать блокировки во всех разделах</span>} error />
 
         {pages > 1 && <PagesPagination
             page={page}
