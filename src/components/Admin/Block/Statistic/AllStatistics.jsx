@@ -11,6 +11,7 @@ const AllStatistic = props => {
     const [error, setError] = useState(null);
     const [rows, setRows] = useState([]);
     const [sites, setSites] = useState([]);
+    const [domains, setDomains] = useState([]);
 
     const {
         sort,
@@ -36,6 +37,7 @@ const AllStatistic = props => {
             setError(null);
             setRows(data.rows);
             setSites(data.sites);
+            setDomains(data.domains);
 
         }).catch(e => {
             axios.setError(e, setError);
@@ -65,7 +67,16 @@ const AllStatistic = props => {
         {error && !loading && <Message content={error} error />}
 
         {!error && !loading && <AdminContentSegment>
+
             <div>Таблица показывает ифнормацию о посещениях за текущий день. По умолчанию сортировка осуществляется по факту блокировки. <strong className="text-danger">Красным</strong> цветом выделены строки, заблокированные на постоянной основе. <strong className="text-warning">Оранжевым</strong> - автоматически заблокированы до конца дня, также об этом информирует соответсвующая иконка <Icon name="window close" color="yellow" fitted /> рядом с IP. Иконка <Icon name="check" color="green" fitted /> рядом с IP означает принадлежность адреса к белому списку. <Icon name="ban" color="orange" fitted /> - Откроет окно для раздельной блокировки по каждому сайту. <Icon name="minus square" color="orange" fitted /> - IP адрес заблокирован на одном из сайтов. <Icon name="minus square" color="red" fitted /> - IP адрес заблокирован на всех сайтах. <Icon name="chart bar" color="green" fitted /> - Страница со статистикой отдельного IP адреса. <Icon name="eye" color="black" fitted /> - Страница поведения IP адреса на сайте.</div>
+
+            {domains && domains.length > 0 && <div className="mt-2">
+                <b className="mr-2">Адреса входа:</b>
+                {domains.map(domain => <span className={`mx-2`} key={domain}>
+                    <a href={`//${domain}`} target="_blank">{domain}</a>
+                </span>)}
+            </div>}
+
         </AdminContentSegment>}
 
         {!error && !loading && <Table

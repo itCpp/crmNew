@@ -15,6 +15,7 @@ const Statistic = withRouter(props => {
     const [load, setLoad] = useState(true);
     const [error, setError] = useState(null);
     const [rows, setRows] = useState([]);
+    const [domains, setDomains] = useState([]);
 
     const [loadChart, setLoadChart] = useState(true);
     const [chart, setChart] = useState([]);
@@ -46,6 +47,7 @@ const Statistic = withRouter(props => {
 
                 setError(null);
                 setRows(data.rows);
+                setDomains(data.domains || []);
 
                 axios.post('dev/block/getChartSiteOwnStat', { site }).then(({ data }) => {
                     setChart(data.chart || []);
@@ -103,6 +105,13 @@ const Statistic = withRouter(props => {
         {error && !loading && <Message content={error} error />}
 
         {!error && !loading && <>
+
+            {domains && domains.length > 0 && <AdminContentSegment>
+                <b className="mr-2">Адреса входа:</b>
+                {domains.map(domain => <span className={`${load ? 'opacity-50' : 'opacity-100'} mx-2`} key={domain}>
+                    <a href={`//${domain}`} target="_blank">{domain}</a>
+                </span>)}
+            </AdminContentSegment>}
 
             {site && <AdminContentSegment>
                 <Header as="h5" content="График посещений" className="mb-3" />
