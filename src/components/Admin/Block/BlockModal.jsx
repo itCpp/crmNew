@@ -4,7 +4,7 @@ import { axios } from "../../../utils";
 
 const BlockModal = props => {
 
-    const { ip, open, close, setRows } = props;
+    const { ip, open, close, setRows, callback } = props;
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [sites, setSites] = useState([]);
@@ -45,6 +45,9 @@ const BlockModal = props => {
                 return rows;
             });
         }
+
+        if (typeof callback == "function")
+            callback(data);
     }
 
     useEffect(() => {

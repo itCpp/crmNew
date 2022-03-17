@@ -131,7 +131,7 @@ function App(props) {
     }
 
     return <>
-        <SemanticToastContainer position="bottom-left" />
+        <SemanticToastContainer position="bottom-right" />
         <Routes
             {...props}
             globalError={globalError}

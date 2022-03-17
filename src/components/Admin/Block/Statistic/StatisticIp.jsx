@@ -1,10 +1,10 @@
 import React from "react";
 import axios from "./../../../../utils/axios-header";
-import { Header, Loader, Message, Button, Grid, Statistic, Table } from "semantic-ui-react";
-
+import { Header, Loader, Message, Button, Grid, Statistic, Table, Icon } from "semantic-ui-react";
 import { setBlockIp } from "./../Block";
 import FlagIp from "./IP/FlagIp";
-import IpSitesCountGraph from "./IP/IpSitesCountGraph";
+// import IpSitesCountGraph from "./IP/IpSitesCountGraph";
+import BlockModal from "../BlockModal";
 import moment from "moment";
 
 export default (props => {
@@ -16,6 +16,10 @@ export default (props => {
     const [error, setError] = React.useState(null);
     const [data, setData] = React.useState({});
     const [loadBlock, setLoadBlock] = React.useState(false);
+    const [block, setBlock] = React.useState(null);
+
+    const [isBlockFull, setIsBlockFull] = React.useState(false);
+    const [isBlock, setIsBlock] = React.useState(false);
 
     const blockIp = async ip => {
         setLoadBlock(true);
@@ -65,7 +69,60 @@ export default (props => {
     if (data?.ipinfo?.city)
         region.push(data?.ipinfo?.city);
 
+    React.useEffect(() => {
+
+        if (typeof data?.getip == "object") {
+
+            let is_block = 0;
+
+            data.getip.forEach(s => {
+
+                if (s.is_block === true)
+                    is_block++;
+            });
+
+            if (data.getip.length === is_block) {
+                setIsBlockFull(true);
+            }
+            else if (is_block > 0) {
+                setIsBlockFull(false);
+                setIsBlock(true);
+            }
+            else {
+                setIsBlockFull(false);
+                setIsBlock(false);
+            }
+
+        }
+    }, [data]);
+
     return <div>
+
+        {block && <BlockModal
+            ip={block}
+            open={block !== null}
+            close={() => setBlock(null)}
+            callback={data => {
+                setData(prev => {
+                    let p = { ...prev }
+                    if (typeof p.getip == "object") {
+                        p.getip.forEach((a, k) => {
+                            if (a.id === data.id) {
+                                p.getip[k].is_block = data.checked;
+                            }
+                        });
+                    }
+                    if (typeof p.sitesStats == "object") {
+                        p.sitesStats.forEach((a, k) => {
+                            if (a.connection === String("mysql_check_connect_" + data.id)) {
+                                p.sitesStats[k].is_blocked = data.checked;
+                            }
+                        });
+                    }
+                    return p;
+                });
+            }}
+        />}
 
         <div className="admin-content-segment d-flex justify-content-between align-items-center">
 
@@ -81,7 +138,16 @@ export default (props => {
             {loading
                 ? <Loader active inline />
                 : <div>
+
                     <Button
+                        basic
+                        circular
+                        color={isBlockFull ? "red" : (isBlock ? "orange" : "green")}
+                        icon={isBlock ? "minus circle" : "ban"}
+                        onClick={() => setBlock(data?.ip)}
+                    />
+
+                    {/* <Button
                         circular
                         icon={data?.block?.block === 1 ? "minus circle" : "ban"}
                         title={data?.block?.block === 1 ? "Снять блокировку" : "Заблокировать"}
@@ -90,7 +156,7 @@ export default (props => {
                         disabled={loadBlock}
                         onClick={() => blockIp(addr)}
                         loading={loadBlock}
-                    />
+                    /> */}
                 </div>
             }
 
@@ -165,6 +231,7 @@ export default (props => {
                         <Table.Header>
                             <Table.Row textAlign="center">
                                 <Table.HeaderCell textAlign="left">Сайт</Table.HeaderCell>
+                                <Table.HeaderCell />
                                 <Table.HeaderCell>Просмотры сегодня</Table.HeaderCell>
                                 <Table.HeaderCell>Всего просмотров</Table.HeaderCell>
                                 <Table.HeaderCell>Блокированные входы</Table.HeaderCell>
@@ -178,12 +245,21 @@ export default (props => {
                         <Table.Body>
                             {data.sitesStats.map((row, i) => <Table.Row key={i} textAlign="center">
                                 <Table.Cell textAlign="left">
-                                    {typeof row.domains == "object"
+                                    {typeof row.domains == "object" && row.domains.length > 0
                                         ? row.domains.map(domain => <div key={domain}>
                                             <a href={`//${domain}`} target="_blank">{domain}</a>
                                         </div>)
-                                        : (row.domain || "Сссылка не определена")
+                                        : <div>{(row.domain || "Сссылка не определена")}</div>
                                     }
+                                </Table.Cell>
+                                <Table.Cell>
+                                    <Icon
+                                        name="ban"
+                                        fitted
+                                        color={row.is_autoblock ? "orange" : (row.is_blocked ? "red" : "grey")}
+                                        title={row.is_autoblock ? "Автоматическая блокировка" : (row.is_blocked ? "Заблокировано" : "")}
+                                        disabled={!row.is_autoblock && !row.is_blocked}
+                                    />
                                 </Table.Cell>
                                 <Table.Cell>{row.visits}</Table.Cell>
                                 <Table.Cell>{row.visitsAll}</Table.Cell>

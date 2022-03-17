@@ -134,7 +134,7 @@ instance.toast = (
     options.title = options.title || "Ошибка";
     options.description = options.description || error;
     options.time = typeof options.time == "undefined" ? 5000 : options.time;
-    options.animation = options.animation || "fly right";
+    options.animation = options.animation || "fly left";
 
     toast(options, onClose, onClick, onDismiss);
 
