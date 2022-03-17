@@ -176,11 +176,15 @@ export default (props => {
                         </Table.Header>
 
                         <Table.Body>
-                            {data.sitesStats.map(row => <Table.Row key={row.site} textAlign="center">
-                                <Table.Cell textAlign="left">{row.site
-                                    ? <a href={`//${row.site}`} target="_blank">{row.site}</a>
-                                    : "Сссылка не определена"
-                                }</Table.Cell>
+                            {data.sitesStats.map((row, i) => <Table.Row key={i} textAlign="center">
+                                <Table.Cell textAlign="left">
+                                    {typeof row.domains == "object"
+                                        ? row.domains.map(domain => <div key={domain}>
+                                            <a href={`//${domain}`} target="_blank">{domain}</a>
+                                        </div>)
+                                        : (row.domain || "Сссылка не определена")
+                                    }
+                                </Table.Cell>
                                 <Table.Cell>{row.visits}</Table.Cell>
                                 <Table.Cell>{row.visitsAll}</Table.Cell>
                                 <Table.Cell>{row.visitsBlock}</Table.Cell>
@@ -209,15 +213,15 @@ export default (props => {
 
                 {typeof data.textInfo == "object" && data.textInfo.length > 0 && <Grid.Row columns="equal">
                     {/* <Grid.Column> */}
-                        {data.textInfo.map((row, key) => <Grid.Column key={key}>
-                            <div className="d-flex align-items-center justify-content-between mb-3">
-                                <h3 className="my-0 mx-3">{row.name}</h3>
-                                {row.datetime && <div>
-                                    <small>Обновлено: {moment(row.datetime).format("DD.MM.YYYY HH:mm")}</small>
-                                </div>}
-                            </div>
-                            <pre className="pre border">{row.data}</pre>
-                        </Grid.Column>)}
+                    {data.textInfo.map((row, key) => <Grid.Column key={key}>
+                        <div className="d-flex align-items-center justify-content-between mb-3">
+                            <h3 className="my-0 mx-3">{row.name}</h3>
+                            {row.datetime && <div>
+                                <small>Обновлено: {moment(row.datetime).format("DD.MM.YYYY HH:mm")}</small>
+                            </div>}
+                        </div>
+                        <pre className="pre border">{row.data}</pre>
+                    </Grid.Column>)}
                     {/* </Grid.Column> */}
                 </Grid.Row>}
 
