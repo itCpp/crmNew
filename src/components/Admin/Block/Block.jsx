@@ -34,11 +34,11 @@ const Block = props => {
     }
     else if (page === "drive") {
         body = null;
-        body = <BlockDrive
-            {...props}
-            setAddBlockId={setAddBlockId}
-            updateRow={update}
-        />;
+        // body = <BlockDrive
+        //     {...props}
+        //     setAddBlockId={setAddBlockId}
+        //     updateRow={update}
+        // />;
     }
     else if (page === "statistic") {
         body = null;

@@ -126,13 +126,13 @@ function AdminMenu(props) {
 
             <NavLink to="/admin/block/drivehost" className="admin-menu-point" onClick={changePage}>
                 <Icon name="ban" />
-                <span>Управление Хостами</span>
+                <span>Управление Hosts</span>
             </NavLink>
 
-            <NavLink to="/admin/block/drive" className="admin-menu-point" onClick={changePage}>
+            {/* <NavLink to="/admin/block/drive" className="admin-menu-point" onClick={changePage}>
                 <Icon name="ban" />
                 <span>Управление</span>
-            </NavLink>
+            </NavLink> */}
 
             {/* <NavLink to="/admin/block/statistic" className={`admin-menu-point ${props.location.pathname.indexOf('/admin/block/ip') >= 0 ? 'active' : ''}`} onClick={changePage}>
                 <Icon name="line graph" />

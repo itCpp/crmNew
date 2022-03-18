@@ -163,6 +163,7 @@ const BlockDriveIpRow = withRouter(props => {
     };
 
     const [checkedIp, setCheckedIp] = useState(false);
+    const [load, setLoad] = useState(false);
 
     if (row.blocks_all) {
         button.icon = "minus";
@@ -195,6 +196,23 @@ const BlockDriveIpRow = withRouter(props => {
             });
 
             setCheckedIp(false);
+        });
+
+    }, []);
+
+    const blockAll = useCallback(row => {
+
+        setLoad(true);
+
+        axios.post('dev/block/site/setblockipall', {
+            ip: row.ip,
+            is_period: row.is_period
+        }).then(({ data }) => {
+
+        }).catch(e => {
+            axios.toast(e);
+        }).then(() => {
+            setLoad(false);
         });
 
     }, []);
@@ -244,12 +262,22 @@ const BlockDriveIpRow = withRouter(props => {
                 disabled={loading}
             />
 
-            <div>
+            <div className="d-flex">
+                <Button
+                    size="mini"
+                    icon={row.blocks_all ? "minus circle" : "plus circle"}
+                    color={row.blocks_all ? "red" : "green"}
+                    title={`${row.blocks_all ? "Разбловировать" : "Заблокировать"} на всех сайтах`}
+                    disabled={loading || load}
+                    onClick={() => blockAll(row)}
+                    className="d-flex align-items-center"
+                />
                 <Button
                     size="mini"
                     {...button}
                     disabled={loading}
                     onClick={() => props.block(row.ip)}
+                    className="d-flex align-items-center"
                 />
             </div>
 
