@@ -7,16 +7,26 @@ import Chart from "./ChartData";
 import Rating from "./Rating";
 import Alerts from "./Alerts/index";
 import TapeTimes from "./TapeTimes/TapeTimes";
-
 import "./mydata.css";
 
 const User = props => {
 
+    const height = 150;
     const { userData, worktime } = useSelector(state => state.main);
+
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
     const [data, setData] = React.useState({});
-    const height = 150;
+    const [updateWorkTime, setUpdateWorkTime] = React.useState(null);
+    const [updateNotification, setUpdateNotification] = React.useState(null);
+
+    const changeUserWorkTime = React.useCallback(({ worktime }) => {
+        setUpdateWorkTime(worktime);
+    }, []);
+
+    const notificationsEvent = React.useCallback(({ notification }) => {
+        setUpdateNotification(notification);
+    }, []);
 
     React.useEffect(() => {
 
@@ -25,13 +35,23 @@ const User = props => {
         axios.post('users/mydata', {
             userId: Number(props?.match?.params?.id),
         }).then(({ data }) => {
+
             setError(null);
             setData(data);
+
+            window.Echo && window.Echo.private(`App.User.Page.${window.userId}`)
+                .listen('Users\\ChangeUserWorkTime', changeUserWorkTime)
+                .listen('Users\\NotificationsEvent', notificationsEvent);
+
         }).catch(e => {
             setError(axios.getError(e));
         }).then(() => {
             setLoading(false);
         });
+
+        return () => {
+            window.Echo && window.Echo.leave(`App.User.Page.${window.userId}`);
+        }
 
     }, [props.location.key]);
 
@@ -56,13 +76,24 @@ const User = props => {
                 {data.worktime && <Grid.Row>
                     <Grid.Column>
                         <Segment className="worktimes-tapes">
-                            <TapeTimes data={data.worktime} title="Шкала занятости" interval={true} />
-                            <TapeTimes data={data.calls} title="Звонки" />
+                            <TapeTimes
+                                data={data.worktime}
+                                title="Шкала занятости"
+                                interval={true}
+                                updateWorkTime={updateWorkTime}
+                            />
+                            <TapeTimes
+                                data={data.calls}
+                                title="Звонки"
+                            />
                         </Segment>
                     </Grid.Column>
                 </Grid.Row>}
 
-                {data.alerts && <Alerts data={data.alerts} />}
+                {data.alerts && <Alerts
+                    data={data.alerts}
+                    updateNotification={updateNotification}
+                />}
 
                 <Grid.Row columns={2}>
                     <Grid.Column>

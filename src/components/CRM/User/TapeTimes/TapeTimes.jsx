@@ -4,7 +4,7 @@ import moment from "moment";
 
 export const TapeTimes = props => {
 
-    const { title, interval } = props;
+    const { title, interval, updateWorkTime } = props;
 
     const [data, setData] = React.useState(props.data);
     const canvas = React.useRef();
@@ -15,15 +15,39 @@ export const TapeTimes = props => {
 
         if (!canvas.current || !block.current) return;
 
-        canvas.current.width = data.percent
-            ? block.current.offsetWidth * (data.percent / 100)
-            : block.current.offsetWidth;
-
+        canvas.current.width = block.current.offsetWidth;
         canvas.current.height = 15;
 
         draw(data);
-
     }
+
+    React.useEffect(() => {
+        if (updateWorkTime) {
+            setData(prev => {
+
+                let data = { ...prev }
+
+                if (typeof data.rows == "object") {
+
+                    let key = data.rows.length - 1;
+                    let percent = data.rows[key].percent + data.rows[key].width;
+                    let created_at = moment(updateWorkTime.created_at).format("YYYY-MM-DD HH:mm:ss");
+
+                    data.rows.push({
+                        color: updateWorkTime.color,
+                        created_at,
+                        event_type: updateWorkTime.event_type,
+                        logined: true,
+                        percent,
+                        timestamp: Date.parse(new Date(created_at)),
+                        width: 0,
+                    });
+                }
+
+                return data;
+            });
+        }
+    }, [updateWorkTime]);
 
     const draw = data => {
 

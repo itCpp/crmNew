@@ -3,18 +3,25 @@ import { Grid } from "semantic-ui-react";
 import Requests from "./AlertsRequests";
 import Notifications from "./AlertsNotifications";
 
-const Alerts = ({ data }) => {
+const Alerts = ({ data, updateNotification }) => {
 
     const height = 350;
 
     return <Grid.Row columns={Object.keys(data).length}>
 
         <Grid.Column>
-            <Requests requests={data.requests || []} height={height} />
+            <Requests
+                requests={data.requests || []}
+                height={height}
+            />
         </Grid.Column>
 
         <Grid.Column>
-            <Notifications notifications={data.notifications || null} height={height} />
+            <Notifications
+                notifications={data.notifications || null}
+                updateNotification={updateNotification}
+                height={height}
+            />
         </Grid.Column>
 
     </Grid.Row>
