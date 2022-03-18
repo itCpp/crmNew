@@ -56,7 +56,7 @@ const User = props => {
                 {data.worktime && <Grid.Row>
                     <Grid.Column>
                         <Segment className="worktimes-tapes">
-                            <TapeTimes data={data.worktime} title="Шкала занятости" />
+                            <TapeTimes data={data.worktime} title="Шкала занятости" interval={true} />
                             <TapeTimes data={data.calls} title="Звонки" />
                         </Segment>
                     </Grid.Column>

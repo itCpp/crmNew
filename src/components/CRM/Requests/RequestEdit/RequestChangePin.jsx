@@ -136,7 +136,7 @@ const RequestChangePin = props => {
                             {onlineId && onlineId.indexOf(user.id) >= 0 &&
                                 <Label
                                     circular
-                                    color="teal"
+                                    color={user.color === "green" ? "red" : "green"}
                                     empty
                                     attached="bottom right"
                                     style={{ bottom: "2px", right: "2px" }}
