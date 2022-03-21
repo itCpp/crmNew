@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Button, Checkbox, Header, Input, Placeholder } from "semantic-ui-react";
+import { Button, Checkbox, Header, Input, Icon, Placeholder } from "semantic-ui-react";
 import { axios, Highlighted } from "../../../../utils";
 import AdminContentSegment from "../../UI/AdminContentSegment";
 import BlockModal from "../BlockModal";
@@ -206,9 +206,26 @@ const BlockDriveIpRow = withRouter(props => {
 
         axios.post('dev/block/site/setblockipall', {
             ip: row.ip,
-            is_period: row.is_period
+            checked: !Boolean(row.blocks_all),
+            is_period: row.is_period,
+            period_data: row.period_data,
         }).then(({ data }) => {
+            setRows(prev => {
+                prev.forEach((row, i) => {
+                    if (data.ip === row.ip) {
 
+                        prev[i].blocks_all = data.blocks_all;
+                        prev[i].is_blocked = data.is_blocked;
+
+                        if (typeof prev[i].blocks == "object" && typeof data.blokeds == "object") {
+                            prev[i].blocks.forEach((b, k) => {
+                                prev[i].blocks[k].block = Boolean(data.blokeds[b.id]);
+                            });
+                        }
+                    }
+                });
+                return prev;
+            });
         }).catch(e => {
             axios.toast(e);
         }).then(() => {
@@ -262,19 +279,42 @@ const BlockDriveIpRow = withRouter(props => {
                 disabled={loading}
             />
 
-            <div className="d-flex">
+            <div className="d-flex align-items-center">
+
+                {/* <span>
+                    <Icon
+                        name={row.blocks_all ? "minus circle" : "plus circle"}
+                        color={row.blocks_all ? "red" : "green"}
+                        title={`${row.blocks_all ? "Разбловировать" : "Заблокировать"} на всех сайтах`}
+                        disabled={loading || load}
+                        link
+                    />
+                </span>
+
+                <span>
+                    <Icon
+                        name="list ul"
+                        color={row.blocks_all ? "red" : "green"}
+                        title={`${row.blocks_all ? "Разбловировать" : "Заблокировать"} на всех сайтах`}
+                        disabled={loading || load}
+                        link
+                    />
+                </span> */}
+
                 <Button
                     size="mini"
                     icon={row.blocks_all ? "minus circle" : "plus circle"}
                     color={row.blocks_all ? "red" : "green"}
                     title={`${row.blocks_all ? "Разбловировать" : "Заблокировать"} на всех сайтах`}
                     disabled={loading || load}
+                    loading={load}
                     onClick={() => blockAll(row)}
                     className="d-flex align-items-center"
                 />
                 <Button
                     size="mini"
                     {...button}
+                    icon="list ul"
                     disabled={loading}
                     onClick={() => props.block(row.ip)}
                     className="d-flex align-items-center"
