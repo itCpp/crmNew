@@ -1,3 +1,5 @@
+import React from "react";
+import { axios } from "../../../../utils";
 import { Segment } from "../../UI";
 import { Icon } from "semantic-ui-react";
 import moment from "moment";
@@ -35,7 +37,48 @@ const RequestRow = withRouter(props => {
 
 });
 
-export default (({ requests, height }) => {
+export default (({ requests, height, updateNotification }) => {
+
+    const [rows, setRows] = React.useState(requests || []);
+
+    React.useEffect(() => {
+
+        if (updateNotification && updateNotification.notif_type == "set_request") {
+
+            let push = updateNotification.data?.request_id,
+                drop = updateNotification.data?.drop_request_id;
+
+            if (push) {
+                axios.post('requests/get', {
+                    search: {
+                        id: push
+                    }
+                }).then(({ data }) => {
+                    if (typeof data.requests == "object") {
+                        setRows(prev => {
+                            let rows = [...prev];
+                            data.requests.forEach(row => {
+                                rows.unshift(row);
+                            });
+                            return rows;
+                        });
+                    }
+                });
+            }
+
+            if (drop) {
+                setRows(prev => {
+                    let rows = [...prev];
+                    [...prev].forEach((row, i) => {
+                        if (row.id === drop) {
+                            rows.splice(i, 1);
+                        }
+                    });
+                    return rows;
+                });
+            }
+        }
+    }, [updateNotification]);
 
     return <Segment
         header={{
@@ -51,9 +94,9 @@ export default (({ requests, height }) => {
 
         <div className="segmet-list h-100">
 
-            {requests && requests.map((row, i) => <RequestRow key={`${row.id}_new_${i}`} row={row} />)}
+            {rows && rows.map((row, i) => <RequestRow key={`${row.id}_new_${i}`} row={row} />)}
 
-            {!requests || (requests && requests.length === 0) && <EmptyChart
+            {!rows || (rows && rows.length === 0) && <EmptyChart
                 height="100%"
                 text="Вам ещё не поручали заявок"
             />}

@@ -25,7 +25,7 @@ const User = props => {
     }, []);
 
     const notificationsEvent = React.useCallback(({ notification }) => {
-        setUpdateNotification(notification);
+        setUpdateNotification({ ...notification, live: true });
     }, []);
 
     React.useEffect(() => {
@@ -51,6 +51,7 @@ const User = props => {
 
         return () => {
             window.Echo && window.Echo.leave(`App.User.Page.${window.userId}`);
+            setUpdateNotification(null);
         }
 
     }, [props.location.key]);

@@ -15,14 +15,20 @@ const authQueryIncoming = (e, change, update, setOpen) => {
 
         axios.toast(null,
             {
-                description: <span>Сотрудник <i>{e.query?.user?.name_full}</i> <b>{e.query?.user?.pin}</b></span>,
+                description: <span>
+                    <b className="mr-2">{e.query?.user?.pin}</b>
+                    <i>{e.query?.user?.name_full}</i>
+                </span>,
                 type: "warning",
                 time: 10000,
                 title: "Запрос авторизации",
                 icon: "user",
             },
             () => null,
-            () => setOpen(true)
+            e => {
+                setOpen(true);
+                e.currentTarget && e.currentTarget.querySelector('i.close.icon').click();
+            }
         );
 
     }

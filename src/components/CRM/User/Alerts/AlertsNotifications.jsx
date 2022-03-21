@@ -30,33 +30,42 @@ export default (({ updateNotification, notifications, height }) => {
             className="segmet-list h-100"
         >
 
-            {rows.map(row => <Comment key={row.id}>
+            {rows.map((row, i) => {
 
-                <NotificationIcon type={row.notif_type} />
+                let className = ["notification-my-data-row"];
 
-                <Comment.Content>
+                if (row.live)
+                    className.push("update-notification-row");
 
-                    <Comment.Author as="span">{row.author || "ЦРМ"}</Comment.Author>
+                return <Comment key={`${i}_${row.id}`} className={className.join(' ')}>
 
-                    <Comment.Metadata>
+                    <NotificationIcon type={row.notif_type} />
 
-                        {moment(row.created_at).format("DD.MM.YYYY в HH:mm")}
+                    <Comment.Content>
 
                         {!row.readed_at && <Label
                             circular
                             color="red"
                             empty
                             size="mini"
-                            className="ml-2"
+                            className="mr-2"
                             title="Новое уведомление"
                         />}
-                    </Comment.Metadata>
 
-                    <Comment.Text>{row.notification}</Comment.Text>
+                        <Comment.Author as="span">{row.author || "ЦРМ"}</Comment.Author>
 
-                </Comment.Content>
+                        <Comment.Metadata>
 
-            </Comment>)}
+                            {moment(row.created_at).format("DD.MM.YYYY в HH:mm")}
+
+                        </Comment.Metadata>
+
+                        <Comment.Text>{row.notification}</Comment.Text>
+
+                    </Comment.Content>
+
+                </Comment>
+            })}
 
         </Comment.Group>}
 

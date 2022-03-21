@@ -177,3 +177,16 @@
     padding: 0 .5rem;
     overflow-y: auto;
 }
+
+.notification-my-data-row {
+    border-radius: .25rem;
+}
+
+.notification-my-data-row.update-notification-row {
+    animation: update-notification-row .3s 1 ease;
+}
+
+@keyframes update-notification-row {
+    from { opacity: .1 !important; }
+    to { opacity: 1 !important; }
+}

@@ -12,6 +12,7 @@ const Alerts = ({ data, updateNotification }) => {
         <Grid.Column>
             <Requests
                 requests={data.requests || []}
+                updateNotification={updateNotification}
                 height={height}
             />
         </Grid.Column>
