@@ -78,7 +78,7 @@ const BlockDriveIp = () => {
 
         </AdminContentSegment>
 
-        <BlockDriveInfo />
+        <AdminContentSegment>Пояснение кнопки блокировки: <Icon name="list ul" color="green" fitted /> адрес не заблокирован нигде, <Icon name="list ul" color="orange" fitted /> адрес заблокирован на некоторых сайтах, на которых имеется статистика и учет блокировки, <Icon name="list ul" color="red" fitted /> адрес заблокирован на всех сайтах. <Icon name="circle plus" color="green" fitted /> при нажатии на эту кнопку ip будет заблокирован на всех сайтах, <Icon name="circle minus" color="red" fitted /> - будет разблокирован на всех сайтах. <Icon name="window close" color="yellow" fitted /> имеется автоматическая блокировка на одном из сайтов.</AdminContentSegment>
 
         <AdminContentSegment>
 
@@ -300,6 +300,15 @@ const BlockDriveIpRow = withRouter(props => {
                         link
                     />
                 </span> */}
+
+                {row.is_autoblock && <span>
+                    <Icon
+                        name="window close"
+                        color="yellow"
+                        title="Имется автоматическая блокировка"
+                        disabled={loading}
+                    />
+                </span>}
 
                 <Button
                     size="mini"

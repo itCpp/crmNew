@@ -12,14 +12,19 @@ const BlockModal = props => {
     const updateRow = data => {
 
         let is_blocked = false,
-            blocks_all = true;
+            blocks_all = true,
+            is_autoblock = false;
 
         setSites(prev => {
 
             prev.forEach((row, i) => {
 
-                if (row.id === data.id) {
+                if (row.id === data.id && typeof data.checked != "undefined") {
                     prev[i].is_block = data.checked;
+                }
+
+                if (row.id === data.id && typeof data.is_autoblock != "undefined") {
+                    prev[i].is_autoblock = data.is_autoblock;
                 }
 
                 if (prev[i].is_block === true)
@@ -27,6 +32,9 @@ const BlockModal = props => {
 
                 if (prev[i].is_block !== true)
                     blocks_all = false;
+
+                if (prev[i].is_autoblock === true)
+                    is_autoblock = true;
             });
 
             return prev;
@@ -40,6 +48,7 @@ const BlockModal = props => {
                     if (row.ip === data.ip) {
                         rows[i].blocks_all = blocks_all;
                         rows[i].is_blocked = is_blocked;
+                        rows[i].is_autoblock = is_autoblock;
                     }
                 });
                 return rows;
@@ -134,8 +143,41 @@ const BlcokModalSiteRow = props => {
         });
     }, []);
 
+    const setAutoBlock = useCallback((checked, id) => {
+
+        setLoading(true);
+
+        axios.post('dev/block/site/setautoblockip', {
+            checked, id, ip
+        }).then(({ data }) => {
+            axios.toast(`${data.is_autoblock ? "Включена" : "Отключена"} для IP ${data.message}`, {
+                type: "success",
+                title: "Автоблоировка"
+            });
+            updateRow({ ip, id, is_autoblock: data.is_autoblock });
+        }).catch(e => {
+            axios.toast(e);
+        }).then(() => {
+            setLoading(false);
+        });
+    }, []);
+
     return <div key={row.id} className="d-flex my-2">
-        <div className="flex-grow-1">{row.site}</div>
+        <div className="flex-grow-1">
+
+            <span>{row.site}</span>
+
+            {row.is_autoblock && <Icon
+                name="window close"
+                color="yellow"
+                className="ml-2"
+                title="Автоматически заблокирован"
+                link
+                disabled={loading}
+                onClick={() => setAutoBlock(!row.is_autoblock, row.id)}
+            />}
+
+        </div>
         <div>
             <Checkbox
                 checked={row.is_block}
