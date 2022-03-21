@@ -150,10 +150,10 @@ const TableBodyRow = props => {
                 />
 
                 <a
-                    href={`/admin/block/views?ip=${row.ip}`}
+                    href={`/admin/block/views?ip=${row.ip}${props.site ? `&site=${props.site}` : ``}`}
                     onClick={e => {
                         e.preventDefault();
-                        props.history.push(`/admin/block/views?ip=${row.ip}`);
+                        props.history.push(`/admin/block/views?ip=${row.ip}${props.site ? `&site=${props.site}` : ``}`);
                     }}
                     children={<Icon
                         name="eye"

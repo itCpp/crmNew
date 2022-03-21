@@ -301,14 +301,14 @@ const BlockDriveIpRow = withRouter(props => {
                     />
                 </span> */}
 
-                {row.is_autoblock && <span>
-                    <Icon
-                        name="window close"
-                        color="yellow"
-                        title="Имется автоматическая блокировка"
-                        disabled={loading}
-                    />
-                </span>}
+                {row.is_autoblock && <Button
+                    size="mini"
+                    icon="window close"
+                    color="yellow"
+                    title="Имется автоматическая блокировка"
+                    disabled
+                    className="d-flex align-items-center"
+                />}
 
                 <Button
                     size="mini"
