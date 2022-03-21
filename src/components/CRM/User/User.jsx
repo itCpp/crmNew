@@ -17,8 +17,10 @@ const User = props => {
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
     const [data, setData] = React.useState({});
+
     const [updateWorkTime, setUpdateWorkTime] = React.useState(null);
     const [updateNotification, setUpdateNotification] = React.useState(null);
+    const [chartRequests, setChartRequests] = React.useState(null);
 
     const changeUserWorkTime = React.useCallback(({ worktime }) => {
         setUpdateWorkTime(worktime);
@@ -26,6 +28,10 @@ const User = props => {
 
     const notificationsEvent = React.useCallback(({ notification }) => {
         setUpdateNotification({ ...notification, live: true });
+
+        if (notification?.data?.request_id) {
+            setChartRequests({ count: 1, date: Date.parse(new Date) });
+        }
     }, []);
 
     React.useEffect(() => {
@@ -105,6 +111,7 @@ const User = props => {
                                     title="Заявки"
                                     color="#fc0"
                                     height={height}
+                                    update={chartRequests}
                                 />
                                 : <EmptyChart
                                     height={height}
