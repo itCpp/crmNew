@@ -12,6 +12,8 @@ import './auth.css';
 import AuthSecret from './AuthSecret';
 import AuthAdmin from './AuthAdmin';
 
+const auths = JSON.parse(localStorage.getItem('auth_story') || "[]") || [];
+
 function Auth(props) {
 
     const { setLogin, setUserData, setUserPermits } = props;
@@ -21,6 +23,7 @@ function Auth(props) {
     const [error, setError] = React.useState(false);
 
     const [loginName, setLoginName] = React.useState(null);
+    const [autoLoginName, setAutoLoginName] = React.useState(null);
     const [userId, setUserId] = React.useState(null);
     const [userName, setUserName] = React.useState(null);
     const [userAuthType, setUserAuthType] = React.useState(null);
@@ -38,21 +41,33 @@ function Auth(props) {
         updateToken(data.token);
         localStorage.setItem(tokenKey, data.token);
 
+        [...auths].forEach((row, i) => {
+            if (row.pin === data.user.pin) {
+                auths.splice(i, 1);
+            }
+        });
+
+        auths.push({ pin: data.user.pin, name: data.user.name_fio });
+
+        if (auths.length > 5)
+            auths.splice(0, auths.length - 5);
+
+        localStorage.setItem('auth_story', JSON.stringify(auths));
+
         setLogin(true);
         setUserData(data.user);
         setUserPermits(data.permits);
         props.setUserWorkTime(data.worktime);
-
     }
 
     React.useEffect(() => {
 
-        if (send && loginName) {
+        if (send && (autoLoginName || loginName)) {
 
             setLoading(true);
 
             axios.post('loginStart', {
-                login: loginName
+                login: autoLoginName || loginName,
             }).then(({ data }) => {
                 setUserId(data.id);
                 setUserName(data.name);
@@ -64,6 +79,7 @@ function Auth(props) {
                 setError(axios.getError(error));
             }).then(() => {
                 setLoading(false);
+                setAutoLoginName(null);
             });
 
         }
@@ -90,6 +106,22 @@ function Auth(props) {
             disabled={loading}
             name="login"
         />
+
+        {auths && auths.length > 0 && auths.map((row, i) => <Button
+            key={`auto_${i}`}
+            fluid
+            className="my-1"
+            content={<div className="d-flex">
+                <b>{row.pin}</b>
+                <span className="ml-1 flex-grow-1 text-right">{row.name}</span>
+            </div>}
+            onClick={() => {
+                setAutoLoginName(row.pin);
+                setSend(true);
+            }}
+            basic
+            disabled={loading}
+        />)}
 
         <Button
             fluid
