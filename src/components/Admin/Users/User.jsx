@@ -3,9 +3,9 @@ import axios from './../../../utils/axios-header';
 
 import { Modal, Button, Form } from 'semantic-ui-react';
 
-function gen_password(len = 6) {
+export function gen_password(len = 6) {
     var password = "";
-    var symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!_+=";
+    var symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_";
     for (var i = 0; i < len; i++) {
         password += symbols.charAt(Math.floor(Math.random() * symbols.length));
     }

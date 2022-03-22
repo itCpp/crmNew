@@ -42,7 +42,7 @@ const PhoneRow = props => {
         <div>
             <Icon name="copy" className="button-icon" title="Скопировать номер телефона" />
         </div>
-        <div className="to-copy-text" ref={number}>{phone}</div>
+        <div className="to-copy-text text-nowrap" ref={number}>{phone}</div>
     </div>
 
 }

@@ -16,6 +16,7 @@ import ButtonHeader from "./ButtonHeader";
 import AuthQueries from "./../Auth/AuthQueries";
 import ActiveStatusUser from "./ActiveStatusUser";
 import './header.css';
+import UserCreate from "./UserCreate";
 
 function Header(props) {
 
@@ -68,32 +69,25 @@ function Header(props) {
 
             <div className="header-rows">
 
-                {permits.user_auth_query
-                    ? <AuthQueries {...props} />
-                    : null
-                }
+                {permits.user_create && <UserCreate />}
 
-                {permits.admin_access
-                    ? <NavLink to="/admin" title="Админ-панель" className="header-nav-btn">
-                        <ButtonHeader
-                            icon="setting"
-                        />
-                    </NavLink>
-                    : null
-                }
+                {permits.user_auth_query && <AuthQueries {...props} />}
+
+                {permits.admin_access && <NavLink to="/admin" title="Админ-панель" className="header-nav-btn">
+                    <ButtonHeader
+                        icon="setting"
+                    />
+                </NavLink>}
 
                 <ActiveStatusUser {...props} />
 
-                {mode ?
-                    <span className="mt-1">
-                        <Icon
-                            name="secret user"
-                            color="blue"
-                            title="Имитация пользователя"
-                        />
-                    </span>
-                    : null
-                }
+                {mode && <span className="mt-1">
+                    <Icon
+                        name="secret user"
+                        color="blue"
+                        title="Имитация пользователя"
+                    />
+                </span>}
 
                 <div className="position-relative">
 
