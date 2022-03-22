@@ -41,28 +41,40 @@ export default (({ requests, height, updateNotification }) => {
 
     const [rows, setRows] = React.useState(requests || []);
 
+    const getRequest = React.useCallback((id, cb) => {
+        axios.post('requests/get', {
+            search: {
+                id: id
+            }
+        }).then(({ data }) => {
+            if (typeof cb == "function") {
+                cb(data);
+            }
+        });
+    }, []);
+
     React.useEffect(() => {
 
-        if (updateNotification && updateNotification.notif_type == "set_request") {
+        let forType = (updateNotification?.notif_type == "set_request" || updateNotification?.notif_type == "coming")
+
+        if (updateNotification && forType) {
 
             let push = updateNotification.data?.request_id,
-                drop = updateNotification.data?.drop_request_id;
+                drop = updateNotification.data?.drop_request_id,
+                coming = updateNotification.data?.coming_request;
 
             if (push) {
-                axios.post('requests/get', {
-                    search: {
-                        id: push
-                    }
-                }).then(({ data }) => {
-                    if (typeof data.requests == "object") {
-                        setRows(prev => {
-                            let rows = [...prev];
-                            data.requests.forEach(row => {
-                                rows.unshift(row);
-                            });
-                            return rows;
+                getRequest(push, data => {
+
+                    if (typeof data.requests != "object") return;
+
+                    setRows(prev => {
+                        let rows = [...prev];
+                        data.requests.forEach(row => {
+                            rows.unshift(row);
                         });
-                    }
+                        return rows;
+                    });
                 });
             }
 
@@ -75,6 +87,25 @@ export default (({ requests, height, updateNotification }) => {
                         }
                     });
                     return rows;
+                });
+            }
+
+            if (coming) {
+                getRequest(coming, data => {
+
+                    if (typeof data.requests != "object") return;
+
+                    setRows(prev => {
+                        let rows = [...prev];
+                        rows.forEach((row, i) => {
+                            data.requests.forEach(coming_row => {
+                                if (row.id === coming_row.id) {
+                                    rows[i] = coming_row;
+                                }
+                            });
+                        });
+                        return rows;
+                    });
                 });
             }
         }

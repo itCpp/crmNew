@@ -6,6 +6,7 @@ export const NotificationIcon = ({ type }) => {
 
     if (type === "fine") name = "ruble";
     else if (type === "set_request") name = "tag";
+    else if (type === "coming") name = "child";
 
     return <div className="avatar text-center ml-2">
         <Icon
