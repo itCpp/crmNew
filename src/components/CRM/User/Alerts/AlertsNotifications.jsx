@@ -37,6 +37,12 @@ export default (({ updateNotification, notifications, height }) => {
                 if (row.live)
                     className.push("update-notification-row");
 
+                let message = row.notification;
+
+                if (row.notif_type === "create_user") {
+                    message = <div>Создана новая учетная запись. ФИО сотрудника: <b>{row.data?.name_full}</b>. PIN: <b>{row.data?.pin}</b>. {row.data?.callcenter && <span>Колл-центр: <b>{row.data.callcenter}</b></span>}</div>
+                }
+
                 return <Comment key={`${i}_${row.id}`} className={className.join(' ')}>
 
                     <NotificationIcon type={row.notif_type} />
@@ -60,7 +66,7 @@ export default (({ updateNotification, notifications, height }) => {
 
                         </Comment.Metadata>
 
-                        <Comment.Text>{row.notification}</Comment.Text>
+                        <Comment.Text>{message}</Comment.Text>
 
                     </Comment.Content>
 

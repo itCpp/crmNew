@@ -12,6 +12,7 @@ const UserCreate = props => {
     const [save, setSave] = useState(false);
     const [error, setError] = useState(null);
     const [errors, setErrors] = useState({});
+    const [errorsList, setErrorsList] = useState([]);
 
     const onChange = useCallback((e, { value, name }) => {
         setFormdata(data => ({ ...data, [name]: value }));
@@ -33,15 +34,37 @@ const UserCreate = props => {
         if (save) {
 
             axios.post('users/save', formdata).then(({ data }) => {
+                axios.toast(null, {
+                    time: 0,
+                    type: "success",
+                    icon: "add user",
+                    title: "Новая учетная запись",
+                    description: <div>{data.user?.name_full} <b>PIN: {data.user?.pin}</b>. {data.user?.callcenter && <span>Колл-центр: <b>{data.user.callcenter}</b></span>}</div>
+                });
+                setOpen(false);
             }).catch(e => {
                 axios.setError(e, setError);
                 setErrors(axios.getErrors(e));
-                setSave(false);
             }).then(() => {
+                setSave(false);
             });
         }
 
     }, [save]);
+
+    useEffect(() => {
+
+        let list = [];
+
+        for (let i in errors) {
+            errors[i].forEach(e => {
+                list.push(e + " ");
+            });
+        }
+
+        setErrorsList(list);
+
+    }, [errors]);
 
     return <>
         <ButtonHeader
@@ -124,15 +147,7 @@ const UserCreate = props => {
                     <Message
                         error
                         header={error}
-                        list={() => {
-                            let list = [];
-                            for (let i in errors) {
-                                errors[i].forEach(e => {
-                                    list.push(e + " ");
-                                });
-                            }
-                            return list;
-                        }}
+                        list={errorsList}
                         size="mini"
                     />
 
