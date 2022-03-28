@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from './../../../utils/axios-header';
 
-import { Modal, Button, Form } from 'semantic-ui-react';
+import { Modal, Button, Form, Image } from 'semantic-ui-react';
 
 export function gen_password(len = 6) {
     var password = "";
@@ -147,7 +147,12 @@ function User(props) {
             setPosition(position_id);
 
             setFormdata(data.user
-                ? { ...data.user }
+                ? {
+                    ...data.user,
+                    photo: data.photo,
+                    personal: data.personal,
+                    create_personal_base: data.personal,
+                }
                 : {
                     password: gen_password(8),
                     auth_type: "secret",
@@ -181,19 +186,24 @@ function User(props) {
 
             axios.post('admin/saveUser', request).then(({ data }) => {
 
-                let list = [...users];
+                setUsers(users => {
 
-                if (request.id) {
-                    list.forEach((row, i) => {
-                        if (row.id === data.user)
-                            list[i] = data.user;
-                    });
-                }
-                else {
-                    list.unshift(data.user);
-                }
+                    let list = [...users];
 
-                setUsers(list);
+                    if (request.id) {
+                        list.forEach((row, i) => {
+                            if (row.id === data.user.id)
+                                list[i] = data.user;
+                        });
+                    }
+                    else {
+                        list.unshift(data.user);
+                    }
+
+                    return list;
+                });
+
+                // setUsers(list);
                 setUser(null);
 
             }).catch(error => {
@@ -221,7 +231,19 @@ function User(props) {
         closeIcon
         size="small"
     >
-        <Modal.Header>{user ? "Изменить данные" : "Добавить сотрудника"}</Modal.Header>
+        <Modal.Header className="d-flex align-items-center position-relative">
+            <span>{user ? "Изменить данные" : "Добавить сотрудника"}</span>
+            {formdata.photo && <div style={{
+                position: "absolute",
+                right: 5,
+            }}>
+                <Image
+                    src={formdata.photo}
+                    avatar
+
+                />
+            </div>}
+        </Modal.Header>
 
         <Modal.Content>
 
@@ -372,6 +394,16 @@ function User(props) {
                         error={errors.auth_type || false}
                     />
                 </Form.Group>
+
+                <div>
+                    <Form.Checkbox
+                        toggle
+                        label="Создать запись сотрудника в БАЗАх"
+                        disabled={formdata.personal === true}
+                        checked={formdata.create_personal_base || false}
+                        onChange={(e, { checked }) => changeValue("create_personal_base", checked)}
+                    />
+                </div>
 
             </Form>
 
