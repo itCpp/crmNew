@@ -278,3 +278,7 @@ hr {
     margin-left: 0 !important;
   }
 }
+
+.ui-alerts > div {
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.3);
+}

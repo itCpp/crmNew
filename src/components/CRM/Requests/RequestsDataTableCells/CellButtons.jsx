@@ -66,7 +66,6 @@ const CellButtons = props => {
                         icon="history"
                         text="История изменений"
                         onClick={() => dispatch(setShowStoryRequest(row))}
-                        disabled
                     />
                     {row.uplift_hide_access && <Dropdown.Item
                         icon="hide"
