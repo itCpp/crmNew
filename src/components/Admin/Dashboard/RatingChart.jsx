@@ -35,9 +35,19 @@ const RatingChart = props => {
                         return {
                             name: datum.type,
                             value: datum.value,
-                            title: moment(datum.date).format("DD MMMM YYYY")
+                            title: moment(datum.date).format(`DD MMMM YYYY, ${moment(datum.date).format('dd').toUpperCase()}`)
                         };
                     },
+                },
+                colorField: 'type',
+                color: ({ type }) => {
+                    
+                    if (type === "comings" || type === "Приходы")
+                        return "#61a200";
+                    else if (type === "drains" || type === "Сливы")
+                        return "#bd2c2e";
+
+                    return "#4a83b5";
                 },
                 height: 200,
             });

@@ -7,10 +7,10 @@ const CrmStat = props => {
 
     return <div className="rating-callcenter-row pt-4">
 
-        <Header
+        {/* <Header
             as="h5"
             content="Общая статистика"
-        />
+        /> */}
 
         <Grid centered columns="equal">
 

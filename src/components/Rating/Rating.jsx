@@ -7,6 +7,7 @@ import "./rating.css";
 import CrmStat from "./CrmStat";
 import RatingUserRow from "./RatingUserRow";
 import RatingHeader from "./RatingHeader";
+import RatingCharts from "./Charts";
 
 const Rating = withRouter(props => {
 
@@ -22,6 +23,7 @@ const Rating = withRouter(props => {
     const [dates, setDates] = React.useState({});
 
     const [users, setUsers] = React.useState([]);
+    const [charts, setCharts] = React.useState({});
     const [crmStat, setCrmStat] = React.useState(null);
 
     const interval = React.useRef();
@@ -43,6 +45,7 @@ const Rating = withRouter(props => {
             setUsers(data.users);
             data.crm && setCrmStat(data.crm);
             setDates(data.dates);
+            setCharts(data.charts || {});
 
         }).catch(e => {
             setError(axios.getError(e));
@@ -106,6 +109,8 @@ const Rating = withRouter(props => {
             {!loading && error && <Message error content={error} />}
 
             {!loading && crmStat && <CrmStat data={crmStat} />}
+
+            {!loading && charts && <RatingCharts data={charts} />}
 
             {!loading && users.map(row => <RatingUserRow key={row.pin} row={row} />)}
 
