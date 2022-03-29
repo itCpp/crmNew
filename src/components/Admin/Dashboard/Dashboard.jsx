@@ -1,7 +1,8 @@
 import React from "react";
 import { Grid, Header } from "semantic-ui-react";
-
 import ChartAllViews from "./ChartAllViews";
+import RatingChart from "./RatingChart";
+import AdminContentSegment from "../UI/AdminContentSegment";
 
 const Dashboard = props => {
 
@@ -19,21 +20,33 @@ const Dashboard = props => {
 
         </div>
 
-        <Grid columns={2}>
+        <Grid className="mt-3">
 
-            {props.views && <Grid.Column>
-                <ChartAllViews
-                    data={props.views}
-                    title={<div className="divider-header mb-4"><h3>Просмотры страниц на сайтах</h3></div>}
-                />
-            </Grid.Column>}
+            <Grid.Row>
+                <Grid.Column>
+                    <AdminContentSegment className="m-0">
+                        <RatingChart data={props.rating_chart ?? []} />
+                    </AdminContentSegment>
+                </Grid.Column>
+            </Grid.Row>
 
-            {props.hosts && <Grid.Column>
-                <ChartAllViews
-                    data={props.hosts}
-                    title={<div className="divider-header mb-4"><h3>Уникальные посетители на сайтах</h3></div>}
-                />
-            </Grid.Column>}
+            <Grid.Row columns={2}>
+
+                {props.views && <Grid.Column>
+                    <ChartAllViews
+                        data={props.views}
+                        title={<div className="divider-header mb-4"><h3>Просмотры страниц на сайтах</h3></div>}
+                    />
+                </Grid.Column>}
+
+                {props.hosts && <Grid.Column>
+                    <ChartAllViews
+                        data={props.hosts}
+                        title={<div className="divider-header mb-4"><h3>Уникальные посетители на сайтах</h3></div>}
+                    />
+                </Grid.Column>}
+
+            </Grid.Row>
 
         </Grid>
 
