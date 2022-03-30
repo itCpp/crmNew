@@ -100,7 +100,20 @@ function App(props) {
                     console.log(data);
                     props.setUserWorkTime(data.worktime);
                 })
-                .listen('AppUserEvent', appUserEvent);
+                .listen('AppUserEvent', appUserEvent)
+                .listen('Users\\CloseSession', ({ user_token }) => {
+                    let tokenKey = process.env.REACT_APP_TOKEN_KEY || "token";
+                    const token = Cookies.get(tokenKey) || localStorage.getItem(tokenKey);
+
+                    if (token === user_token) {
+
+                        axios.toast("Ваша сессия завершена", { title: "Внимание" });
+
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 3000);                        
+                    }
+                });
 
         }
         else if (!userData?.id) {
