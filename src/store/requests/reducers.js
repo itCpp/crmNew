@@ -37,7 +37,6 @@ export const requestsReducer = (state = defaultState, action) => {
                 ...state,
                 select: action.payload,
                 selectedUpdate: true,
-                searchRequest: null,
             }
 
         case ACTION.SELECTED_UPDATE_TAB:

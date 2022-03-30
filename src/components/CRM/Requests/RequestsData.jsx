@@ -34,10 +34,15 @@ const RequestData = React.memo(props => {
 
     const search = searchRequest && Object.keys(searchRequest).length > 0;
 
-    const getRequests = (params) => {
+    const getRequests = (params = {}) => {
 
-        if ((pages && params.page > pages) || loadPage)
+        if (params.page) {
+            params.page = Number(Number(params.page).toFixed(0));
+        }
+
+        if ((pages && params.page > pages) || loadPage) {
             return null;
+        }
 
         if ((params.page === 1 || params.page === 1.1) && !loading)
             setLoading(true);

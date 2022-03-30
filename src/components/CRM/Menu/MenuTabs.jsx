@@ -53,7 +53,6 @@ const MenuTabs = props => {
 
         selectTab(id);
         setSearchRequest(null);
-
     }
 
     React.useEffect(() => {
