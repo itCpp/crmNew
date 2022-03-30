@@ -90,16 +90,14 @@ const Calls = props => {
 
     return <>
 
-        {extension &&
-            <ExtensionModal
-                setOpen={setExtension}
-                id={extension}
-                setExtensions={setExtensions}
-                sip={sip}
-                setSip={setSip}
-                setCalls={setCalls}
-            />
-        }
+        {extension && <ExtensionModal
+            setOpen={setExtension}
+            id={extension}
+            setExtensions={setExtensions}
+            sip={sip}
+            setSip={setSip}
+            setCalls={setCalls}
+        />}
 
         <div className="admin-content-segment d-flex justify-content-between align-items-center" style={{ maxWidth: 900 }}>
 

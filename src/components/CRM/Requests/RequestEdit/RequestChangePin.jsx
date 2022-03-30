@@ -119,7 +119,7 @@ const RequestChangePin = props => {
 
                         let className = ["pin-btn-select"];
 
-                        if (!user.active_at && onlineId.indexOf(user.id) < 0)
+                        if (!user.active_at && onlineId.indexOf(user.id) < 0 && user.color !== "blue")
                             user.color = "grey";
 
                         return <div key={user.pin} title={user.title || null} className="d-inline-block position-relative">

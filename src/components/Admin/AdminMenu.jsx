@@ -1,25 +1,35 @@
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import { setSubMenuPoints, setPanelMenuPoints } from "./../../store/admin/actions";
-import { setShowMenu } from "./../../store/actions";
+// import { setShowMenu } from "./../../store/actions";
 import { NavLink } from "react-router-dom";
 import { Icon } from "semantic-ui-react";
-import { useEffect, useState, useRef } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 
 function AdminMenu(props) {
 
-    const { permits, setSubMenuPoints, setPanelMenuPoints, showMenu } = props;
+    const { permits, setSubMenuPoints, setPanelMenuPoints } = props;
+    // const { showMenu } = props;
+    const [showMenu, setShowMenu] = useState(false);
     const [className, setClassName] = useState(["admin-menu slider-menu"]);
     const menu = useRef();
 
-    const hide = () => {
-        props.setShowMenu(false);
-    }
+    // const hide = () => {
+    //     props.setShowMenu(false);
+    // }
+
+    const hide = useCallback(() => setShowMenu(false));
+    const show = useCallback(() => setShowMenu(true));
 
     useEffect(() => {
+
+        const setShowMenuBtn = document.getElementById('set-show-menu-btn');
+        setShowMenuBtn && setShowMenuBtn.addEventListener('click', show);
+
         return () => {
             hide();
             document.body.removeEventListener('click', hide);
+            setShowMenuBtn && setShowMenuBtn.removeEventListener('click', show);
         }
     }, []);
 
@@ -27,7 +37,9 @@ function AdminMenu(props) {
 
         if (showMenu && className.indexOf('slider-menu-show') < 0) {
             setClassName([...className, "slider-menu-show"]);
-            document.body.addEventListener('click', hide);
+            setTimeout(() => {
+                document.body.addEventListener('click', hide);
+            }, 300);
         } else if (!showMenu && className.indexOf('slider-menu-show') >= 0) {
             setClassName(["admin-menu slider-menu"]);
         }
@@ -54,7 +66,7 @@ function AdminMenu(props) {
 
             <span className="mr-3">
                 <Icon
-                    name="chevron circle left"
+                    name="arrow left"
                     link
                     size="large"
                     className="text-light"
@@ -73,6 +85,13 @@ function AdminMenu(props) {
                 <NavLink to="/admin/users" className="admin-menu-point" onClick={changePage}>
                     <Icon name="user" />
                     <span>Сотрудники</span>
+                </NavLink>
+            }
+
+            {permits.block_dev &&
+                <NavLink to="/admin/online" className="admin-menu-point" onClick={changePage}>
+                    <Icon name="computer" />
+                    <span>В сети</span>
                 </NavLink>
             }
 
@@ -224,11 +243,13 @@ function AdminMenu(props) {
 
 const mapStateToProps = state => ({
     subMenuPoints: state.admin.subMenuPoints,
-    showMenu: state.main.showMenu,
+    // showMenu: state.main.showMenu,
 })
 
 const mapDispatchToProps = {
-    setSubMenuPoints, setPanelMenuPoints, setShowMenu
+    setSubMenuPoints,
+    setPanelMenuPoints,
+    // setShowMenu
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AdminMenu));

@@ -3,6 +3,7 @@ import Roles from './Developer/Roles/Roles';
 import Permits from './Developer/Permits/Permits';
 import Dashboard from "./Dashboard";
 import Users from './Users/Users';
+import UsersOnline from './Users/Online';
 import Callcenters from './Callcenters/Callcenters';
 import SourcesAndResources from './Sources/SourcesAndResources';
 import Statuses from './Statuses/Statuses';
@@ -30,6 +31,8 @@ function AdminContent(props) {
         body = <Permits />
     else if (page == "users" && permits.admin_users)
         body = <Users {...props} />
+    else if (page == "online" && permits.block_dev)
+        body = <UsersOnline {...props} />
     else if (page == "callcenters" && permits.admin_callcenters)
         body = <Callcenters />
     else if (page == "sources" && permits.admin_sources)

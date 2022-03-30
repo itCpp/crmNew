@@ -18,6 +18,10 @@ const Menu = props => {
     const [showMenu, setShowMenu] = React.useState(false);
     const [className, setClassName] = React.useState(["request-main-menu"]);
 
+    // const hide = () => {
+    //     props.setShowMenu(false);
+    // }
+
     const hide = React.useCallback(() => setShowMenu(false));
     const show = React.useCallback(() => setShowMenu(true));
 
@@ -45,9 +49,7 @@ const Menu = props => {
     React.useEffect(() => {
 
         if (showMenu && className.indexOf('slider-menu-show') < 0) {
-
             setClassName([...className, "slider-menu-show"]);
-
             setTimeout(() => {
                 document.body.addEventListener('click', hide);
             }, 300);
