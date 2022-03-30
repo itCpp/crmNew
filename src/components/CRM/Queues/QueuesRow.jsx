@@ -87,7 +87,7 @@ const QueuesRow = props => {
                         color={row.ipBlocked ? "red" : "orange"}
                         title={row.ipBlocked ? "Снять блокировку" : "Заблокировать"}
                         fitted
-                        onClick={() => blockIp(row.ip, row.id)}
+                        onClick={() => blockIp(row.ip, row.id, row.ipBlocked ? false : true)}
                         link={!row.ipBlockedLoading}
                         disabled={row.ipBlockedLoading}
                     />

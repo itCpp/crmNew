@@ -196,37 +196,40 @@ const Queues = props => {
         });
     }
 
-    const blockIp = async (ip, id) => {
+    const blockIp = async (ip, id, checked = false) => {
 
-        setQueues(q => {
+        setQueues(qp => {
+            let q = [...qp];
             q.forEach((r, i) => {
                 if (r.id === id) {
                     q[i].ipBlockedLoading = true;
                 }
             });
-            return [...q];
+            return q;
         });
 
-        await setBlockIp({ ip }, data => {
-            setQueues(q => {
+        await setBlockIp({ ip, checked }, data => {
+            setQueues(qp => {
+                let q = [...qp];
                 q.forEach((r, i) => {
                     if (r.id === id) {
                         q[i].ipBlockedLoading = false;
                     }
-                    if (r.ip === data.row.host) {
+                    if (r.ip === data.ip) {
                         q[i].ipBlocked = data.blocked_on;
                     }
                 });
-                return [...q];
+                return q;
             });
         }, e => {
-            setQueues(q => {
+            setQueues(qp => {
+                let q = [...qp];
                 q.forEach((r, i) => {
                     if (r.id === id) {
                         q[i].ipBlockedLoading = false;
                     }
                 });
-                return [...q];
+                return q;
             });
 
             axios.toast(e);
@@ -238,26 +241,31 @@ const Queues = props => {
         <div className="d-flex justify-content-between align-items-center">
             <div className="page-title-box">
                 <h4 className="page-title d-flex align-items-center">
-                    <span className="mx-2">
-                        <Icon
-                            name={showDone ? "check square" : "square outline"}
-                            color={showDone ? "green" : "black"}
-                            fitted
-                            link
-                            title={showDone ? "Отобразить не обработанные" : "Отобразить обработанные"}
-                            size="large"
-                            onClick={() => setShowDone(prev => !prev)}
-                        />
-                    </span>
+
                     {showDone
                         ? <span>Завршенные запросы очереди</span>
                         : <span>Очередь текстовых заявок</span>
                     }
+
                     {/* {total && <span className="mx-2">
                         <Label content={total} color="green" size="tiny" />
                     </span>} */}
+
                 </h4>
+
             </div>
+
+            <span className="mx-2">
+                <Icon
+                    name={showDone ? "check circle" : "circle outline"}
+                    color={showDone ? "green" : "black"}
+                    fitted
+                    link
+                    title={showDone ? "Отобразить не обработанные" : "Отобразить обработанные"}
+                    size="big"
+                    onClick={() => setShowDone(prev => !prev)}
+                />
+            </span>
         </div>
 
         <div className="block-card mb-3 px-2">
