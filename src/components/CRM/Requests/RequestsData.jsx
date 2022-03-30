@@ -1,6 +1,13 @@
 import React from "react";
 import axios from "./../../../utils/axios-header";
 import { connect } from "react-redux";
+import { Loader, Message } from "semantic-ui-react";
+import RequestEdit from "./RequestEdit/RequestEdit";
+import RequestsTitle from "./RequestsTitle/RequestsTitle";
+import RequestsDataTable from "./RequestsDataTable";
+import RequestSendSms from "./RequestSendSms";
+import RequestStory from "./RequestStory";
+import RequestPage from "./RequestPage";
 import {
     LIMIT_ROWS_PAGE,
     setRequests,
@@ -9,13 +16,6 @@ import {
     setRequestsLoading,
     setRequestEditPage
 } from "./../../../store/requests/actions";
-import { Loader, Message } from "semantic-ui-react";
-import RequestEdit from "./RequestEdit/RequestEdit";
-import RequestsTitle from "./RequestsTitle/RequestsTitle";
-import RequestsDataTable from "./RequestsDataTable";
-import RequestSendSms from "./RequestSendSms";
-import RequestStory from "./RequestStory";
-import RequestPage from "./RequestPage";
 
 const RequestData = React.memo(props => {
 

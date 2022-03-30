@@ -9,7 +9,7 @@ import {
     setUserData,
     setUserPermits,
     setUserWorkTime,
-    setShowMenu
+    // setShowMenu,
 } from "./../../store/actions";
 import { Icon, Dropdown, Dimmer, Loader } from 'semantic-ui-react';
 import ButtonHeader from "./ButtonHeader";
@@ -59,7 +59,8 @@ function Header(props) {
                         link
                         className="ml-1 mr-3 header-menu-button"
                         style={{ marginTop: "3px" }}
-                        onClick={() => props.setShowMenu(!props.showMenu)}
+                        id="set-show-menu-btn"
+                        // onClick={() => props.setShowMenu(!props.showMenu)}
                     />
                 </span>
 
@@ -151,7 +152,7 @@ const mapActions = {
     setUserData,
     setUserPermits,
     setUserWorkTime,
-    setShowMenu,
+    // setShowMenu,
 }
 
 export default withRouter(connect(mapStateToProps, mapActions)(Header));

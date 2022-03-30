@@ -33,7 +33,12 @@ export const requestsReducer = (state = defaultState, action) => {
             return { ...state, tabs: action.payload }
 
         case ACTION.SELECT_TAB:
-            return { ...state, select: action.payload, selectedUpdate: true }
+            return {
+                ...state,
+                select: action.payload,
+                selectedUpdate: true,
+                searchRequest: null,
+            }
 
         case ACTION.SELECTED_UPDATE_TAB:
             return { ...state, selectedUpdate: action.payload }

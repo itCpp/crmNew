@@ -3,7 +3,7 @@ import { Column } from '@antv/g2plot';
 
 const ChartEfficiency = props => {
 
-    const { data, comings, agreemetns } = props;
+    const { data } = props;
     const plot = React.useRef();
     const block = React.useRef();
 
@@ -39,6 +39,11 @@ const ChartEfficiency = props => {
                     },
                 },
                 legend: false,
+                yAxis: {
+                    label: {
+                        formatter: data => String(data) !== "0" ? `${data}%` : "0",
+                    }
+                },
                 xAxis: {
                     label: {
                         formatter: data => String(data).replace(/[^0-9]/gi, ''),

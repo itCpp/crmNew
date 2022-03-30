@@ -7,11 +7,7 @@ const RatingCharts = props => {
 
     return <>
 
-        {data.efficiency && <ChartEfficiency
-            data={data.efficiency || []}
-            comings={data.comings || []}
-            agreemetns={data.agreemetns || []}
-        />}
+        {data.efficiency && <ChartEfficiency data={data.efficiency || []} />}
 
     </>
 

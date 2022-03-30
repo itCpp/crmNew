@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Icon } from "semantic-ui-react";
 import MenuTabs from "./MenuTabs";
 import { useDispatch, useSelector } from "react-redux";
-import { setShowMenu } from "../../../store/actions";
+// import { setShowMenu } from "../../../store/actions";
 import { CounterRow } from "./MenuTabs";
 
 const Menu = props => {
@@ -13,22 +13,28 @@ const Menu = props => {
     const permits = window.requestPermits;
     const [selectMenu, setSelectMenu] = React.useState(path);
     const { counter } = useSelector(state => state.requests);
-    const { showMenu } = useSelector(state => state.main);
-    const dispatch = useDispatch();
+    // const { showMenu } = useSelector(state => state.main);
+    // const dispatch = useDispatch();
+    const [showMenu, setShowMenu] = React.useState(false);
     const [className, setClassName] = React.useState(["request-main-menu"]);
 
-    const hide = () => {
-        dispatch(setShowMenu(false));
-    }
+    const hide = React.useCallback(() => setShowMenu(false));
+    const show = React.useCallback(() => setShowMenu(true));
 
     React.useEffect(() => {
+
+        const setShowMenuBtn = document.getElementById('set-show-menu-btn');
+        setShowMenuBtn && setShowMenuBtn.addEventListener('click', show);
+
         return () => {
             hide();
             document.body.removeEventListener('click', hide);
+            setShowMenuBtn && setShowMenuBtn.removeEventListener('click', show);
         }
     }, []);
 
     React.useEffect(() => {
+
         setSelectMenu(path);
 
         return () => {
@@ -39,8 +45,12 @@ const Menu = props => {
     React.useEffect(() => {
 
         if (showMenu && className.indexOf('slider-menu-show') < 0) {
+
             setClassName([...className, "slider-menu-show"]);
-            document.body.addEventListener('click', hide);
+
+            setTimeout(() => {
+                document.body.addEventListener('click', hide);
+            }, 300);
         } else if (!showMenu && className.indexOf('slider-menu-show') >= 0) {
             setClassName(["request-main-menu"]);
         }
