@@ -67,8 +67,6 @@ const Online = props => {
         }
     }, []);
 
-    console.log(rows.find(item => item.id === 94));
-
     React.useEffect(() => {
 
         setLoading(true);
@@ -106,7 +104,11 @@ const Online = props => {
             return rows;
         });
 
-        axios.delete(`admin/users/online/delete/${id}`).then(({ data }) => {
+        axios.delete(`admin/users/online/delete`, {
+            params: {
+                id
+            }
+        }).then(({ data }) => {
 
             setRows(prev => {
                 let rows = [...prev];
