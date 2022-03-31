@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import { Header, Icon, Label, Loader, Message } from "semantic-ui-react";
 import { axios } from "../../../utils";
 import moment from "moment";
+import Cookies from "js-cookie";
+import _ from "lodash";
 
 const Online = props => {
 
@@ -12,9 +14,67 @@ const Online = props => {
     const [error, setError] = React.useState(null);
     const [rows, setRows] = React.useState([]);
 
+    let tokenKey = process.env.REACT_APP_TOKEN_KEY || "token";
+    const token = Cookies.get(tokenKey) || localStorage.getItem(tokenKey);
+
+    const eventProcess = React.useCallback(({ type, session_id, user_id }) => {
+
+        if (type === "logout") {
+            setRows(prev => {
+                let rows = [...prev];
+                rows.forEach((row, i) => {
+                    if (row.id === user_id) {
+                        row.sessions.forEach((session, k) => {
+                            if (session.id === session_id) {
+                                rows[i].sessions[k].deleted_at = new Date;
+                            }
+                        });
+                    }
+                });
+                return rows;
+            });
+        } else if (type === "login") {
+
+            axios.get('admin/users/online/get', {
+                params: {
+                    id: user_id
+                }
+            }).then(({ data }) => {
+
+                setRows(prev => {
+
+                    let rows = [...prev];
+                    let key = rows.find(item => item.id === data.id);
+
+                    if (!key) {
+                        rows.unshift(data);
+                    } else {
+
+                        rows.forEach((row, i) => {
+                            if (row.id === data.id) {
+                                data.sessions.forEach((session) => {
+                                    if (session.id === session_id) {
+                                        rows[i].sessions.unshift(session);
+                                    }
+                                });
+                            }
+                        });
+                    }
+
+                    return rows;
+                });
+            });
+        }
+    }, []);
+
+    console.log(rows.find(item => item.id === 94));
+
     React.useEffect(() => {
 
         setLoading(true);
+
+        window.Echo && window.Echo.private(`App.Admin`)
+            .listen('Users\\AuthentificationsEvent', eventProcess);
 
         axios.get('admin/users/online').then(({ data }) => {
             error && setError(null);
@@ -24,6 +84,11 @@ const Online = props => {
         }).then(() => {
             setLoading(false);
         });
+
+        return () => {
+            window.Echo && window.Echo.private(`App.Admin`)
+                .stopListening('Users\\AuthentificationsEvent');
+        }
 
     }, []);
 
@@ -135,8 +200,9 @@ const Online = props => {
                     <small>{session.user_agent}</small>
                 </div>
 
-                {session.deleted_at === null && <div className="ml-3 flex-grow-1 text-right">
-                    <Icon
+                <div className="ml-3 flex-grow-1 text-right" style={{ minWidth: "1rem" }}>
+
+                    {(session.deleted_at === null && token !== session.token) && <Icon
                         name="trash"
                         color="red"
                         fitted
@@ -144,8 +210,23 @@ const Online = props => {
                         disabled={session.loading ? true : false}
                         title="Завершить сессию"
                         onClick={() => sessionClose(session.id)}
-                    />
-                </div>}
+                    />}
+
+                    {(session.deleted_at !== null && token !== session.token) && <Icon
+                        name="ban"
+                        color="red"
+                        fitted
+                        title="Сессия завершена"
+                    />}
+
+                    {token === session.token && <Icon
+                        name="check"
+                        color="green"
+                        fitted
+                        title="Текущая сессия"
+                    />}
+
+                </div>
 
             </div>)}
 

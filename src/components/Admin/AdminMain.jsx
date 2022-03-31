@@ -19,11 +19,19 @@ function Admin(props) {
         axios.post('admin/start').then(({ data }) => {
             setResponse(data);
             setError(false);
+
+            window.Echo && window.Echo.private(`App.Admin`)
+                .listen('Users\\ChangeUserWorkTime', console.log);
+
         }).catch(error => {
             setError(axios.getError(error));
         }).then(() => {
             setLoading(false);
         });
+
+        return () => {
+            window.Echo && window.Echo.leave(`App.Admin`);
+        }
 
     }, []);
 
