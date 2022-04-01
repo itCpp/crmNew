@@ -112,3 +112,7 @@
 .rating-dates .column {
     margin: 0 !important;
 }
+
+.rating-chart-row:not(:last-child) {
+    margin-bottom: 1rem;
+}

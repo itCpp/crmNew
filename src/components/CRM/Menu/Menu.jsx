@@ -90,6 +90,15 @@ const Menu = props => {
                 </div>
             </Link>}
 
+            {permits.rating_access && <Link to="/charts" className={`menu-list-row title ${selectMenu === "/charts" ? 'tab-list-active' : ''}`}>
+                <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
+                    <span>
+                        <Icon name="chart area" />
+                        <span>Графики</span>
+                    </span>
+                </div>
+            </Link>}
+
             <Link to="/mytests" className={`menu-list-row title ${selectMenu === "/mytests" ? 'tab-list-active' : ''}`}>
                 <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                     <span>

@@ -12,9 +12,9 @@ const RatingUserRow = props => {
     if (row.color)
         className.push(`rating-row-color-${row.color}`);
 
-    return <div className={className.join(' ')}>
+    return <div className={className.join(' ')} id={`call-rating-${row.pin}`}>
 
-        <div className="d-flex justify-content-between align-items-center mb-4">
+        <div className="d-flex justify-content-between align-items-center mb-3">
             <Header
                 as="h4"
                 className="m-0"

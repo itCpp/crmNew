@@ -31,6 +31,7 @@ const AgreementClients = React.lazy(() => import("./AgreementClients"));
 const Queues = React.lazy(() => import("./Queues"));
 const Sms = React.lazy(() => import("./Sms"));
 const Rating = React.lazy(() => import("./Rating"));
+const RatingInCharts = React.lazy(() => import("../Rating/Charts/RatingInCharts"));
 const SecondCalls = React.lazy(() => import("./SecondCalls"));
 const Operators = React.lazy(() => import("./Operators"));
 const MyTests = React.lazy(() => import("./MyTests"));
@@ -49,6 +50,8 @@ const CrmContent = React.memo(withRouter(props => {
         return <Operators update={props.location.key} />
     else if (page === "/rating" && permits.rating_access)
         return <Rating />
+    else if (page === "/charts" && permits.rating_access)
+        return <RatingInCharts />
     else if (page === "/requests" && permits.requests_access)
         return <Requests />
     else if (page === "/user/:id")
