@@ -19,6 +19,7 @@ const RatingInCharts = props => {
 
         axios.post('ratings/callcenter', {
             toPeriod: true,
+            toChats: true,
         }).then(({ data }) => {
             setUsers(data.users);
         }).catch(e => {

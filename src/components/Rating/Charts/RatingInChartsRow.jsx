@@ -1,6 +1,7 @@
 import React from "react";
 import { Grid, Header } from "semantic-ui-react";
 import { Pie } from "@antv/g2plot";
+import { TinyArea } from "@antv/g2plot";
 
 const RatingInChartsRow = React.memo(props => {
 
@@ -10,12 +11,12 @@ const RatingInChartsRow = React.memo(props => {
     const requests_color = [];
 
     if (row.requestsAll) {
-        requests.push({ type: "Все заявки", value: row.requestsAll });
-        requests_color.push("#b9b6f0")
+        requests.push({ type: "Регион", value: row.requestsAll - (row.requests || 0) });
+        requests_color.push("#726bf0");
     }
     if (row.requests) {
         requests.push({ type: "Москва", value: row.requests });
-        requests_color.push("#dada62")
+        requests_color.push("#3aaf3a");
     }
 
     const agreements = [];
@@ -40,72 +41,118 @@ const RatingInChartsRow = React.memo(props => {
 
     return <div className="rating-chart-row rating-callcenter-row w-100">
 
-        <Grid columns="equal">
+        <Grid>
 
-            <Grid.Column width={8}>
+            <Grid.Row columns="equal">
 
-                <Header content={row.name} subheader={row.pin} />
+                <Grid.Column width={8}>
 
-                <div className="mb-3">
+                    <Header content={row.name} subheader={row.pin} />
 
-                    <h5 className="mb-2">КПД за период</h5>
+                    <div className="mb-3">
 
-                    <div className="efficiency-bar efficiency-bar-comings bg-light w-100" title="КПД приходов" style={{ height: 20, margin: ".2rem 0", borderRadius: ".3rem", opacity: 1 }}>
-                        <div style={{ width: `${row.efficiency || 0}%` }} className="d-flex align-items-center">
-                            <small className="text-light px-1">{row.efficiency || 0}%</small>
+                        <h5 className="mb-2">КПД за период</h5>
+
+                        <div className="efficiency-bar efficiency-bar-comings bg-light w-100" title="КПД приходов" style={{ height: 20, margin: ".2rem 0", borderRadius: ".3rem", opacity: 1 }}>
+                            <div style={{ width: `${row.efficiency || 0}%` }} className="d-flex align-items-center">
+                                <small className="text-light px-1">{row.efficiency || 0}%</small>
+                            </div>
                         </div>
+
+                        <div className="efficiency-bar efficiency-bar-agreements bg-light w-100" title="КПД договоров" style={{ height: 20, margin: ".2rem 0", borderRadius: ".3rem", opacity: 1 }}>
+                            <div style={{ width: `${row.efficiency_agreement || 0}%` }} className="d-flex align-items-center">
+                                <small className="text-light px-1">{row.efficiency_agreement || 0}%</small>
+                            </div>
+                        </div>
+
                     </div>
 
-                    <div className="efficiency-bar efficiency-bar-agreements bg-light w-100" title="КПД договоров" style={{ height: 20, margin: ".2rem 0", borderRadius: ".3rem", opacity: 1 }}>
-                        <div style={{ width: `${row.efficiency_agreement || 0}%` }} className="d-flex align-items-center">
-                            <small className="text-light px-1">{row.efficiency_agreement || 0}%</small>
+                    <div>
+
+                        <h5 className="mb-2" title="По суммарным данным с 01.01.2022">КПД общий*</h5>
+
+                        <div className="efficiency-bar efficiency-bar-comings bg-light w-100" title="КПД приходов" style={{ height: 20, margin: ".2rem 0", borderRadius: ".3rem", opacity: 1 }}>
+                            <div style={{ width: `${row.global_stats?.efficiency || 0}%` }} className="d-flex align-items-center">
+                                <small className="text-light px-1">{row.global_stats?.efficiency || 0}%</small>
+                            </div>
                         </div>
+
+                        <div className="efficiency-bar efficiency-bar-agreements bg-light w-100" title="КПД договоров" style={{ height: 20, margin: ".2rem 0", borderRadius: ".3rem", opacity: 1 }}>
+                            <div style={{ width: `${row.global_stats?.efficiency_agreement || 0}%` }} className="d-flex align-items-center">
+                                <small className="text-light px-1">{row.global_stats?.efficiency_agreement || 0}%</small>
+                            </div>
+                        </div>
+
                     </div>
 
-                </div>
+                </Grid.Column>
 
-                <div>
+                <Grid.Column>
+                    <h5 className="text-center">Заявки</h5>
+                    <PieChart
+                        data={requests}
+                        color={requests_color}
+                    />
+                </Grid.Column>
 
-                    <h5 className="mb-2" title="По суммарным данным с 01.01.2022">КПД общий*</h5>
+                <Grid.Column>
+                    <h5 className="text-center">Договоры</h5>
+                    <PieChart
+                        data={agreements}
+                    />
+                </Grid.Column>
 
-                    <div className="efficiency-bar efficiency-bar-comings bg-light w-100" title="КПД приходов" style={{ height: 20, margin: ".2rem 0", borderRadius: ".3rem", opacity: 1 }}>
-                        <div style={{ width: `${row.global_stats?.efficiency || 0}%` }} className="d-flex align-items-center">
-                            <small className="text-light px-1">{row.global_stats?.efficiency || 0}%</small>
-                        </div>
-                    </div>
+                <Grid.Column>
+                    <h5 className="text-center">Приходы</h5>
+                    <PieChart
+                        data={comings}
+                        color={comings_colors}
+                    />
+                </Grid.Column>
 
-                    <div className="efficiency-bar efficiency-bar-agreements bg-light w-100" title="КПД договоров" style={{ height: 20, margin: ".2rem 0", borderRadius: ".3rem", opacity: 1 }}>
-                        <div style={{ width: `${row.global_stats?.efficiency_agreement || 0}%` }} className="d-flex align-items-center">
-                            <small className="text-light px-1">{row.global_stats?.efficiency_agreement || 0}%</small>
-                        </div>
-                    </div>
+            </Grid.Row>
 
-                </div>
+            <Grid.Row columns="equal">
 
-            </Grid.Column>
+                <Grid.Column title="Московские заявки">
+                    <TinyAreaChart
+                        data={row.charts_mini?.requests_moscow || []}
+                        color="l(90) 0:#e5fee8 1:#ffffff"
+                        lineColor="#3aaf3a"
+                    />
+                </Grid.Column>
 
-            <Grid.Column>
-                <h5 className="text-center">Заявки</h5>
-                <PieChart
-                    data={requests}
-                    color={requests_color}
-                />
-            </Grid.Column>
+                <Grid.Column title="Заявки">
+                    <TinyAreaChart
+                        data={row.charts_mini?.requests || []}
+                    />
+                </Grid.Column>
 
-            <Grid.Column>
-                <h5 className="text-center">Договоры</h5>
-                <PieChart
-                    data={agreements}
-                />
-            </Grid.Column>
+                <Grid.Column title="Договоры">
+                    <TinyAreaChart
+                        data={row.charts_mini?.agreements_firsts || []}
+                        color="l(90) 0:#ffff8a 1:#ffffff"
+                        lineColor="#5f5f1a"
+                    />
+                </Grid.Column>
 
-            <Grid.Column>
-                <h5 className="text-center">Приходы</h5>
-                <PieChart
-                    data={comings}
-                    color={comings_colors}
-                />
-            </Grid.Column>
+                <Grid.Column title="Приходы">
+                    <TinyAreaChart
+                        data={row.charts_mini?.comings || []}
+                        color="l(90) 0:#e5fee8 1:#ffffff"
+                        lineColor="#61a200"
+                    />
+                </Grid.Column>
+
+                <Grid.Column title="Сливы">
+                    <TinyAreaChart
+                        data={row.charts_mini?.drains || []}
+                        color="l(90) 0:#ffcfcf 1:#ffffff"
+                        lineColor="#9b1818"
+                    />
+                </Grid.Column>
+
+            </Grid.Row>
 
         </Grid>
 
@@ -199,6 +246,39 @@ const PieChart = props => {
         />}
 
     </div>
+
+}
+
+const TinyAreaChart = props => {
+
+    const { data, color, lineColor } = props;
+    const plot = React.useRef();
+    const block = React.useRef();
+
+    React.useEffect(() => {
+
+        if (!plot.current) {
+
+            plot.current = new TinyArea(block.current, {
+                height: 50,
+                autoFit: false,
+                data,
+                color: color || "l(90) 0:#E5EDFE 1:#ffffff",
+                line: {
+                    color: lineColor || "#5B8FF9"
+                },
+                smooth: true,
+            });
+
+            plot.current.render();
+
+        } else {
+            plot.current && plot.current.changeData(data);
+        }
+
+    }, [data]);
+
+    return <div ref={block}></div>;
 
 }
 
