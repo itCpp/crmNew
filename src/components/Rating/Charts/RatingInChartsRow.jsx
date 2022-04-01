@@ -2,6 +2,7 @@ import React from "react";
 import { Grid, Header } from "semantic-ui-react";
 import { Pie } from "@antv/g2plot";
 import { TinyArea } from "@antv/g2plot";
+import moment from "../../../utils/moment";
 
 const RatingInChartsRow = React.memo(props => {
 
@@ -114,42 +115,52 @@ const RatingInChartsRow = React.memo(props => {
 
             <Grid.Row columns="equal">
 
-                <Grid.Column title="Московские заявки">
+                <Grid.Column>
+                    <div className="substrate-mini-chart">Московские заявки</div>
                     <TinyAreaChart
                         data={row.charts_mini?.requests_moscow || []}
                         color="l(90) 0:#e5fee8 1:#ffffff"
                         lineColor="#3aaf3a"
                     />
+                    <PeriadTinyArea start={row.charts_mini?.start} stop={row.charts_mini?.stop} />
                 </Grid.Column>
 
-                <Grid.Column title="Заявки">
+                <Grid.Column>
+                    <div className="substrate-mini-chart">Всего заявок</div>
                     <TinyAreaChart
                         data={row.charts_mini?.requests || []}
                     />
+                    <PeriadTinyArea start={row.charts_mini?.start} stop={row.charts_mini?.stop} />
                 </Grid.Column>
 
-                <Grid.Column title="Договоры">
+                <Grid.Column>
+                    <div className="substrate-mini-chart">Договоры</div>
                     <TinyAreaChart
                         data={row.charts_mini?.agreements_firsts || []}
                         color="l(90) 0:#ffff8a 1:#ffffff"
                         lineColor="#5f5f1a"
                     />
+                    <PeriadTinyArea start={row.charts_mini?.start} stop={row.charts_mini?.stop} />
                 </Grid.Column>
 
-                <Grid.Column title="Приходы">
+                <Grid.Column>
+                    <div className="substrate-mini-chart">Приходы</div>
                     <TinyAreaChart
                         data={row.charts_mini?.comings || []}
                         color="l(90) 0:#e5fee8 1:#ffffff"
                         lineColor="#61a200"
                     />
+                    <PeriadTinyArea start={row.charts_mini?.start} stop={row.charts_mini?.stop} />
                 </Grid.Column>
 
-                <Grid.Column title="Сливы">
+                <Grid.Column>
+                    <div className="substrate-mini-chart">Сливы</div>
                     <TinyAreaChart
                         data={row.charts_mini?.drains || []}
                         color="l(90) 0:#ffcfcf 1:#ffffff"
                         lineColor="#9b1818"
                     />
+                    <PeriadTinyArea start={row.charts_mini?.start} stop={row.charts_mini?.stop} />
                 </Grid.Column>
 
             </Grid.Row>
@@ -265,9 +276,15 @@ const TinyAreaChart = props => {
                 data,
                 color: color || "l(90) 0:#E5EDFE 1:#ffffff",
                 line: {
-                    color: lineColor || "#5B8FF9"
+                    color: lineColor || "#5B8FF9",
+                    style: {
+                        opacity: 0.8,
+                    }
                 },
                 smooth: true,
+                areaStyle: {
+                    fillOpacity: 0.3
+                }
             });
 
             plot.current.render();
@@ -280,6 +297,17 @@ const TinyAreaChart = props => {
 
     return <div ref={block}></div>;
 
+}
+
+const PeriadTinyArea = ({ start, stop }) => {
+
+    if (!start && !stop)
+        return null;
+
+    return <div className="d-flex justify-content-between opacity-50">
+        {(start || stop) && <small>{start && moment(start).format("DD MMM")}</small>}
+        {stop && <small>{moment(stop).format("DD MMM")}</small>}
+    </div>
 }
 
 export default RatingInChartsRow;
