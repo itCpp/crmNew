@@ -1,5 +1,6 @@
 #sub-root {
     min-height: 100vh;
+    --border-admin-segment: #f1f3ff;
 }
 
 .request-main-menu {

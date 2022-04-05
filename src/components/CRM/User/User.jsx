@@ -8,6 +8,7 @@ import Rating from "./Rating";
 import Alerts from "./Alerts/index";
 import TapeTimes from "./TapeTimes/TapeTimes";
 import "./mydata.css";
+import RatingInChartsRow from "../../Rating/Charts/RatingInChartsRow";
 
 const User = props => {
 
@@ -78,8 +79,6 @@ const User = props => {
 
             <Grid>
 
-                {data.rating && <Rating data={data.rating} />}
-
                 {data.worktime && <Grid.Row>
                     <Grid.Column>
                         <Segment className="worktimes-tapes">
@@ -136,6 +135,17 @@ const User = props => {
                         </Segment>
                     </Grid.Column>
                 </Grid.Row>
+
+                {data.rating && <Rating data={data.rating} />}
+
+                {data.rating && <Grid.Row>
+                    <Grid.Column>
+                        <Segment>
+                            <RatingInChartsRow row={data.rating} />
+                        </Segment>
+                    </Grid.Column>
+                </Grid.Row>}
+
             </Grid>
 
         </>}

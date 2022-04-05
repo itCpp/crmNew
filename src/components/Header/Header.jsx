@@ -60,7 +60,7 @@ function Header(props) {
                         className="ml-1 mr-3 header-menu-button"
                         style={{ marginTop: "3px" }}
                         id="set-show-menu-btn"
-                        // onClick={() => props.setShowMenu(!props.showMenu)}
+                    // onClick={() => props.setShowMenu(!props.showMenu)}
                     />
                 </span>
 
@@ -90,9 +90,12 @@ function Header(props) {
                     />
                 </span>}
 
-                <div className="position-relative">
+                <div className="position-relative ml-2">
 
-                    <strong title="Это Ваш персональный идентификационный номер">{user.pin}{(user.old_pin && Number(user.pin) !== Number(user.old_pin)) ? ` (${user.old_pin}) ` : ' '}</strong>
+                    <strong title="Это Ваш персональный идентификационный номер">
+                        {user.pin}
+                        {(user.old_pin && Number(user.pin) !== Number(user.old_pin)) ? ` (${user.old_pin}) ` : ' '}
+                    </strong>
 
                     <Dropdown text={user.name_fio} className="mt-1 header-hover-text" pointing="top right" direction="left">
                         <Dropdown.Menu>
@@ -110,6 +113,10 @@ function Header(props) {
                             />
                         </Dropdown.Menu>
                     </Dropdown>
+
+                    <span className="ml-2 mt-1">
+                        <Icon name="briefcase" color={props?.worktime?.color || "grey"} />
+                    </span>
 
                     <Dimmer active={logout} inverted>
                         <Loader inverted size="small" />

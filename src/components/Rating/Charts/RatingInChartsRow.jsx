@@ -46,7 +46,7 @@ const RatingInChartsRow = React.memo(props => {
 
             <Grid.Row columns="equal">
 
-                <Grid.Column width={8}>
+                <Grid.Column width={7}>
 
                     <Header content={row.name} subheader={row.pin} />
 
@@ -97,13 +97,6 @@ const RatingInChartsRow = React.memo(props => {
                 </Grid.Column>
 
                 <Grid.Column>
-                    <h5 className="text-center">Договоры</h5>
-                    <PieChart
-                        data={agreements}
-                    />
-                </Grid.Column>
-
-                <Grid.Column>
                     <h5 className="text-center">Приходы</h5>
                     <PieChart
                         data={comings}
@@ -111,9 +104,16 @@ const RatingInChartsRow = React.memo(props => {
                     />
                 </Grid.Column>
 
+                <Grid.Column>
+                    <h5 className="text-center">Договоры</h5>
+                    <PieChart
+                        data={agreements}
+                    />
+                </Grid.Column>
+
             </Grid.Row>
 
-            <Grid.Row columns="equal">
+            {row.charts_mini?.start && <Grid.Row columns="equal">
 
                 <Grid.Column>
                     <div className="substrate-mini-chart">Московские заявки</div>
@@ -129,16 +129,6 @@ const RatingInChartsRow = React.memo(props => {
                     <div className="substrate-mini-chart">Всего заявок</div>
                     <TinyAreaChart
                         data={row.charts_mini?.requests || []}
-                    />
-                    <PeriadTinyArea start={row.charts_mini?.start} stop={row.charts_mini?.stop} />
-                </Grid.Column>
-
-                <Grid.Column>
-                    <div className="substrate-mini-chart">Договоры</div>
-                    <TinyAreaChart
-                        data={row.charts_mini?.agreements_firsts || []}
-                        color="l(90) 0:#ffff8a 1:#ffffff"
-                        lineColor="#5f5f1a"
                     />
                     <PeriadTinyArea start={row.charts_mini?.start} stop={row.charts_mini?.stop} />
                 </Grid.Column>
@@ -163,7 +153,17 @@ const RatingInChartsRow = React.memo(props => {
                     <PeriadTinyArea start={row.charts_mini?.start} stop={row.charts_mini?.stop} />
                 </Grid.Column>
 
-            </Grid.Row>
+                <Grid.Column>
+                    <div className="substrate-mini-chart">Договоры</div>
+                    <TinyAreaChart
+                        data={row.charts_mini?.agreements_firsts || []}
+                        color="l(90) 0:#ffff8a 1:#ffffff"
+                        lineColor="#8f8f09"
+                    />
+                    <PeriadTinyArea start={row.charts_mini?.start} stop={row.charts_mini?.stop} />
+                </Grid.Column>
+
+            </Grid.Row>}
 
         </Grid>
 
