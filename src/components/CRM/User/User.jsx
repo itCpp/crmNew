@@ -7,8 +7,9 @@ import Chart from "./ChartData";
 import Rating from "./Rating";
 import Alerts from "./Alerts/index";
 import TapeTimes from "./TapeTimes/TapeTimes";
-import "./mydata.css";
 import RatingInChartsRow from "../../Rating/Charts/RatingInChartsRow";
+import "./mydata.css";
+import "../../Rating/rating.css";
 
 const User = props => {
 

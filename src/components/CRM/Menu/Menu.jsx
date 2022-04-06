@@ -151,6 +151,15 @@ const Menu = props => {
                 </div>
             </Link>}
 
+            {permits.users_fines_access && <Link to="/fines" className={`menu-list-row title ${selectMenu === "/fines" ? 'tab-list-active' : ''}`}>
+                <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
+                    <span>
+                        <Icon name="ruble" />
+                        <span>Штрафы</span>
+                    </span>
+                </div>
+            </Link>}
+
         </div>
 
     </div>

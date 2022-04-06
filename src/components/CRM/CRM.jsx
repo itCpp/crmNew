@@ -35,6 +35,7 @@ const RatingInCharts = React.lazy(() => import("../Rating/Charts/RatingInCharts"
 const SecondCalls = React.lazy(() => import("./SecondCalls"));
 const Operators = React.lazy(() => import("./Operators"));
 const MyTests = React.lazy(() => import("./MyTests"));
+const Fines = React.lazy(() => import("./Fines"));
 
 const CrmContent = React.memo(withRouter(props => {
 
@@ -60,6 +61,8 @@ const CrmContent = React.memo(withRouter(props => {
         return <MyTests {...props} />
     else if (page === "/agreements" && permits.clients_agreements_access)
         return <AgreementClients {...props} />
+    else if (page === "/fines" && permits.users_fines_access)
+        return <Fines {...props} />
     else
         return <User {...props} />
 
