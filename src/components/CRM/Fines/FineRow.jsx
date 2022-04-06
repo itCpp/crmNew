@@ -5,7 +5,7 @@ import { axios } from "../../../utils";
 
 const FineRow = props => {
 
-    const { row, setRows } = props;
+    const { row, setRows, load } = props;
     const [loading, setLoading] = React.useState(false);
 
     const setUpdateRow = React.useCallback(data => {
@@ -63,6 +63,7 @@ const FineRow = props => {
     return <div className="block-card mb-3 px-3 py-2" style={{
         backgroundColor: row.deleted_at ? "#ff00001c" : "#ffffff",
         overflow: "hidden",
+        opacity: load ? 0.6 : 1,
     }}>
 
         <div className="d-flex align-items-center">
