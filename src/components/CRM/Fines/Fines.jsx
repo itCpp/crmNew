@@ -1,9 +1,14 @@
 import React from "react";
-import { Input, Loader, Message } from "semantic-ui-react";
+import { useDispatch } from "react-redux";
+import { Button, Input, Loader, Message } from "semantic-ui-react";
+import { setShowFineAdd } from "../../../store/requests/actions";
 import { axios } from "../../../utils";
+import FineAdd from "./FineAdd";
 import FineRow from "./FineRow";
 
 const Fines = props => {
+
+    const dispatch = useDispatch();
 
     const [loading, setLoading] = React.useState(true);
     const [load, setLoad] = React.useState(false);
@@ -37,13 +42,24 @@ const Fines = props => {
 
     return <div className="pb-3 px-2 w-100" style={{ maxWidth: "700px" }}>
 
+        <FineAdd />
+
         <div className="d-flex justify-content-between align-items-center">
 
             <div className="page-title-box">
                 <h4 className="page-title">Штрафы</h4>
             </div>
 
-            <div>
+            <div className="d-flex align-items-center">
+
+                <Button
+                    icon="plus"
+                    basic
+                    title="Добавить новый штраф"
+                    disabled={loading}
+                    onClick={() => dispatch(setShowFineAdd(true))}
+                />
+
                 <Input
                     placeholder="Поиск..."
                     icon={{

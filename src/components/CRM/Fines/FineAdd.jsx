@@ -100,7 +100,7 @@ const FineAdd = () => {
     const _dispatch = useDispatch();
     const timeout = React.useRef();
 
-    const [loading, setLoading] = React.useState(true);
+    const [loading, setLoading] = React.useState(false);
     const [loadingError, setLoadingError] = React.useState(null);
     const [save, setSave] = React.useState(false);
     const [saveError, setSaveError] = React.useState(null);
@@ -122,6 +122,8 @@ const FineAdd = () => {
     const close = React.useCallback(() => _dispatch(setShowFineAdd(null)), []);
 
     const getData = React.useCallback((param) => {
+
+        setLoading(true);
 
         axios.post('fines/request', param).then(({ data }) => {
 
@@ -183,7 +185,7 @@ const FineAdd = () => {
 
         return () => {
             setLoadingError(null);
-            setLoading(true);
+            setLoading(false);
             clearTimeout(timeout.current);
             dispatch({ type: 'CLEAN_QUERY' });
             setSave(false);
@@ -249,7 +251,7 @@ const FineAdd = () => {
                     results={results}
                     value={value}
                     disabled={requestId ? true : false}
-                    className="search-user-fine-input"
+                    className={`search-user-fine-input ${errors.pin ? 'error' : ''}`}
                 />
 
                 <Form>
