@@ -7,7 +7,8 @@ import {
     setSendSms,
     setShowAudioCall,
     dropRequestRow,
-    setShowStoryRequest
+    setShowStoryRequest,
+    setShowFineAdd
 } from "../../../../store/requests/actions";
 import { Table, Icon, Dropdown } from "semantic-ui-react";
 
@@ -67,6 +68,14 @@ const CellButtons = props => {
                         text="История изменений"
                         onClick={() => dispatch(setShowStoryRequest(row))}
                     />
+                    {window?.permits?.user_fines_create && row.pin && <Dropdown.Item
+                        icon="ruble"
+                        text="Назначить штраф"
+                        onClick={() => dispatch(setShowFineAdd({
+                            request: row.id,
+                            pin: row.pin
+                        }))}
+                    />}
                     {row.uplift_hide_access && <Dropdown.Item
                         icon="hide"
                         text="Скрыть из необработанных"

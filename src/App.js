@@ -70,6 +70,8 @@ function App(props) {
             props.setAuthQueriesCount(data.authQueries);
             props.setUserWorkTime(data.worktime);
 
+            window.permits = { ...window.permits, ...data.permits }
+
         }).catch(async error => {
 
             if (error?.response?.status === 401)
@@ -111,7 +113,7 @@ function App(props) {
 
                         setTimeout(() => {
                             window.location.reload();
-                        }, 3000);                        
+                        }, 3000);
                     }
                 });
 

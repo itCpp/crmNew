@@ -133,3 +133,9 @@ export const setShowAdInfo = data => ({
     type: REQUEST_SHOW_AD_INFO,
     payload: data
 });
+
+export const FINE_SHOW = "FINE_SHOW";
+export const setShowFineAdd = data => ({
+    type: FINE_SHOW,
+    payload: data
+});

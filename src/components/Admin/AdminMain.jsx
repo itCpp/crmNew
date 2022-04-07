@@ -23,6 +23,8 @@ function Admin(props) {
             window.Echo && window.Echo.private(`App.Admin`)
                 .listen('Users\\ChangeUserWorkTime', console.log);
 
+            window.permits = { ...window.permits, ...data.permits }
+
         }).catch(error => {
             setError(axios.getError(error));
         }).then(() => {

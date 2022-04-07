@@ -16,6 +16,7 @@ import {
     setRequestsLoading,
     setRequestEditPage
 } from "./../../../store/requests/actions";
+import FineAdd from "../Fines/FineAdd";
 
 const RequestData = React.memo(props => {
 
@@ -61,6 +62,7 @@ const RequestData = React.memo(props => {
                 setError(null);
 
                 window.requestPermits = data.permits;
+                window.permits = { ...window.permits, ...data.permits }
 
             })
             .catch(error => {
@@ -149,6 +151,8 @@ const RequestData = React.memo(props => {
         {props.showStoryRequest && <RequestStory row={props.showStoryRequest} />}
         {props.requestEditPage && <RequestPage row={props.requestEditPage} />}
 
+        <FineAdd />        
+
         <div ref={blockCard}>
 
             <RequestsTitle
@@ -196,6 +200,7 @@ const mapStateToProps = state => ({
     sendSms: state.requests.sendSms,
     requestEditPage: state.requests.requestEditPage,
     showStoryRequest: state.requests.showStoryRequest,
+    showAddFine: state.requests.showAddFine,
 });
 
 const mapActionsToProps = {

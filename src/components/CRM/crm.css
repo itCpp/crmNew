@@ -191,3 +191,13 @@
     from { opacity: .1 !important; }
     to { opacity: 1 !important; }
 }
+
+.search-user-fine-input > div {
+    width: 100% !important;
+}
+.search-user-fine-input > div.input.disabled {
+    opacity: .8 !important;
+}
+.search-user-fine-input input.prompt {
+    border-radius: 0.28rem !important;
+}

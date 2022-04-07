@@ -61,7 +61,7 @@ const CrmContent = React.memo(withRouter(props => {
         return <MyTests {...props} />
     else if (page === "/agreements" && permits.clients_agreements_access)
         return <AgreementClients {...props} />
-    else if (page === "/fines" && permits.users_fines_access)
+    else if (page === "/fines" && permits.user_fines_access)
         return <Fines {...props} />
     else
         return <User {...props} />

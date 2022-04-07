@@ -19,6 +19,7 @@ const defaultState = {
     showStoryRequest: null, // Флаг открытия модельного окна просомтра истории
     startData: {},
     showAdInfo: null,
+    showAddFine: null, // Данные для открытия окна добавления штрафов
 };
 
 let list = [];
@@ -161,6 +162,9 @@ export const requestsReducer = (state = defaultState, action) => {
 
         case ACTION.REQUEST_SHOW_AD_INFO:
             return { ...state, showAdInfo: action.payload }
+
+        case ACTION.FINE_SHOW:
+            return { ...state, showAddFine: action.payload }
 
         default:
             return state;
