@@ -12,7 +12,11 @@ const RoleRow = props => {
         <div><code>{row.role}</code></div>
 
         <div title="Количество пользователей, имеющих роль" className="flex-grow-1 text-right">
-            <Label content={row.users_count || 0} size="tiny" />
+            <Label
+                content={row.users_count || 0}
+                size="tiny"
+                color={row.users_count || 0 > 0 ? "blue" : "grey"}
+            />
         </div>
 
         <div className="d-flex align-items-center ml-4">

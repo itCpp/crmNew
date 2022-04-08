@@ -61,11 +61,19 @@ const RoleUsers = props => {
                         <Table.Cell width={16}>
                             <div className="d-flex justify-content-end align-items-center">
 
-                                {row.superadmin && <span>
+                                {row.callcenter_sector_id && <span>
                                     <Icon
-                                        name="user secret"
-                                        color="red"
-                                        title="Является супер-пользователем"
+                                        name="call square"
+                                        color="blue"
+                                        title="Входит в состав сектора колл-центра"
+                                    />
+                                </span>}
+
+                                {row.telegram_id && <span>
+                                    <Icon
+                                        name="telegram plane"
+                                        color="blue"
+                                        title="Имеется идентификатор Телеграм"
                                     />
                                 </span>}
 
@@ -77,11 +85,11 @@ const RoleUsers = props => {
                                     />
                                 </span>}
 
-                                {row.telegram_id && <span>
+                                {row.superadmin && <span>
                                     <Icon
-                                        name="telegram plane"
-                                        color="blue"
-                                        title="Имеется идентификатор Телеграм"
+                                        name="user secret"
+                                        color="red"
+                                        title="Является супер-пользователем"
                                     />
                                 </span>}
 
