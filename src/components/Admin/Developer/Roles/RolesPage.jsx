@@ -6,6 +6,7 @@ import RoleEdit from "./RoleEdit";
 import RoleTabs from "./RoleTabs";
 import RoleStatuses from "./RoleStatuses";
 import RolePermits from "./RolePermits";
+import RoleUsers from "./RoleUsers";
 
 const RolesPage = props => {
 
@@ -16,7 +17,8 @@ const RolesPage = props => {
     const [openRole, setOpenRole] = React.useState(false);
     const [openTabs, setOpenTabs] = React.useState(false);
     const [openStatuses, setOpenStatuses] = React.useState(false);
-    const [opePermits, setOpenPermits] = React.useState(false);
+    const [openPermits, setOpenPermits] = React.useState(false);
+    const [openUsers, setOpenUsers] = React.useState(false);
 
     React.useEffect(() => {
 
@@ -54,11 +56,16 @@ const RolesPage = props => {
             setRoles={setRoles}
         />}
 
-        {opePermits && <RolePermits
-            open={opePermits}
+        {openPermits && <RolePermits
+            open={openPermits}
             setOpen={setOpenPermits}
             roles={roles}
             setRoles={setRoles}
+        />}
+
+        {openUsers && <RoleUsers
+            open={openUsers}
+            setOpen={setOpenUsers}
         />}
 
         <div className="admin-content-segment d-flex justify-content-between align-items-center">
@@ -96,6 +103,7 @@ const RolesPage = props => {
                 setOpenTabs={setOpenTabs}
                 setOpenStatuses={setOpenStatuses}
                 setOpenPermits={setOpenPermits}
+                setOpenUsers={setOpenUsers}
             />)}
 
         </div>}
