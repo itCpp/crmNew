@@ -1,11 +1,11 @@
 import React from 'react';
 import axios from './../../../../utils/axios-header';
 
-import { Modal, Button, Form, Message } from 'semantic-ui-react';
+import { Modal, Button, Form, Message, Header } from 'semantic-ui-react';
 
 function RoleEdit(props) {
 
-    const { open, setOpen, roles, setRoles, setRole } = props;
+    const { open, setOpen, roles, setRoles } = props;
 
     const [loading, setLoading] = React.useState(true);
 
@@ -39,7 +39,6 @@ function RoleEdit(props) {
                     newRoles.push(data.role);
 
                 setRoles(newRoles);
-                setRole(data.role);
                 setOpen(false);
 
             }).catch(error => {

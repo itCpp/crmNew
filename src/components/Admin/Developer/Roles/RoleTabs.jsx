@@ -1,11 +1,10 @@
-import React from 'react';
-import axios from './../../../../utils/axios-header';
-
-import { Modal, Placeholder, Form, Message, Dimmer, Loader } from 'semantic-ui-react';
+import React from "react";
+import axios from "./../../../../utils/axios-header";
+import { Modal, Placeholder, Form, Message, Dimmer, Loader, Header } from "semantic-ui-react";
 
 function RoleTabs(props) {
 
-    const { open, setOpen, roles, setRoles, setRole } = props;
+    const { open, setOpen, roles, setRoles } = props;
 
     const [loading, setLoading] = React.useState(true);
     const [load, setLoad] = React.useState(false);
@@ -106,12 +105,20 @@ function RoleTabs(props) {
                 </Placeholder>
                 : <Form loading={loading} className="selected-all">
 
+                    {formdata?.name && <Header
+                        as="h5"
+                        content={formdata.name}
+                        subheader={formdata.comment || false}
+                        className="mb-4"
+                    />}
+
                     {tabs.map(tab => <div className="d-flex align-items-center position-relative" key={tab.id}>
 
                         <div className="px-1">
                             <Form.Checkbox
                                 toggle
-                                checked={formdata.tabsId && formdata.tabsId.indexOf(tab.id) >= 0 ? true : false}
+                                checked={(formdata.tabsId && formdata.tabsId.indexOf(tab.id) >= 0 ? true : false) || formdata.is_superadmin === true}
+                                disabled={formdata.is_superadmin === true}
                                 onChange={(e, { checked }) => setSave({ tabId: tab.id, checked })}
                             />
                         </div>

@@ -8,6 +8,8 @@ import RoleEdit from './RoleEdit';
 import RoleTabs from './RoleTabs';
 import RoleStatuses from './RoleStatuses';
 
+import RolesPage from "./RolesPage";
+
 function Roles(props) {
 
     const urlParams = new URLSearchParams(props.location.search);
@@ -294,4 +296,5 @@ function Roles(props) {
 
 }
 
-export default withRouter(Roles);
+export default RolesPage;
+// export default withRouter(Roles);
