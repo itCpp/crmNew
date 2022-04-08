@@ -6,6 +6,7 @@ import MenuTabs from "./MenuTabs";
 import { useDispatch, useSelector } from "react-redux";
 // import { setShowMenu } from "../../../store/actions";
 import { CounterRow } from "./MenuTabs";
+import { counterUpdate } from "../../../store/requests/actions";
 
 const Menu = props => {
 
@@ -14,7 +15,7 @@ const Menu = props => {
     const [selectMenu, setSelectMenu] = React.useState(path);
     const { counter } = useSelector(state => state.requests);
     // const { showMenu } = useSelector(state => state.main);
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
     const [showMenu, setShowMenu] = React.useState(false);
     const [className, setClassName] = React.useState(["request-main-menu"]);
 
@@ -22,8 +23,33 @@ const Menu = props => {
     //     props.setShowMenu(false);
     // }
 
-    const hide = React.useCallback(() => setShowMenu(false));
-    const show = React.useCallback(() => setShowMenu(true));
+    const hide = React.useCallback(() => setShowMenu(false), []);
+    const show = React.useCallback(() => setShowMenu(true), []);
+
+    const updateCounter = React.useCallback((data) => {
+
+        if (typeof counter[data?.type] != "object") return;
+
+        const count = counter[data.type];
+
+        if (data?.hide === true) {
+            dispatch(counterUpdate({
+                ...counter,
+                [data.type]: {
+                    ...count,
+                    count: 0,
+                }
+            }));
+        } else if (data?.hideNew === true) {
+            dispatch(counterUpdate({
+                ...counter,
+                [data.type]: {
+                    ...count,
+                    update: false,
+                }
+            }));
+        }
+    }, [counter]);
 
     React.useEffect(() => {
 
@@ -119,7 +145,11 @@ const Menu = props => {
                 </div>
             </Link>}
 
-            {permits.sms_access && <Link to="/sms" className={`menu-list-row title ${selectMenu === "/sms" ? 'tab-list-active' : ''}`}>
+            {permits.sms_access && <Link
+                to="/sms"
+                className={`menu-list-row title ${selectMenu === "/sms" ? 'tab-list-active' : ''}`}
+                onClick={() => updateCounter({ type: "sms", hide: true })}
+            >
                 <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                     <span>
                         <Icon name="mail" />
@@ -129,7 +159,11 @@ const Menu = props => {
                 </div>
             </Link>}
 
-            {permits.second_calls_access && <Link to="/secondcalls" className={`menu-list-row title ${selectMenu === "/secondcalls" ? 'tab-list-active' : ''}`}>
+            {permits.second_calls_access && <Link
+                to="/secondcalls"
+                className={`menu-list-row title ${selectMenu === "/secondcalls" ? 'tab-list-active' : ''}`}
+                onClick={() => updateCounter({ type: "secondcalls", hideNew: true })}
+            >
                 <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                     <span>
                         <Icon name="call" />
