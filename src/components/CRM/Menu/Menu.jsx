@@ -23,8 +23,8 @@ const Menu = props => {
     //     props.setShowMenu(false);
     // }
 
-    const hide = React.useCallback(() => setShowMenu(false), []);
-    const show = React.useCallback(() => setShowMenu(true), []);
+    const hide = React.useCallback(() => setShowMenu(false), [showMenu]);
+    const show = React.useCallback(() => setShowMenu(true), [showMenu]);
 
     const updateCounter = React.useCallback((data) => {
 
@@ -184,6 +184,15 @@ const Menu = props => {
                     </span>
                 </div>
             </Link>}
+
+            {/* {permits.clients_consultation_access && <Link to="/consultations" className={`menu-list-row title ${selectMenu === "/consultations" ? 'tab-list-active' : ''}`}>
+                <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
+                    <span>
+                        <Icon name="talk" />
+                        <span>Клиенты с БК</span>
+                    </span>
+                </div>
+            </Link>} */}
 
             {permits.user_fines_access && <Link to="/fines" className={`menu-list-row title ${selectMenu === "/fines" ? 'tab-list-active' : ''}`}>
                 <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">

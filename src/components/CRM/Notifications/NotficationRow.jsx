@@ -1,6 +1,12 @@
 import { Icon } from "semantic-ui-react";
 
-export const NotificationIcon = ({ type }) => {
+export const NotificationIcon = props => <div className="avatar text-center ml-2">
+    <NotificationIconComponent {...props} />
+</div>
+
+export const NotificationIconComponent = props => {
+
+    const { type } = props;
 
     let name = "alarm";
 
@@ -9,15 +15,14 @@ export const NotificationIcon = ({ type }) => {
     else if (type === "coming") name = "child";
     else if (type === "create_user") name = "add user";
 
-    return <div className="avatar text-center ml-2">
-        <Icon
-            name={name}
-            size="big"
-            fitted
-            disabled
-        />
-    </div>
-
+    return <Icon
+        name={name}
+        size="big"
+        fitted
+        disabled
+        className={props.className || ""}
+        style={props.style || {}}
+    />
 }
 
 export const NotificationRow = ({ row }) => {

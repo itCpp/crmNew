@@ -17,6 +17,7 @@
 }
 
 .admin-content-body {
+    max-width: 100%;
     flex-grow: 1;
     margin-left: 220px;
     margin-top: 1rem;

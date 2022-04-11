@@ -22,6 +22,7 @@ export default combineReducers({
         onlineId: [], // Идентификаторы онлайн пользователей
         worktime: {}, // Данные о рабочем времени сотрудника
         showMenu: false,
+        showNotification: null, // Идентификатор просматриваемого уведомления
     }, action) => {
 
         let online = [],
@@ -88,6 +89,9 @@ export default combineReducers({
 
             case ACTION.SET_SHOW_MENU:
                 return { ...state, showMenu: action.payload }
+
+            case ACTION.SET_SHOW_NOTIFICATION:
+                return { ...state, showNotification: action.payload }
 
             default:
                 return state;

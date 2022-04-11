@@ -1,14 +1,58 @@
 import React from "react";
+import { axios } from "../../../../utils";
 import { Segment } from "../../UI";
 import moment from "moment";
-import { Comment, Label } from "semantic-ui-react";
+import { Comment, Header, Label, Loader } from "semantic-ui-react";
 import { NotificationIcon } from "./../../Notifications/NotficationRow";
 import { EmptyChart } from "./../User";
+import { useDispatch } from "react-redux";
+import { setShowNotification } from "../../../../store/actions";
 
 export default (({ updateNotification, notifications, height }) => {
 
     const { count, recent } = notifications;
+    const dispatch = useDispatch();
+
     const [rows, setRows] = React.useState(notifications.rows || []);
+    const [allReadedLoad, setAllReadedLoad] = React.useState(false);
+
+    const readedMessage = React.useCallback(id => {
+
+        setRows(prev => {
+            let rows = [...prev];
+            rows.forEach((row, i) => {
+                if (row.id === id) {
+                    rows[i].readed_at = new Date;
+                }
+            });
+            return rows;
+        });
+
+        dispatch(setShowNotification(id))
+
+    }, []);
+
+    const setAllRead = React.useCallback(() => {
+
+        setAllReadedLoad(true);
+
+        axios.post('users/notifications/read/all').then(({ data }) => {
+            setRows(prev => {
+                let rows = [...prev];
+                rows.forEach((row, i) => {
+                    if (!row.readed_at) {
+                        rows[i].readed_at = data.readed_at;
+                    }
+                });
+                return rows;
+            });
+        }).catch(() => {
+            axios.toast("Не удалось отметить уведомления прочитанными");
+        }).then(() => {
+            setAllReadedLoad(false);
+        });
+
+    }, []);
 
     React.useEffect(() => {
         if (updateNotification) {
@@ -17,13 +61,24 @@ export default (({ updateNotification, notifications, height }) => {
     }, [updateNotification]);
 
     return <Segment
-        header={{
-            as: "h5",
-            content: `Уведомления`
-        }}
         height={height || 400}
         className="notifications d-flex flex-column"
     >
+
+        <div className="d-flex justify-content-between align-items-center">
+            <Header
+                as="h5"
+                content="Уведомления"
+                className="m-0 mr-2"
+            />
+            <div className="d-flex align-items-center">
+                {allReadedLoad && <Loader active size="mini" inline className="mr-2" />}
+                <a href={allReadedLoad ? null : "#"} onClick={e => {
+                    e.preventDefault();
+                    !allReadedLoad && setAllRead();
+                }}>Отметить как прочитанные</a>
+            </div>
+        </div>
 
         {rows && rows.length > 0 && <Comment.Group
             style={{ maxWidth: "100%" }}
@@ -43,28 +98,36 @@ export default (({ updateNotification, notifications, height }) => {
                     message = <div>Создана новая учетная запись. ФИО сотрудника: <b>{row.data?.name_full}</b>. PIN: <b>{row.data?.pin}</b>. {row.data?.callcenter && <span>Колл-центр: <b>{row.data.callcenter}</b></span>}</div>
                 }
 
-                return <Comment key={`${i}_${row.id}`} className={className.join(' ')}>
+                return <Comment key={`${i}_${row.id}`} className={className.join(' ')} onClick={() => readedMessage(row.id)}>
 
                     <NotificationIcon type={row.notif_type} />
 
                     <Comment.Content>
 
-                        {!row.readed_at && <Label
-                            circular
-                            color="red"
-                            empty
-                            size="mini"
-                            className="mr-2"
-                            title="Новое уведомление"
-                        />}
-
-                        <Comment.Author as="span">{row.author || "ЦРМ"}</Comment.Author>
+                        <Comment.Author as="span">
+                            {row?.author_data?.fio
+                                ? <span>
+                                    {row.author_data?.pin && <strong className="mr-1">{row.author_data.pin}</strong>}
+                                    <span>{row.author_data.fio}</span>
+                                </span>
+                                : "ЦРМ"
+                            }
+                        </Comment.Author>
 
                         <Comment.Metadata>
 
                             {moment(row.created_at).format("DD.MM.YYYY в HH:mm")}
 
                         </Comment.Metadata>
+
+                        {!row.readed_at && <Label
+                            circular
+                            color="red"
+                            empty
+                            size="mini"
+                            className="ml-2"
+                            title="Новое уведомление"
+                        />}
 
                         <Comment.Text>{message}</Comment.Text>
 

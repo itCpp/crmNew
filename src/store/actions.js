@@ -57,3 +57,9 @@ export const setShowMenu = data => ({
     type: SET_SHOW_MENU,
     payload: data
 });
+
+export const SET_SHOW_NOTIFICATION = "SET_SHOW_NOTIFICATION";
+export const setShowNotification = data => ({
+    type: SET_SHOW_NOTIFICATION,
+    payload: data
+});

@@ -36,6 +36,7 @@ const SecondCalls = React.lazy(() => import("./SecondCalls"));
 const Operators = React.lazy(() => import("./Operators"));
 const MyTests = React.lazy(() => import("./MyTests"));
 const Fines = React.lazy(() => import("./Fines"));
+const ConsultationsClients = React.lazy(() => import("./ConsultationsClients"));
 
 const CrmContent = React.memo(withRouter(props => {
 
@@ -63,6 +64,8 @@ const CrmContent = React.memo(withRouter(props => {
         return <AgreementClients {...props} />
     else if (page === "/fines" && permits.user_fines_access)
         return <Fines {...props} />
+    else if (page === "/consultations" && permits.clients_consultation_access)
+        return <ConsultationsClients {...props} />
     else
         return <User {...props} />
 
@@ -109,7 +112,7 @@ const CRM = props => {
 
         axios.post('requests/getRowForTab', {
             id: id,
-            tabId: localStorage.getItem('select_tab')
+            tabId: Number(localStorage.getItem('select_tab')) || null,
         }).then(({ data }) => {
             data.row && props.createRequestRow(data.row);
         });

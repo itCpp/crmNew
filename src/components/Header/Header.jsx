@@ -17,6 +17,7 @@ import AuthQueries from "./../Auth/AuthQueries";
 import ActiveStatusUser from "./ActiveStatusUser";
 import './header.css';
 import UserCreate from "./UserCreate";
+import AlertModal from "../CRM/Notifications/AlertModal";
 
 function Header(props) {
 
@@ -47,6 +48,8 @@ function Header(props) {
     }
 
     return <div className="header-menu" id="header-menu">
+
+        <AlertModal />
 
         <div className="d-flex justify-content-between align-items-center h-100">
 

@@ -184,12 +184,12 @@
 }
 
 .notification-my-data-row.update-notification-row {
-    animation: update-notification-row .3s 1 ease;
+    animation: update-notification-row 1s 1 ease;
 }
 
 @keyframes update-notification-row {
-    from { opacity: .1 !important; }
-    to { opacity: 1 !important; }
+    from { background-color: #e2ffe2; }
+    to { background-color: "none"; }
 }
 
 .search-user-fine-input > div {

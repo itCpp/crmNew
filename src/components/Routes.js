@@ -42,6 +42,7 @@ export default function Routes(props) {
                     <Route exact path="/agreements" component={Crm} />
                     <Route exact path="/user/:id" component={Crm} />
                     <Route exact path="/fines" component={Crm} />
+                    <Route exact path="/consultations" component={Crm} />
 
                     <Route exact path="/admin" component={Admin} />
                     <Route exact path="/admin/:page" component={Admin} />

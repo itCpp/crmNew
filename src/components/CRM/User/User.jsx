@@ -29,9 +29,10 @@ const User = props => {
     }, []);
 
     const notificationsEvent = React.useCallback(({ notification }) => {
+
         setUpdateNotification({ ...notification, live: true });
 
-        if (notification?.data?.request_id) {
+        if (notification?.notif_type === "set_request" && notification?.data?.request_id) {
             setChartRequests({ count: 1, date: Date.parse(new Date) });
         }
     }, []);
