@@ -10,11 +10,12 @@ import { setShowNotification } from "../../../../store/actions";
 
 export default (({ updateNotification, notifications, height }) => {
 
-    const { count, recent } = notifications;
+    const { count } = notifications;
     const dispatch = useDispatch();
 
     const [rows, setRows] = React.useState(notifications.rows || []);
     const [allReadedLoad, setAllReadedLoad] = React.useState(false);
+    const [recent, setRecent] = React.useState(Number(notifications.recent) || 0);
 
     const readedMessage = React.useCallback(id => {
 
@@ -28,6 +29,7 @@ export default (({ updateNotification, notifications, height }) => {
             return rows;
         });
 
+        setRecent(r => ((r - 1) < 0 ? 0 : (r - 1)));
         dispatch(setShowNotification(id))
 
     }, []);
@@ -46,6 +48,7 @@ export default (({ updateNotification, notifications, height }) => {
                 });
                 return rows;
             });
+            setRecent(0);
         }).catch(() => {
             axios.toast("Не удалось отметить уведомления прочитанными");
         }).then(() => {
@@ -56,7 +59,23 @@ export default (({ updateNotification, notifications, height }) => {
 
     React.useEffect(() => {
         if (updateNotification) {
+
+            setRecent(r => r + 1);
             setRows([updateNotification, ...rows]);
+
+            if (updateNotification.live === true) {
+                setTimeout(() => {
+                    setRows(prev => {
+                        prev = [...prev];
+                        prev.forEach((row, i) => {
+                            if (row.id === updateNotification.id) {
+                                prev[i].live = false;
+                            }
+                        });
+                        return prev;
+                    });
+                }, 1000);
+            }
         }
     }, [updateNotification]);
 
@@ -71,12 +90,14 @@ export default (({ updateNotification, notifications, height }) => {
                 content="Уведомления"
                 className="m-0 mr-2"
             />
-            <div className="d-flex align-items-center">
-                {allReadedLoad && <Loader active size="mini" inline className="mr-2" />}
-                <a href={allReadedLoad ? null : "#"} onClick={e => {
-                    e.preventDefault();
-                    !allReadedLoad && setAllRead();
-                }}>Отметить как прочитанные</a>
+            <div className="d-flex align-items-center position-relative">
+                {recent > 0 && <div className="position-absolute text-nowrap d-flex align-items-center" style={{ right: 0 }}>
+                    {allReadedLoad && <Loader active size="mini" inline className="mr-2" />}
+                    <a href={allReadedLoad ? null : "#"} onClick={e => {
+                        e.preventDefault();
+                        !allReadedLoad && setAllRead();
+                    }}>Отметить как прочитанные</a>
+                </div>}
             </div>
         </div>
 

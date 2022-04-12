@@ -69,7 +69,6 @@ const AlertModal = props => {
                 <Placeholder style={{ width: 90, height: 12 }} className="rounded m-0 mr-2 d-inline-block" />
             </>}
 
-
             {!loading && <>
 
                 <Header
