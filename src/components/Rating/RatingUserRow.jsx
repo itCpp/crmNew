@@ -25,7 +25,28 @@ const RatingUserRow = props => {
                     {row.sector && <b className="ml-2">{row.sector.name}</b>}
                 </div>}
             />
-            {row.salary > 0 && <Header as="h1" className="m-0 opacity-80" content={row.salary} />}
+            {Number(row.oklad_period) > 0
+                ? <Popup
+                    inverted
+                    content="Сумма может меняться при наличии неоплаченных выходных"
+                    trigger={<Header
+                        as="h1"
+                        className="m-0 opacity-80"
+                        content={<>
+                            {Number(row.salary) + Number(row.oklad_period)}
+                            <b className="text-danger">*</b>
+                        </>}
+                    />}
+                    position="top center"
+                    size="mini"
+                />
+                : Number(row.salary) > 0 && <Header
+                    as="h1"
+                    className="m-0 opacity-80"
+                    content={row.salary}
+                />
+            }
+            {/* {row.salary > 0 && <Header as="h1" className="m-0 opacity-80" content={row.salary} />} */}
         </div>
 
         <div className="mb-3 d-flex justify-content-between efficiency-bars">
@@ -47,6 +68,7 @@ const RatingUserRow = props => {
                             <span>Заявки</span>
                             <span>
                                 <Popup
+                                    inverted
                                     content="Всего заявок"
                                     trigger={<b style={{ opacity: row.requestsAll > 0 ? 1 : 0.3 }}>{row.requestsAll || 0}</b>}
                                     position="top center"
@@ -54,6 +76,7 @@ const RatingUserRow = props => {
                                 />
                                 {" / "}
                                 <Popup
+                                    inverted
                                     content="Московские заявки"
                                     trigger={<b style={{ opacity: row.requests > 0 ? 1 : 0.3 }}>{row.requests || 0}</b>}
                                     position="top center"
@@ -183,11 +206,20 @@ const RatingUserRow = props => {
                         <div><b>Начислено</b></div>
                         {row.oklad_period && <div>
                             <span>Оклад</span>
-                            <span><b>{row.oklad_period || 0}</b> руб</span>
+                            <Popup
+                                inverted
+                                content="Сумма может меняться при наличии неоплаченных выходных"
+                                trigger={<span>
+                                    <b>{row.oklad_period || 0}</b> руб<b className="text-danger">*</b>
+                                </span>}
+                                position="top center"
+                                size="mini"
+                            />
                         </div>}
                         <div>
                             <span>Бонусы</span>
                             <Popup
+                                inverted
                                 content="Бонусы начисляются по усмотрению руководства"
                                 trigger={<span>
                                     <b>{row.bonuses || 0}</b> руб<b className="text-danger">*</b>
@@ -205,7 +237,7 @@ const RatingUserRow = props => {
                             <span><b>{row.chief_bonus || 0}</b> руб</span>
                         </div>}
                         <div>
-                            <span>К выдаче</span>
+                            <span>Рейтинг</span>
                             <span><b>{row.salary || 0}</b> руб</span>
                         </div>
                     </div>
