@@ -203,6 +203,15 @@ const Menu = props => {
                 </div>
             </Link>}
 
+            <Link to="/phoneboock" className={`menu-list-row title ${selectMenu === "/phoneboock" ? 'tab-list-active' : ''}`}>
+                <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
+                    <span>
+                        <Icon name="address book" />
+                        <span>Телефоннная книга</span>
+                    </span>
+                </div>
+            </Link>
+
         </div>
 
     </div>

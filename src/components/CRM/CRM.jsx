@@ -37,6 +37,7 @@ const Operators = React.lazy(() => import("./Operators"));
 const MyTests = React.lazy(() => import("./MyTests"));
 const Fines = React.lazy(() => import("./Fines"));
 const ConsultationsClients = React.lazy(() => import("./ConsultationsClients"));
+const Phoneboock = React.lazy(() => import("./Phoneboock"));
 
 const CrmContent = React.memo(withRouter(props => {
 
@@ -66,6 +67,8 @@ const CrmContent = React.memo(withRouter(props => {
         return <Fines {...props} />
     else if (page === "/consultations" && permits.clients_consultation_access)
         return <ConsultationsClients {...props} />
+    else if (page === "/phoneboock")
+        return <Phoneboock {...props} />
     else
         return <User {...props} />
 
