@@ -89,6 +89,15 @@ const CreateSource = props => {
                     disabled={error ? true : false}
                 />
 
+                <Form.Input
+                    placeholder="Укажите короткое наименование для дисплея приложения звонков..."
+                    label="Короткое наименование для вывода в телефоне"
+                    name="abbr_name"
+                    value={formdata.abbr_name || ""}
+                    onChange={changeFormdata}
+                    disabled={error ? true : false}
+                />
+
                 <Form.TextArea
                     label="Комментарий к источнику"
                     placeholder="Краткое описание к источнику..."
