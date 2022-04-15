@@ -251,9 +251,23 @@ const PieChart = props => {
                 left: 0,
                 right: 0,
                 bottom: 0,
-                opacity: 0.6,
+                opacity: 0.4,
             }}
-            children={<small>Данных нет</small>}
+            children={<>
+                <small>Данных нет</small>
+                <div
+                    style={{
+                        position: "absolute",
+                        maxWidth: 170,
+                        maxHeight: 170,
+                        width: "100%",
+                        height: "100%",
+                        border: "1px solid #000000",
+                        opacity: 0.15,
+                        borderRadius: 85,
+                    }}
+                />
+            </>}
         />}
 
     </div>

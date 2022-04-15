@@ -109,7 +109,10 @@ function App(props) {
 
                     if (token === user_token) {
 
-                        axios.toast("Ваша сессия завершена", { title: "Внимание" });
+                        axios.toast("Ваша сессия завершена", {
+                            title: "Внимание",
+                            icon: "log out",
+                        });
 
                         setTimeout(() => {
                             window.location.reload();

@@ -63,7 +63,7 @@ const MenuTabs = props => {
 
     let classNames = ["menu-list-block"];
 
-    if ((select || select === 0) && (/*selectMenu === "/requests" || */selectMenu.indexOf('requests') >= 0))
+    if (((select || select === 0) && (selectMenu.indexOf('requests') >= 0)) || selectMenu.indexOf('requests') >= 0)
         classNames.push('menu-list-block-active');
 
     return <div className={classNames.join(' ')}>
