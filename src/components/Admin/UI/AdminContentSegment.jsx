@@ -4,6 +4,7 @@ export default (props => {
 
     const { loading } = props;
     const { header, className } = props;
+    const { content } = props;
 
     let classNames = ["admin-content-segment"];
     className && classNames.push(className);
@@ -12,6 +13,7 @@ export default (props => {
 
         {typeof header == "object" && <Header {...header} />}
 
+        {!loading && !props.children && content}
         {!loading && props.children}
         {loading && <Loader active inline="centered" className="my-2" />}
 

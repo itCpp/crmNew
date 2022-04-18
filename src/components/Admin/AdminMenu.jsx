@@ -120,11 +120,19 @@ function AdminMenu(props) {
 
             <h5>Логи</h5>
 
-            {permits.dev_calls &&
+            {permits.dev_calls && <>
+
                 <NavLink to="/admin/calls" className="admin-menu-point" onClick={changePage}>
                     <Icon name="call" />
                     <span>Звонки</span>
                 </NavLink>
+
+                <NavLink to="/admin/events" className="admin-menu-point" onClick={changePage}>
+                    <Icon name="rss square" />
+                    <span>Запросы событий</span>
+                </NavLink>
+
+                </>
             }
 
             <NavLink to="/admin/sips" className="admin-menu-point" onClick={changePage}>
