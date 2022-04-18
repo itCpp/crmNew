@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "./../../../utils/axios-header";
 
-import { Message, Table, Icon, Dimmer } from "semantic-ui-react";
+import { Message, Table, Icon, Dimmer, Header } from "semantic-ui-react";
 
 import SourceEdit from "./SourceEdit";
 import ResourcesSet from "./ResourcesSet";
@@ -47,117 +47,122 @@ function Sources(props) {
     if (loading)
         return null;
 
-    return <div className="admin-content-segment segment-compact">
+    return <div>
 
-        <div className="divider-header">
+        {select && <SourceEdit
+            sourceId={select}
+            setOpen={setSelect}
+            updateSources={updateSources}
+        />}
+
+        {resources && <ResourcesSet
+            sourceId={resources}
+            setOpen={setResources}
+            updateSources={updateSources}
+        />}
+
+        {/* <div className="admin-content-segment segment-compact">
+            <h2>Источники</h2>
+        </div> */}
+
+        {/* <div className="divider-header">
             <h3>Источники</h3>
-        </div>
+        </div> */}
 
-        {select
-            ? <SourceEdit
-                sourceId={select}
-                setOpen={setSelect}
-                updateSources={updateSources}
-            />
-            : null
-        }
+        {error && <Message error content={error} />}
 
-        {resources
-            ? <ResourcesSet
-                sourceId={resources}
-                setOpen={setResources}
-                updateSources={updateSources}
-            />
-            : null
-        }
+        {sources.length === 0 && <Message
+            info
+            content="Создайте первый источник"
+        />}
 
-        {error
-            ? <Message error content={error} />
-            : null
-        }
+        {sources.length > 0 && sources.map((row, i) => {
+            return <div
+                className="admin-content-segment segment-compact mb-2"
+                key={`source-${i}-${row.id}`}
+            >
 
-        {sources.length
-            ? <div className="position-relative">
-                <Table basic="very" className="mt-3" compact>
+                <div className="d-flex justify-content-between align-items-center">
 
-                    <Table.Header>
-                        <Table.Row textAlign="center">
-                            <Table.HeaderCell>#id</Table.HeaderCell>
-                            <Table.HeaderCell title="Наименование источника">Источник</Table.HeaderCell>
-                            <Table.HeaderCell title="Список ресурсов источника">Ресурсы</Table.HeaderCell>
-                            <Table.HeaderCell title="Сектор по умолчанию">Сектор</Table.HeaderCell>
-                            <Table.HeaderCell title="количество заявок по источнику">Заявки</Table.HeaderCell>
-                            <Table.HeaderCell title="Описание и текущие настройки источника">Описание</Table.HeaderCell>
-                            <Table.HeaderCell />
-                        </Table.Row>
-                    </Table.Header>
+                    <b className="mr-1">#{row.id}</b>
+                    <h5 className="m-0 flex-grow-1">
+                        {row.name && <span className="mr-1">{row.name}</span>}
+                        {row.abbr_name && <span className="opacity-60" title="Сокращенное наименование для вывода в трубке кольщика">{row.abbr_name}</span>}
+                    </h5>
 
-                    <Table.Body>
-                        {sources.map(source => {
+                    <div className="d-flex align-items-center">
+                        <span>
+                            <Icon
+                                name="tasks"
+                                title="Источник виден в списке источников при создании заявок"
+                                color={row.actual_list === 1 ? "green" : "grey"}
+                                disabled
+                            />
+                        </span>
+                        <span>
+                            <Icon
+                                name="add square"
+                                title="Автоматическое добавление текстовой заявки из очереди"
+                                color={row.auto_done_text_queue === 1 ? "green" : "grey"}
+                                disabled
+                            />
+                        </span>
+                        <span>
+                            <Icon
+                                name="map signs"
+                                title="Отображается в счетчике дополнительной информации"
+                                color={row.show_counter === 1 ? "green" : "grey"}
+                                disabled
+                            />
+                        </span>
 
-                            return <Table.Row key={source.id} textAlign="center" verticalAlign="top">
-                                <Table.Cell><b>{source.id}</b></Table.Cell>
-                                <Table.Cell>{source.name}</Table.Cell>
-                                <Table.Cell>{typeof source.resources === "object" && source.resources.length
-                                    ? source.resources.map(resource => <div key={`${source.id}-${resource.id}`} className="d-flex align-items-center justify-content-center">
-                                        <span>
-                                            <Icon name={resource.type === "phone" ? "phone" : "world"} />
-                                        </span>
-                                        <span>{resource.val}</span>
-                                    </div>)
-                                    : <div className="text-muted"><small>Добавте ресурсы</small></div>
-                                }</Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell textAlign="left">
-                                    <div>
-                                        <Icon
-                                            name="tasks"
-                                            title="Источник виден в списке источников при создании заявок"
-                                            color={source.actual_list === 1 ? "green" : "grey"}
-                                        />
-                                        <Icon
-                                            name="add square"
-                                            title="Автоматическое добавление текстовой заявки из очереди"
-                                            color={source.auto_done_text_queue === 1 ? "green" : "grey"}
-                                        />
-                                        <Icon
-                                            name="map signs"
-                                            title="Отображается в счетчике дополнительной информации"
-                                            color={source.show_counter === 1 ? "green" : "grey"}
-                                        />
-                                    </div>
-                                    {source.comment ? <div><small>{source.comment}</small></div> : null}
-                                </Table.Cell>
-                                <Table.Cell className="cell-icons">
-                                    <Icon
-                                        name="world"
-                                        className="button-icon"
-                                        title="Выбор ресурсов"
-                                        onClick={() => setResources(source.id)}
-                                    />
-                                    <Icon
-                                        name="edit"
-                                        className="button-icon"
-                                        title="Настройка источника"
-                                        onClick={() => setSelect(source.id)}
-                                    />
-                                </Table.Cell>
-                            </Table.Row>
+                        <span className="mr-3" />
 
-                        })}
-                    </Table.Body>
+                        <span>
+                            <Icon
+                                name="world"
+                                className="button-icon"
+                                title="Выбор ресурсов"
+                                onClick={() => setResources(row.id)}
+                                color={(typeof row.resources === "object" && row.resources.length > 0) ? "blue" : "grey"}
+                            />
+                        </span>
+                        <span>
+                            <Icon
+                                name="pencil"
+                                className="button-icon"
+                                title="Настройка источника"
+                                onClick={() => setSelect(row.id)}
+                            />
+                        </span>
+                    </div>
 
-                </Table>
+                </div>
 
-                <Dimmer active={load} inverted />
+                {(row.comment || (typeof row.resources === "object" && row.resources.length > 0)) && <div className="mt-2">
+
+                    {row.comment && <span className="mr-4">
+                        <Icon name="comment" />
+                        <span>{row.comment}</span>
+                    </span>}
+
+                    {typeof row.resources === "object" && row.resources.map(resource => <span
+                        key={`${row.id}-${resource.id}`}
+                        className="mr-3"
+                        children={<>
+                            <Icon
+                                name={resource.type === "phone" ? "phone" : "world"}
+                                title={resource.type === "phone" ? "Телефон" : "Сайт"}
+                                disabled
+                            />
+                            <span>{resource.val}</span>
+                        </>}
+                    />)}
+
+                </div>}
 
             </div>
-            : <Message
-                info
-                content="Создайте первый источник"
-            />
-        }
+        })}
 
     </div>
 

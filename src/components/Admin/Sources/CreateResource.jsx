@@ -17,10 +17,8 @@ const CreateSource = props => {
     const [trigger, setTrigger] = React.useState(<Button
         icon="plus"
         basic
-        positive={!error ? true : false}
-        negative={error ? true : false}
+        color={error ? "red" : "blue"}
         title="Добавить новый ресурс"
-        size="mini"
         circular
         loading={create}
         disabled={create}
@@ -89,10 +87,7 @@ const CreateSource = props => {
                 value={formdata.resource || ""}
             />
 
-            {error
-                ? <Message error content={error} className="mb-0" />
-                : null
-            }
+            {error && <Message error content={error} className="mb-0" />}
 
             <Dimmer active={load} inverted>
                 <Loader inverted />

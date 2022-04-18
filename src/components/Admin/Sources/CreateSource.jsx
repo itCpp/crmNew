@@ -31,7 +31,6 @@ const CreateSource = props => {
         positive={!error ? true : false}
         negative={error ? true : false}
         title="Создать новый источник"
-        size="mini"
         circular
         loading={create}
         disabled={create}

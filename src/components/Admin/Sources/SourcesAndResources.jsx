@@ -42,60 +42,46 @@ function SourcesAndResources(props) {
                 subheader="Настройка ресурсов с источниками и связи между ними"
             />
 
-            {loading
-                ? <Loader active inline />
-                : <div>
+            {loading && <Loader active inline />}
 
-                    <Button
-                        icon="list"
-                        basic={page === "resources" ? false : true}
-                        color="blue"
-                        title="Список ресурсов для источников"
-                        size="mini"
-                        circular
-                        onClick={() => setPage(page !== "resources" ? "resources" : "sources")}
-                    />
+            {!loading && <div>
 
-                    {page === "sources"
-                        ? <CreateSource
-                            sources={sources}
-                            setSources={setSources}
-                        />
-                        : null
-                    }
+                <Button
+                    icon="list"
+                    basic={page === "resources" ? false : true}
+                    color="blue"
+                    title="Список ресурсов для источников"
+                    circular
+                    onClick={() => setPage(page !== "resources" ? "resources" : "sources")}
+                />
 
-                    {page === "resources"
-                        ? <CreateResource
-                            resources={resources}
-                            setResources={setResources}
-                        />
-                        : null
-                    }
+                {page === "sources" && <CreateSource
+                    sources={sources}
+                    setSources={setSources}
+                />}
 
-                </div>
-            }
+                {page === "resources" && <CreateResource
+                    resources={resources}
+                    setResources={setResources}
+                />}
+
+            </div>}
 
         </div>
 
-        {page === "sources"
-            ? <Sources
-                loading={loading}
-                setLoading={setLoading}
-                sources={sources}
-                setSources={setSources}
-            />
-            : null
-        }
+        {page === "sources" && <Sources
+            loading={loading}
+            setLoading={setLoading}
+            sources={sources}
+            setSources={setSources}
+        />}
 
-        {page === "resources"
-            ? <Resources
-                loading={loading}
-                setLoading={setLoading}
-                resources={resources}
-                setResources={setResources}
-            />
-            : null
-        }
+        {page === "resources" && <Resources
+            loading={loading}
+            setLoading={setLoading}
+            resources={resources}
+            setResources={setResources}
+        />}
 
     </>
 

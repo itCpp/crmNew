@@ -47,50 +47,43 @@ function SourcesMain(props) {
                 subheader="Настройка ресурсов с источниками и связи между ними"
             />
 
-            {loading
-                ? <Loader active inline />
-                : <div>
+            {loading && <Loader active inline />}
 
-                    <Button
-                        icon="list"
-                        basic={showResource ? false : true}
-                        color="blue"
-                        title="Список ресурсов для источников"
-                        size="mini"
-                        circular
-                        onClick={getResources}
-                    />
+            {!loading && <div>
 
-                    <CreateSource
-                        sources={sources}
-                        setSources={setSources}
-                    />
+                <Button
+                    icon="list"
+                    basic={showResource ? false : true}
+                    color="blue"
+                    title="Список ресурсов для источников"
+                    size="mini"
+                    circular
+                    onClick={getResources}
+                />
 
-                </div>
-            }
+                <CreateSource
+                    sources={sources}
+                    setSources={setSources}
+                />
+
+            </div>}
 
         </div>
 
-        {error
-            ? <Message
-                error
-                header="Ошибка"
-                list={[error]}
-            />
-            : null
-        }
+        {error && <Message
+            error
+            header="Ошибка"
+            list={[error]}
+        />}
 
-        {!loading && !error
-            ? <div className="d-flex justify-content-start align-items-start flex-segments">
-                <Sources
-                    sources={sources}
-                    setSources={setSources}
-                    select={select}
-                    setSelect={setSelect}
-                />
-            </div>
-            : null
-        }
+        {!loading && !error && <div className="d-flex justify-content-start align-items-start flex-segments">
+            <Sources
+                sources={sources}
+                setSources={setSources}
+                select={select}
+                setSelect={setSelect}
+            />
+        </div>}
 
     </>
 
