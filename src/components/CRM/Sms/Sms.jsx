@@ -46,17 +46,18 @@ const Sms = () => {
         setSms(p => {
 
             let sms = [data.row, ...p],
+                newsms = { ...data.row, check_phone: true },
                 replace = null;
 
             sms.forEach((row, i) => {
-                if (row.id === data.row.id) {
+                if (row.id === newsms.id) {
                     replace = i;
-                    sms[i] = data.row;
+                    sms[i] = newsms;
                 }
             });
 
-            if (!replace && (direction === "all" || data.row.direction === direction)) {
-                sms.unshift(data.row);
+            if (replace === null && (direction === "all" || newsms.direction === direction)) {
+                sms.unshift(newsms);
                 sms.splice(sms.length - 1, 1);
             }
 
@@ -144,6 +145,7 @@ const Sms = () => {
                 {sms.map((row, i) => <SmsRow
                     key={`${row.id}_${i}`}
                     sms={row}
+                    setSms={setSms}
                 />)}
             </Comment.Group>}
 

@@ -2,10 +2,20 @@ import React from "react";
 import moment from "./../../../utils/moment";
 import { Link } from "react-router-dom";
 import { Comment, Icon, Label } from "semantic-ui-react";
+import { axios } from "../../../utils";
 
 const SmsRow = React.memo(props => {
 
-    const { sms } = props;
+    const { sms, setSms } = props;
+    const [phone, setPhone] = React.useState(null);
+
+    React.useEffect(() => {
+        if (sms?.check_phone === true) {
+            axios.post('requests/getSmsPhone', { id: sms.id }).then(({ data }) => {
+                setPhone(data.row.phone);
+            });
+        }
+    }, [sms?.check_phone]);
 
     let error = null;
 
@@ -13,17 +23,17 @@ const SmsRow = React.memo(props => {
         error = sms.response?.Message || `Ошибка ${sms.response?.ResponseCode}`;
     }
 
-    let name = sms.phone,
+    let name = phone || sms.phone,
         gate = sms.gateName || null;
 
     if (gate && sms.channel)
         gate += "@" + sms.channel;
 
     if (sms.direction === "in") {
-        name = <>{sms.phone}<Icon name="angle right" className="mx-1" />{gate}</>
+        name = <>{phone || sms.phone}<Icon name="angle right" className="mx-1" />{gate}</>
     }
     if (sms.direction === "out") {
-        name = <>{gate}<Icon name="angle right" className="mx-1" />{sms.phone}</>
+        name = <>{gate}<Icon name="angle right" className="mx-1" />{phone || sms.phone}</>
     }
 
     return <div className="d-flex align-items-center mx-2 sms-rows">
