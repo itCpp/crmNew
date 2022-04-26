@@ -201,6 +201,7 @@ const CRM = props => {
             setTopMenu(data.topMenu);
 
             window.requestPermits = data.permits;
+            window.permits = { ...(window.permits || {}), ...data.permits };
             setPermits(data.permits);
 
             props.setStartData({

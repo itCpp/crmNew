@@ -1,10 +1,7 @@
 import React from "react";
 import axios from "./../../../utils/axios-header";
-import moment from "./../../../utils/moment";
-import { Link } from "react-router-dom";
-
-import { Message, Loader, Comment, Icon, Label } from "semantic-ui-react";
-
+import { Message, Loader, Comment, Dropdown } from "semantic-ui-react";
+import SmsRow from "./SmsRow";
 import "./sms.css";
 
 const Sms = () => {
@@ -17,13 +14,16 @@ const Sms = () => {
     const [page, setPage] = React.useState(1);
     const [stop, setStop] = React.useState(false);
     const [lastView, setLastView] = React.useState(null);
+    const [direction, setDirection] = React.useState(
+        localStorage.getItem('smsFilterDirection') || "in"
+    );
 
     const getSms = page => {
 
         setLoad(true);
         setPage(page);
 
-        axios.post('sms/get', { page, lastView }).then(({ data }) => {
+        axios.post('sms/get', { page, lastView, direction }).then(({ data }) => {
 
             setSms(p => page === 1 ? data.messages : [...p, ...data.messages]);
 
@@ -40,6 +40,30 @@ const Sms = () => {
             setLoad(false);
         });
     }
+
+    const newSms = React.useCallback(data => {
+
+        setSms(p => {
+
+            let sms = [data.row, ...p],
+                replace = null;
+
+            sms.forEach((row, i) => {
+                if (row.id === data.row.id) {
+                    replace = i;
+                    sms[i] = data.row;
+                }
+            });
+
+            if (!replace && (direction === "all" || data.row.direction === direction)) {
+                sms.unshift(data.row);
+                sms.splice(sms.length - 1, 1);
+            }
+
+            return sms;
+        });
+
+    }, [direction]);
 
     React.useEffect(() => {
 
@@ -63,9 +87,25 @@ const Sms = () => {
             window.removeEventListener('scroll', scrolling);
         }
 
-    }, [sms, load, page, stop])
+    }, [sms, load, page, stop]);
 
-    React.useEffect(() => getSms(1), []);
+    React.useEffect(() => {
+        setLoading(true);
+        setStop(false);
+        getSms(1);
+    }, [direction]);
+
+    React.useEffect(() => {
+
+        window.Echo && window.Echo.private(`App.Crm.Sms.${window?.permits?.sms_access_system ? `All` : `Requests`}`)
+            .listen('NewSmsEvent', newSms);
+
+        return () => {
+            window.Echo && window.Echo.leave(`App.Crm.Sms.All`);
+            window.Echo && window.Echo.leave(`App.Crm.Sms.Requests`);
+        }
+
+    }, []);
 
     return <div className="pb-3 px-2 w-100" id="sms-root" style={{ maxWidth: "800px" }}>
 
@@ -73,6 +113,22 @@ const Sms = () => {
             <div className="page-title-box">
                 <h4 className="page-title">СМС сообщения</h4>
             </div>
+
+            <Dropdown
+                options={[
+                    { key: 0, text: "Все", value: "all" },
+                    { key: 1, text: "Входящие", value: "in" },
+                    { key: 2, text: "Исходящие", value: "out" },
+                ]}
+                selection
+                value={direction}
+                onChange={(e, { value }) => {
+                    localStorage.setItem("smsFilterDirection", value);
+                    setDirection(value);
+                }}
+                disabled={loading}
+            />
+
         </div>
 
         <div className="block-card mb-3 px-2">
@@ -85,8 +141,8 @@ const Sms = () => {
             </div>}
 
             {!loading && !error && sms.length > 0 && <Comment.Group className="sms-group w-100" style={{ maxWidth: "100%" }}>
-                {sms.map(row => <SmsRow
-                    key={row.id}
+                {sms.map((row, i) => <SmsRow
+                    key={`${row.id}_${i}`}
                     sms={row}
                 />)}
             </Comment.Group>}
@@ -99,89 +155,5 @@ const Sms = () => {
 
     </div>
 }
-
-const SmsRow = React.memo(props => {
-
-    const { sms } = props;
-
-    let error = null;
-
-    if (sms.response && sms.response?.Response !== "Success") {
-        error = sms.response?.Message || `Ошибка ${sms.response?.ResponseCode}`;
-    }
-
-    let name = sms.phone,
-        gate = sms.gateName || null;
-
-    if (gate && sms.channel)
-        gate += "@" + sms.channel;
-
-    if (sms.direction === "in") {
-        name = <>{sms.phone}<Icon name="angle right" className="mx-1" />{gate}</>
-    }
-    if (sms.direction === "out") {
-        name = <>{gate}<Icon name="angle right" className="mx-1" />{sms.phone}</>
-    }
-
-    return <div className="d-flex align-items-center mx-2 sms-rows">
-
-        {sms.direction === "in" && <div title="Входящее СМС" className="mr-3 opacity-50">
-            <Icon
-                name="angle double right"
-                fitted
-                size="large"
-                color="green"
-            />
-        </div>}
-
-        {sms.direction === "out" && <div title="Исходящее СМС" className="mr-3 opacity-50">
-            <Icon
-                name="angle double left"
-                fitted
-                size="large"
-                color="orange"
-            />
-        </div>}
-
-        <Comment className="w-100 mt-0">
-
-            <Comment.Content>
-
-                <Comment.Author as="b">{name}</Comment.Author>
-
-                <Comment.Metadata style={{ float: "right" }}>
-                    <div className="d-flex align-items-center">
-                        <span>{sms.sent_at && moment(sms.sent_at).format("DD.MM.YYYY в HH:mm")}</span>
-                        {sms.new_sms && <Label circular color="orange" empty className="ml-2" title="Новое сообщение" size="mini"/>}
-                    </div>
-                    
-                </Comment.Metadata>
-
-                {(sms.created_pin || sms.author) && <div>
-                    <Comment.Metadata className="ml-0">
-                        {sms.created_pin && <b>@{sms.created_pin} </b>}
-                        {sms.author && <span>{sms.author}</span>}
-                    </Comment.Metadata>
-                </div>}
-
-                <Comment.Text>
-                    {sms.message}
-                    {error && <div className="text-danger mt-1" style={{ fontSize: "80%" }}>
-                        <Icon name="warning sign" />
-                        <strong>{error}</strong>
-                    </div>}
-                </Comment.Text>
-
-                {window?.requestPermits?.requests_access && sms.requests && sms.requests.length > 0 && <Comment.Actions className="mb-2">
-                    {sms.requests.map(r => <Link key={`${sms.id}_${r.id}`} to={`/requests?id=${r.id}`}>#{r.id}</Link>)}
-                </Comment.Actions>}
-
-            </Comment.Content>
-
-        </Comment>
-
-    </div>
-
-});
 
 export default Sms;
