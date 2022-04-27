@@ -6,11 +6,11 @@ import { axios } from "../../../utils";
 
 const SmsRow = React.memo(props => {
 
-    const { sms, setSms } = props;
+    const { sms } = props;
     const [phone, setPhone] = React.useState(null);
 
     React.useEffect(() => {
-        if (sms?.check_phone === true) {
+        if (sms?.check_phone === true && phone === null) {
             axios.post('requests/getSmsPhone', { id: sms.id }).then(({ data }) => {
                 setPhone(data.row.phone);
             });

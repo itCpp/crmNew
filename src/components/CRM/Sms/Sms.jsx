@@ -43,25 +43,36 @@ const Sms = () => {
 
     const newSms = React.useCallback(data => {
 
-        setSms(p => {
+        setSms(prev => {
 
-            let sms = [data.row, ...p],
-                newsms = { ...data.row, check_phone: true },
-                replace = null;
+            let list = [...prev],
+                inbox = [];
 
-            sms.forEach((row, i) => {
-                if (row.id === newsms.id) {
-                    replace = i;
-                    sms[i] = newsms;
+            if (data.rows) {
+                inbox = data.rows;
+            } else if (data.row) {
+                inbox = [data.row];
+            }
+
+            inbox.forEach(item => {
+
+                let newsms = { ...item, check_phone: true },
+                    replace = null;
+
+                list.forEach((row, i) => {
+                    if (row.id === newsms.id) {
+                        replace = i;
+                        list[i] = newsms;
+                    }
+                });
+
+                if (replace === null && (direction === "all" || newsms.direction === direction)) {
+                    list.unshift(newsms);
+                    list.splice(list.length - 1, 1);
                 }
             });
 
-            if (replace === null && (direction === "all" || newsms.direction === direction)) {
-                sms.unshift(newsms);
-                sms.splice(sms.length - 1, 1);
-            }
-
-            return sms;
+            return list;
         });
 
     }, [direction]);
@@ -99,7 +110,8 @@ const Sms = () => {
     React.useEffect(() => {
 
         window.Echo && window.Echo.private(`App.Crm.Sms.${window?.permits?.sms_access_system ? `All` : `Requests`}`)
-            .listen('NewSmsEvent', newSms);
+            .listen('NewSmsAllEvent', newSms)
+            .listen('NewSmsRequestsEvent', newSms);
 
         return () => {
             window.Echo && window.Echo.leave(`App.Crm.Sms.All`);
