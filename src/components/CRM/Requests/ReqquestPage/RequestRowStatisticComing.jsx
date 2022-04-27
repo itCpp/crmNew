@@ -48,7 +48,7 @@ const RequestRowStatisticComing = props => {
                     <Header
                         as="h3"
                         content="Приходы клиента"
-                        className="m-0 flex-grow-1"
+                        className="mb-0 flex-grow-1"
                         color="green"
                     />
                     {(coming?.comings || []).length > 0 && <span>
