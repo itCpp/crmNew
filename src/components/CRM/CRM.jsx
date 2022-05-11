@@ -38,6 +38,7 @@ const MyTests = React.lazy(() => import("./MyTests"));
 const Fines = React.lazy(() => import("./Fines"));
 const ConsultationsClients = React.lazy(() => import("./ConsultationsClients"));
 const Phoneboock = React.lazy(() => import("./Phoneboock"));
+const Counter = React.lazy(() => import("./Counter"));
 
 const CrmContent = React.memo(withRouter(props => {
 
@@ -57,6 +58,8 @@ const CrmContent = React.memo(withRouter(props => {
         return <RatingInCharts />
     else if (page === "/requests" && permits.requests_access)
         return <Requests />
+    else if (page === "/counter" && permits.requests_access)
+        return <Counter {...props} />
     else if (page === "/user/:id")
         return <User {...props} />
     else if (page === "/mytests")

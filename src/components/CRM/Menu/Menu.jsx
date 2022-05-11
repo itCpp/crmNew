@@ -98,6 +98,15 @@ const Menu = props => {
                 replace={props.history.replace}
             />}
 
+            {permits.requests_access && <Link to="/counter" className={`menu-list-row title ${selectMenu === "/counter" ? 'tab-list-active' : ''}`}>
+                <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
+                    <span>
+                        <Icon name="line graph" />
+                        <span>Счётчик</span>
+                    </span>
+                </div>
+            </Link>}
+
             {permits.rating_access && <Link to="/pins" className={`menu-list-row title ${selectMenu === "/pins" ? 'tab-list-active' : ''}`}>
                 <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                     <span>

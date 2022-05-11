@@ -43,7 +43,7 @@ const SmsRow = React.memo(props => {
                 name="angle double right"
                 fitted
                 size="large"
-                color="green"
+                color={(sms.requests && sms.requests.length > 0) ? "green" : "blue"}
             />
         </div>}
 
