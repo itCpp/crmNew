@@ -156,6 +156,27 @@ export default function TabBasicSettings(props) {
                 checked={row.date_view === 1 ? true : false}
                 label="Показывать за все время (без учета выбранной даты)"
                 className="permites-check d-block mb-2"
+                disabled={loading || error}
+            />
+
+            <Checkbox
+                toggle
+                name="counter_source"
+                onChange={(e, { name, checked }) => setFormdata(e, { name, value: checked })}
+                checked={row.counter_source}
+                label="Разделять счетчик по источникам"
+                className="permites-check d-block mb-2"
+                disabled={loading || error}
+            />
+
+            <Checkbox
+                toggle
+                name="counter_offices"
+                onChange={(e, { name, checked }) => setFormdata(e, { name, value: checked })}
+                checked={row.counter_offices}
+                label="Разделять счетчик по офисам"
+                className="permites-check d-block mb-2"
+                disabled={loading || error}
             />
 
         </div>
