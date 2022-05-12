@@ -202,6 +202,18 @@ export default function TabBasicSettings(props) {
                 disabled={loading || error}
             />
 
+            <hr className="admin-segment-hr my-1" />
+
+            <Checkbox
+                toggle
+                name="flash_null"
+                onChange={(e, { name, checked }) => setFormdata(e, { name, value: checked })}
+                checked={row.flash_null}
+                label="Выводить индикацию неназначенных операторам заявок"
+                className="permites-check d-block mb-2"
+                disabled={loading || error}
+            />
+
         </div>
 
     </div>
