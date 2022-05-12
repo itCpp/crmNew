@@ -159,6 +159,29 @@ export default function TabBasicSettings(props) {
                 disabled={loading || error}
             />
 
+            <hr className="admin-segment-hr my-1" />
+
+            <Checkbox
+                toggle
+                name="counter_hide_page"
+                onChange={(e, { name, checked }) => setFormdata(e, { name, value: checked })}
+                checked={row.counter_hide_page}
+                label="Скрыть график вкладки на странице счетчика"
+                className="permites-check d-block mb-2"
+                disabled={loading || error}
+            />
+
+            <Checkbox
+                toggle
+                name="counter_next_day"
+                onChange={(e, { name, checked }) => setFormdata(e, { name, value: checked })}
+                checked={row.counter_next_day}
+                label="Считать итоговые данные счетчика для следующего дня"
+                className="permites-check d-block mb-2"
+                disabled={loading || error}
+                title="Например, записи в конце дня будут иметь значение 0, данные в историю буду записаны от следующего дня"
+            />
+
             <Checkbox
                 toggle
                 name="counter_source"
