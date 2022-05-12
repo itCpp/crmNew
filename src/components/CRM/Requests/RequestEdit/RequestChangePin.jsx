@@ -144,12 +144,35 @@ const RequestChangePin = props => {
                         return <div key={user.pin} title={user.title || null} className="d-inline-block position-relative">
 
                             <Button
-                                content={user.pin}
+                                content={<div>
+                                    <div>{user.pin}</div>
+                                    <div title="Заявок/Приходов КПД%" style={{
+                                        fontWeight: 100,
+                                        fontSize: "70%",
+                                        lineHeight: "70%",
+                                        marginTop: "0.2rem",
+                                        opacity: "0.7",
+                                    }}>
+                                        <span>
+                                            {user.rating
+                                                ? <>
+                                                    {user.rating?.requestsAll || 0}
+                                                    {'/'}
+                                                    {user.rating?.comings || 0}
+                                                    {' '}
+                                                    {Number(user.rating?.efficiency || 0).toFixed(0)}%
+                                                </>
+                                                : "- - - - -"
+                                            }
+                                        </span>
+                                    </div>
+                                </div>}
                                 className={className.join(' ')}
                                 color={user.color || "grey"}
                                 disabled={user.disabled || select !== false ? true : false}
                                 loading={select === user.id ? true : false}
                                 onClick={() => setSelect(user.id)}
+                                title={user.fio}
                             />
 
                             {onlineId && onlineId.indexOf(user.id) >= 0 &&
