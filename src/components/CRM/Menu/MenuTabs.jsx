@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { selectTab, setSearchRequest, selectedUpdateTab } from "./../../../store/requests/actions";
 import { Icon } from "semantic-ui-react";
+import CounterFlash from "./CounterFlash";
 
 export const CounterRow = React.memo(props => {
 
@@ -67,6 +68,11 @@ const MenuTabs = props => {
         classNames.push('menu-list-block-active');
 
     return <div className={classNames.join(' ')}>
+
+        {Boolean(counter.flash_null) && <CounterFlash
+            notProcessed={Number(counter.flash_null)}
+            setSelect={setSelect}
+        />}
 
         <Link to="/requests" className="menu-list-row title">
 

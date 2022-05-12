@@ -1,5 +1,5 @@
 import { memo, useEffect, useCallback, useRef } from "react";
-import { Button, Icon } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 import "./BtnScrollTop.css";
 
 const BtnScrollTop = memo(props => {
@@ -33,6 +33,7 @@ const BtnScrollTop = memo(props => {
     }, []);
 
     return <button
+        id="btn-request-scroll-top"
         className="btn-scrolll-top"
         onClick={scrollToTop}
         ref={btn}

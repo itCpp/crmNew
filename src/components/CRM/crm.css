@@ -216,3 +216,20 @@
     border-radius: 8px;
     border: 1px solid #e5e5e5;
 }
+
+.counter-flash-block {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    z-index: 100;
+}
+
+.counter-flash-button {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    transition: all .2s ease !important;
+}
