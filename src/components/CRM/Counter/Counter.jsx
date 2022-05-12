@@ -51,7 +51,9 @@ const Counter = props => {
             {chart.length && chart.map(row => <Grid.Column key={row.id}>
                 <div className="block-card">
                     
-                    <h5>{row.name}</h5>
+                    <div className="d-flex align-items-center mb-3">
+                        <h5 className="m-0">{row.name}</h5>
+                    </div>
 
                     <CounterChart
                         columns={row.column}

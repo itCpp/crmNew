@@ -20,6 +20,25 @@ const RequestChangePin = props => {
 
     const [errors, setErrors] = React.useState({});
 
+    const [flash, setFlash] = React.useState(false);
+    const flashInterval = React.useRef();
+
+    const handleFlash = React.useCallback(() => {
+        setFlash(f => !f);
+    }, []);
+
+    React.useEffect(() => {
+
+        if (row.status_null_flash) {
+            flashInterval.current = setInterval(handleFlash, 1000);
+        }
+
+        return () => {
+            flashInterval.current && clearInterval(flashInterval.current);
+        }
+
+    }, [row?.status_null_flash])
+
     React.useEffect(() => {
 
         if (open) {
@@ -81,7 +100,7 @@ const RequestChangePin = props => {
             trigger={<Button
                 icon={row.pin ? "user" : "user plus"}
                 content={row.pin}
-                color={row.pin ? "green" : "grey"}
+                color={row.pin ? "green" : (flash ? "red" : "grey")}
                 title={row.pin ? "Сменить оператора" : "Назначить оператора"}
                 size="mini"
                 className="p-2"

@@ -208,3 +208,11 @@
     border-color: #e0b4b4 !important;
     color: #9f3a38 !important;
 }
+
+.buble-title-counter {
+    width: 16px;
+    height: 16px;
+    margin-right: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #e5e5e5;
+}
