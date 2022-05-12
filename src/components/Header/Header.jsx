@@ -73,6 +73,8 @@ function Header(props) {
 
             <div className="header-rows">
 
+                {/* <FullScreenButton /> */}
+
                 {permits.user_create && <UserCreate />}
 
                 {permits.user_auth_query && <AuthQueries {...props} />}
@@ -144,6 +146,59 @@ function Header(props) {
 
 
     </div>
+
+}
+
+const FullScreenButton = () => {
+
+    const [full, setFull] = React.useState(false);
+
+    const handleFull = React.useCallback(() => {
+
+        setFull(f => {
+
+            if (
+                document.fullscreenElement ||
+                document.webkitFullscreenElement ||
+                document.mozFullScreenElement ||
+                document.msFullscreenElement
+            ) {
+
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+
+                return false;
+            }
+
+            const el = document.body;
+
+            if (el.requestFullscreen) {
+                el.requestFullscreen();
+            } else if (el.mozRequestFullScreen) {
+                el.mozRequestFullScreen();
+            } else if (el.webkitRequestFullscreen) {
+                el.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+            } else if (el.msRequestFullscreen) {
+                el.msRequestFullscreen();
+            }
+
+            return true;
+        });
+
+    }, []);
+
+    return <ButtonHeader
+        icon={full ? "compress" : "expand"}
+        title={full ? "Выйти из полноэкранного режима" : "Во весь экран"}
+        onClick={handleFull}
+    />
 
 }
 

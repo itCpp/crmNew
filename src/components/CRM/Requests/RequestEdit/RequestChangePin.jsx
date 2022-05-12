@@ -151,7 +151,7 @@ const RequestChangePin = props => {
                                         fontSize: "70%",
                                         lineHeight: "70%",
                                         marginTop: "0.2rem",
-                                        opacity: "0.7",
+                                        opacity: "0.8",
                                     }}>
                                         <span>
                                             {user.rating
@@ -162,7 +162,7 @@ const RequestChangePin = props => {
                                                     {' '}
                                                     {Number(user.rating?.efficiency || 0).toFixed(0)}%
                                                 </>
-                                                : "- - - - -"
+                                                : <span className="opacity-40">- - - - -</span>
                                             }
                                         </span>
                                     </div>
