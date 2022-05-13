@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "semantic-ui-react";
+import { Button, Label } from "semantic-ui-react";
 
 const CounterFlash = props => {
 
@@ -23,24 +23,36 @@ const CounterFlash = props => {
 
         interval.current = setInterval(checkScroll, 500);
 
-        if (Boolean(notProcessed))
+        if (Boolean(notProcessed)) {
             intervalBtnNull.current = setInterval(handleBtnNullFlash, 1000);
+        } else {
+            setBtnNullFlash(false);
+        }
+
+        if (btnNull.current) {
+
+            if (Boolean(notProcessed)) {
+                btnNull.current.style.transform = "translateX(0)";
+            } else {
+                btnNull.current.style.transform = "translateX(100px)";
+            }
+        }
 
         return () => {
             interval.current && clearInterval(interval.current);
             intervalBtnNull.current && clearInterval(intervalBtnNull.current);
         }
 
-    }, []);
+    }, [notProcessed]);
 
     React.useEffect(() => {
 
-        if (btnNull.current && btnNull.current?.ref?.current) {
+        if (btnNull.current && Boolean(notProcessed)) {
 
             if (scrollShow) {
-                btnNull.current.ref.current.style.transform = "translateY(-40px)";
+                btnNull.current.style.transform = "translateY(-40px)";
             } else {
-                btnNull.current.ref.current.style.transform = "translateY(0)";
+                btnNull.current.style.transform = "translateY(0)";
             }
         }
 
@@ -48,16 +60,27 @@ const CounterFlash = props => {
 
     return <>
 
-        <Button
-            color={btnNullFlash ? "red" : null}
-            circular
-            className="counter-flash-button m-0"
-            icon="user plus"
-            size="big"
-            title="Необходимо назначить оператора"
-            ref={btnNull}
-            onClick={() => setSelect(1)}
-        />
+        <span className="counter-flash-button" ref={btnNull}>
+
+            <Button
+                color={btnNullFlash ? "red" : null}
+                circular
+                className="m-0"
+                icon="user plus"
+                size="big"
+                title="Необходимо назначить оператора"
+                onClick={() => setSelect(1)}
+            />
+
+            {Boolean(notProcessed) && <Label
+                content={notProcessed}
+                circular
+                color="orange"
+                floating
+                size="mini"
+                style={{ top: -5 }}
+            />}
+        </span>
 
     </>
 }

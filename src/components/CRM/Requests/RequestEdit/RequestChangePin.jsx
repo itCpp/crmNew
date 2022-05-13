@@ -100,7 +100,7 @@ const RequestChangePin = props => {
             trigger={<Button
                 icon={row.pin ? "user" : "user plus"}
                 content={row.pin}
-                color={row.pin ? "green" : (flash ? "red" : "grey")}
+                color={row.pin ? "green" : (flash ? "red" : null)}
                 title={row.pin ? "Сменить оператора" : "Назначить оператора"}
                 size="mini"
                 className="p-2"

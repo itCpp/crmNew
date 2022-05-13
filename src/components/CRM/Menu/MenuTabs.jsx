@@ -69,10 +69,10 @@ const MenuTabs = props => {
 
     return <div className={classNames.join(' ')}>
 
-        {Boolean(counter.flash_null) && <CounterFlash
+        <CounterFlash
             notProcessed={Number(counter.flash_null)}
             setSelect={setSelect}
-        />}
+        />
 
         <Link to="/requests" className="menu-list-row title">
 
