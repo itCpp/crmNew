@@ -6,7 +6,7 @@ import SectorSelectSourceModel from "./SectorSelectSourceModel";
 
 function SectorList(props) {
 
-    const { select } = props;
+    const { select, setDefaultSector } = props;
 
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(false);
@@ -61,6 +61,7 @@ function SectorList(props) {
                 setOpen={setSector}
                 setSectors={setSectors}
                 setAutoSector={setAutoSector}
+                setDefaultSector={setDefaultSector}
             />}
 
             <SectorSelectSourceModel

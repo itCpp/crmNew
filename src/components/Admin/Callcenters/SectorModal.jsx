@@ -5,7 +5,7 @@ import { Modal, Form, Message, Button } from 'semantic-ui-react';
 
 const SectorModal = props => {
 
-    const { callcenter, sector, setOpen, setSectors, setAutoSector } = props;
+    const { callcenter, sector, setOpen, setSectors, setAutoSector, setDefaultSector } = props;
 
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(false);
@@ -72,6 +72,7 @@ const SectorModal = props => {
                 });
 
                 setAutoSector(Number(data.auto_set));
+                setDefaultSector(data.default_sector);
                 setOpen(false);
 
             }).catch(e => {
