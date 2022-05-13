@@ -2,6 +2,7 @@ import React from "react";
 import axios from "./../../../utils/axios-header";
 import { Button, Icon, Loader } from "semantic-ui-react";
 import SectorModal from "./SectorModal";
+import SectorSelectSourceModel from "./SectorSelectSourceModel";
 
 function SectorList(props) {
 
@@ -12,6 +13,8 @@ function SectorList(props) {
 
     const [sectors, setSectors] = React.useState([]);
     const [sector, setSector] = React.useState(false);
+    const [autoSector, setAutoSector] = React.useState(0);
+    const [autoSetSelect, setAutoSetSelect] = React.useState(false);
 
     React.useEffect(() => {
 
@@ -22,6 +25,7 @@ function SectorList(props) {
             axios.post('admin/getCallcenterSectors', { id: select }).then(({ data }) => {
                 setError(null);
                 setSectors(data.sectors || []);
+                setAutoSector(Number(data.auto_set));
             }).catch(error => {
                 setError(axios.getError(error));
             }).then(() => {
@@ -56,7 +60,14 @@ function SectorList(props) {
                 sector={sector}
                 setOpen={setSector}
                 setSectors={setSectors}
+                setAutoSector={setAutoSector}
             />}
+
+            <SectorSelectSourceModel
+                sector={autoSetSelect}
+                close={() => setAutoSetSelect(false)}
+                setSectors={setSectors}
+            />
 
         </div>
 
@@ -96,8 +107,10 @@ function SectorList(props) {
                     <Icon
                         name="code branch"
                         title="Выбрать источники для автоматического назначения новой заявке сектора"
-                        color={sector.sources > 0 ? "green" : null}
-                        link
+                        color={sector.sources > 0 ? "blue" : null}
+                        link={autoSector > 0 ? false : true}
+                        disabled={autoSector > 0 ? true : false}
+                        onClick={() => setAutoSetSelect(sector.id)}
                     />
                     <Icon
                         name="pencil"
