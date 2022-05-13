@@ -18,6 +18,7 @@ import ActiveStatusUser from "./ActiveStatusUser";
 import './header.css';
 import UserCreate from "./UserCreate";
 import AlertModal from "../CRM/Notifications/AlertModal";
+import Clock from "./Clock";
 
 function Header(props) {
 
@@ -68,6 +69,8 @@ function Header(props) {
                 </span>
 
                 <NavLink exact to="/" title="Главная страница" className="header-title">CRM MKA</NavLink>
+
+                <Clock />
 
             </div>
 
