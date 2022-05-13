@@ -12,12 +12,17 @@ const SectorModal = props => {
     const [errors, setErrors] = React.useState({});
 
     const [formdata, setFormdata] = React.useState({});
+    const [formdataControl, setFormdataControl] = React.useState({});
     const [save, setSave] = React.useState(false);
+
+    const changedData = JSON.stringify(formdata) === JSON.stringify(formdataControl);
 
     const changeData = React.useCallback((e, { name, value, type, checked }) => {
 
         if (type === "checkbox")
             value = checked ? 1 : 0;
+
+        value = value === "" ? null : value;
 
         setFormdata(prev => ({ ...prev, [name]: value }));
 
@@ -32,6 +37,7 @@ const SectorModal = props => {
 
             axios.post('admin/getSector', { sector }).then(({ data }) => {
                 setFormdata(data.sector);
+                setFormdataControl(data.sector);
             }).catch(e => {
                 setError(axios.getError(e));
             }).then(() => {
@@ -116,6 +122,15 @@ const SectorModal = props => {
                     disabled={error ? true : false}
                 />
 
+                <Form.Checkbox
+                    toggle
+                    label="Автоматически устанавливать сектор новой заявке"
+                    name="auto_set"
+                    checked={formdata.auto_set === 1}
+                    onChange={changeData}
+                    disabled={error ? true : false}
+                />
+
                 <Form.TextArea
                     label="Комментарий"
                     placeholder="Короткое описание..."
@@ -137,7 +152,7 @@ const SectorModal = props => {
                 onClick={() => setSave(true)}
                 content="Сохранить"
                 primary
-                disabled={loading || (error ? true : false)}
+                disabled={loading || changedData || (error ? true : false)}
             />
         </Modal.Actions>
 

@@ -143,8 +143,14 @@
 .callcenter-select-row.callcenter-selected {
     background: #fafafa;
 }
-.callcenter-select-row:hover {
+.callcenter-select-row:hover, .callcenter-sector-row:hover {
     background: #f7f8ff;
+}
+
+.callcenter-sector-row {
+    border-radius: .25rem;
+    background: #fdfdfd;
+    cursor: default;
 }
 
 .clip {
