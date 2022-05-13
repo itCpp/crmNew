@@ -76,9 +76,12 @@ const CounterFlash = props => {
                 content={notProcessed}
                 circular
                 color="orange"
-                floating
                 size="mini"
-                style={{ top: -5 }}
+                style={{
+                    position: "absolute",
+                    top: -5,
+                    right: -5,
+                }}
             />}
         </span>
 
