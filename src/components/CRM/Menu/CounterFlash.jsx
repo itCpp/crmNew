@@ -51,7 +51,7 @@ const CounterFlash = props => {
         <Button
             color={btnNullFlash ? "red" : null}
             circular
-            className="counter-flash-button"
+            className="counter-flash-button m-0"
             icon="user plus"
             size="big"
             title="Необходимо назначить оператора"
