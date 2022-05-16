@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { TableCell, Icon } from "semantic-ui-react";
 import { setShowAdInfo } from "../../../../store/requests/actions";
@@ -7,6 +8,25 @@ const CellId = props => {
 
     const { row } = props;
     const dispatch = useDispatch();
+
+    const interval = useRef();
+    const [flash, setFlash] = useState(false);
+
+    const handleFlash = useCallback(() => setFlash(f => !f), []);
+
+    useEffect(() => {
+
+        if (row.status_records_flash) {
+            interval.current = setInterval(handleFlash, 1000);
+        } else {
+            setFlash(false);
+        }
+
+        return () => {
+            interval.current && clearInterval(interval.current);
+        }
+
+    }, [row]);
 
     return <TableCell>
 
@@ -25,8 +45,17 @@ const CellId = props => {
             </span>}
         </div>
 
-        <div className="wrap-cell" title={row.status?.name || "Не обработана"}>
+        <div className={`wrap-cell`} title={row.status_records_flash ? "Необходимо подтвердить" : (row.status?.name || "Не обработана")}>
+
             <strong>{row.status?.name || "Не обработана"}</strong>
+
+            {row.status_records_flash && flash && <span className={`ml-1 ${(row.status_records_flash && flash) && "flash-cell"}`}>
+                <Icon
+                    name="warning sign"
+                    className="m-0"
+                />
+            </span>}
+
         </div>
 
         <div title={`Источник: ${row.source?.name || "Неизвестно"}`} className="d-flex mt-1">

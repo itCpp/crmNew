@@ -412,3 +412,11 @@
 .request-filter-date input {
     max-height: 36px;
 }
+
+.flash-cell {
+    color: #ffffff;
+    background: #ff2d2d;
+    border-radius: .25rem;
+    padding-left: .5rem;
+    padding-right: .5rem;
+}
