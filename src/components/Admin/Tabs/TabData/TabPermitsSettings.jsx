@@ -214,6 +214,16 @@ export default function TabBasicSettings(props) {
                 disabled={loading || error}
             />
 
+            <Checkbox
+                toggle
+                name="flash_records_confirm"
+                onChange={(e, { name, checked }) => setFormdata(e, { name, value: checked })}
+                checked={row.flash_records_confirm}
+                label="Выводить индикацию неподтвержденных записей"
+                className="permites-check d-block mb-2"
+                disabled={loading || error}
+            />
+
         </div>
 
     </div>
