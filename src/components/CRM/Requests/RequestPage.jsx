@@ -73,6 +73,16 @@ const RequestPage = props => {
 
                 {!loading && <div className="d-flex align-items-center">
 
+                    {row.status_records_flash && <span className="mx-1">
+                        <Icon
+                            name="warning sign"
+                            size="big"
+                            color="red"
+                            fitted
+                            title="Необходимо подтвердить запись"
+                        />
+                    </span>}
+
                     <Button
                         icon="mail"
                         circular
@@ -119,16 +129,16 @@ const RequestPage = props => {
 
             <RequestRowStatistic data={data} />
 
-            <Grid.Row columns="equal" stretched>
+            <Grid.Row columns="2" stretched>
 
-                <Grid.Column>
+                <Grid.Column width={10}>
                     <RequestPageEditForm
                         data={data}
                         setRow={setRow}
                     />
                 </Grid.Column>
 
-                <Grid.Column className="h-100">
+                <Grid.Column className="h-100" width={6}>
                     <div className="block-card">
                         <Comments
                             row={row}

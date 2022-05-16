@@ -10,7 +10,7 @@ const CellId = props => {
     const dispatch = useDispatch();
 
     const interval = useRef();
-    const [flash, setFlash] = useState(false);
+    const [flash, setFlash] = useState(row.status_records_flash ? true : false);
 
     const handleFlash = useCallback(() => setFlash(f => !f), []);
 
