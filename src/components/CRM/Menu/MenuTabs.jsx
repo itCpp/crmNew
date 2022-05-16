@@ -70,6 +70,7 @@ const MenuTabs = props => {
     return <div className={classNames.join(' ')}>
 
         <CounterFlash
+            counter={counter}
             notProcessed={Number(counter.flash_null)}
             setSelect={setSelect}
         />
