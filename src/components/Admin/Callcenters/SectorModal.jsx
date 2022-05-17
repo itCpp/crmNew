@@ -5,7 +5,7 @@ import { Modal, Form, Message, Button } from 'semantic-ui-react';
 
 const SectorModal = props => {
 
-    const { callcenter, sector, setOpen, setSectors, setAutoSector, setDefaultSector } = props;
+    const { callcenter, sector, setOpen, setSectors, setAutoSector, setDefaultSector, setCallcenters } = props;
 
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(false);
@@ -69,6 +69,17 @@ const SectorModal = props => {
 
                     return prev;
 
+                });
+
+                setCallcenters(prev => {
+
+                    prev.forEach((row, i) => {
+                        if (row.id === data.callcenter.id) {
+                            prev[i] = { ...prev[i], ...data.callcenter };
+                        }
+                    });
+
+                    return prev;
                 });
 
                 setAutoSector(Number(data.auto_set));

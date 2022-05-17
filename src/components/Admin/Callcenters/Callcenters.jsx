@@ -56,27 +56,39 @@ function Callcenters() {
             list={[error]}
         />}
 
-        {!error && !loading && defaultSector && <div className="admin-content-segment">
+        {!error && !loading && defaultSector && <div className="admin-content-segment" style={{
+            background: "#fbfde2"
+        }}>
 
             <Header as="h5" content="Установлен сектор по умолчанию" />
             <div><small>В глобальных настройках выбран сектор колл-центра <b className="text-primary">{defaultSector.callcenter?.name || `#${defaultSector.callcenter_id}`} - {defaultSector.name}</b>, который будет использован для назначения новой заявке</small></div>
 
         </div>}
 
+        {!error && !loading && <CallcenterList
+            callcenters={callcenters}
+            setCallcenters={setCallcenters}
+            select={select}
+            setSelect={setSelect}
+            setUpdate={setUpdate}
+        />}
+
         {!error && !loading && <div className="d-flex justify-content-start align-items-start flex-segments">
 
-            <CallcenterList
+            {/* <CallcenterList
                 callcenters={callcenters}
                 setCallcenters={setCallcenters}
                 select={select}
                 setSelect={setSelect}
                 setUpdate={setUpdate}
-            />
+            /> */}
+
             <SectorList
                 select={select}
                 update={update}
                 setUpdate={setUpdate}
                 setDefaultSector={setDefaultSector}
+                setCallcenters={setCallcenters}
             />
 
         </div>}

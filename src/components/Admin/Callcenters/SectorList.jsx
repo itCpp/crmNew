@@ -6,7 +6,7 @@ import SectorSelectSourceModel from "./SectorSelectSourceModel";
 
 function SectorList(props) {
 
-    const { select, setDefaultSector } = props;
+    const { select, setDefaultSector, setCallcenters } = props;
 
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(false);
@@ -61,6 +61,7 @@ function SectorList(props) {
                 setOpen={setSector}
                 setSectors={setSectors}
                 setAutoSector={setAutoSector}
+                setCallcenters={setCallcenters}
                 setDefaultSector={setDefaultSector}
             />}
 
@@ -94,17 +95,17 @@ function SectorList(props) {
                 className={className.join(" ")}
             >
                 <div className="flex-grow-1 p-0">
-                    <strong>{sector.name}</strong>
-                    {sector.comment && <div><small className="opacity-50">{sector.comment}</small></div>}
-                </div>
-
-                <span className="p-0">
                     <Icon
                         name="power"
                         color={sector.active === 1 ? "green" : null}
                         title={sector.active === 1 ? "Включен в работу" : "Деактивирован"}
                         disabled={sector.active !== 1}
                     />
+                    <strong>{sector.name}</strong>
+                    {sector.comment && <div><small className="opacity-50">{sector.comment}</small></div>}
+                </div>
+
+                <span className="p-0">
                     <Icon
                         name="code branch"
                         title="Выбрать источники для автоматического назначения новой заявке сектора"

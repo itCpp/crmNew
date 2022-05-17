@@ -33,10 +33,11 @@ function CallcenterList(props) {
 
     return <div className="admin-content-segment">
 
-        {edit
-            ? <CallcenterModal edit={edit} setOpen={setEdit} addCallcenter={addCallcenter} />
-            : null
-        }
+        {edit && <CallcenterModal
+            edit={edit}
+            setOpen={setEdit}
+            addCallcenter={addCallcenter}
+        />}
 
         <div className="divider-header">
 
@@ -56,51 +57,60 @@ function CallcenterList(props) {
 
         </div>
 
-        {callcenters.length
-            ? callcenters.map(callcenter => {
+        {callcenters.length > 0 && callcenters.map(callcenter => {
 
-                let className = [
-                    'callcenter-select-row',
-                    'd-flex', 'justify-content-between', 'align-items-center'
-                ];
+            let className = [
+                'callcenter-select-row',
+                'd-flex', 'justify-content-between', 'align-items-center'
+            ];
 
-                if (select === callcenter.id)
-                    className.push('callcenter-selected');
+            if (select === callcenter.id)
+                className.push('callcenter-selected');
 
-                return <div
-                    key={callcenter.id}
-                    className={className.join(" ")}
-                    title={callcenter.comment || callcenter.name}
+            return <div
+                key={callcenter.id}
+                className={className.join(" ")}
+                title={callcenter.comment || callcenter.name}
+            >
+                <div
+                    className="flex-grow-1"
+                    onClick={() => {
+                        setSelect(callcenter.id);
+                        if (select === callcenter.id)
+                            setUpdate(true);
+                    }}
                 >
-                    <div
-                        className="flex-grow-1"
-                        onClick={() => {
-                            setSelect(callcenter.id);
-                            if (select === callcenter.id)
-                                setUpdate(true);
-                        }}
-                    >
-                        <div>{callcenter.name}</div>
-                        {callcenter.comment
-                            ? <div><small className="clip">{callcenter.comment}</small></div>
-                            : null
-                        }
-                    </div>
+
                     <div>
-                        <Icon
-                            name="edit"
-                            onClick={() => setEdit(callcenter.id)}
-                            color="blue"
-                            className="button-icon"
-                            title="Редактировать данные"
-                        />
+                        <span>{callcenter.name}</span>
+                        <span className="opacity-80 ml-2" title="Активные секторы / Всего секторов">
+                            <span className="text-success">{callcenter.sectorCountActive}</span>
+                            <span>/</span>
+                            <span>{callcenter.sectorCount}</span>
+                        </span>
                     </div>
+
+                    {callcenter.comment && <div>
+                        <small className="clip">{callcenter.comment}</small>
+                    </div>}
+
                 </div>
-            })
-            : <div className="mt-4 mb-3 text-center text-muted">
-                <small>Создайте колл-центр</small>
+                <div>
+                    <Icon
+                        name="pencil"
+                        onClick={() => setEdit(callcenter.id)}
+                        color="blue"
+                        className="button-icon"
+                        title="Редактировать данные"
+                    />
+                </div>
             </div>
-        }
+        })}
+
+
+        {callcenters.length === 0 && <div className="mt-4 mb-3 text-center text-muted">
+            <small>Создайте колл-центр</small>
+        </div>}
 
     </div>
 
