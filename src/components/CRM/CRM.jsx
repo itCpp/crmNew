@@ -13,7 +13,7 @@ import {
     setStartData
 } from "./../../store/requests/actions";
 import { setTopMenu } from "./../../store/interface/actions";
-import { Loader, Message } from "semantic-ui-react";
+import { Icon, Loader, Message } from "semantic-ui-react";
 import "./crm.css";
 import Menu from "./Menu/Menu";
 import Requests from "./Requests/Requests";
@@ -249,7 +249,25 @@ const CRM = props => {
             // Информирование по личным заявкам
             window.Echo && window.Echo.private(`App.Requests.${window.userPin}`)
                 .listen('Requests\\UpdateRequestRowForPin', updateRequestRowForPin)
-                .listen('Requests\\UpdateRequestRow', updateRequestRow);
+                .listen('Requests\\UpdateRequestRow', updateRequestRow)
+                .listen('Requests\\NewSmsEvent', data => {
+                    axios.toast(null, {
+                        time: 0,
+                        title: "Входящее СМС",
+                        type: "warning",
+                        icon: "mail",
+                        description: <div>
+                            <div className="mb-1">
+                                <b title="Номер заявки" className="mr-2">#{data.to_request}</b>
+                                <span>{data.phone}</span>
+                            </div>
+                            {data.client_name && <div className="d-flex">
+                                <Icon name="user" disabled />{data.client_name}
+                            </div>}
+                            <p className="mb-0 mt-0"><i>{data.message}</i></p>
+                        </div>
+                    });
+                });
 
             if (data.intervalCounter) {
                 counterUpdateInterval = setInterval(checkCounter, data.intervalCounter);
