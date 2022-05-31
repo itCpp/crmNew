@@ -1,11 +1,13 @@
 import React from "react";
-import { Icon, Loader, Message } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 import { axios, getFormaterTime } from "../../../utils";
 import moment from "moment";
+import AudioCalls from "./AudioCalls";
 
 const CallsLogRow = props => {
 
     const { setRows, hidePhone } = props;
+    const { play, setPlay } = props;
 
     const [row, setRow] = React.useState(props.row);
     const [phone, setPhone] = React.useState({
@@ -39,7 +41,7 @@ const CallsLogRow = props => {
         }
     }, []);
 
-    return <div className="block-card mb-2 px-3 py-2">
+    return <div className="block-card mb-2 px-3 py-3 position-relative">
 
         <div className="d-flex align-items-center">
 
@@ -73,14 +75,22 @@ const CallsLogRow = props => {
             {row.duration && <div className="d-flex align-items-center">
 
                 <span className="mr-3" title="Длительность записи">
-                    {getFormaterTime(row.duration)}
+                    {(play?.id === row.id)
+                        ? <AudioCalls row={play} />
+                        : getFormaterTime(row.duration)
+                    }
                 </span>
 
                 <span>
                     <Icon
-                        name="play"
-                        disabled
-                        title="Воспроизвести"
+                        name={play?.id === row.id ? "stop" : "play"}
+                        link
+                        title={play?.id === row.id ? "Остановить" : "Воспроизвести"}
+                        onClick={() => setPlay(play?.id === row.id ? null : {
+                            id: row.id,
+                            path: row.url,
+                            duration: row.duration,
+                        })}
                     />
                 </span>
 

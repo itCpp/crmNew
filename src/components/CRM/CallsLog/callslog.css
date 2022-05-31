@@ -1,0 +1,17 @@
+.calls-log-progress-bar {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    right: 5px;
+    height: 5px;
+    background: #eee;
+    border-radius: .25rem;
+    overflow: hidden;
+}
+
+.calls-log-progress {
+    height: 100%;
+    width: 0%;
+    background-color: #4183c4;
+    transition: .1s;
+}

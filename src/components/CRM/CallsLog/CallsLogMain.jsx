@@ -2,8 +2,9 @@ import React from "react";
 import { Loader, Message } from "semantic-ui-react";
 import { axios } from "../../../utils";
 import CallsLogRow from "./CallsLogRow";
+import "./callslog.css";
 
-const CallsLogMain = props => {
+const CallsLogMain = () => {
 
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
@@ -13,6 +14,8 @@ const CallsLogMain = props => {
     const [load, setLoad] = React.useState(false);
     const [stop, setStop] = React.useState(false);
     const [page, setPage] = React.useState(1);
+
+    const [play, setPlay] = React.useState(null);
 
     const callsLogEvent = React.useCallback(data => {
 
@@ -106,6 +109,8 @@ const CallsLogMain = props => {
             row={row}
             hidePhone={hidePhone}
             setRows={setRows}
+            play={play}
+            setPlay={setPlay}
         />)}
 
         {(loading || load) && <Loader inline="centered" active className="mt-2" />}
