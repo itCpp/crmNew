@@ -183,7 +183,7 @@ const Online = props => {
 
             </div>
 
-            {row.sessions.map((session, i) => <div key={`session_${session.id}`} className="d-flex mt-3">
+            {row.sessions.map((session, i) => <div key={`session_${session.id}`} className="d-flex mt-3 align-items-center">
 
                 <div className={`d-flex text-nowrap ${session.deleted_at ? 'opacity-60' : 'opacity-100'}`}>
                     <span>
@@ -198,7 +198,7 @@ const Online = props => {
                     </span>
                 </div>
 
-                <div className={`ml-3 ${session.deleted_at ? 'opacity-60' : 'opacity-100'}`}>
+                <div className={`ml-3 ${session.deleted_at ? 'opacity-60' : 'opacity-100'} text-nowrap`} style={{ textOverflow: "ellipsis", overflow: "hidden" }} title={session.user_agent}>
                     <small>{session.user_agent}</small>
                 </div>
 
