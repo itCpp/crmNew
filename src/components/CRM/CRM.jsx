@@ -17,14 +17,7 @@ import { Icon, Loader, Message } from "semantic-ui-react";
 import "./crm.css";
 import Menu from "./Menu/Menu";
 import Requests from "./Requests/Requests";
-// import Queues from "./Queues";
-// import Sms from "./Sms";
-// import SecondCalls from "./SecondCalls";
-// import Operators from "./Operators";
-// import Rating from "./Rating";
 import User from "./User";
-// import MyTests from "./MyTests";
-// import AgreementClients from "./AgreementClients";
 import AudioCalls from "./AudioCalls";
 
 const AgreementClients = React.lazy(() => import("./AgreementClients"));
@@ -39,6 +32,7 @@ const Fines = React.lazy(() => import("./Fines"));
 const ConsultationsClients = React.lazy(() => import("./ConsultationsClients"));
 const Phoneboock = React.lazy(() => import("./Phoneboock"));
 const Counter = React.lazy(() => import("./Counter"));
+const CallsLog = React.lazy(() => import("./CallsLog"));
 
 const CrmContent = React.memo(withRouter(props => {
 
@@ -72,6 +66,8 @@ const CrmContent = React.memo(withRouter(props => {
         return <ConsultationsClients {...props} />
     else if (page === "/phoneboock")
         return <Phoneboock {...props} />
+    else if (page == "/callslog" && permits.calls_log_access)
+        return <CallsLog {...props} />
     else
         return <User {...props} />
 

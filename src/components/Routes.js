@@ -44,7 +44,7 @@ export default function Routes(props) {
                     <Route exact path="/fines" component={Crm} />
                     <Route exact path="/consultations" component={Crm} />
                     <Route exact path="/phoneboock" component={Crm} />
-                    <Route exact path="/counter" component={Crm} />
+                    <Route exact path="/callslog" component={Crm} />
 
                     <Route exact path="/admin" component={Admin} />
                     <Route exact path="/admin/:page" component={Admin} />

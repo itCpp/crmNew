@@ -134,6 +134,15 @@ const Menu = props => {
                 </div>
             </Link>}
 
+            {permits.calls_log_access && <Link to="/callslog" className={`menu-list-row title ${selectMenu === "/callslog" ? 'tab-list-active' : ''}`}>
+                <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
+                    <span>
+                        <Icon name="call" />
+                        <span>Журнал вызовов</span>
+                    </span>
+                </div>
+            </Link>}
+
             <Link to="/mytests" className={`menu-list-row title ${selectMenu === "/mytests" ? 'tab-list-active' : ''}`}>
                 <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                     <span>
