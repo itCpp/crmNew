@@ -1,13 +1,14 @@
 import React from "react";
-import { Icon, Loader, Message } from "semantic-ui-react";
+import { Loader, Message } from "semantic-ui-react";
 import { axios } from "../../../utils";
-import moment from "moment";
+import CallsLogRow from "./CallsLogRow";
 
 const CallsLogMain = props => {
 
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(null);
     const [rows, setRows] = React.useState([]);
+    const [hidePhone, setHidePhone] = React.useState(true);
 
     const callsLogEvent = React.useCallback(data => {
 
@@ -30,9 +31,7 @@ const CallsLogMain = props => {
         axios.post('calls/log', formdata || {}).then(({ data }) => {
 
             setRows(data.rows);
-
-            window.Echo && window.Echo.private(`App.Crm.Calls.Log`)
-                .listen('CallsLogEvent', callsLogEvent);
+            setHidePhone(data.hidePhone);
 
         }).catch(e => {
             setError(axios.getError(e));
@@ -40,15 +39,18 @@ const CallsLogMain = props => {
             setLoading(false);
         });
 
-        return () => {
-            window.Echo && window.Echo.leave(`App.Crm.Calls.Log`);
-        }
-
     }, []);
 
     React.useEffect(() => {
 
         getCallsLog();
+
+        window.Echo && window.Echo.private(`App.Crm.Calls.Log`)
+            .listen('CallsLogEvent', callsLogEvent);
+
+        return () => {
+            window.Echo && window.Echo.leave(`App.Crm.Calls.Log`);
+        }
 
     }, []);
 
@@ -73,47 +75,9 @@ const CallsLogMain = props => {
         {!loading && !error && rows.map((row, i) => <CallsLogRow
             key={`${row.id}_${i}`}
             row={row}
+            hidePhone={hidePhone}
+            setRows={setRows}
         />)}
-
-    </div>
-}
-
-const CallsLogRow = props => {
-
-    const { row } = props;
-
-    return <div className="block-card mb-2 px-3 py-2">
-
-        <div className="d-flex align-items-center">
-
-            <div className="mr-3">
-                <Icon
-                    name={row.type === "out" ? "arrow right" : "arrow left"}
-                    color={row.duration > 0 ? "green" : "red"}
-                />
-            </div>
-
-            <div className="flex-grow-1 d-flex justify-content-start align-items-center">
-
-                <div>{row.caller}</div>
-                <div className="mx-2">
-                    <Icon
-                        name="angle double right"
-                        fitted
-                        disabled
-                    />
-                </div>
-                <div>{row.phone}</div>
-
-            </div>
-
-            <div className="d-flex align-items-center"></div>
-
-            <div className="ml-3 opacity-60">
-                {moment(row.call_at).format("DD.MM.YYYY в HH:mm")}
-            </div>
-
-        </div>
 
     </div>
 }
