@@ -9,17 +9,40 @@ const CallsLogMain = props => {
     const [error, setError] = React.useState(null);
     const [rows, setRows] = React.useState([]);
 
+    const callsLogEvent = React.useCallback(data => {
+
+        setRows(prev => {
+
+            let rows = [...prev];
+
+            rows.unshift({ ...data, checkHidePhone: true });
+            rows.splice(rows.length - 1, 1);
+
+            return rows;
+        });
+
+    }, []);
+
     const getCallsLog = React.useCallback(formdata => {
 
         setLoading(true);
 
         axios.post('calls/log', formdata || {}).then(({ data }) => {
+
             setRows(data.rows);
+
+            window.Echo && window.Echo.private(`App.Crm.Calls.Log`)
+                .listen('CallsLogEvent', callsLogEvent);
+
         }).catch(e => {
             setError(axios.getError(e));
         }).then(() => {
             setLoading(false);
         });
+
+        return () => {
+            window.Echo && window.Echo.leave(`App.Crm.Calls.Log`);
+        }
 
     }, []);
 
