@@ -1,6 +1,6 @@
 import React from "react";
 import { Icon, Loader, Message } from "semantic-ui-react";
-import { axios } from "../../../utils";
+import { axios, getFormaterTime } from "../../../utils";
 import moment from "moment";
 
 const CallsLogRow = props => {
@@ -45,18 +45,18 @@ const CallsLogRow = props => {
 
             <div className="mr-3">
                 <Icon
-                    name={row.type === "out" ? "arrow right" : "arrow left"}
+                    name={row.type === "in" ? "arrow right" : "arrow left"}
+                    title={row.type === "in" ? "Входящий" : "Исходящий"}
                     color={row.duration > 0 ? "green" : "red"}
                 />
             </div>
 
-            <div className="flex-grow-1 d-flex justify-content-start align-items-center">
+            <div className="flex-grow-1 d-flex justify-content-start align-items-center" style={{ fontFamily: "monospace" }}>
 
-                <div style={{ fontFamily: "monospace" }}>
+                <div>
                     <span>{phone.caller}</span>
-                    {row.operator && <b>
-                        {' '}
-                        <span style={{ color: "#0e4dff" }}>{row.operator}</span>
+                    {row.operator && <b>{' '}
+                        <span style={{ color: "#000000" }}>{row.operator}</span>
                     </b>}
                 </div>
                 <div className="mx-2">
@@ -66,11 +66,40 @@ const CallsLogRow = props => {
                         disabled
                     />
                 </div>
-                <div style={{ fontFamily: "monospace" }}>{phone.number}</div>
+                <div>{phone.number}</div>
 
             </div>
 
-            <div className="d-flex align-items-center"></div>
+            {row.duration && <div className="d-flex align-items-center">
+
+                <span className="mr-3" title="Длительность записи">
+                    {getFormaterTime(row.duration)}
+                </span>
+
+                <span>
+                    <Icon
+                        name="play"
+                        disabled
+                        title="Воспроизвести"
+                    />
+                </span>
+
+                <span>
+                    <Icon
+                        name="download"
+                        link
+                        title="Скачать"
+                        onClick={() => {
+                            var tempLink = document.createElement('a');
+                            tempLink.href = row.url;
+                            tempLink.setAttribute('download', row.url);
+                            tempLink.setAttribute('target', "_blank");
+                            tempLink.click();
+                        }}
+                    />
+                </span>
+
+            </div>}
 
             <div className="ml-3 opacity-60">
                 {moment(row.call_at).format("DD.MM.YYYY в HH:mm")}

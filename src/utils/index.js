@@ -39,3 +39,20 @@ export const Highlighted = ({ text = '', highlight = '' }) => {
         </span>
     )
 }
+
+export const getFormaterTime = timestamp => {
+
+    let hours = Math.floor(timestamp / 60 / 60);
+    let minutes = Math.floor(timestamp / 60) - (hours * 60);
+    let seconds = timestamp % 60;
+
+    let formater = [
+        minutes.toString().padStart(2, '0'),
+        seconds.toString().padStart(2, '0')
+    ];
+
+    if (hours > 0)
+        formater.unshift(hours.toString().padStart(2, '0'));
+
+    return formater.join(':');
+}
