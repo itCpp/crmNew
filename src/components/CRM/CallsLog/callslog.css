@@ -3,10 +3,15 @@
     bottom: 5px;
     left: 5px;
     right: 5px;
-    height: 5px;
+    height: 2px;
     background: #eee;
     border-radius: .25rem;
     overflow: hidden;
+    transition: .1s;
+}
+
+.calls-log-progress-bar:hover {
+    height: 7px;
 }
 
 .calls-log-progress {

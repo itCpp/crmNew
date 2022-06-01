@@ -1,11 +1,13 @@
 import React from "react";
 import moment from "moment";
+import { Icon } from "semantic-ui-react";
+import AudioVisual from "./AudioVisual";
 
 const player = new Audio();
 
 const AudioCalls = props => {
 
-    const { row } = props;
+    const { row, setPlay } = props;
 
     const interval = React.useRef();
     const bar = React.useRef();
@@ -87,9 +89,31 @@ const AudioCalls = props => {
 
     return <div className="audio-calls-log">
 
-        <span>{moment.unix(current).utc().format(duration >= 3600 ? 'HH:mm:ss' : 'mm:ss')}</span>
-        <span className="mx-1">/</span>
-        <span>{moment.unix(duration).utc().format(duration >= 3600 ? 'HH:mm:ss' : 'mm:ss')}</span>
+        {/* <AudioVisual player={player} /> */}
+
+        <span className="mr-3">
+            <span>
+                {moment.unix(current).utc().format(duration >= 3600 ? 'HH:mm:ss' : 'mm:ss')}
+            </span>
+            <span className="mx-1">/</span>
+            <span>
+                {moment.unix(duration).utc().format(duration >= 3600 ? 'HH:mm:ss' : 'mm:ss')}
+            </span>
+        </span>
+
+        <Icon
+            name="stop"
+            title="Остановить"
+            link
+            onClick={() => setPlay(null)}
+        />
+
+        <Icon
+            name={paused ? "play" : "pause"}
+            title={paused ? "Продолжить" : "Пауза"}
+            link
+            onClick={() => changePaused()}
+        />
 
         <div className="calls-log-progress-bar" onClick={setCurrentTime} ref={progress}>
             <div className="calls-log-progress" ref={bar}></div>

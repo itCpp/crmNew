@@ -74,14 +74,27 @@ const CallsLogRow = props => {
 
             {row.duration && <div className="d-flex align-items-center">
 
-                <span className="mr-3" title="Длительность записи">
+                <span title="Длительность записи">
                     {(play?.id === row.id)
-                        ? <AudioCalls row={play} />
-                        : getFormaterTime(row.duration)
+                        ? <AudioCalls row={play} setPlay={setPlay} />
+                        : <span className="mr-3">{getFormaterTime(row.duration)}</span>
                     }
                 </span>
 
-                <span>
+                {(play?.id !== row.id) && <span>
+                    <Icon
+                        name="play"
+                        link
+                        title="Воспроизвести"
+                        onClick={() => setPlay({
+                            id: row.id,
+                            path: row.url,
+                            duration: row.duration,
+                        })}
+                    />
+                </span>}
+
+                {/* {(play?.id !== row.id) && <span>
                     <Icon
                         name={play?.id === row.id ? "stop" : "play"}
                         link
@@ -92,7 +105,7 @@ const CallsLogRow = props => {
                             duration: row.duration,
                         })}
                     />
-                </span>
+                </span>} */}
 
                 <span>
                     <Icon
