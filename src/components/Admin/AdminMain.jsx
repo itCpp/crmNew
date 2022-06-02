@@ -1,12 +1,11 @@
-import React from 'react';
-import axios from './../../utils/axios-header';
-import { connect } from 'react-redux';
-
-import { Loader } from 'semantic-ui-react';
-
-import './admin.css';
-import AdminMenu from './AdminMenu';
-import AdminContent from './AdminContent';
+import React from "react";
+import axios from "../../utils/axios-header";
+import { connect } from "react-redux";
+import { Loader } from "semantic-ui-react";
+import AdminMenu from "./AdminMenu";
+import AdminContent from "./AdminContent";
+import NotFound from "../NotFound";
+import "./admin.css";
 
 function Admin(props) {
 
@@ -40,8 +39,10 @@ function Admin(props) {
     if (loading)
         return <Loader inline active className="mx-auto mt-4" />
 
-    if (error)
-        return <div className="text-danger text-center mt-4"><strong>{error}</strong></div>
+    if (error) {
+        return <NotFound />
+        // return <div className="text-danger text-center mt-4"><strong>{error}</strong></div>
+    }
 
     return <div className="admin-content">
         <AdminMenu permits={response.permits} />
