@@ -33,6 +33,7 @@ const ActiveStatusUser = props => {
             <Icon
                 name={worktime?.timeout_icon || "clock"}
                 color={worktime?.timeout_color || "grey"}
+                disabled={worktime?.timeout_disabled ? true : false}
             />
         </ButtonHeader>
 

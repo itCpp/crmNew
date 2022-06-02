@@ -21,6 +21,9 @@ const CallsLogMain = () => {
 
         setRows(prev => {
 
+            if (prev.find(item => item.id === data.id))
+                return prev;
+
             let rows = [...prev];
 
             rows.unshift({ ...data, checkHidePhone: true });
@@ -104,8 +107,8 @@ const CallsLogMain = () => {
             <span className="opacity-50">Журнал пуст</span>
         </div>}
 
-        {!loading && !error && rows.map((row, i) => <CallsLogRow
-            key={`${row.id}_${i}`}
+        {!loading && !error && rows.map(row => <CallsLogRow
+            key={row.id}
             row={row}
             hidePhone={hidePhone}
             setRows={setRows}
