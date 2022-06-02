@@ -4,8 +4,8 @@ import { Form, Icon } from "semantic-ui-react";
 import FormMemo from "../../../Form";
 
 export const caseSensitiveSearch = (options, query) => {
-    const re = new RegExp(_.escapeRegExp(query))
-    return options.filter((opt) => re.test(opt.text))
+    const re = new RegExp(_.escapeRegExp(String(query).toLowerCase()))
+    return options.filter((opt) => re.test(String(opt.text).toLowerCase()))
 }
 
 const RequestEditForm = props => {
@@ -57,6 +57,7 @@ const RequestEditForm = props => {
                     value={formdata?.region || ""}
                     onChange={changeData}
                     error={errors?.region ? true : false}
+                    noResultsMessage="Город не найден"
                 />
             </Form.Field>
             <Form.Field width={8}>
@@ -70,6 +71,7 @@ const RequestEditForm = props => {
                     value={formdata?.theme || ""}
                     onChange={changeData}
                     error={errors?.theme ? true : false}
+                    noResultsMessage="Тематика не найдена"
                 />
             </Form.Field>
         </Form.Group>
