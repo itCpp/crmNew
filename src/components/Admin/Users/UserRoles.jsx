@@ -1,7 +1,6 @@
-import React from 'react';
-import axios from './../../../utils/axios-header';
-
-import { Modal, Header, Placeholder, Checkbox, Loader } from 'semantic-ui-react';
+import React from "react";
+import axios from "./../../../utils/axios-header";
+import { Modal, Header, Placeholder, Checkbox, Label, Loader } from "semantic-ui-react";
 
 function Placeholders() {
 
@@ -34,7 +33,9 @@ function User(props) {
 
     const [permits, setPermits] = React.useState([]);
     const [userPermits, setUserPermits] = React.useState([]);
+    const [rolesPermits, setRolesPermits] = React.useState([]);
     const [changePermit, setChangePermit] = React.useState(null);
+    const [superAdmin, setSuperAdmin] = React.useState(false);
 
     React.useEffect(() => {
 
@@ -49,6 +50,8 @@ function User(props) {
 
                 setPermits(data.permits);
                 setUserPermits(data.user_permits);
+                setRolesPermits(data.roles_permits);
+                setSuperAdmin(data.superadmin);
 
             }).catch(error => {
 
@@ -102,6 +105,8 @@ function User(props) {
                 });
 
                 setUsers(usersUpdate);
+                setRolesPermits(data.roles_permits);
+                setSuperAdmin(data.superadmin || false);
 
             }).catch(() => {
 
@@ -209,37 +214,36 @@ function User(props) {
                 dividing
             />
 
-            {loading === true
-                ? <Placeholders />
-                : !roles.length
-                    ? <div>Ролей не найдено</div>
-                    : roles.map(role => <div key={`role_${role.role}`} className={`d-flex justify-content-between align-items-center row-rights ${errors.indexOf(`role_${role.role}`) >= 0 ? "row-rights-error" : ""}`}>
-                        <Header
-                            as="h4"
-                            content={role.name || role.role}
-                            subheader={role.comment}
-                            className="mt-0 mb-0"
-                            color={errors.indexOf(`role_${role.role}`) >= 0 ? "red" : "black"}
+            {loading && <Placeholders />}
+            {!loading && roles.length === 0 && <div className="text-center opacity-60 my-5">Ролей не найдено</div>}
+
+            {!loading && roles.length > 0 && <div>
+                {roles.map(role => <div key={`role_${role.role}`} className={`d-flex justify-content-between align-items-center row-rights ${errors.indexOf(`role_${role.role}`) >= 0 ? "row-rights-error" : ""}`}>
+
+                    <Header
+                        as="h4"
+                        content={role.name || role.role}
+                        subheader={role.comment}
+                        className="mt-0 mb-0"
+                        color={errors.indexOf(`role_${role.role}`) >= 0 ? "red" : "black"}
+                    />
+
+                    <div className="position-relative">
+                        <Checkbox
+                            toggle
+                            checked={userRoles.indexOf(role.role) >= 0}
+                            readOnly={loadingKeys.indexOf(`role_${role.role}`) >= 0}
+                            disabled={loadingKeys.indexOf(`role_${role.role}`) >= 0}
+                            onChange={() => setChangeRole(role.role)}
+                            name={`role_${role.role}`}
                         />
-                        <div className="position-relative">
-                            <Checkbox
-                                toggle
-                                checked={userRoles.indexOf(role.role) >= 0}
-                                readOnly={loadingKeys.indexOf(`role_${role.role}`) >= 0}
-                                disabled={loadingKeys.indexOf(`role_${role.role}`) >= 0}
-                                onChange={() => setChangeRole(role.role)}
-                                name={`role_${role.role}`}
-                            />
-                            {
-                                loadingKeys.indexOf(`role_${role.role}`) >= 0
-                                    ? <div className="d-flex justify-content-center align-items-center loading-checkbox">
-                                        <Loader inverted size="mini" />
-                                    </div>
-                                    : null
-                            }
-                        </div>
-                    </div>)
-            }
+                        {loadingKeys.indexOf(`role_${role.role}`) >= 0 && <div className="d-flex justify-content-center align-items-center loading-checkbox">
+                            <Loader inverted size="mini" />
+                        </div>}
+                    </div>
+
+                </div>)}
+            </div>}
 
             <Header
                 as="h2"
@@ -248,37 +252,51 @@ function User(props) {
                 dividing
             />
 
-            {loading === true
-                ? <Placeholders />
-                : !permits.length
-                    ? <div>Ролей не найдено</div>
-                    : permits.map(permit => <div key={`permit_${permit.permission}`} className={`d-flex justify-content-between align-items-center row-rights ${errors.indexOf(`permit_${permit.permission}`) >= 0 ? "row-rights-error" : ""}`}>
-                        <Header
-                            as="h4"
-                            content={permit.permission}
-                            subheader={permit.comment}
-                            className="mt-0 mb-0"
-                            color={errors.indexOf(`permit_${permit.permission}`) >= 0 ? "red" : "black"}
+            {loading && <Placeholders />}
+            {!loading && permits.length === 0 && <div className="text-center opacity-60 my-5">Разрешений не найдено</div>}
+
+            {!loading && permits.length > 0 && <div>
+                {permits.map(permit => <div key={`permit_${permit.permission}`} className={`d-flex justify-content-between align-items-center row-rights ${errors.indexOf(`permit_${permit.permission}`) >= 0 ? "row-rights-error" : ""}`}>
+
+                    <Header
+                        as="h4"
+                        content={permit.permission}
+                        subheader={permit.comment}
+                        className="mt-0 mb-0 flex-grow-1"
+                        color={errors.indexOf(`permit_${permit.permission}`) >= 0 ? "red" : "black"}
+                    />
+
+                    {superAdmin && rolesPermits.indexOf(permit.permission) < 0 && <Label
+                        circular
+                        color="blue"
+                        empty
+                        className="mx-3"
+                        title="Является супер-админом"
+                    />}
+
+                    {rolesPermits.indexOf(permit.permission) >= 0 && <Label
+                        circular
+                        color="green"
+                        empty
+                        className="mx-3"
+                        title="Разрешение имеется в ролях"
+                    />}
+
+                    <div className="position-relative">
+                        <Checkbox
+                            toggle
+                            checked={userPermits.indexOf(permit.permission) >= 0}
+                            readOnly={loadingKeys.indexOf(`permit_${permit.permission}`) >= 0}
+                            disabled={loadingKeys.indexOf(`permit_${permit.permission}`) >= 0}
+                            onChange={() => setChangePermit(permit.permission)}
+                            name={`permit_${permit.permission}`}
                         />
-                        <div className="position-relative">
-                            <Checkbox
-                                toggle
-                                checked={userPermits.indexOf(permit.permission) >= 0}
-                                readOnly={loadingKeys.indexOf(`permit_${permit.permission}`) >= 0}
-                                disabled={loadingKeys.indexOf(`permit_${permit.permission}`) >= 0}
-                                onChange={() => setChangePermit(permit.permission)}
-                                name={`permit_${permit.permission}`}
-                            />
-                            {
-                                loadingKeys.indexOf(`permit_${permit.permission}`) >= 0
-                                    ? <div className="d-flex justify-content-center align-items-center loading-checkbox">
-                                        <Loader inverted size="mini" />
-                                    </div>
-                                    : null
-                            }
-                        </div>
-                    </div>)
-            }
+                        {loadingKeys.indexOf(`permit_${permit.permission}`) >= 0 && <div className="d-flex justify-content-center align-items-center loading-checkbox">
+                            <Loader inverted size="mini" />
+                        </div>}
+                    </div>
+                </div>)}
+            </div>}
 
         </Modal.Content>
 
