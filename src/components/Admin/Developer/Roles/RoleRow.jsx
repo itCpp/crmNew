@@ -3,7 +3,7 @@ import { Icon, Label } from "semantic-ui-react";
 const RoleRow = props => {
 
     const { row } = props;
-    const { setOpenRole, setOpenTabs, setOpenStatuses, setOpenPermits, setOpenUsers } = props;
+    const { setOpenRole, setOpenTabs, setOpenStatuses, setOpenPermits, setOpenUsers, setOpenSources } = props;
 
     return <div className="role-row">
 
@@ -51,6 +51,17 @@ const RoleRow = props => {
                     // color="blue"
                     title="Установить разрешения для роли"
                     onClick={() => setOpenPermits(row.role)}
+                />
+            </span>
+
+            <span className="mx-1">
+                <Icon
+                    name="fork"
+                    fitted
+                    link
+                    // color="blue"
+                    title="Настроить доступ роли к источникам"
+                    onClick={() => setOpenSources(row.role)}
                 />
             </span>
 
