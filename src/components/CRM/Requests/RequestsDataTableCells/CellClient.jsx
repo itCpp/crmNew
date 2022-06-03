@@ -38,11 +38,18 @@ const PhoneRow = props => {
         }
     }, []);
 
-    return <div onClick={() => copyPhone(client.hidden ? `+${rowId}s${client.id}` : phone)} className="d-flex align-items-center">
+    return <div className="d-flex align-items-center">
         <div>
-            <Icon name="copy" className="button-icon" title="Скопировать номер телефона" />
+            <Icon
+                name="copy"
+                className="button-icon"
+                title="Скопировать номер телефона"
+                onClick={() => copyPhone(client.hidden ? `+${rowId}s${client.id}` : phone)}
+            />
         </div>
-        <div className="to-copy-text text-nowrap" ref={number}>{phone}</div>
+        <div className="to-copy-text text-nowrap" ref={number}>
+            <a href={`callto://${phone}`} className="call-to-request">{phone}</a>
+        </div>
     </div>
 
 }

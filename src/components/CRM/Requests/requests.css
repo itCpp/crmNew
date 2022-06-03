@@ -254,6 +254,10 @@
     opacity: .3;
 }
 
+.call-to-request, .call-to-request:hover {
+    color: inherit;
+}
+
 .search-form {
     display: flex;
     flex-direction: column;
