@@ -7,7 +7,9 @@ import {
     setSearchRequest,
     selectTab
 } from "../../../store/requests/actions";
-import { Button, Dropdown, Icon, Form, Label } from "semantic-ui-react";
+import { Button, Dropdown, Icon, Form, Label, Dimmer, Loader } from "semantic-ui-react";
+import { axios } from "../../../utils";
+import { caseSensitiveSearch } from "./RequestEdit/RequestEditForm";
 
 const RequestsSearch = React.memo(props => {
 
@@ -21,13 +23,20 @@ const RequestsSearch = React.memo(props => {
     const [start, setStart] = React.useState(false);
     const [active, setActive] = React.useState(false);
 
+    const [loadInfo, setLoadInfo] = React.useState(false);
+    const [loadInfoDone, setLoadInfoDone] = React.useState(false);
+    const [cities, setCities] = React.useState([]);
+    const [sources, setSources] = React.useState([]);
+    const [statuses, setStatuses] = React.useState([]);
+    const [themes, setThemes] = React.useState([]);
+
     const close = React.useCallback(() => setOpen(false), []);
 
     const onChange = (e, { name, value }) => {
 
         let params = { ...search, [name]: value };
 
-        if (params[name] === "")
+        if (params[name] === "" || params[name] === null)
             delete (params[name]);
 
         setSearch(params);
@@ -73,6 +82,23 @@ const RequestsSearch = React.memo(props => {
         // dispatch(requestEditCell(null));
     }, []);
 
+    /** Загрузка данных для вывода полей поиска */
+    const loadInfoSearch = React.useCallback(() => {
+
+        setLoadInfo(true);
+
+        axios.get('requests/search/info').then(({ data }) => {
+            setCities(data.cities.map((row, i) => ({ key: i, text: row, value: row })));
+            setSources(data.sources.map(row => ({ key: row.id, text: row.name, value: row.id })));
+            setStatuses(data.statuses.map(row => ({ key: row.id, text: row.name, value: row.id })));
+            setThemes(data.themes.map((row, i) => ({ key: i, text: row, value: row })));
+        }).catch(() => null).then(() => {
+            setLoadInfo(false);
+            setLoadInfoDone(true);
+        });
+
+    }, []);
+
     React.useEffect(() => {
 
         if (open) {
@@ -111,45 +137,6 @@ const RequestsSearch = React.memo(props => {
 
     return <>
 
-        {/* <Dropdown
-            floating
-            trigger={<>
-                <Button
-                    icon="filter"
-                    circular
-                    title="Фильтр заявок"
-                    basic
-                    onClick={() => setOpen("filter")}
-                />
-                {searchRequest &&
-                    <Label
-                        color="red"
-                        circular
-                        empty
-                        size="mini"
-                        className="button-label-info"
-                    />
-                }
-            </>}
-            icon={null}
-            pointing="top right"
-            open={open === "filter"}
-        >
-            <Dropdown.Menu style={{ zIndex: 1000 }}>
-                <Dropdown.Header className="d-flex justify-content-between">
-                    <div>Фильтр заявок</div>
-                    <div>
-                        <Icon
-                            name="close"
-                            className="button-icon"
-                            onClick={() => setOpen(false)}
-                        />
-                    </div>
-                </Dropdown.Header>
-
-            </Dropdown.Menu>
-        </Dropdown> */}
-
         <Dropdown
             floating
             trigger={<>
@@ -173,6 +160,7 @@ const RequestsSearch = React.memo(props => {
             icon={null}
             pointing="top right"
             open={open === "search"}
+            onOpen={() => loadInfoDone === false && loadInfoSearch()}
         >
             <Dropdown.Menu style={{ zIndex: 1000 }}>
                 <Dropdown.Header className="d-flex justify-content-between">
@@ -188,7 +176,7 @@ const RequestsSearch = React.memo(props => {
 
                 <Dropdown.Divider />
 
-                <div className="search-form">
+                <div className="search-form position-relative">
 
                     <Form.Input
                         type="number"
@@ -234,6 +222,53 @@ const RequestsSearch = React.memo(props => {
                         onKeyUp={onKeyUp}
                     />
 
+                    <Dropdown
+                        placeholder="Регион"
+                        options={[{ key: "empty", text: "Без региона", value: null }, ...cities]}
+                        name="region"
+                        value={search.region || null}
+                        onChange={onChange}
+                        selection
+                        search={caseSensitiveSearch}
+                        noResultsMessage="Регион не найден"
+                    />
+
+                    <Dropdown
+                        placeholder="Тематика"
+                        fluid
+                        options={[{ key: "empty", text: "Без тематики", value: null }, ...themes]}
+                        name="theme"
+                        value={search.theme || null}
+                        onChange={onChange}
+                        selection
+                        search={caseSensitiveSearch}
+                        noResultsMessage="Тематика не найдена"
+                    />
+
+                    <Dropdown
+                        placeholder="Источник"
+                        fluid
+                        options={[{ key: "empty", text: "Без источника", value: null }, ...sources]}
+                        name="source"
+                        value={search.source || null}
+                        onChange={onChange}
+                        selection
+                        search={caseSensitiveSearch}
+                        noResultsMessage="Источник не найден"
+                    />
+
+                    <Dropdown
+                        placeholder="Статус"
+                        fluid
+                        options={[{ key: "empty", text: "Без статуса", value: null }, ...statuses]}
+                        name="status"
+                        value={search.status || null}
+                        onChange={onChange}
+                        selection
+                        search={caseSensitiveSearch}
+                        noResultsMessage="Статус не найден"
+                    />
+
                     <Button
                         color="green"
                         content="Найти"
@@ -248,6 +283,10 @@ const RequestsSearch = React.memo(props => {
                             onClick={() => searchCansel()}
                         />
                     }
+
+                    <Dimmer active={loadInfo} className="rounded" inverted>
+                        <Loader />
+                    </Dimmer>
 
                 </div>
 

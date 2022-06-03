@@ -257,9 +257,34 @@
 .search-form {
     display: flex;
     flex-direction: column;
+    width: 220px;
+    max-width: 220px;
 }
-.search-form > * {
-    margin: 0 .5rem .5rem !important;
+.search-form > *:not(.dimmer) {
+    margin: 0 .5rem .3rem !important;
+}
+
+.search-form > .dropdown {
+    max-width: 206px !important;
+}
+
+.search-form .divider.text {
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    max-width: 160px !important;
+}
+
+.search-form .menu.transition {
+    left: calc(.5rem - 1px) !important;
+    right: calc(.5rem - 1px) !important;
+}
+
+.search-form .dropdown .menu.transition {
+    margin-top: 35px !important;
+    box-shadow: none !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
 }
 
 .button-label-info {
