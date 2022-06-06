@@ -14,6 +14,8 @@ const EditStatus = props => {
 
     const [save, setSave] = React.useState(null);
     const [formdata, setFormdata] = React.useState({});
+    const [settings, setSettings] = React.useState([]);
+    const [loaded, setLoaded] = React.useState(false);
 
     React.useEffect(() => {
 
@@ -21,13 +23,15 @@ const EditStatus = props => {
 
         axios.post('dev/getStatusData', { id: open }).then(({ data }) => {
             setFormdata(data.status);
+            setSettings(data.settings);
+            setLoaded(p => !p);
             setError(null);
         }).catch(error => {
             setError(axios.getError(error));
         }).then(() => {
             setLoad(false);
         });
-            
+
     }, []);
 
     React.useEffect(() => {
@@ -79,12 +83,11 @@ const EditStatus = props => {
                 formdata={formdata}
                 setFormdata={setFormdata}
                 errors={errors}
+                settings={settings}
+                loaded={loaded}
             />
 
-            {error
-                ? <Message error content={error} className="mb-0" />
-                : null
-            }
+            {error && <Message error content={error} className="mb-0" />}
 
             <Dimmer active={load} inverted>
                 <Loader inverted />
@@ -92,7 +95,7 @@ const EditStatus = props => {
 
         </Modal.Content>
 
-        <Modal.Actions>
+        <Modal.Actions className="py-2">
             <Button
                 onClick={() => setOpen(false)}
                 content="Отмена"

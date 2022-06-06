@@ -89,7 +89,7 @@ const Menu = props => {
 
     }, [showMenu]);
 
-    return <div className={className.join(" ")} style={{ zIndex: 10 }}>
+    return <div className={className.join(" ")} style={{ zIndex: 1000 }}>
 
         <div className="nav-bar">
             {permits.requests_access && <MenuTabs

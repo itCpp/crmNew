@@ -1,11 +1,12 @@
 import React from "react";
-import { Form, Dropdown, Icon } from "semantic-ui-react";
+import { Button, Form, Select, Dropdown, Icon, Input } from "semantic-ui-react";
 import { themes } from "./Statuses";
 
 function StatusForm(props) {
 
-    const { load, error, errors } = props;
-    const { formdata, setFormdata } = props;
+    const { load, error, errors, settings } = props;
+    const { formdata, setFormdata, loaded } = props;
+    const [settingsData, setSettingsData] = React.useState([]);
 
     const changeFormdata = (...a) => {
 
@@ -35,6 +36,60 @@ function StatusForm(props) {
         }
 
     }
+
+    const onChangeSetting = (item, name, value) => {
+
+        setSettingsData(prev => {
+
+            const settings = [...prev];
+
+            if (typeof settings[item] == "undefined")
+                settings[item] = {};
+
+            settings[item][name] = value;
+
+            return settings;
+        });
+    }
+
+    const addColumnSetting = () => setSettingsData(prev => {
+        let rows = [...prev];
+        rows.push({});
+        return rows;
+    });
+
+    const dropColumnSetting = item => setSettingsData(prev => {
+        let rows = [];
+        prev.forEach((row, i) => {
+            if (i !== item) {
+                rows.push(row);
+            }
+        });
+        return rows;
+    });
+
+    React.useEffect(() => {
+        let rows = [];
+        for (let i in (formdata?.settings || {})) {
+            rows.push({ key: i, value: formdata.settings[i] });
+        }
+        setSettingsData(rows);
+    }, [loaded]);
+
+    React.useEffect(() => {
+
+        setFormdata(data => {
+
+            const settings = { ...(data?.settings || {}) }
+
+            settingsData.forEach(row => {
+                settings[row.key] = row.value || null;
+            });
+
+            return { ...data, settings }
+        });
+
+    }, [settingsData]);
 
     // React.useEffect(() => console.log(formdata), [formdata]);
 
@@ -67,7 +122,7 @@ function StatusForm(props) {
             name: "algorithm",
             onClick: changeFormdataZeroing
         },
-    ]
+    ];
 
     return <Form loading={load}>
 
@@ -184,12 +239,114 @@ function StatusForm(props) {
             checked={formdata.zeroing_data?.time_event === 1 ? true : false}
             onChange={changeFormdataZeroing}
             disabled={error || formdata.zeroing !== 1 ? true : false}
-            error={errors.time || false}
             error={errors.time ? true : false}
         />
 
+        <hr />
+
+        {settingsData.length === 0 && <SettingStatusRow
+            add
+            settings={settings}
+            onChangeSetting={onChangeSetting}
+            addColumnSetting={addColumnSetting}
+        />}
+
+        {settingsData.length > 0 && settingsData.map((row, i) => <SettingStatusRow
+            key={i}
+            item={i}
+            row={row}
+            settings={settings}
+            add={i === (settingsData.length - 1)}
+            onChangeSetting={onChangeSetting}
+            addColumnSetting={addColumnSetting}
+            dropColumnSetting={dropColumnSetting}
+        />)}
+
     </Form>
 
+}
+
+const SettingStatusRow = props => {
+
+    const { item, row, settings, add } = props;
+    const { onChangeSetting, addColumnSetting, dropColumnSetting } = props;
+    const [input, setInput] = React.useState(null);
+
+    React.useEffect(() => {
+
+        if (row?.key) {
+
+            let input = null;
+
+            settings.forEach(setting => {
+
+                if (row.key === setting.name) {
+
+                    if (setting.type === "array")
+                        input = setting.data
+                }
+            });
+
+            setInput(input || "string");
+        }
+
+    }, [row?.key]);
+
+    return <div className="d-flex align-items-center mt-2">
+
+        <Select
+            options={[{ text: "Не выбрано", name: null }, ...settings].map((row, i) => ({
+                key: i,
+                text: row.text || row.name,
+                value: row.name,
+            }))}
+            className="m-0"
+            onChange={(e, { value }) => onChangeSetting(item || 0, "key", value)}
+            value={row?.key || null}
+            placeholder="Тип настройки"
+        />
+
+        <div className="ml-1 flex-grow-1">
+
+            {typeof input == "object" && input !== null && <Select
+                fluid
+                options={[{ key: "0_null", text: "Не выбрано", value: null }, ...(input || [])]}
+                onChange={(e, { value }) => onChangeSetting(item, 'value', value)}
+                value={row?.value || null}
+                disabled={!Boolean(row?.key)}
+            />}
+
+            {input === "string" && <Input
+                fluid
+                disabled={!Boolean(row?.key)}
+                onChange={(e, { value }) => onChangeSetting(item, 'value', value)}
+                value={row?.value || ""}
+            />}
+
+            {input === null && <Input
+                fluid
+                disabled={true}
+            />}
+
+        </div>
+
+        <Button
+            icon="minus"
+            color="red"
+            basic
+            className="mb-0 mr-0 ml-2"
+            onClick={() => dropColumnSetting(item)}
+        />
+
+        {add && <Button
+            icon="plus"
+            color="green"
+            basic
+            className="mb-0 mr-0 ml-2"
+            onClick={addColumnSetting}
+        />}
+
+    </div>
 }
 
 export default StatusForm;

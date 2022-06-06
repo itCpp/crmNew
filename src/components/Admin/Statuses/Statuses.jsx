@@ -1,9 +1,7 @@
 import React from "react";
 import axios from "./../../../utils/axios-header";
 import { withRouter } from "react-router";
-
-import { Header, Message, Loader, Table, Icon, Dropdown } from "semantic-ui-react";
-
+import { Header, Message, Loader, Table, Icon } from "semantic-ui-react";
 import CreateStatus from "./CreateStatus";
 import StatusZeronigInfoCell from "./StatusZeronigInfoCell";
 import EditStatus from "./EditStatus";
@@ -95,15 +93,12 @@ function Statuses() {
 
     return <div className="segment-compact">
 
-        {edit
-            ? <EditStatus
-                open={edit}
-                setOpen={setEdit}
-                statuses={statuses}
-                setStatuses={setStatuses}
-            />
-            : null
-        }
+        {edit && <EditStatus
+            open={edit}
+            setOpen={setEdit}
+            statuses={statuses}
+            setStatuses={setStatuses}
+        />}
 
         <div className="admin-content-segment d-flex justify-content-between align-items-center">
 
