@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { setSearchRequest } from "../../../store/requests/actions";
-import "./requests.css";
+// import "./requests.css";
 import RequestsData from "./RequestsData";
 import RequestEditCell from "./RequestEdit/RequestEditCell";
 import BtnScrollTop from "../UI/BtnScrollTop/BtnScrollTop.jsx";

@@ -5,9 +5,9 @@ const dates = ['uplift_at', 'created_at', 'updated_at', 'event_at', 'deleted_at'
 
 const StoryRow = props => {
 
-    const { row } = props;
+    const { row, columns } = props;
 
-    const className = ["px-3 py-2 rounded my-2"];
+    const className = ["px-3 py-2 rounded my-2 story-request-row"];
     className.push(`request-row-theme-${row.status?.theme || 0}`);
 
     return <div className={className.join(" ")}>
@@ -20,7 +20,7 @@ const StoryRow = props => {
                     color="green"
                 />}
 
-                {row.created_pin && <strong className="mr-1">{row.created_pin}</strong>}
+                <strong className="mr-1">{row.created_pin || "@bot"}</strong>
 
                 {row.deleted_at && <Icon
                     name="trash"
@@ -37,7 +37,7 @@ const StoryRow = props => {
                 let value = d.value;
 
                 if (value === null) {
-                    value = <i className="opacity-50">пусто</i>;
+                    value = <i>пусто</i>;
                 } else if (typeof value == "object") {
                     value = value.toString();
                 }
@@ -50,8 +50,8 @@ const StoryRow = props => {
                     value = moment(value).format('DD.MM.YYYY HH:mm');
                 }
 
-                return <small key={`d_i_${i}_${d.key}`} className={`d-inline-block mr-3 ${row.keys.indexOf(d.key) >= 0 ? 'opacity-100' : 'opacity-40'}`}>
-                    <b className={`mr-1`}>{d.key}</b>
+                return <small key={`d_i_${i}_${d.key}`} className={`d-inline-block mr-3 ${row.keys.indexOf(d.key) >= 0 ? 'opacity-100' : 'opacity-50'}`}>
+                    <b className={`mr-1`}>{columns[d.key] || d.key}</b>
                     <span>{value}</span>
                 </small>
             })}

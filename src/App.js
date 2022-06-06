@@ -17,6 +17,7 @@ import {
 import { Loader } from 'semantic-ui-react';
 import { SemanticToastContainer } from 'react-semantic-toasts';
 import './App.css';
+import "./components/CRM/Requests/requests.css";
 import Routes from './components/Routes';
 import { TESTING_URL } from "./components/Testing";
 

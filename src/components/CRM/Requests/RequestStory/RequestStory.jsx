@@ -15,6 +15,7 @@ const RequestStory = () => {
     const [error, setError] = React.useState(null);
 
     const [rows, setRows] = React.useState([]);
+    const [columns, setColumns] = React.useState({});
     const [now, setNow] = React.useState(null);
     const [prev, setPrev] = React.useState(null);
 
@@ -31,6 +32,7 @@ const RequestStory = () => {
             axios.post('requests/story', { id: row.id }).then(({ data }) => {
                 setNow(data.row);
                 setRows(data.rows);
+                setColumns(data.columns || {});
             }).catch(e => {
                 axios.setError(e, setError);
             }).then(() => {
@@ -56,13 +58,14 @@ const RequestStory = () => {
         />}
         content={<div className="content position-relative">
 
-            {!loading && error && <div className="d-flex justify-content-center align-items-center position-absolute" style={{ top: 0, left: 0, right: 0, bottom: 0 }}>
+            {!loading && error && <div className="d-flex justify-content-center align-items-center position-absolute" style={{ top: 0, left: 0, right: 0, bottom: 0, zIndex: 10 }}>
                 <Message error content={error} />
             </div>}
 
             {!loading && rows && rows.map((r, i) => <StoryRow
                 key={`row_story_${i}`}
                 row={r}
+                columns={columns}
             />)}
 
             {!loading && rows && rows.length === 0 && <div className="my-5 opacity-50 text-center">
