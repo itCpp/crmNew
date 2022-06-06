@@ -12,6 +12,7 @@ import {
     counterUpdate,
     setStartData
 } from "./../../store/requests/actions";
+import { setUserPermits } from "./../../store/actions";
 import { setTopMenu } from "./../../store/interface/actions";
 import { Icon, Loader, Message } from "semantic-ui-react";
 import "./crm.css";
@@ -209,6 +210,8 @@ const CRM = props => {
                 themes: data.themes,
             });
 
+            props.setUserPermits(window.permits);
+
             setTimeout(() => {
                 counterUpdateProcess = false;
                 checkCounter();
@@ -335,6 +338,7 @@ const mapActions = {
     dropRequestRow,
     counterUpdate,
     setStartData,
+    setUserPermits
 }
 
 export default connect(mapStateToProps, mapActions)(CRM);
