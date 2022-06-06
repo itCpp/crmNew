@@ -27,6 +27,21 @@ const appUserEvent = data => {
 
 }
 
+const appUserPinEvent = data => {
+
+    if (typeof data.toast == "object") {
+        axios.toast(null, data.toast);
+    } else if (data?.type === "auto_change_count") {
+        axios.toast(null, {
+            time: 30000,
+            type: "info",
+            title: "Смена статуса",
+            description: data.message,
+        });
+    }
+
+}
+
 function App(props) {
 
     const searchParams = new URLSearchParams(window.location.search);
@@ -120,6 +135,9 @@ function App(props) {
                     }
                 });
 
+            window.Echo && window.Echo.private(`App.User.Pin.${window.userPin}`)
+                .listen('AppUserPinEvent', appUserPinEvent);
+
         }
         else if (!userData?.id) {
             window.Echo && window.Echo.leave(`App.Users`);
@@ -134,6 +152,9 @@ function App(props) {
 
             if (window.userId)
                 window.Echo && window.Echo.leave(`App.User.${window.userId}`);
+
+            if (window.userPin)
+                window.Echo && window.Echo.leave(`App.User.Pin.${window.userPin}`);
 
         }
 

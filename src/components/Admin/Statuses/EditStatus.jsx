@@ -23,7 +23,7 @@ const EditStatus = props => {
 
         axios.post('dev/getStatusData', { id: open }).then(({ data }) => {
             setFormdata(data.status);
-            setSettings(data.settings);
+            setSettings(data.settings || []);
             setLoaded(p => !p);
             setError(null);
         }).catch(error => {

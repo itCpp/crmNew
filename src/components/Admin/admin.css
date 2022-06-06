@@ -315,3 +315,62 @@
 .loading-placeholder-table:after {
     left: 30%;
 }
+
+/** Оформление записи */
+.request-row-theme-0 { background-color: #fafdff; }
+.request-row-theme-0:hover { background-color: #f5f8ff; }
+
+/** Оформление записи */
+.request-row-theme-1 { background-color: #ffff81; }
+.request-row-theme-1:hover { background-color: #ffff4f; }
+
+/** Оформление слива */
+.request-row-theme-2 { background-color: #bf4346; color: #ffffff !important; }
+.request-row-theme-2:hover { background-color: #bd2c2e; }
+
+/** Оформление слива */
+.request-row-theme-3 { background-color: #8084e4; color: #ffffff !important; }
+.request-row-theme-3:hover { background-color: #686cd8; }
+
+/** Оформление Бракованой заявки */
+.request-row-theme-4 { background-color: #656464; color: #ffffff !important; }
+.request-row-theme-4:hover { background-color: #545454; }
+
+/** Оформление Недозвона */
+.request-row-theme-5 { background-color: #c7c7c7; }
+.request-row-theme-5:hover { background-color: #bababa; }
+
+/** Оформление Бесплатной консультации */
+.request-row-theme-6 { background-color: #ffba01; }
+.request-row-theme-6:hover { background-color: #f8b600; }
+
+/** Оформление Прихода */
+.request-row-theme-7 { background-color: #68ae00; color: #ffffff !important; }
+.request-row-theme-7:hover { background-color: #61a200; }
+
+/** Оформление Онлайн заявки */
+.request-row-theme-8 { background-color: #8d52cb; color: #ffffff !important; }
+.request-row-theme-8:hover { background-color: #8246c2; }
+
+/** Оформление Онлайн прихода */
+.request-row-theme-9 { background-color: #20aa8a; color: #ffffff !important; }
+.request-row-theme-9:hover { background-color: #209b7e; }
+
+/** Оформление Онлайн договора */
+.request-row-theme-10 { background-color: #5790c1; color: #ffffff !important; }
+.request-row-theme-10:hover { background-color: #4a83b5; }
+
+/** Оформление Вторички */
+.request-row-theme-11 { background-color: #795548; color: #ffffff !important; }
+.request-row-theme-11:hover { background-color: #6f4b3e; }
+
+.request-row-theme-2 .ui.loading.dropdown > i.icon:after,
+.request-row-theme-3 .ui.loading.dropdown > i.icon:after,
+.request-row-theme-4 .ui.loading.dropdown > i.icon:after,
+.request-row-theme-7 .ui.loading.dropdown > i.icon:after,
+.request-row-theme-8 .ui.loading.dropdown > i.icon:after,
+.request-row-theme-9 .ui.loading.dropdown > i.icon:after,
+.request-row-theme-10 .ui.loading.dropdown > i.icon:after,
+.request-row-theme-11 .ui.loading.dropdown > i.icon:after {
+    border-color: #fff #a7a7a7 #a7a7a7 !important;
+}
