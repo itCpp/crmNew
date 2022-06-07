@@ -210,8 +210,6 @@ const CRM = props => {
                 themes: data.themes,
             });
 
-            props.setUserPermits(window.permits);
-
             setTimeout(() => {
                 counterUpdateProcess = false;
                 checkCounter();

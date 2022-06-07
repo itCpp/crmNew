@@ -2,7 +2,7 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import axios from "./../../../utils/axios-header";
 import throttle from "lodash/throttle";
-import { Message, Loader, Table, Icon, Button } from "semantic-ui-react";
+import { Message, Loader, Table, Icon, Button, Checkbox } from "semantic-ui-react";
 import QueuesRow from "./QueuesRow";
 import { getIpInfo, setBlockIp } from "./../../Admin/Block";
 import RequestAdd from "./../Requests/RequestsTitle/RequestAdd";
@@ -138,6 +138,7 @@ const Queues = props => {
                 create, drop
             }).then(({ data }) => {
                 setQueues(q => {
+
                     q.forEach((r, i) => {
                         if (r.id === data.queue.id) {
                             q[i] = { ...data.queue, updated: true };
@@ -150,14 +151,14 @@ const Queues = props => {
                     return q;
                 });
 
-                if (data?.added?.requestId) {
-                    axios.toast(null, {
-                        type: "success",
-                        description: <>Создана заявка <b>#{data.added.requestId}</b></>,
-                        time: 3000,
-                        icon: "plus",
-                    });
-                }
+                // if (data?.added?.requestId) {
+                //     axios.toast(null, {
+                //         type: "success",
+                //         description: <>Создана заявка <b>#{data.added.requestId}</b></>,
+                //         time: 3000,
+                //         icon: "plus",
+                //     });
+                // }
 
             }).catch(e => {
                 axios.toast(e);
@@ -238,14 +239,13 @@ const Queues = props => {
 
     return <div className="pb-3 px-2 w-100" id="queues-root">
 
-        <div className="d-flex justify-content-between align-items-center">
+        <div className="d-flex align-items-center">
+
             <div className="page-title-box">
+
                 <h4 className="page-title d-flex align-items-center">
 
-                    {showDone
-                        ? <span>Завршенные запросы очереди</span>
-                        : <span>Очередь текстовых заявок</span>
-                    }
+                    <span>{showDone ? "Завршенные запросы очереди" : "Очередь текстовых заявок"}</span>
 
                     {/* {total && <span className="mx-2">
                         <Label content={total} color="green" size="tiny" />
@@ -255,7 +255,15 @@ const Queues = props => {
 
             </div>
 
-            <span className="mx-2">
+            <span className="ml-5">
+                <Checkbox
+                    toggle
+                    label={showDone ? "Вывести не обработанные" : "Вывести обработанные"}
+                    onClick={() => setShowDone(p => !p)}
+                />
+            </span>
+
+            {/* <span className="mx-2">
                 <Icon
                     name={showDone ? "check circle" : "circle outline"}
                     color={showDone ? "green" : "black"}
@@ -265,7 +273,7 @@ const Queues = props => {
                     size="big"
                     onClick={() => setShowDone(prev => !prev)}
                 />
-            </span>
+            </span> */}
         </div>
 
         <div className="block-card mb-3 px-2">
@@ -304,8 +312,8 @@ const Queues = props => {
                 </Table.Header>
 
                 <Table.Body>
-                    {queues.map(row => <QueuesRow
-                        key={row.key || row.id}
+                    {queues.map((row, i) => <QueuesRow
+                        key={`${i}_${row.id}`}
                         row={row}
                         history={props.history}
                         checkIp={checkIp}

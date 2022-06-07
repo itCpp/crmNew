@@ -34,7 +34,7 @@ const QueuesRow = props => {
         className={className.join(" ")}
     >
         <Table.Cell className="px-2">{row.id}</Table.Cell>
-        <Table.Cell>{moment(row.created_at).format("DD.MM.YYYY HH:mm:ss")}</Table.Cell>
+        <Table.Cell className="text-nowrap">{moment(row.created_at).format("DD.MM.YYYY HH:mm:ss")}</Table.Cell>
         <Table.Cell>
             <div className="d-flex align-items-center justify-content-center">
                 <span className="text-nowrap">{row.phone}</span>
@@ -95,41 +95,69 @@ const QueuesRow = props => {
             </div>
             {row.hostname && <small className="text-nowrap">{row.hostname}</small>}
         </Table.Cell>
-        <Table.Cell className="px-2 text-center">
-            {row.done_type
-                ? <Label title={row.doneInfo}>
-                    <div className="d-flex">
-                        <span>
-                            {row.done_type === 1 && <Icon name="check" color="green" />}
-                            {row.done_type === 2 && <Icon name="ban" color="red" />}
-                        </span>
-                        {row.done_pin}
+        <Table.Cell className="px-2 text-center position-relative">
+
+            <div style={{ width: 60 }}>
+
+                <div style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    position: "absolute",
+                    top: 6,
+                    right: 0,
+                    left: 0,
+                }}>
+
+                    <div className="mx-2 d-flex justify-content-center align-items-center">
+
+                        {Boolean(row.done_type) === true && <Label
+                            size="tiny"
+                            className="px-2"
+                            content={<div className="d-flex">
+                                <span>
+                                    {row.done_type === 1 && <Icon name="check" color="green" />}
+                                    {row.done_type === 2 && <Icon name="ban" color="red" />}
+                                </span>
+                                {row.done_pin}
+                            </div>}
+                        />}
+
+                        {Boolean(row.done_type) === false && <>
+
+                            <Button
+                                icon="minus"
+                                size="mini"
+                                basic
+                                color="red"
+                                title="Отклонить запрос"
+                                onClick={() => (create || drop) ? null : setDrop(row.id)}
+                                loading={drop === row.id}
+                                disabled={create === row.id || drop === row.id || (row.done_type && true)}
+                                className="mr-1 d-flex align-items-center justify-content-center"
+                                style={{ padding: ".5rem .4rem" }}
+                            />
+                            <Button
+                                icon="plus"
+                                size="mini"
+                                basic
+                                color="green"
+                                title="Добавить заявку"
+                                onClick={() => (create || drop) ? null : setCreate(row.id)}
+                                loading={create === row.id}
+                                disabled={create === row.id || drop === row.id || (row.done_type && true)}
+                                className="mr-0 d-flex align-items-center justify-content-center"
+                                style={{ padding: ".5rem .4rem" }}
+                            />
+
+                        </>}
+
                     </div>
-                </Label>
-                : <div className="d-flex justify-content-center align-items-center">
-                    <Button
-                        icon="minus"
-                        size="mini"
-                        basic
-                        circular
-                        color="red"
-                        title="Отклонить запрос"
-                        onClick={() => (create || drop) ? null : setDrop(row.id)}
-                        loading={drop === row.id}
-                        disabled={create === row.id || drop === row.id || (row.done_type && true)}
-                    />
-                    <Button
-                        icon="plus"
-                        size="mini"
-                        basic
-                        circular
-                        color="green"
-                        title="Добавить заявку"
-                        onClick={() => (create || drop) ? null : setCreate(row.id)}
-                        loading={create === row.id}
-                        disabled={create === row.id || drop === row.id || (row.done_type && true)}
-                    />
-                </div>}
+
+                </div>
+
+            </div>
+
         </Table.Cell>
     </Table.Row>
 

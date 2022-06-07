@@ -14,7 +14,7 @@ import "../../Rating/rating.css";
 const User = props => {
 
     const height = 150;
-    const { userPermits, userData, worktime } = useSelector(state => state.main);
+    const { userData, worktime } = useSelector(state => state.main);
 
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
@@ -100,11 +100,11 @@ const User = props => {
 
                 {data.alerts && <Alerts
                     data={data.alerts}
-                    requestsAccess={userPermits.requests_access ? true : false}
+                    requestsAccess={window.permits.requests_access ? true : false}
                     updateNotification={updateNotification}
                 />}
 
-                {userPermits.requests_access && <Grid.Row columns={2}>
+                {window.permits.requests_access && <Grid.Row columns={2}>
                     <Grid.Column>
                         <Segment header={{ as: "h5", content: "Количество выданных заявок", subheader: "Общее количество выданных заявок за каждый день" }}>
                             {data.charts?.requests && data.charts.requests.length > 0
