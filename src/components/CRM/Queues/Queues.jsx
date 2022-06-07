@@ -245,7 +245,9 @@ const Queues = props => {
 
                 <h4 className="page-title d-flex align-items-center">
 
-                    <span>{showDone ? "Завршенные запросы очереди" : "Очередь текстовых заявок"}</span>
+                    <span>
+                        {showDone ? "Завршенные запросы очереди" : "Очередь текстовых заявок"}
+                    </span>
 
                     {/* {total && <span className="mx-2">
                         <Label content={total} color="green" size="tiny" />
@@ -260,6 +262,7 @@ const Queues = props => {
                     toggle
                     label={showDone ? "Вывести не обработанные" : "Вывести обработанные"}
                     onClick={() => setShowDone(p => !p)}
+                    disabled={loading}
                 />
             </span>
 

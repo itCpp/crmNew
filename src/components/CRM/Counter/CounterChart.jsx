@@ -56,6 +56,11 @@ const CounterChart = props => {
                 },
                 height: 200,
                 color: color || '#a8ddb5',
+                legend: {
+                    itemName: {
+                        formatter: (text) => (text === "count" ? "Кол-во" : text),
+                    }
+                },
             });
 
             plot.current.render();
