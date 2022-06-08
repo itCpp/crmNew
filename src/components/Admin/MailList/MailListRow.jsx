@@ -22,31 +22,50 @@ const MailListRow = props => {
 
         <div className="mail-list-row-footer">
 
-            <span className="flex-grow-1">
-                <Icon
-                    name="lightning"
-                    title="Моментальное уведомление"
-                    color={row.to_push ? "yellow" : "grey"}
-                    disabled={!Boolean(row.to_push)}
-                />
-                <Icon
-                    name="talk"
-                    title="Обычное уведомление"
-                    color={row.to_notice ? "yellow" : "grey"}
-                    disabled={!Boolean(row.to_notice)}
-                />
-                <Icon
-                    name="desktop"
-                    title="Отправить только авторизированным сотрудникам"
-                    color={row.to_online ? "blue" : "grey"}
-                    disabled={!Boolean(row.to_online)}
-                />
-                <Icon
-                    name="telegram"
-                    title="Дублировать в телеграм"
-                    color={row.to_telegram ? "blue" : "grey"}
-                    disabled={!Boolean(row.to_telegram)}
-                />
+            <span className="flex-grow-1 d-flex align-items-center">
+                <span>
+                    <Icon
+                        name="lightning"
+                        title="Моментальное уведомление"
+                        color={row.to_push ? "yellow" : "grey"}
+                        disabled={!Boolean(row.to_push)}
+                    />
+                </span>
+                <span>
+                    <Icon
+                        name="talk"
+                        title="Обычное уведомление"
+                        color={row.to_notice ? "yellow" : "grey"}
+                        disabled={!Boolean(row.to_notice)}
+                    />
+                </span>
+                <span>
+                    <Icon
+                        name="desktop"
+                        title="Отправить только авторизированным сотрудникам"
+                        color={row.to_online ? "blue" : "grey"}
+                        disabled={!Boolean(row.to_online)}
+                    />
+                </span>
+                <span>
+                    <Icon
+                        name="telegram"
+                        title="Дублировать в телеграм"
+                        color={row.to_telegram ? "blue" : "grey"}
+                        disabled={!Boolean(row.to_telegram)}
+                    />
+                </span>
+                {typeof row?.response?.to_notice?.users_id == "object" && <span className="d-flex align-items-center mr-1" style={{ opacity: ".45" }} title="Отправлено сотрудникам">
+                    <span>
+                        <Icon
+                            name={row.anonim ? "user secret" : "user"}
+                            style={{ marginRight: "2px" }}
+                        />
+                    </span>
+                    <small>
+                        <b>{Object.keys(row.response.to_notice.users_id).length}</b>
+                    </small>
+                </span>}
             </span>
 
             <small>{moment(row.created_at).format("DD.MM.YYYY HH:mm")}</small>
@@ -59,7 +78,7 @@ const MailListRow = props => {
                     title="Ошибка по времени"
                 />}
 
-                {Boolean(row.done_at) === false && Boolean(row.fail) === false &&<Loader
+                {Boolean(row.done_at) === false && Boolean(row.fail) === false && <Loader
                     active
                     inline
                     size="mini"

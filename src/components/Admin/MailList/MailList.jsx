@@ -51,7 +51,7 @@ const MailList = props => {
 
     }, []);
 
-    return <div className="segment-compact">
+    return <div style={{ maxWidth: 1100 }}>
 
         <MailListEdit
             open={row}
