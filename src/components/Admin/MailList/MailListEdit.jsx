@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Dimmer, Form, Icon, Loader, Message, Modal } from "semantic-ui-react";
 import packageJson from '../../../../package.json';
 import { axios } from "../../../utils";
+import { SEMANTIC_ICONS } from "./icons";
 
 export const ROW_EMPTY = {
     title: "",
@@ -14,6 +15,13 @@ export const ROW_EMPTY = {
     to_telegram: false,
     markdown: false,
 }
+
+const TYPES = [
+    { value: "info", text: "Информирование", icon: "announcement", className: "text-info" },
+    { value: "error", text: "Ошибка", icon: "remove", className: "text-danger" },
+    { value: "success", text: "Успешное", icon: "checkmark", className: "text-success" },
+    { value: "warning", text: "Внимание", icon: "warning circle", className: "text-warning" },
+];
 
 const MailListEdit = props => {
 
@@ -95,7 +103,39 @@ const MailListEdit = props => {
                     onChange={changeFormData}
                     max={70}
                     error={Boolean(errors.title)}
+                    icon={String(formdata.icon || "").length > 0 ? formdata.icon : null}
                 />
+
+                <Form.Group widths="equal">
+
+                    <Form.Select
+                        label="Тип уведомления"
+                        placeholder="Выберите тип уведомления"
+                        name="type"
+                        options={TYPES.map((row, i) => ({ ...row, key: i }))}
+                        value={formdata.type || ""}
+                        onChange={changeFormData}
+                        fluid
+                    />
+
+                    <Form.Select
+                        label="Иконка уведомления"
+                        placeholder="Выберите иконку уведомления"
+                        name="icon"
+                        options={SEMANTIC_ICONS.map((row, i) => ({
+                            key: i,
+                            text: row,
+                            value: row,
+                            icon: row,
+                        }))}
+                        value={formdata.icon || ""}
+                        onChange={changeFormData}
+                        fluid
+                        search
+                        noResultsMessage="Иконка не найдена"
+                    />
+
+                </Form.Group>
 
                 <Form.TextArea
                     label="Текст уведомления"

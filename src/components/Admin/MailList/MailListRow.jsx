@@ -6,18 +6,19 @@ const MailListRow = props => {
 
     const { row } = props;
 
-    return <div className="admin-content-segment mail-list-row p-0">
+    return <div className="admin-content-segment mail-list-row p-0 d-flex flex-column h-100">
 
         <div className="mail-list-row-header">
-            {row.icon && <span>
+            <span>
                 <Icon
                     name={row.icon}
+                    className="mr-2"
                 />
-            </span>}
+            </span>
             <strong>{row.title || "Уведомление"}</strong>
         </div>
 
-        <div className="mail-list-row-content">{row.message}</div>
+        <div className="mail-list-row-content flex-grow-1">{row.message}</div>
 
         <div className="mail-list-row-footer">
 
