@@ -315,3 +315,7 @@
 .loading-placeholder-table:after {
     left: 30%;
 }
+
+.add-words-mail-list > *:not(:last-child) {
+    margin-right: .5rem;
+}

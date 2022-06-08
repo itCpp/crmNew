@@ -18,6 +18,7 @@ import Settings from "./Settings/Settings";
 import DataBases from "./DataBases/DataBases";
 import Gates from "./Gates";
 import Events from "./Events";
+import MailList from "./MailList";
 
 function AdminContent(props) {
 
@@ -62,6 +63,8 @@ function AdminContent(props) {
         body = <DataBases {...props} />
     else if (page == "gates" && permits.dev_block)
         body = <Gates {...props} />
+    else if (page == "rss" && permits.admin_users_rss)
+        body = <MailList {...props} />
 
     return <div className="admin-content-body">
         {body}

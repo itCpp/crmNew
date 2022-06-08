@@ -1,0 +1,16 @@
+.mail-list-row-header, .mail-list-row-content, .mail-list-row-footer {
+    padding: .25rem .5rem;
+}
+
+.mail-list-row-header {
+    border-bottom: 1px solid var(--border-admin-segment);
+}
+
+.mail-list-row-footer {
+    border-top: 1px solid var(--border-admin-segment);
+}
+
+.mail-list-row-header, .mail-list-row-footer  {
+    display: flex;
+    align-items: center;
+}

@@ -95,10 +95,10 @@ function AdminMenu(props) {
                 </NavLink>
             }
 
-            {/* <NavLink to="/admin/permits" className="admin-menu-point" onClick={changePage}>
-                <Icon name="angle right" />
-                <span>Сессии</span>
-            </NavLink> */}
+            {permits.admin_users_rss && <NavLink to="/admin/rss" className="admin-menu-point" onClick={changePage}>
+                <Icon name="rss square" />
+                <span>Рассылка</span>
+            </NavLink>}
 
             {permits.dev_roles &&
                 <NavLink to="/admin/roles" className="admin-menu-point" onClick={changePage}>
@@ -128,11 +128,11 @@ function AdminMenu(props) {
                 </NavLink>
 
                 <NavLink to="/admin/events" className="admin-menu-point" onClick={changePage}>
-                    <Icon name="rss square" />
+                    <Icon name="qq" />
                     <span>Запросы событий</span>
                 </NavLink>
 
-                </>
+            </>
             }
 
             <NavLink to="/admin/sips" className="admin-menu-point" onClick={changePage}>
