@@ -14,6 +14,7 @@ export const ROW_EMPTY = {
     to_online: false,
     to_telegram: false,
     markdown: false,
+    anonim: true,
 }
 
 const TYPES = [
@@ -181,6 +182,13 @@ const MailListEdit = props => {
                     checked={formdata.markdown}
                     onChange={changeFormData}
                 /> */}
+
+                <Form.Checkbox
+                    label="Анонимное уведомление"
+                    name="anonim"
+                    checked={formdata.anonim}
+                    onChange={changeFormData}
+                />
 
                 <hr />
 
