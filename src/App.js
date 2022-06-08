@@ -103,6 +103,9 @@ function App(props) {
 
     React.useEffect(() => {
 
+        window.Echo && window.Echo.channel(`App.Alerts`)
+            .listen('Users\\MailListEvent', appUserPinEvent);
+
         if (userData?.id) {
 
             window.userId = userData.id;
@@ -148,6 +151,8 @@ function App(props) {
         }
 
         return () => {
+
+            window.Echo && window.Echo.leave(`App.Alerts`);
 
             window.Echo && window.Echo.leave(`App.Users`);
 

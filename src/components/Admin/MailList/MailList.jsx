@@ -32,6 +32,23 @@ const MailList = props => {
 
         getRows();
 
+        window.Echo && window.Echo.private('App.Admin')
+            .listen('Users\\MailListAdminEvent', data => {
+                setRows(p => {
+                    const rows = [...p];
+                    rows.forEach((row, i) => {
+                        if (row.id === data.id)
+                            rows[i] = data;
+                    });
+                    return rows;
+                });
+            });
+        
+        return () => {
+            window.Echo && window.Echo.private('App.Admin')
+                .stopListening('Users\\MailListAdminEvent');
+        }
+
     }, []);
 
     return <div className="segment-compact">
@@ -73,8 +90,8 @@ const MailList = props => {
             <strong>Данных еще нет</strong>
         </div>}
 
-        {!loading && rows.length > 0 && <Grid>
-            {rows.map(row => <Grid.Column width={6} key={row.id}>
+        {!loading && rows.length > 0 && <Grid columns={3}>
+            {rows.map(row => <Grid.Column key={row.id}>
                 <MailListRow row={row} />
             </Grid.Column>)}
         </Grid>}

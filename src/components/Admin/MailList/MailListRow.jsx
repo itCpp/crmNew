@@ -51,7 +51,14 @@ const MailListRow = props => {
             <small>{moment(row.created_at).format("DD.MM.YYYY HH:mm")}</small>
 
             <span className="ml-2">
-                {Boolean(row.done_at) === false && <Loader
+                {Boolean(row.fail) === true && <Icon
+                    name="clock"
+                    color="red"
+                    fitted
+                    title="Ошибка по времени"
+                />}
+
+                {Boolean(row.done_at) === false && Boolean(row.fail) === false &&<Loader
                     active
                     inline
                     size="mini"
