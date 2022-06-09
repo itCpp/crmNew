@@ -56,15 +56,15 @@ function Header(props) {
 
             <div className="d-flex align-items-center">
 
-                <span className="ml-1 mr-3" style={{ marginTop: "3px" }}>
+                <span>
                     <Icon
                         name="bars"
                         size="large"
                         link
-                        className="header-menu-button"
-                        fitted
+                        className="ml-1 mr-3 header-menu-button"
                         // onClick={() => props.setShowMenu(!props.showMenu)}
                         id="set-show-menu-btn"
+                        style={{ marginTop: "3px" }}
                     />
                 </span>
 
@@ -77,7 +77,6 @@ function Header(props) {
                         name="table"
                         size="large"
                         link
-                        className="header-menu-button"
                         fitted
                         title="Заявки"
                     />
