@@ -56,7 +56,10 @@ const Rating = ({ data }) => {
                 </div>
                 <div className="w-100">
                     <div><strong>К выплате</strong></div>
-                    <pre className="pre-data">{data.salary || 0}</pre>
+                    <pre className="pre-data">
+                        {Number(data.salary || 0) + Number(data.oklad_period || 0)}
+                        {Number(data.oklad_period || 0) > 0 && <b className="text-danger" title="Сумма окалада может быть изменена">*</b>}
+                    </pre>
                 </div>
             </Segment>
         </Grid.Column>
