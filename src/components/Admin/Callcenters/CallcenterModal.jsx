@@ -87,6 +87,14 @@ function CallcenterModal(props) {
                     error={errors.name ? true : false}
                 />
 
+                <Form.Checkbox
+                    label="Включить в работу"
+                    name="active"
+                    checked={Boolean(formdata?.active)}
+                    onChange={(e, { name, checked }) => setFormdata(d => ({ ...d, [name]: Number(checked) }))}
+                    toggle
+                />
+
                 <Form.TextArea
                     label="Комментарий"
                     placeholder="Короткое описание..."
@@ -98,10 +106,7 @@ function CallcenterModal(props) {
 
             </Form>
 
-            {error
-                ? <Message error>{errors ? "Имеются ошибки" : error}</Message>
-                : null
-            }
+            {error && <Message error content={errors ? "Имеются ошибки" : error} />}
 
         </Modal.Content>
 

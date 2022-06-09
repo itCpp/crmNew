@@ -82,6 +82,11 @@ function CallcenterList(props) {
                 >
 
                     <div>
+                        <Icon
+                            name="power"
+                            color={Boolean(callcenter?.active) ? "green" : "grey"}
+                            disabled={!Boolean(callcenter?.active)}
+                        />
                         <span>{callcenter.name}</span>
                         <span className="opacity-80 ml-2" title="Активные секторы / Всего секторов">
                             <span className="text-success">{callcenter.sectorCountActive}</span>
