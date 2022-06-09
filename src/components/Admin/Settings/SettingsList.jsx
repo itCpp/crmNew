@@ -15,11 +15,12 @@ const SettingsList = props => {
             {rows.map(row => <List.Item key={row.id} className="d-flex align-items-center px-2">
 
                 <List.Content className="flex-grow-1">
-                    <List.Header as="b">{row.id}</List.Header>
+                    <List.Header as="b" style={{ fontFamily: "monospace" }}>{row.id}</List.Header>
                     <List.Description>{row.comment}</List.Description>
                 </List.Content>
 
                 <List.Content>
+
                     {(row.type === "boolean" || row.type === "bool") && <Icon
                         name={row.value ? "check square outline" : "square outline"}
                         title={row.value ? "Включено" : "Отключено"}
@@ -27,6 +28,15 @@ const SettingsList = props => {
                         fitted
                         size="large"
                     />}
+
+                    {/* {["boolean", "bool"].indexOf(row.type) >= 0 && <code>
+                        {typeof row.value}({row.value ? "true" : "false"})
+                    </code>} */}
+
+                    {["int", "integer", "str", "string"].indexOf(row.type) >= 0 && <code>
+                        {typeof row.value}({row.value})
+                    </code>}
+
                 </List.Content>
 
                 <List.Content className="ml-3">

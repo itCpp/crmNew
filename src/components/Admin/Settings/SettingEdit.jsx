@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Checkbox, Header, Modal } from "semantic-ui-react"
+import { Checkbox, Header, Modal, Input } from "semantic-ui-react"
 import { axios } from "../../../utils";
 
 const SettingEdit = props => {
@@ -68,13 +68,25 @@ const SettingEdit = props => {
 
             <Header as="b" content={row.id} subheader={row.comment} />
 
-            {(row.type === "bool" || row.type === "boolean") && <div className="mt-4">
+            {["bool", "boolean"].indexOf(row.type) >= 0 && <div className="mt-4">
                 <Checkbox
                     toggle
                     checked={formdata.value}
                     disabled={save}
                     label={row.value ? "Настройка включена" : "Настройка отключена"}
                     onChange={(e, { checked }) => setFormdata(d => ({ ...d, value: checked }))}
+                />
+            </div>}
+
+            {["int", "integer"].indexOf(row.type) >= 0 && <div className="mt-4">
+                <label className="mb-1 d-block">Переменная в виде числа</label>
+                <Input
+                    type="number"
+                    disabled={save}
+                    value={formdata.value}
+                    onChange={(e, { value }) => setFormdata(d => ({ ...d, value }))}
+                    fluid
+                    placeholder="Введите число"
                 />
             </div>}
 
