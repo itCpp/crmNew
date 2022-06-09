@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "./../../../utils/axios-header";
 
-import { Message, Table, Icon, Dimmer, Header } from "semantic-ui-react";
+import { Message, Table, Icon, Dimmer, Header, Label } from "semantic-ui-react";
 
 import SourceEdit from "./SourceEdit";
 import ResourcesSet from "./ResourcesSet";
@@ -91,6 +91,16 @@ function Sources(props) {
                     </h5>
 
                     <div className="d-flex align-items-center">
+
+                        <Label
+                            content={row.count_requests || 0}
+                            size="mini"
+                            color={Number(row.count_requests) > 0 ? "blue" : null}
+                            className="py-1 px-2 mr-1"
+                            title="Счетчик обращений по источнику"
+                            style={{ fontFamily: "monospace" }}
+                        />
+
                         <span>
                             <Icon
                                 name="tasks"
