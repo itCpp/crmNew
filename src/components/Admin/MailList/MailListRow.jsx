@@ -47,14 +47,14 @@ const MailListRow = props => {
                         disabled={!Boolean(row.to_online)}
                     />
                 </span>
-                <span>
+                {/* <span>
                     <Icon
                         name="telegram"
                         title="Дублировать в телеграм"
                         color={row.to_telegram ? "blue" : "grey"}
                         disabled={!Boolean(row.to_telegram)}
                     />
-                </span>
+                </span> */}
                 {typeof row?.response?.to_notice?.users_id == "object" && <span className="d-flex align-items-center mr-1" style={{ opacity: ".45" }} title="Отправлено сотрудникам">
                     <span>
                         <Icon

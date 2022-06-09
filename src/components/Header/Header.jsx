@@ -56,19 +56,32 @@ function Header(props) {
 
             <div className="d-flex align-items-center">
 
-                <span>
+                <span className="ml-1 mr-3" style={{ marginTop: "3px" }}>
                     <Icon
                         name="bars"
                         size="large"
                         link
-                        className="ml-1 mr-3 header-menu-button"
-                        style={{ marginTop: "3px" }}
+                        className="header-menu-button"
+                        fitted
+                        // onClick={() => props.setShowMenu(!props.showMenu)}
                         id="set-show-menu-btn"
-                    // onClick={() => props.setShowMenu(!props.showMenu)}
                     />
                 </span>
 
-                <NavLink exact to="/" title="Главная страница" className="header-title">CRM MKA</NavLink>
+                <NavLink exact to="/" title="Главная страница" className="header-title">
+                    CRM MKA
+                </NavLink>
+
+                {permits?.requests_access && <NavLink to="/requests" className="ml-1 mr-2" style={{ marginTop: "3px" }}>
+                    <Icon
+                        name="table"
+                        size="large"
+                        link
+                        className="header-menu-button"
+                        fitted
+                        title="Заявки"
+                    />
+                </NavLink>}
 
                 <Clock />
 
