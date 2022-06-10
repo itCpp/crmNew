@@ -121,7 +121,19 @@ export default (({ updateNotification, notifications, height }) => {
 
                 return <Comment key={`${i}_${row.id}`} className={className.join(' ')} onClick={() => readedMessage(row.id)}>
 
-                    <NotificationIcon type={row.notif_type} />
+                    <NotificationIcon
+                        type={row.notif_type}
+                        icon={row?.data?.icon || null}
+                        setColor
+                        style={{
+                            position: "absolute",
+                            top: 0,
+                            bottom: 0,
+                            display: "flex",
+                            alignItems: "center",
+                            height: "100%",
+                        }}
+                    />
 
                     <Comment.Content>
 
@@ -131,7 +143,7 @@ export default (({ updateNotification, notifications, height }) => {
                                     {row.author_data?.pin && <strong className="mr-1">{row.author_data.pin}</strong>}
                                     <span>{row.author_data.fio}</span>
                                 </span>
-                                : "ЦРМ"
+                                : "@bot"
                             }
                         </Comment.Author>
 
@@ -150,7 +162,15 @@ export default (({ updateNotification, notifications, height }) => {
                             title="Новое уведомление"
                         />}
 
-                        <Comment.Text>{message}</Comment.Text>
+                        <Comment.Text
+                            content={message}
+                            title={message}
+                            className="text-nowrap"
+                            style={{
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                            }}
+                        />
 
                     </Comment.Content>
 

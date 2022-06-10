@@ -48,7 +48,10 @@ const AlertModal = props => {
                 ? <div className="d-flex justify-content-center">
                     <Placeholder style={{ width: 46, height: 54, opacity: 0.5 }} className="rounded" />
                 </div>
-                : <NotificationIconComponent type={row.notif_type} />
+                : <NotificationIconComponent
+                    type={row.notif_type}
+                    icon={row?.data?.icon || null}
+                />
             }
             {/* <span>Уведомление</span> */}
         </Header>}
