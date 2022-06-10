@@ -54,11 +54,11 @@ const Rating = ({ data }) => {
                 <div>
                     <Icon name="rub" size="huge" />
                 </div>
-                <div className="w-100">
+                <div className="w-100" title={Number(data.oklad_period || 0) > 0 ? "Сумма окалада может быть изменена" : ""}>
                     <div><strong>К выплате</strong></div>
                     <pre className="pre-data">
                         {Number(data.salary || 0) + Number(data.oklad_period || 0)}
-                        {Number(data.oklad_period || 0) > 0 && <b className="text-danger" title="Сумма окалада может быть изменена">*</b>}
+                        {Number(data.oklad_period || 0) > 0 && <b className="text-danger">*</b>}
                     </pre>
                 </div>
             </Segment>

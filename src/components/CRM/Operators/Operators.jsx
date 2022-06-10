@@ -3,6 +3,7 @@ import axios from "./../../../utils/axios-header";
 import { useSelector } from "react-redux";
 import { Loader, Message, Table, Icon } from "semantic-ui-react";
 import OperatorRow from "./OperatorRow";
+import { withRouter } from "react-router-dom";
 
 const Operators = props => {
 
@@ -69,6 +70,7 @@ const Operators = props => {
                         row={row}
                         columns={columns}
                         online={online.indexOf(row.userId) >= 0}
+                        history={props.history}
                     />)}
                 </Table.Body>
 
@@ -80,4 +82,4 @@ const Operators = props => {
 
 }
 
-export default Operators;
+export default withRouter(Operators);

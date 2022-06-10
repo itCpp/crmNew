@@ -48,7 +48,7 @@ const User = props => {
             setError(null);
             setData(data);
 
-            window.Echo && window.Echo.private(`App.User.Page.${window.userId}`)
+            window.Echo && window?.userId === data?.user?.id && window.Echo.private(`App.User.Page.${window.userId}`)
                 .listen('Users\\ChangeUserWorkTime', changeUserWorkTime)
                 .listen('Users\\NotificationsEvent', notificationsEvent);
 

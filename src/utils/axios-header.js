@@ -142,4 +142,18 @@ instance.toast = (
 
 }
 
+// Перехватчик
+// instance.interceptors.response.use(response => {
+//     console.log(response);
+//     return response;
+// }, error => {
+
+//     console.log(error.response, error?.response?.config?.url === "/check");
+
+//     if (error?.response?.config?.url === "/check")
+//         return error;
+
+//     return Promise.reject(error?.response?.data || {});
+// });
+
 export default instance
