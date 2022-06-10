@@ -11,7 +11,7 @@ const OfficeData = props => {
     const { office, setOffices, setOffice } = props;
     const segment = React.useRef();
 
-    const [loading, setLoading] = React.useState(true);
+    const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(false);
     const [errors, setErrors] = React.useState({});
 
@@ -19,50 +19,36 @@ const OfficeData = props => {
     const [statuses, setStatuses] = React.useState([]);
     const [gates, setGates] = React.useState([]);
     const [sectors, setSectors] = React.useState([]);
+    const [baseId, setBaseId] = React.useState([]);
     const [save, setSave] = React.useState(false);
 
     const [hash, setHash] = React.useState(null);
 
-    // React.useEffect(() => {
-    //     if (office && segment.current) {
-    //         setTimeout(() => {
-    //             segment.current.classList.add('slide-out-left');
-    //             segment.current.style.display = "block";
-    //             setTimeout(() => segment.current.classList.remove('slide-out-left'), 200);
-    //         }, 210);
-    //     }
-    //     else if (segment.current && office === false) {
-    //     }
-    // }, [office]);
-
     React.useEffect(() => {
 
-        if (typeof office == "number") {
+        setLoading(true);
 
-            setLoading(true);
+        axios.post('dev/getOffice', {
+            id: office,
+            forSetting: true
+        }).then(({ data }) => {
 
-            axios.post('dev/getOffice', {
-                id: office,
-                forSetting: true
-            }).then(({ data }) => {
+            if (data?.office?.settings && data.office.settings.length === 0)
+                data.office.settings = [{}];
 
-                if (data?.office?.settings && data.office.settings.length === 0)
-                    data.office.settings = [{}];
+            setFormdata(data.office);
 
-                setFormdata(data.office);
+            setHash(JSON.stringify(data.office));
+            setStatuses(data.statuses);
+            setSectors(data.sectors);
+            setGates(data.gates);
+            setBaseId(data.synh);
 
-                setHash(JSON.stringify(data.office));
-                setStatuses(data.statuses);
-                setSectors(data.sectors);
-                setGates(data.gates);
-
-            }).catch(e => {
-                setError(axios.getError(e));
-            }).then(() => {
-                setLoading(false);
-            });
-
-        }
+        }).catch(e => {
+            setError(axios.getError(e));
+        }).then(() => {
+            setLoading(false);
+        });
 
     }, [office]);
 
@@ -144,15 +130,31 @@ const OfficeData = props => {
 
         <Form loading={loading}>
 
-            <Form.Input
-                label="Наименование офиса"
-                placeholder="Укажите наименование офиса"
-                name="name"
-                value={formdata.name || ""}
-                error={errors.name ? true : false}
-                onChange={onChange}
-                disabled={!loading && (error ? true : false)}
-            />
+            <Form.Group>
+                <Form.Input
+                    label="Наименование офиса"
+                    placeholder="Укажите наименование офиса"
+                    name="name"
+                    value={formdata.name || ""}
+                    error={errors.name ? true : false}
+                    onChange={onChange}
+                    disabled={!loading && (error ? true : false)}
+                    width={9}
+                    required
+                />
+
+                <Form.Select
+                    label="Синхронизация с БАЗАми"
+                    placeholder="Выберите офис в базах"
+                    name="base_id"
+                    value={formdata.base_id || null}
+                    error={errors.base_id ? true : false}
+                    onChange={onChange}
+                    disabled={(!loading && (error ? true : false)) || (baseId.length === 0)}
+                    options={[{ value: null, text: "Не синхронизировать" }, ...baseId].map((row, i) => ({ ...row, key: i }))}
+                    width={7}
+                />
+            </Form.Group>
 
             <Form.Checkbox
                 toggle
@@ -174,6 +176,7 @@ const OfficeData = props => {
                     onChange={onChange}
                     disabled={!loading && (error ? true : false)}
                     width={10}
+                    required
                 />
 
                 <Form.Input
@@ -197,6 +200,7 @@ const OfficeData = props => {
                 error={errors.address ? true : false}
                 onChange={onChange}
                 disabled={!loading && (error ? true : false)}
+                required
             />
 
             <hr />

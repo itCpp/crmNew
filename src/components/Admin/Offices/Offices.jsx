@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "./../../../utils/axios-header";
 
-import { Header, Loader, Message } from "semantic-ui-react";
+import { Button, Header, Loader, Message } from "semantic-ui-react";
 
 import OfficesList from "./OfficesList";
 import OfficeData from "./OfficeData";
@@ -39,7 +39,16 @@ const Offices = props => {
                 subheader="Настройка офисов и адресов для записей"
             />
 
-            {loading ? <Loader active inline /> : null}
+            {loading && <Loader active inline />}
+
+            {!loading && <Button
+                icon="plus"
+                circular
+                basic
+                color="green"
+                onClick={() => setOffice(true)}
+                disabled={Boolean(office)}
+            />}
 
         </div>
 
