@@ -34,6 +34,7 @@ const ConsultationsClients = React.lazy(() => import("./ConsultationsClients"));
 const Phoneboock = React.lazy(() => import("./Phoneboock"));
 const Counter = React.lazy(() => import("./Counter"));
 const CallsLog = React.lazy(() => import("./CallsLog"));
+const Chat = React.lazy(() => import("./Chat"));
 
 const CrmContent = React.memo(withRouter(props => {
 
@@ -69,6 +70,8 @@ const CrmContent = React.memo(withRouter(props => {
         return <Phoneboock {...props} />
     else if (page == "/callslog" && permits.calls_log_access)
         return <CallsLog {...props} />
+    else if (page == "/chat")
+        return <Chat {...props} />
     else
         return <User {...props} />
 

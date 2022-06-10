@@ -98,6 +98,15 @@ const Menu = props => {
                 replace={props.history.replace}
             />}
 
+            <Link to="/chat" className={`menu-list-row title ${selectMenu === "/chat" ? 'tab-list-active' : ''}`}>
+                <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
+                    <span>
+                        <Icon name="comments" />
+                        <span>Служебный чат</span>
+                    </span>
+                </div>
+            </Link>
+
             {permits.requests_access && <Link to="/counter" className={`menu-list-row title ${selectMenu === "/counter" ? 'tab-list-active' : ''}`}>
                 <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                     <span>
