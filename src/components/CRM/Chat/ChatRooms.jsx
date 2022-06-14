@@ -23,7 +23,7 @@ export const RoomRow = props => {
     const { row, setSelect } = props;
     const className = ["py-2 px-3 d-flex align-items-center chat-user-row"];
 
-    if (props.select)
+    if (props.selected === true)
         className.push("chat-user-row-active");
 
     return <div className={className.join(' ')} onClick={() => setSelect(row)}>
@@ -39,15 +39,13 @@ export const RoomRow = props => {
 
         <div className="d-flex flex-grow-1 align-items-center">
 
-            <div className="d-flex flex-column">
+            <div className="d-flex flex-column w-100">
 
                 <div className="room-short">
                     <b>{row.name}</b>
                 </div>
 
-                <div className="d-flex align-items-center" style={{
-                    maxWidth: Number(row.count) > 0 ? 225 : 235
-                }}>
+                <div className="d-flex align-items-center w-100">
 
                     <div className="room-short flex-grow-1">
                         <i>{row?.message?.message || "Сообщений ещё нет"}</i>

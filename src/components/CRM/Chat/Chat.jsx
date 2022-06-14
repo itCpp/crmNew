@@ -2,9 +2,13 @@ import React from "react";
 import { Loader, Message } from "semantic-ui-react";
 import { axios } from "../../../utils";
 import "./chat.css";
+import ChatPlace from "./ChatPlace";
 import ChatRooms from "./ChatRooms";
+import { useSelector } from "react-redux";
 
 const Chat = () => {
+
+    const { userData } = useSelector(state => state.main);
 
     const [loading, setLoading] = React.useState(true);
     const [error, serError] = React.useState(null);
@@ -15,7 +19,13 @@ const Chat = () => {
     React.useEffect(() => {
 
         axios.post('users/chat').then(({ data }) => {
+
             setRooms(data.rooms);
+
+            window.Echo && window.Echo.join("Chat");
+
+            window.Echo && window.Echo.private(`Chat.Room.${userData.id}`);
+
         }).catch(e => {
             serError(axios.getError(e));
         }).then(() => {
@@ -25,6 +35,9 @@ const Chat = () => {
         return () => {
             setLoading(true);
             serError(null);
+
+            window.Echo && window.Echo.leave("Chat");
+            window.Echo && window.Echo.leave(`Chat.Room.${userData.id}`);
         }
 
     }, []);
@@ -46,8 +59,11 @@ const Chat = () => {
                 setSelect={setSelect}
             />
 
-            <div className="chat-content"></div>
-            
+            <ChatPlace
+                select={select}
+                setSelect={setSelect}
+            />
+
         </>}
 
     </div>
