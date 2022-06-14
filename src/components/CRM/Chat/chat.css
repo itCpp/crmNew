@@ -1,0 +1,63 @@
+.chat-users {
+    width: 300px;
+    background-color: #ffffff;
+    border-right: 1px solid var(--border-admin-segment);
+}
+
+.chat-content {
+    flex-grow: 1;
+}
+
+.chat-user-row {
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--border-admin-segment);
+    cursor: pointer;
+}
+
+.chat-user-row {
+    background-color: #576eff;
+    color: #ffffff;
+}
+
+.room-short {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 235px;
+    width: 100%;
+}
+
+.room-short > i {
+    opacity: .5;
+    padding-right: .5rem;
+}
+
+.chat-user-row .ant-avatar {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    color: rgba(0, 0, 0, 0.85);
+    font-size: 14px;
+    font-variant: tabular-nums;
+    line-height: 1.5715;
+    list-style: none;
+    font-feature-settings: 'tnum', "tnum";
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    color: #fff;
+    white-space: nowrap;
+    text-align: center;
+    vertical-align: middle;
+    background: #ccc;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 50%;
+}
+
+.chat-user-row .ant-avatar-string {
+    position: absolute;
+    left: 50%;
+    transform-origin: 0 center;
+}
