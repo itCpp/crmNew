@@ -1,75 +1,29 @@
 import { axios } from "../../../utils";
 import React from "react";
 import { Icon, Label, Loader, Message } from "semantic-ui-react";
-import ChatPlaceMessages from "./Messages/ChatPlaceMessages";
-import TextareaAutosize from "react-textarea-autosize";
+import { ChatPlaceMessages, SendMessage } from "./Messages";
 
 const ChatPlace = props => {
 
-    const { select, setSelect } = props;
+    const { selectRoom, setSelectRoom, select, setSelect } = props;
     const [loading, setLoading] = React.useState(false);
-    const [room, setRoom] = React.useState({});
     const [error, setError] = React.useState(null);
+    
+    const [room, setRoom] = React.useState({});
     const [messages, setMessages] = React.useState(null);
     const [changeMessage, setChangeMessage] = React.useState(null);
 
-    const [message, setMessage] = React.useState("");
-
-    const clickTextArea = React.useCallback(e => {
-
-        if (e.ctrlKey && e.keyCode === 13) {
-            setMessage(p => (p + "\n"));
-        } else if (e.keyCode === 13) {
-            e.preventDefault();
-            sendMessage(e.target.value);
-        }
-
-    }, []);
-
-    const sendMessage = message => {
-
-        if (String(message).trim().length === 0) return;
-
-        setMessage("");
-
-        const formdata = {
-            micro_id: Date.now(),
-            message,
-            my: true,
-            chat_id: select?.id,
-            loading: true,
-            created_at: new Date,
-        }
-
-        setChangeMessage(formdata);
-
-        axios.post('users/chat/sendMessage', formdata).then(({ data }) => {
-            setChangeMessage({
-                micro_id: formdata.micro_id,
-                loading: false,
-                error: null,
-                ...data.message,
-            });
-        }).catch(e => {
-            setChangeMessage({
-                ...formdata,
-                loading: false,
-                error: axios.getError(e),
-            });
-        });
-
-    };
-
     React.useEffect(() => {
 
-        if (select?.id) {
+        if (selectRoom?.id) {
 
             setLoading(true);
             setRoom(select);
 
-            axios.post('users/chat/room', { id: select.id })
+            axios.post('users/chat/room', { ...selectRoom })
                 .then(({ data }) => {
                     setMessages(data.messages);
+                    setRoom(data.room);
                 }).catch(e => {
                     setError(axios.getError(e));
                 }).then(() => {
@@ -82,11 +36,10 @@ const ChatPlace = props => {
             setRoom({});
             setError(null);
             setMessages(null);
-            setMessage("");
             setChangeMessage(null);
         }
 
-    }, [select]);
+    }, [selectRoom]);
 
     return <div className="chat-content d-flex flex-column">
 
@@ -141,20 +94,12 @@ const ChatPlace = props => {
 
             </div>
 
-            <div className="pt-2">
-
-                <TextareaAutosize
-                    autoFocus
-                    className="chat-message-textarea"
-                    placeholder="Введите текст сообщения..."
-                    disabled={Boolean(error)}
-                    value={message}
-                    onChange={e => setMessage(e.target.value)}
-                    maxRows={10}
-                    onKeyDown={clickTextArea}
-                />
-
-            </div>
+            <SendMessage
+                room={room}
+                chatId={room.id}
+                disabled={Boolean(error)}
+                setChangeMessage={setChangeMessage}
+            />
 
         </>}
 

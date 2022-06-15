@@ -68,6 +68,8 @@ const Chat = () => {
             <ChatPlace
                 select={room}
                 setSelect={setRoom}
+                selectRoom={room}
+                selectSetRoom={setRoom}
                 setRooms={setRooms}
             />
 

@@ -8,7 +8,7 @@
     background-color: #f6f6f6;
     border-right: 1px solid var(--border-admin-segment);
     flex-grow: 1;
-    max-width: 800px;
+    max-width: 900px;
 }
 
 .chat-user-search input {
