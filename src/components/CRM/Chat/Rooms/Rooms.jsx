@@ -1,8 +1,11 @@
 import React from "react";
 import RoomRow from "./RoomRow";
 import RoomSearch from "./RoomSearch";
+import { useSelector } from "react-redux";
 
 export const Rooms = props => {
+
+    const online = useSelector(store => store.main.onlineId);
 
     const { room, setRoom } = props;
     const { rooms, setRooms } = props;
@@ -16,6 +19,7 @@ export const Rooms = props => {
             myRooms={rooms}
             roomId={room?.id}
             setRoom={setRoom}
+            online={online}
         />
 
         {isSearch === false && rooms.map(row => <RoomRow
@@ -23,6 +27,7 @@ export const Rooms = props => {
             row={row}
             setRoom={setRoom}
             selected={room?.id === row.id}
+            online={online.indexOf(row.user_id) >= 0}
         />)}
 
     </div>

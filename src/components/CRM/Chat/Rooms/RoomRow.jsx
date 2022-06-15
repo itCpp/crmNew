@@ -3,7 +3,7 @@ import { Label } from "semantic-ui-react";
 
 export const RoomRow = props => {
 
-    const { row, selected, setRoom } = props;
+    const { online, row, selected, setRoom } = props;
     const className = ["py-2 px-3 d-flex align-items-center chat-user-row"];
 
     if (selected === true)
@@ -17,6 +17,7 @@ export const RoomRow = props => {
                 title={row.name}
                 children={row.pin}
                 className="mr-2"
+                style={{ background: online ? "green" : "silver" }}
             />
         </div>
 

@@ -4,7 +4,7 @@ import TextareaAutosize from "react-textarea-autosize";
 
 const SendMessage = props => {
 
-    const { chatId, disabled, setChangeMessage } = props;
+    const { chatId, userId, disabled, setChangeMessage } = props;
     const [error, setError] = React.useState(null);
     const [message, setMessage] = React.useState("");
 
@@ -19,6 +19,7 @@ const SendMessage = props => {
             message,
             my: true,
             chat_id: chatId,
+            user_id: userId,
             loading: true,
             created_at: new Date,
         }
@@ -40,7 +41,7 @@ const SendMessage = props => {
             });
         });
 
-    }, [chatId]);
+    }, [chatId, userId]);
 
     const clickTextArea = React.useCallback(e => {
 
@@ -51,7 +52,7 @@ const SendMessage = props => {
             sendMessage(e.target.value);
         }
 
-    }, [chatId]);
+    }, [chatId, userId]);
 
     return <div className="mt-2 pt-2" style={{ background: "#ffffff" }}>
 

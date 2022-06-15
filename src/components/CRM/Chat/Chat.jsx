@@ -26,7 +26,7 @@ const Chat = () => {
             window.Echo && window.Echo.join("Chat");
 
             window.Echo && window.Echo.private(`Chat.Room.${userData.id}`)
-                .listen('NewMessage', console.log);
+                .listen('Chat\\NewMessage', console.log);
 
         }).catch(e => {
             serError(axios.getError(e));
@@ -66,8 +66,6 @@ const Chat = () => {
             />
 
             <ChatPlace
-                select={room}
-                setSelect={setRoom}
                 selectRoom={room}
                 selectSetRoom={setRoom}
                 setRooms={setRooms}

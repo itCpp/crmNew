@@ -5,7 +5,7 @@ import { ChatPlaceMessages, SendMessage } from "./Messages";
 
 const ChatPlace = props => {
 
-    const { selectRoom, setSelectRoom, select, setSelect } = props;
+    const { selectRoom, setSelectRoom } = props;
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(null);
     
@@ -18,7 +18,7 @@ const ChatPlace = props => {
         if (selectRoom?.id) {
 
             setLoading(true);
-            setRoom(select);
+            setRoom(selectRoom);
 
             axios.post('users/chat/room', { ...selectRoom })
                 .then(({ data }) => {
@@ -65,7 +65,7 @@ const ChatPlace = props => {
                     <Icon
                         name="close"
                         link
-                        onClick={() => setSelect(null)}
+                        onClick={() => setSelectRoom(null)}
                         size="large"
                     />
                 </div>
@@ -78,7 +78,7 @@ const ChatPlace = props => {
                     error
                     size="mini"
                     content={error}
-                    className="mx-3 my-2 py-2"
+                    className="chat-message-ui text-center mx-auto my-2"
                 />}
 
                 {messages && <ChatPlaceMessages
@@ -97,6 +97,7 @@ const ChatPlace = props => {
             <SendMessage
                 room={room}
                 chatId={room.id}
+                userId={room.user_id}
                 disabled={Boolean(error)}
                 setChangeMessage={setChangeMessage}
             />
