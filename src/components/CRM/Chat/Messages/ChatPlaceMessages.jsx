@@ -1,6 +1,6 @@
 import React from "react";
 import { Icon } from "semantic-ui-react";
-import moment from "../../../utils/moment";
+import moment from "../../../../utils/moment";
 
 const ChatPlaceMessages = props => {
 

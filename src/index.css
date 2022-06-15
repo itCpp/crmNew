@@ -141,6 +141,14 @@ hr {
 .opacity-80 { opacity: .8 !important; }
 .opacity-90 { opacity: .9 !important; }
 
+.position-absolute-border {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
 .slide-to-right {
   animation: slide-to-right .2s;
 }
@@ -256,7 +264,7 @@ hr {
   display: none !important;
 }
 
-@media screen and (max-width: 1400px) {
+@media screen and (max-width: 1365px) {
   .header-menu-button {
     display: flex !important;
   }

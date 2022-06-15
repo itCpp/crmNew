@@ -11,9 +11,16 @@
     max-width: 800px;
 }
 
-.chat-user-row {
+.chat-user-search input {
+    border: none !important;
+}
+
+.chat-user-row, .chat-user-search {
     background-color: #ffffff;
     border-bottom: 1px solid var(--border-admin-segment);
+}
+
+.chat-user-row:hover {
     cursor: pointer;
 }
 
@@ -110,4 +117,10 @@
     right: 0;
     bottom: 0;
     overflow-y: auto;
+}
+
+.chat-message-ui {
+    padding: .5rem 1rem !important;
+    border-radius: 1rem !important;
+    max-width: 500px;
 }

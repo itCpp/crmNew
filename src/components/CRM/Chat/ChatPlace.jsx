@@ -1,7 +1,7 @@
 import { axios } from "../../../utils";
 import React from "react";
 import { Icon, Label, Loader, Message } from "semantic-ui-react";
-import ChatPlaceMessages from "./ChatPlaceMessages";
+import ChatPlaceMessages from "./Messages/ChatPlaceMessages";
 import TextareaAutosize from "react-textarea-autosize";
 
 const ChatPlace = props => {
@@ -26,7 +26,7 @@ const ChatPlace = props => {
 
     }, []);
 
-    const sendMessage = React.useCallback(message => {
+    const sendMessage = message => {
 
         if (String(message).trim().length === 0) return;
 
@@ -58,7 +58,7 @@ const ChatPlace = props => {
             });
         });
 
-    }, [select]);
+    };
 
     React.useEffect(() => {
 
@@ -128,7 +128,10 @@ const ChatPlace = props => {
                     className="mx-3 my-2 py-2"
                 />}
 
-                {messages && <ChatPlaceMessages data={messages} changeMessage={changeMessage} />}
+                {messages && <ChatPlaceMessages
+                    data={messages}
+                    changeMessage={changeMessage}
+                />}
 
                 {loading && <Loader
                     inline="centered"

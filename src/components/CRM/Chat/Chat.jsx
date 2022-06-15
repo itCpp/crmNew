@@ -3,7 +3,7 @@ import { Loader, Message } from "semantic-ui-react";
 import { axios } from "../../../utils";
 import "./chat.css";
 import ChatPlace from "./ChatPlace";
-import ChatRooms from "./ChatRooms";
+import ChatRooms from "./Rooms";
 import { useSelector } from "react-redux";
 
 const Chat = () => {
@@ -13,8 +13,9 @@ const Chat = () => {
     const [loading, setLoading] = React.useState(true);
     const [error, serError] = React.useState(null);
 
+    const [room, setRoom] = React.useState(null);
     const [rooms, setRooms] = React.useState([]);
-    const [select, setSelect] = React.useState(null);
+    const [messages, setMessages] = React.useState([]);
 
     React.useEffect(() => {
 
@@ -24,7 +25,8 @@ const Chat = () => {
 
             window.Echo && window.Echo.join("Chat");
 
-            window.Echo && window.Echo.private(`Chat.Room.${userData.id}`);
+            window.Echo && window.Echo.private(`Chat.Room.${userData.id}`)
+                .listen('NewMessage', console.log);
 
         }).catch(e => {
             serError(axios.getError(e));
@@ -42,26 +44,31 @@ const Chat = () => {
 
     }, []);
 
-    return <div className="d-flex w-100">
+    return <div className="d-flex w-100 position-relative">
 
-        {loading && <Loader inline="centered" active className="mt-3" />}
+        {loading && <div
+            className="position-absolute-border d-flex justify-content-center align-items-center"
+            children={<Loader active />}
+        />}
 
-        {!loading && error && <div className="w-100 mt-3 px-3">
-            <Message error content={error} style={{ maxWidth: 600 }} className="mx-auto" />
-        </div>}
+        {!loading && error && <div
+            className="position-absolute-border d-flex justify-content-center align-items-center"
+            children={<Message error size="mini" content={error} className="chat-message-ui" />}
+        />}
 
         {!loading && !error && <>
 
             <ChatRooms
                 rooms={rooms}
                 setRooms={setRooms}
-                select={select}
-                setSelect={setSelect}
+                room={room}
+                setRoom={setRoom}
             />
 
             <ChatPlace
-                select={select}
-                setSelect={setSelect}
+                select={room}
+                setSelect={setRoom}
+                setRooms={setRooms}
             />
 
         </>}

@@ -1,32 +1,15 @@
 import { Avatar } from "antd";
-import React from "react";
 import { Label } from "semantic-ui-react";
-
-export const ChatRooms = props => {
-
-    const { rooms, select, setRooms } = props;
-
-    return <div className="chat-users">
-
-        {rooms.map(row => <RoomRow
-            key={row.id}
-            row={row}
-            setSelect={props.setSelect}
-            selected={select?.id === row.id}
-        />)}
-
-    </div>
-}
 
 export const RoomRow = props => {
 
-    const { row, setSelect } = props;
+    const { row, selected, setRoom } = props;
     const className = ["py-2 px-3 d-flex align-items-center chat-user-row"];
 
-    if (props.selected === true)
+    if (selected === true)
         className.push("chat-user-row-active");
 
-    return <div className={className.join(' ')} onClick={() => setSelect(row)}>
+    return <div className={className.join(' ')} onClick={() => setRoom(row)}>
 
         <div>
             <Avatar
@@ -45,7 +28,7 @@ export const RoomRow = props => {
                     <b>{row.name}</b>
                 </div>
 
-                <div className="d-flex align-items-center w-100">
+                {Boolean(row.toSearch) === false && <div className="d-flex align-items-center w-100">
 
                     <div className="room-short flex-grow-1">
                         <i>{row?.message?.message || "Сообщений ещё нет"}</i>
@@ -58,7 +41,7 @@ export const RoomRow = props => {
                         circular
                     />}
 
-                </div>
+                </div>}
 
             </div>
 
@@ -67,4 +50,4 @@ export const RoomRow = props => {
     </div>
 }
 
-export default ChatRooms;
+export default RoomRow;
