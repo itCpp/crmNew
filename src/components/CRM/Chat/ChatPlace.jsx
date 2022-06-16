@@ -6,11 +6,12 @@ import { ChatPlaceMessages, SendMessage } from "./Messages";
 const ChatPlace = props => {
 
     const { selectRoom, setSelectRoom } = props;
+    const { messages, setMessages } = props;
+
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(null);
     
     const [room, setRoom] = React.useState({});
-    const [messages, setMessages] = React.useState(null);
     const [changeMessage, setChangeMessage] = React.useState(null);
 
     React.useEffect(() => {

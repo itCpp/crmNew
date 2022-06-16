@@ -6,6 +6,13 @@ import ChatPlace from "./ChatPlace";
 import ChatRooms from "./Rooms";
 import { useSelector } from "react-redux";
 
+export const sortRooms = rows => {
+
+    let s = rows.sort((a, b) => new Date(b.message_at) - new Date(a.message_at));
+    console.log(s);
+    return s;
+}
+
 const Chat = () => {
 
     const { userData } = useSelector(state => state.main);
@@ -17,6 +24,54 @@ const Chat = () => {
     const [rooms, setRooms] = React.useState([]);
     const [messages, setMessages] = React.useState([]);
 
+    const newMessage = React.useCallback(data => {
+
+        setRooms(p => {
+
+            const rows = [...p];
+            let push = true;
+
+            rows.forEach((row, i) => {
+                if (row.id === data.room?.id) {
+                    push = false;
+                    rows[i].message_at = data.room.message_at;
+                }
+            });
+
+            if (data.room && push) {
+
+                const row = { ...data.room }
+
+                if (data.room.is_private) {
+                    // userData
+                }
+
+                rows.push(row);
+            }
+
+            return sortRooms(rows);
+        });
+
+        setMessages(p => {
+
+            console.log(p);
+
+            return p;
+
+            const rows = [...p];
+            let push = !Boolean(rows.find(i => i.id === data.message?.id));
+
+            if (push) {
+                rows.push(data.message);
+            }
+
+            console.log(push, rows);
+
+            return rows;
+        });
+
+    }, []);
+
     React.useEffect(() => {
 
         axios.post('users/chat').then(({ data }) => {
@@ -26,7 +81,7 @@ const Chat = () => {
             window.Echo && window.Echo.join("Chat");
 
             window.Echo && window.Echo.private(`Chat.Room.${userData.id}`)
-                .listen('Chat\\NewMessage', console.log);
+                .listen('Chat\\NewMessage', newMessage);
 
         }).catch(e => {
             serError(axios.getError(e));
@@ -67,8 +122,10 @@ const Chat = () => {
 
             <ChatPlace
                 selectRoom={room}
-                selectSetRoom={setRoom}
+                setSelectRoom={setRoom}
                 setRooms={setRooms}
+                messages={messages}
+                setMessages={setMessages}
             />
 
         </>}
