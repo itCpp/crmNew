@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Dimmer, Form, Icon, Loader, Message, Modal } from "semantic-ui-react";
 import { axios, moment } from "../../../utils";
+import { sortRowsFromDate } from "./index";
 
 export const ExpenseEdit = props => {
 
@@ -30,7 +31,11 @@ export const ExpenseEdit = props => {
             axios.get('admin/expenses/edit')
                 .then(({ data }) => {
                     setAccounts(data.accounts || []);
-                    setFormdata(f => ({ ...f, ...(data.row || {}) }));
+                    setFormdata(f => ({
+                        ...f,
+                        date: f.date || moment().format("YYYY-MM-DD"),
+                        ...(data.row || {}),
+                    }));
                 }).catch(e => {
                     setLoadingError(axios.getError(e));
                 }).then(() => {
@@ -90,7 +95,7 @@ export const ExpenseEdit = props => {
                             });
                         }
 
-                        return rows;
+                        return sortRowsFromDate(rows);
                     });
 
                     close();
@@ -152,7 +157,7 @@ export const ExpenseEdit = props => {
                     label="Дата расхода"
                     type="date"
                     name="date"
-                    value={formdata.date || moment().format("YYYY-MM-DD")}
+                    value={formdata.date || ""}
                     onChange={handleChange}
                     disabled={Boolean(loadingError)}
                     error={Boolean(saveErrors.date)}

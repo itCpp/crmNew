@@ -65,8 +65,9 @@ export const ExpensesRowsTable = props => {
         <Table.Header>
             <Table.Row>
                 <Table.HeaderCell className="w-100">{moment(data.date).format("DD.MM.YYYY")}</Table.HeaderCell>
-                <Table.HeaderCell>Заявок</Table.HeaderCell>
-                <Table.HeaderCell>Сумма</Table.HeaderCell>
+                <Table.HeaderCell textAlign="center">Заявок</Table.HeaderCell>
+                <Table.HeaderCell textAlign="center">Сумма</Table.HeaderCell>
+                <Table.HeaderCell textAlign="center">Цена</Table.HeaderCell>
                 <Table.HeaderCell>
                     <Icon
                         name="plus"
@@ -82,8 +83,21 @@ export const ExpensesRowsTable = props => {
         <Table.Body>
             {data.expenses.map(row => <Table.Row key={row.account_id}>
                 <Table.Cell>{row.account_name}</Table.Cell>
-                <Table.Cell style={{ minWidth: 150 }}>{row.requests}</Table.Cell>
-                <Table.Cell style={{ minWidth: 150 }}>{Number(row.sum).toFixed(2)}</Table.Cell>
+                <Table.Cell
+                    style={{ minWidth: 130 }}
+                    textAlign="center"
+                    content={row.requests}
+                />
+                <Table.Cell
+                    style={{ minWidth: 130 }}
+                    textAlign="center"
+                    content={Number(row.sum).toFixed(2)}
+                />
+                <Table.Cell
+                    style={{ minWidth: 130 }}
+                    textAlign="center"
+                    content={Number(Number(row.requests) > 0 ? Number(row.sum) / Number(row.requests) : 0).toFixed(2)}
+                />
                 <TableCell />
             </Table.Row>)}
         </Table.Body>
