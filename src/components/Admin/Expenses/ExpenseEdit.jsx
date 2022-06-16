@@ -23,13 +23,17 @@ export const ExpenseEdit = props => {
 
     React.useEffect(() => {
 
-        if (show) {
+        if (Boolean(row)) {
 
             if (typeof row == "object") setFormdata(row);
 
             setLoading(true);
 
-            axios.get('admin/expenses/edit')
+            axios.get('admin/expenses/edit', {
+                params: {
+                    id: row.id,
+                }
+            })
                 .then(({ data }) => {
                     setAccounts(data.accounts || []);
                     setFormdata(f => ({
@@ -54,7 +58,7 @@ export const ExpenseEdit = props => {
             setErrorList(null);
         }
 
-    }, [show]);
+    }, [row]);
 
     React.useEffect(() => {
 
