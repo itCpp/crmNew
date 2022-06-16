@@ -6,6 +6,7 @@ import { sortRowsFromDate } from "./index";
 export const ExpenseEdit = props => {
 
     const { show, close, row, setRows } = props;
+    const { page, total, limit } = props;
     const [loading, setLoading] = React.useState(false);
     const [loadingError, setLoadingError] = React.useState(null);
 
@@ -89,6 +90,7 @@ export const ExpenseEdit = props => {
                         });
 
                         if (pushDate) {
+                            
                             rows.push({
                                 date: data.row.date,
                                 expenses: [data.row],
