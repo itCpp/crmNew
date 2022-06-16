@@ -12,6 +12,8 @@ export const ExpenseEdit = props => {
     const [accounts, setAccounts] = React.useState([]);
     const [save, setSave] = React.useState(false);
     const [saveError, setSaveError] = React.useState(null);
+    const [saveErrors, setSaveErrors] = React.useState({});
+    const [errorList, setErrorList] = React.useState(null);
 
     const handleChange = React.useCallback((e, { name, value }) => {
         setFormdata(p => ({ ...p, [name]: value }))
@@ -43,9 +45,38 @@ export const ExpenseEdit = props => {
             setFormdata({});
             setSave(false);
             setSaveError(null);
+            setSaveErrors({});
+            setErrorList(null);
         }
 
     }, [show]);
+
+    React.useEffect(() => {
+
+        if (save) {
+
+            axios.put('admin/expenses/save', formdata)
+                .then(({ data }) => {
+                    close();
+                }).catch(e => {
+                    setSaveError(axios.getError(e));
+                    setSave(false);
+                    
+                    let errors = axios.getErrors(e);
+                    let list = [];
+
+                    for (let i in errors) {
+                        errors[i].forEach(e => {
+                            list.push(e);
+                        });
+                    }
+
+                    setErrorList(list);
+                    setSaveErrors(errors);
+                });
+        }
+
+    }, [save]);
 
     return <Modal
         open={show}
@@ -68,6 +99,7 @@ export const ExpenseEdit = props => {
                     selection
                     fluid
                     disabled={Boolean(loadingError)}
+                    error={Boolean(saveErrors.account_id)}
                     name="account_id"
                     value={formdata.account_id || null}
                     onChange={handleChange}
@@ -86,24 +118,44 @@ export const ExpenseEdit = props => {
                     value={formdata.date || ""}
                     onChange={handleChange}
                     disabled={Boolean(loadingError)}
+                    error={Boolean(saveErrors.date)}
                 />
 
-                <Form.Input
-                    label="Сумма расхода"
-                    placeholder="Укажите сумму расхода"
-                    type="number"
-                    step="0.01"
-                    name="sum"
-                    value={formdata.sum || ""}
-                    onChange={handleChange}
-                    disabled={Boolean(loadingError)}
-                />
+                <Form.Group widths="equal">
+
+                    <Form.Input
+                        label="Сумма расхода"
+                        placeholder="Укажите сумму расхода"
+                        type="number"
+                        step="0.01"
+                        name="sum"
+                        value={formdata.sum || ""}
+                        onChange={handleChange}
+                        disabled={Boolean(loadingError)}
+                        error={Boolean(saveErrors.sum)}
+                    />
+
+                    <Form.Input
+                        label="Количетсво заявок"
+                        placeholder="Укажите количетсво заявок"
+                        type="number"
+                        step="1"
+                        name="requests"
+                        value={formdata.requests || ""}
+                        onChange={handleChange}
+                        disabled={Boolean(loadingError)}
+                        error={Boolean(saveErrors.requests)}
+                    />
+
+                </Form.Group>
 
             </Form>
 
             {(loadingError || saveError) && <Message
                 error
+                size="mini"
                 content={loadingError || saveError}
+                list={errorList}
                 className="mb-0 mt-3 px-3 py-2"
             />}
 
