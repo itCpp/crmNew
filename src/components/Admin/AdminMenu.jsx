@@ -142,6 +142,17 @@ function AdminMenu(props) {
 
         </div>}
 
+        {permits.admin_stats && <div className="admin-menu-block">
+
+            <h5>Статистика</h5>
+
+            <NavLink to="/admin/expenses" className="admin-menu-point" onClick={changePage}>
+                <Icon name="money" />
+                <span>Расходы</span>
+            </NavLink>
+
+        </div>}
+
         {permits.block_dev && <div className="admin-menu-block">
 
             <h5>Блокировки</h5>

@@ -1,8 +1,10 @@
 import _ from 'lodash'
 import axios from "./axios-header";
+import moment from "./moment";
 
 export {
-    axios
+    axios,
+    moment
 };
 
 export const replaceJSX = (str, find, replace) => {
