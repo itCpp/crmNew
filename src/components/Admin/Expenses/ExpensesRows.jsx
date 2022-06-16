@@ -1,6 +1,6 @@
 import React from "react";
 import { axios, moment } from "../../../utils";
-import { Loader, Message, Table } from "semantic-ui-react";
+import { Icon, Loader, Message, Table, TableCell } from "semantic-ui-react";
 
 export const ExpensesRows = props => {
 
@@ -43,7 +43,11 @@ export const ExpensesRows = props => {
             <Message error size="mini" content={error} className="px-3 py-2" />
         </div>}
 
-        {rows.map((row, key) => <ExpensesRowsTable key={row.date} data={row} />)}
+        {rows.map(row => <ExpensesRowsTable
+            key={row.date}
+            data={row}
+            setRow={props.setRow}
+        />)}
 
         {!loading && !error && rows.length === 0 && <div className="opacity-50 text-center my-3">
             <strong>Данных ещё нет</strong>
@@ -54,23 +58,33 @@ export const ExpensesRows = props => {
 
 export const ExpensesRowsTable = props => {
 
-    const { data } = props;
+    const { data, setRow } = props;
 
     return <Table compact selectable celled>
 
         <Table.Header>
             <Table.Row>
-                <Table.HeaderCell>{moment(data.date).format("DD.MM.YYYY")}</Table.HeaderCell>
+                <Table.HeaderCell className="w-100">{moment(data.date).format("DD.MM.YYYY")}</Table.HeaderCell>
                 <Table.HeaderCell>Заявок</Table.HeaderCell>
                 <Table.HeaderCell>Сумма</Table.HeaderCell>
+                <Table.HeaderCell>
+                    <Icon
+                        name="plus"
+                        link
+                        color="green"
+                        fitted
+                        onClick={() => setRow({ date: data.date })}
+                    />
+                </Table.HeaderCell>
             </Table.Row>
         </Table.Header>
 
         <Table.Body>
-            {data.expenses.map(row => <Table.Row key={row.id}>
+            {data.expenses.map(row => <Table.Row key={row.account_id}>
                 <Table.Cell>{row.account_name}</Table.Cell>
-                <Table.Cell>{row.requests}</Table.Cell>
-                <Table.Cell>{Number(row.sum).toFixed(2)}</Table.Cell>
+                <Table.Cell style={{ minWidth: 150 }}>{row.requests}</Table.Cell>
+                <Table.Cell style={{ minWidth: 150 }}>{Number(row.sum).toFixed(2)}</Table.Cell>
+                <TableCell />
             </Table.Row>)}
         </Table.Body>
 

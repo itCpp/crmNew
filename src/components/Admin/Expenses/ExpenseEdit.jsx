@@ -4,7 +4,7 @@ import { axios, moment } from "../../../utils";
 
 export const ExpenseEdit = props => {
 
-    const { show, close } = props;
+    const { show, close, row, setRows } = props;
     const [loading, setLoading] = React.useState(false);
     const [loadingError, setLoadingError] = React.useState(null);
 
@@ -23,15 +23,14 @@ export const ExpenseEdit = props => {
 
         if (show) {
 
+            if (typeof row == "object") setFormdata(row);
+
             setLoading(true);
 
             axios.get('admin/expenses/edit')
                 .then(({ data }) => {
                     setAccounts(data.accounts || []);
-                    setFormdata({
-                        ...(data.row || {}),
-                        date: data.row?.date || moment().format("YYYY-MM-DD"),
-                    });
+                    setFormdata(f => ({ ...f, ...(data.row || {}) }));
                 }).catch(e => {
                     setLoadingError(axios.getError(e));
                 }).then(() => {
@@ -57,11 +56,49 @@ export const ExpenseEdit = props => {
 
             axios.put('admin/expenses/save', formdata)
                 .then(({ data }) => {
+
+                    setRows(p => {
+
+                        const rows = [...p];
+
+                        let pushDate = true;
+
+                        rows.forEach((row, a) => {
+
+                            let pushRow = true;
+
+                            if (row.date === data.row.date) {
+
+                                pushDate = false;
+
+                                row.expenses.forEach((expense, b) => {
+                                    if (expense.account_id === data.row.account_id) {
+                                        pushRow = false;
+                                        rows[a].expenses[b].requests = Number(expense.requests) + Number(data.row.requests);
+                                        rows[a].expenses[b].sum = Number(expense.sum) + Number(data.row.sum);
+                                    }
+                                });
+
+                                if (pushRow) rows[a].expenses.unshift(data.row);
+                            }
+                        });
+
+                        if (pushDate) {
+                            rows.push({
+                                date: data.row.date,
+                                expenses: [data.row],
+                            });
+                        }
+
+                        return rows;
+                    });
+
                     close();
+
                 }).catch(e => {
                     setSaveError(axios.getError(e));
                     setSave(false);
-                    
+
                     let errors = axios.getErrors(e);
                     let list = [];
 
@@ -115,7 +152,7 @@ export const ExpenseEdit = props => {
                     label="Дата расхода"
                     type="date"
                     name="date"
-                    value={formdata.date || ""}
+                    value={formdata.date || moment().format("YYYY-MM-DD")}
                     onChange={handleChange}
                     disabled={Boolean(loadingError)}
                     error={Boolean(saveErrors.date)}

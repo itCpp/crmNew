@@ -14,7 +14,9 @@ export const Expenses = props => {
 
         <ExpenseEdit
             show={Boolean(row)}
+            row={row}
             close={() => setRow(null)}
+            setRows={setRows}
         />
 
         <AdminContentSegment className="d-flex align-items-center">
@@ -38,6 +40,7 @@ export const Expenses = props => {
                 setLoading={setLoading}
                 rows={rows}
                 setRows={setRows}
+                setRow={setRow}
             />
 
         </AdminContentSegment>
