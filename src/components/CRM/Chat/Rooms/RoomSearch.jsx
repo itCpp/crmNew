@@ -10,6 +10,7 @@ const RoomSearch = props => {
     const timeout = React.useRef();
 
     const [search, setSearch] = React.useState(false);
+    const [found, setFound] = React.useState([]);
     const [rooms, setRooms] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(false);
@@ -22,32 +23,37 @@ const RoomSearch = props => {
 
         axios.post('users/chat/room/search', { search: word })
             .then(({ data }) => {
-
                 setError(false);
-
-                const rows = [],
-                    pins = [];
-
-                myRooms.forEach(row => {
-                    if (String(row.name).toLowerCase().indexOf(String(word).toLowerCase()) >= 0) {
-                        rows.push(row);
-                        pins.push(row.pin);
-                    }
-                });
-
-                data.rows.forEach(row => {
-                    if (pins.indexOf(row.pin) < 0)
-                        rows.push({ ...row, toSearch: true });
-                });
-
-                setRooms(rows);
-
+                setFound(data.rows);
             }).catch(e => {
                 setError(axios.getError(e));
             }).then(() => {
                 setLoading(false);
             });
     }, [loading]);
+
+    const setRoomsList = React.useCallback((rooms, found) => {
+
+        const rows = [],
+            pins = [];
+
+        rooms.forEach(row => {
+            if (String(row.name).toLowerCase().indexOf(String(search).toLowerCase()) >= 0) {
+                rows.push(row);
+                pins.push(row.pin);
+            }
+        });
+
+        found.forEach(row => {
+            if (pins.indexOf(row.pin) < 0)
+                rows.push({ ...row, toSearch: true });
+        });
+
+        setRooms(rows);
+
+    }, [search]);
+
+    React.useEffect(() => setRoomsList(myRooms, found), [myRooms, found]);
 
     React.useEffect(() => {
 

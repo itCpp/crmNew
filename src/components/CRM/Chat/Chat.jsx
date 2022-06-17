@@ -5,13 +5,7 @@ import "./chat.css";
 import ChatPlace from "./ChatPlace";
 import ChatRooms from "./Rooms";
 import { useSelector } from "react-redux";
-
-export const sortRooms = rows => {
-
-    let s = rows.sort((a, b) => new Date(b.message_at) - new Date(a.message_at));
-    console.log(s);
-    return s;
-}
+import { useSetRooms } from "./index";
 
 const Chat = () => {
 
@@ -24,33 +18,11 @@ const Chat = () => {
     const [rooms, setRooms] = React.useState([]);
     const [messages, setMessages] = React.useState([]);
 
+    const { updateRooms } = useSetRooms(setRooms, userData.id);
+
     const newMessage = React.useCallback(data => {
 
-        setRooms(p => {
-
-            const rows = [...p];
-            let push = true;
-
-            rows.forEach((row, i) => {
-                if (row.id === data.room?.id) {
-                    push = false;
-                    rows[i].message_at = data.room.message_at;
-                }
-            });
-
-            if (data.room && push) {
-
-                const row = { ...data.room }
-
-                if (data.room.is_private) {
-                    // userData
-                }
-
-                rows.push(row);
-            }
-
-            return sortRooms(rows);
-        });
+        updateRooms(data.room);
 
         setMessages(p => {
 

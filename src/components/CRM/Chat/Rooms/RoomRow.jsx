@@ -17,7 +17,7 @@ export const RoomRow = props => {
                 title={row.name}
                 children={row.pin}
                 className="mr-2"
-                style={{ background: online ? "green" : "silver" }}
+                style={{ background: online ? "#21ba45" : "silver" }}
             />
         </div>
 

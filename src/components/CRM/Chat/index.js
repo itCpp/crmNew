@@ -1,7 +1,9 @@
 import Chat from "./Chat";
+import useSetRooms from "./useSetRooms";
 
 export {
-    Chat
+    Chat,
+    useSetRooms,
 }
 
 export default Chat;

@@ -1,10 +1,14 @@
 import React from "react";
 import { axios } from "../../../../utils";
 import TextareaAutosize from "react-textarea-autosize";
+import { useSelector } from "react-redux";
+import useSetRooms from "../useSetRooms";
 
 const SendMessage = props => {
 
     const { chatId, userId, disabled, setChangeMessage } = props;
+    const { userData } = useSelector(state => state.main);
+    const { updateRooms } = useSetRooms(props.setRooms, userData.id);
     const [error, setError] = React.useState(null);
     const [message, setMessage] = React.useState("");
 
@@ -27,12 +31,16 @@ const SendMessage = props => {
         setChangeMessage(formdata);
 
         axios.post('users/chat/sendMessage', formdata).then(({ data }) => {
+
             setChangeMessage({
                 micro_id: formdata.micro_id,
                 loading: false,
                 error: null,
                 ...data.message,
             });
+
+            updateRooms(data.room);
+
         }).catch(e => {
             setChangeMessage({
                 ...formdata,

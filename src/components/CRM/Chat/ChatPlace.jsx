@@ -101,6 +101,7 @@ const ChatPlace = props => {
                 userId={room.user_id}
                 disabled={Boolean(error)}
                 setChangeMessage={setChangeMessage}
+                setRooms={props.setRooms}
             />
 
         </>}
