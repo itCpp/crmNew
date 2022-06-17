@@ -1,7 +1,17 @@
 .chat-users {
+    position: relative;
     width: 300px;
     background-color: #ffffff;
     border-right: 1px solid var(--border-admin-segment);
+}
+
+.chat-users-rows {
+    position: absolute;
+    top: 37px;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    overflow-y: auto;
 }
 
 .chat-content {
@@ -15,7 +25,8 @@
     border: none !important;
 }
 
-.chat-user-row, .chat-user-search {
+.chat-user-row,
+.chat-user-search {
     background-color: #ffffff;
     border-bottom: 1px solid var(--border-admin-segment);
 }

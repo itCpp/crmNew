@@ -15,6 +15,7 @@ const Chat = () => {
     const [error, serError] = React.useState(null);
 
     const [room, setRoom] = React.useState(null);
+    const [roomString, setRoomString] = React.useState(null);
     const [rooms, setRooms] = React.useState([]);
     const [messages, setMessages] = React.useState([]);
 
@@ -71,6 +72,8 @@ const Chat = () => {
 
     }, []);
 
+    // React.useEffect(() => setRoomString(null), [room]);
+
     return <div className="d-flex w-100 position-relative">
 
         {loading && <div
@@ -90,11 +93,14 @@ const Chat = () => {
                 setRooms={setRooms}
                 room={room}
                 setRoom={setRoom}
+                roomString={roomString}
+                setRoomString={setRoomString}
             />
 
             <ChatPlace
                 selectRoom={room}
                 setSelectRoom={setRoom}
+                setRoomString={setRoomString}
                 setRooms={setRooms}
                 messages={messages}
                 setMessages={setMessages}

@@ -7,7 +7,7 @@ export const Rooms = props => {
 
     const online = useSelector(store => store.main.onlineId);
 
-    const { room, setRoom } = props;
+    const { room, setRoom, roomString, setRoomString } = props;
     const { rooms, setRooms } = props;
     const [isSearch, setIsSearch] = React.useState(false);
 
@@ -18,17 +18,23 @@ export const Rooms = props => {
             setIsSearch={setIsSearch}
             myRooms={rooms}
             roomId={room?.id}
+            searchId={roomString}
+            setRoomString={setRoomString}
             setRoom={setRoom}
             online={online}
         />
 
-        {isSearch === false && rooms.map(row => <RoomRow
-            key={row.id}
-            row={row}
-            setRoom={setRoom}
-            selected={room?.id === row.id}
-            online={online.indexOf(row.user_id) >= 0}
-        />)}
+        {isSearch === false && <div className="chat-users-rows">
+
+            {rooms.map(row => <RoomRow
+                key={row.id}
+                row={row}
+                setRoom={setRoom}
+                selected={room?.id === row.id}
+                online={online.indexOf(row.user_id) >= 0}
+            />)}
+
+        </div>}
 
     </div>
 }

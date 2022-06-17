@@ -5,7 +5,7 @@ import RoomRow from "./RoomRow";
 
 const RoomSearch = props => {
 
-    const { myRooms, setIsSearch, setRoom, roomId } = props;
+    const { myRooms, setIsSearch, setRoom, roomId, searchId, setRoomString } = props;
 
     const timeout = React.useRef();
 
@@ -103,12 +103,17 @@ const RoomSearch = props => {
             <b className="text-danger">{error}</b>
         </div>}
 
-        {search && rooms.map(row => <RoomRow
-            key={row.id}
-            row={row}
-            setRoom={setRoom}
-            selected={roomId === row.id}
-        />)}
+        {search && <div className="chat-users-rows">
+
+            {rooms.map(row => <RoomRow
+                key={row.id}
+                row={{ ...row, fromSearch: true }}
+                setRoom={setRoom}
+                setRoomString={setRoomString}
+                selected={roomId === row.id || searchId === row.searchId}
+            />)}
+
+        </div>}
 
     </>
 }

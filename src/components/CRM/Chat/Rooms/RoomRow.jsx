@@ -1,15 +1,20 @@
 import { Avatar } from "antd";
 import { Label } from "semantic-ui-react";
+import { useSelector } from "react-redux";
 
 export const RoomRow = props => {
 
-    const { online, row, selected, setRoom } = props;
+    const { online, row, selected, setRoom, setRoomString } = props;
+    const { userData } = useSelector(state => state.main);
     const className = ["py-2 px-3 d-flex align-items-center chat-user-row"];
 
     if (selected === true)
         className.push("chat-user-row-active");
 
-    return <div className={className.join(' ')} onClick={() => setRoom(row)}>
+    return <div className={className.join(' ')} onClick={() => {
+        setRoom(row);
+        Boolean(row.fromSearch) && setRoomString(null);
+    }}>
 
         <div>
             <Avatar
@@ -17,7 +22,7 @@ export const RoomRow = props => {
                 title={row.name}
                 children={row.pin}
                 className="mr-2"
-                style={{ background: online ? "#21ba45" : "silver" }}
+                style={{ background: (userData.id === row.user_id) ? "#f2711c" : (online ? "#21ba45" : "silver") }}
             />
         </div>
 

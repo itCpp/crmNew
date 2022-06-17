@@ -5,12 +5,12 @@ import { ChatPlaceMessages, SendMessage } from "./Messages";
 
 const ChatPlace = props => {
 
-    const { selectRoom, setSelectRoom } = props;
+    const { selectRoom, setSelectRoom, setRoomString } = props;
     const { messages, setMessages } = props;
 
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(null);
-    
+
     const [room, setRoom] = React.useState({});
     const [changeMessage, setChangeMessage] = React.useState(null);
 
@@ -25,6 +25,9 @@ const ChatPlace = props => {
                 .then(({ data }) => {
                     setMessages(data.messages);
                     setRoom(data.room);
+
+                    if (Boolean(selectRoom.fromSearch) && typeof selectRoom.id == "string")
+                        setRoomString(selectRoom.id);
                 }).catch(e => {
                     setError(axios.getError(e));
                 }).then(() => {
