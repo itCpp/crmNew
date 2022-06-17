@@ -1,12 +1,13 @@
 import React from "react";
 import { Button, Dimmer, Form, Icon, Loader, Message, Modal } from "semantic-ui-react";
 import { axios, moment } from "../../../utils";
-import { sortRowsFromDate } from "./index";
+import { useUpdateRows } from "./useUpdateRows";
 
 export const ExpenseEdit = props => {
 
-    const { show, close, row, setRows } = props;
-    const { page, total, limit } = props;
+    const { show, close, row, setRows, setList } = props;
+    const { setUpdate } = useUpdateRows({ setList, setRows });
+
     const [loading, setLoading] = React.useState(false);
     const [loadingError, setLoadingError] = React.useState(null);
 
@@ -67,43 +68,7 @@ export const ExpenseEdit = props => {
             axios.put('admin/expenses/save', formdata)
                 .then(({ data }) => {
 
-                    setRows(p => {
-
-                        const rows = [...p];
-
-                        let pushDate = true;
-
-                        rows.forEach((row, a) => {
-
-                            let pushRow = true;
-
-                            if (row.date === data.row.date) {
-
-                                pushDate = false;
-
-                                row.expenses.forEach((expense, b) => {
-                                    if (expense.account_id === data.row.account_id) {
-                                        pushRow = false;
-                                        rows[a].expenses[b].requests = Number(expense.requests) + Number(data.row.requests);
-                                        rows[a].expenses[b].sum = Number(expense.sum) + Number(data.row.sum);
-                                    }
-                                });
-
-                                if (pushRow) rows[a].expenses.unshift(data.row);
-                            }
-                        });
-
-                        if (pushDate) {
-                            
-                            rows.push({
-                                date: data.row.date,
-                                expenses: [data.row],
-                            });
-                        }
-
-                        return sortRowsFromDate(rows);
-                    });
-
+                    setUpdate(data);
                     close();
 
                 }).catch(e => {
