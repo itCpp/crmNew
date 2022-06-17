@@ -4,7 +4,7 @@ import MessageRow from "./MessageRow";
 
 const ChatPlaceMessages = props => {
 
-    const { data, changeMessage } = props;
+    const { data, changeMessage, fired } = props;
     const place = React.useRef();
 
     const [page, setPage] = React.useState(1);
@@ -50,16 +50,23 @@ const ChatPlaceMessages = props => {
 
     return <div ref={place} className="d-flex flex-column-reverse place-messages-rows">
 
-        {messages.map(row => <MessageRow
-            key={row.id || row.micro_id}
-            row={row}
-        />)}
+        {fired && <Message
+            content="Сотрудник уволен"
+            className="chat-message-ui text-center mx-auto my-2"
+            size="mini"
+            color="black"
+        />}
 
         {messages.length === 0 && <Message
             content="Ссобщений ещё нет"
             className="chat-message-ui text-center mx-auto my-2"
             size="mini"
         />}
+
+        {messages.map(row => <MessageRow
+            key={row.id || row.micro_id}
+            row={row}
+        />)}
 
     </div>
 }

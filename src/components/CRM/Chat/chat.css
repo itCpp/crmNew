@@ -91,7 +91,10 @@
 
 .chat-message-row {
     padding: .5rem 1rem;
-    margin: .25rem .5rem;
+    margin-top: .25rem;
+    margin-bottom: .25rem;
+    margin-left: .5rem;
+    margin-right: auto;
     white-space: pre-line;
     border-radius: .5rem;
     max-width: 500px;
@@ -100,6 +103,7 @@
 
 .my-chat-message {
     background-color: #fffcc8;
+    margin-right: .5rem;
     margin-left: auto;
 }
 

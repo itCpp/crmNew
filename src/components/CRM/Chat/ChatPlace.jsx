@@ -88,6 +88,7 @@ const ChatPlace = props => {
                 {messages && <ChatPlaceMessages
                     data={messages}
                     changeMessage={changeMessage}
+                    fired={Boolean(room.is_fired)}
                 />}
 
                 {loading && <Loader
@@ -98,14 +99,14 @@ const ChatPlace = props => {
 
             </div>
 
-            <SendMessage
+            {Boolean(room.is_fired) === false && <SendMessage
                 room={room}
                 chatId={room.id}
                 userId={room.user_id}
-                disabled={Boolean(error)}
+                disabled={Boolean(error) || Boolean(room.is_fired)}
                 setChangeMessage={setChangeMessage}
                 setRooms={props.setRooms}
-            />
+            />}
 
         </>}
 

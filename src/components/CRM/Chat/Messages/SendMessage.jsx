@@ -62,11 +62,11 @@ const SendMessage = props => {
 
     }, [chatId, userId]);
 
-    return <div className="mt-2 pt-2" style={{ background: "#ffffff" }}>
+    return <div className="mt-2">
 
         <TextareaAutosize
             autoFocus
-            className="chat-message-textarea"
+            className="chat-message-textarea pt-2"
             placeholder="Введите текст сообщения..."
             disabled={disabled}
             value={message}

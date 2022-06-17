@@ -17,30 +17,33 @@ const Chat = () => {
     const [room, setRoom] = React.useState(null);
     const [roomString, setRoomString] = React.useState(null);
     const [rooms, setRooms] = React.useState([]);
-    const [messages, setMessages] = React.useState([]);
+    const [messages, setMessages] = React.useState({});
 
     const { updateRooms } = useSetRooms(setRooms, userData.id);
 
     const newMessage = React.useCallback(data => {
 
+        console.log(data);
+
         updateRooms(data.room);
 
         setMessages(p => {
 
-            console.log(p);
+            const prev = { ...p };
 
-            return p;
+            const messages = [...(prev?.messages || [])],
+                push = !Boolean(messages.find(i => i.id === data.message?.id));
 
-            const rows = [...p];
-            let push = !Boolean(rows.find(i => i.id === data.message?.id));
+            if (push)
+                messages.unshift(data.message);
 
-            if (push) {
-                rows.push(data.message);
-            }
+            // const length = messages.length;
+            // if (length > prev.limit * prev.page)
+            //     messages.splice(length - 1, 1);
 
-            console.log(push, rows);
+            prev.messages = messages;
 
-            return rows;
+            return prev;
         });
 
     }, []);

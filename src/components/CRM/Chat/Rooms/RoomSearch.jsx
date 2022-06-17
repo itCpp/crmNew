@@ -105,6 +105,10 @@ const RoomSearch = props => {
 
         {search && <div className="chat-users-rows">
 
+            {!loading && rooms.length === 0 && <div className="text-center my-3">
+                <small className="opacity-50">Ничего не найдено</small>
+            </div>}
+
             {rooms.map(row => <RoomRow
                 key={row.id}
                 row={{ ...row, fromSearch: true }}
