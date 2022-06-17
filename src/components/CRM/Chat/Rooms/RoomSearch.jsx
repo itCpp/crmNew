@@ -6,6 +6,7 @@ import RoomRow from "./RoomRow";
 const RoomSearch = props => {
 
     const { myRooms, setIsSearch, setRoom, roomId, searchId, setRoomString } = props;
+    const { online, chatOnline } = props;
 
     const timeout = React.useRef();
 
@@ -115,6 +116,8 @@ const RoomSearch = props => {
                 setRoom={setRoom}
                 setRoomString={setRoomString}
                 selected={roomId === row.id || searchId === row.searchId}
+                online={online.indexOf(row.user_id) >= 0}
+                chatOnline={chatOnline.indexOf(row.user_id) >= 0}
             />)}
 
         </div>}

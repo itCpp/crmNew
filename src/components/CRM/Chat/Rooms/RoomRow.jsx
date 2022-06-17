@@ -4,7 +4,8 @@ import { useSelector } from "react-redux";
 
 export const RoomRow = props => {
 
-    const { online, row, selected, setRoom, setRoomString } = props;
+    const { row, selected, setRoom, setRoomString } = props;
+    const { online, chatOnline } = props;
     const { userData } = useSelector(state => state.main);
     const className = ["py-2 px-3 d-flex align-items-center chat-user-row"];
 
@@ -16,14 +17,26 @@ export const RoomRow = props => {
         Boolean(row.fromSearch) && setRoomString(null);
     }}>
 
-        <div>
+        <div className="position-relative">
             <Avatar
                 src={row.image}
                 title={row.name}
                 children={row.pin}
                 className="mr-2"
-                style={{ background: (userData.id === row.user_id) ? "#f2711c" : (online ? "#21ba45" : "silver") }}
+                style={{ background: (userData.id === row.user_id) ? "#f2711c" : (online ? "#b5cc18" : "silver") }}
             />
+
+            {chatOnline && <Label
+                size="mini"
+                circular
+                empty
+                color="green"
+                style={{
+                    position: "absolute",
+                    right: 5,
+                    bottom: -1,
+                }}
+            />}
         </div>
 
         <div className="d-flex flex-grow-1 align-items-center">

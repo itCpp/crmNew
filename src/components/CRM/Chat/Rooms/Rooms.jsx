@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 export const Rooms = props => {
 
     const online = useSelector(store => store.main.onlineId);
+    const { chatOnline } = props;
 
     const { room, setRoom, roomString, setRoomString } = props;
     const { rooms, setRooms } = props;
@@ -22,6 +23,7 @@ export const Rooms = props => {
             setRoomString={setRoomString}
             setRoom={setRoom}
             online={online}
+            chatOnline={chatOnline}
         />
 
         {isSearch === false && <div className="chat-users-rows">
@@ -32,6 +34,7 @@ export const Rooms = props => {
                 setRoom={setRoom}
                 selected={room?.id === row.id}
                 online={online.indexOf(row.user_id) >= 0}
+                chatOnline={chatOnline.indexOf(row.user_id) >= 0}
             />)}
 
         </div>}

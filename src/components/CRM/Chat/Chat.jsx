@@ -18,6 +18,7 @@ const Chat = () => {
     const [roomString, setRoomString] = React.useState(null);
     const [rooms, setRooms] = React.useState([]);
     const [messages, setMessages] = React.useState({});
+    const [online, setOnline] = React.useState([]);
 
     const { updateRooms } = useSetRooms(setRooms, userData.id);
 
@@ -54,7 +55,23 @@ const Chat = () => {
 
             setRooms(data.rooms);
 
-            window.Echo && window.Echo.join("Chat");
+            window.Echo && window.Echo.join("Chat")
+                .here((users) => {
+                    setOnline(users.map(user => user.id));
+                })
+                .joining((user) => {
+                    setOnline(users => ([...users, user.id]));
+                })
+                .leaving((user) => {
+                    setOnline(users => {
+                        const online = [];
+                        users.forEach(id => {
+                            if (id !== user.id)
+                                online.push(id);
+                        })
+                        return online;
+                    });
+                });
 
             window.Echo && window.Echo.private(`Chat.Room.${userData.id}`)
                 .listen('Chat\\NewMessage', newMessage);
@@ -98,6 +115,7 @@ const Chat = () => {
                 setRoom={setRoom}
                 roomString={roomString}
                 setRoomString={setRoomString}
+                chatOnline={online}
             />
 
             <ChatPlace
