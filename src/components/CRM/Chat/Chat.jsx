@@ -6,6 +6,7 @@ import ChatPlace from "./ChatPlace";
 import ChatRooms from "./Rooms";
 import { useSelector } from "react-redux";
 import { useSetRooms } from "./index";
+import useSetMessages from "./useSetMessages";
 
 const Chat = () => {
 
@@ -18,34 +19,16 @@ const Chat = () => {
     const [roomString, setRoomString] = React.useState(null);
     const [rooms, setRooms] = React.useState([]);
     const [messages, setMessages] = React.useState({});
+    const [placeData, setPlaceData] = React.useState(null);
+    const { pushMessage } = useSetMessages({ placeData, setPlaceData });
     const [online, setOnline] = React.useState([]);
 
     const { updateRooms } = useSetRooms(setRooms, userData.id);
 
     const newMessage = React.useCallback(data => {
 
-        console.log(data);
-
-        updateRooms(data.room);
-
-        setMessages(p => {
-
-            const prev = { ...p };
-
-            const messages = [...(prev?.messages || [])],
-                push = !Boolean(messages.find(i => i.id === data.message?.id));
-
-            if (push)
-                messages.unshift(data.message);
-
-            // const length = messages.length;
-            // if (length > prev.limit * prev.page)
-            //     messages.splice(length - 1, 1);
-
-            prev.messages = messages;
-
-            return prev;
-        });
+        Boolean(data.room) && updateRooms(data.room);
+        Boolean(data.message) && pushMessage(data.message);
 
     }, []);
 
@@ -123,8 +106,9 @@ const Chat = () => {
                 setSelectRoom={setRoom}
                 setRoomString={setRoomString}
                 setRooms={setRooms}
-                messages={messages}
-                setMessages={setMessages}
+                placeData={placeData}
+                setPlaceData={setPlaceData}
+                pushMessage={pushMessage}
             />
 
         </>}

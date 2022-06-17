@@ -6,7 +6,7 @@ import { ChatPlaceMessages, SendMessage } from "./Messages";
 const ChatPlace = props => {
 
     const { selectRoom, setSelectRoom, setRoomString } = props;
-    const { messages, setMessages } = props;
+    const { placeData, setPlaceData, pushMessage } = props;
 
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(null);
@@ -23,11 +23,13 @@ const ChatPlace = props => {
 
             axios.post('users/chat/room', { ...selectRoom })
                 .then(({ data }) => {
-                    setMessages(data.messages);
+
+                    setPlaceData(data.messages);
                     setRoom(data.room);
 
                     if (Boolean(selectRoom.fromSearch) && typeof selectRoom.id == "string")
                         setRoomString(selectRoom.id);
+
                 }).catch(e => {
                     setError(axios.getError(e));
                 }).then(() => {
@@ -39,7 +41,7 @@ const ChatPlace = props => {
         return () => {
             setRoom({});
             setError(null);
-            setMessages(null);
+            setPlaceData(null);
             setChangeMessage(null);
         }
 
@@ -85,9 +87,10 @@ const ChatPlace = props => {
                     className="chat-message-ui text-center mx-auto my-2"
                 />}
 
-                {messages && <ChatPlaceMessages
-                    data={messages}
+                {Boolean(placeData) && <ChatPlaceMessages
+                    data={placeData}
                     changeMessage={changeMessage}
+                    pushMessage={pushMessage}
                     fired={Boolean(room.is_fired)}
                 />}
 

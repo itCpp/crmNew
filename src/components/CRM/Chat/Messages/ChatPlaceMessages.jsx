@@ -4,48 +4,13 @@ import MessageRow from "./MessageRow";
 
 const ChatPlaceMessages = props => {
 
-    const { data, changeMessage, fired } = props;
+    const { data, fired } = props;
+    const { changeMessage, pushMessage } = props;
     const place = React.useRef();
-
-    const [page, setPage] = React.useState(1);
-    const [messages, setMessages] = React.useState([]);
+    const { messages } = data;
 
     React.useEffect(() => {
-
-        setPage(data?.page || 1);
-        setMessages(data?.messages || []);
-
-        return () => {
-            setPage(1);
-            setMessages([]);
-        }
-
-    }, [data]);
-
-    React.useEffect(() => {
-
-        if (changeMessage) {
-
-            setMessages(p => {
-
-                const messages = [...p];
-                let append = true;
-
-                messages.forEach((row, i) => {
-                    if ((changeMessage?.micro_id && row.micro_id === changeMessage.micro_id) || (changeMessage?.id && row.id === changeMessage.id)) {
-                        append = false;
-                        messages[i] = { ...row, ...changeMessage }
-                    }
-                });
-
-                if (append)
-                    messages.unshift(changeMessage);
-
-                return messages;
-
-            });
-        }
-
+        if (changeMessage) pushMessage(changeMessage);
     }, [changeMessage]);
 
     return <div ref={place} className="d-flex flex-column-reverse place-messages-rows">
