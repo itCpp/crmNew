@@ -7,7 +7,7 @@ export const ExpensesRows = props => {
 
     const { loading, setLoading } = props;
     const { rows, setRows } = props;
-    const { page, setPage, setTotal, setLimit } = props;
+    const { page, setPage } = props;
     const [loadPage, setLoadPage] = React.useState(null);
     const [error, setError] = React.useState(null);
     const [fullLoad, setFullLoad] = React.useState(false);
@@ -23,8 +23,6 @@ export const ExpensesRows = props => {
             setRows(prev => data.page > 1 ? [...prev, ...data.rows] : data.rows);
             setFullLoad(data.nextPage > data.lastPage);
             setPage(data.nextPage);
-            setTotal(data.total);
-            setLimit(data.limit);
         }).catch(e => {
             setError(axios.getError(e));
         }).then(() => {
@@ -97,7 +95,7 @@ export const ExpensesRows = props => {
             size="mini"
         />}
 
-        {fullLoad && <div className="text-center opacity-50">
+        {fullLoad && rows.length > 0 && <div className="text-center opacity-50">
             <small>Это все данные</small>
         </div>}
 

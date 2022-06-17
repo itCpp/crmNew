@@ -10,8 +10,6 @@ export const Expenses = props => {
     const [rows, setRows] = React.useState([]);
     const [row, setRow] = React.useState(null);
     const [page, setPage] = React.useState(1);
-    const [total, setTotal] = React.useState(0);
-    const [limit, setLimit] = React.useState(0);
 
     return <div className="segment-compact">
 
@@ -20,9 +18,6 @@ export const Expenses = props => {
             row={row}
             close={() => setRow(null)}
             setRows={setRows}
-            page={page}
-            limit={limit}
-            total={total}
         />
 
         <AdminContentSegment className="d-flex align-items-center">
@@ -49,8 +44,6 @@ export const Expenses = props => {
                 setRow={setRow}
                 page={page}
                 setPage={setPage}
-                setTotal={setTotal}
-                setLimit={setLimit}
             />
 
         </AdminContentSegment>
