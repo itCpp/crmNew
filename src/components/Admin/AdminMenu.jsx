@@ -192,6 +192,11 @@ function AdminMenu(props) {
                 <span>Просмотры</span>
             </NavLink>
 
+            <NavLink to="/admin/databases" className="admin-menu-point" onClick={changePage}>
+                <Icon name="database" />
+                <span>Базы сайтов</span>
+            </NavLink>
+
         </div>}
 
         {permits.block_dev && <div className="admin-menu-block">
@@ -211,11 +216,6 @@ function AdminMenu(props) {
             <NavLink to="/admin/sources" className="admin-menu-point" onClick={changePage}>
                 <Icon name="fork" />
                 <span>Источники</span>
-            </NavLink>
-
-            <NavLink to="/admin/databases" className="admin-menu-point" onClick={changePage}>
-                <Icon name="database" />
-                <span>Базы сайтов</span>
             </NavLink>
 
             <NavLink to="/admin/statuses" className="admin-menu-point" onClick={changePage}>

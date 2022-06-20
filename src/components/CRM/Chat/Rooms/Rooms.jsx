@@ -37,6 +37,10 @@ export const Rooms = props => {
                 chatOnline={chatOnline.indexOf(row.user_id) >= 0}
             />)}
 
+            {rooms.length === 0 && <div className="text-center my-3">
+                <small className="opacity-50">Ещё нет чатов</small>
+            </div>}
+
         </div>}
 
     </div>

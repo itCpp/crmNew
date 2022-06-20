@@ -128,6 +128,7 @@ const BlockDriveIp = () => {
             page={page}
             loading={loading || load}
             getRows={getRows}
+            search={searchWord}
         />}
 
         {rows && rows.length > 0 && rows.map((row, key) => <BlockDriveIpRow
@@ -148,6 +149,7 @@ const BlockDriveIp = () => {
             page={page}
             loading={loading || load}
             getRows={getRows}
+            search={searchWord}
         />}
 
     </div>
@@ -175,10 +177,14 @@ const BlockDriveIpRow = withRouter(props => {
         button.title = "Редактировать блокировки по сайтам";
     }
 
-    let ip = row.ip;
+    let ip = row.ip,    
+        hostname = row.hostname;
 
     if (search !== "" && search) {
         ip = <Highlighted text={row.ip} highlight={search} />
+
+        if (row.hostname)
+            hostname = <Highlighted text={row.hostname} highlight={search} />
     }
 
     const checkIp = useCallback(ip => {
@@ -272,7 +278,7 @@ const BlockDriveIpRow = withRouter(props => {
 
                     </>}
 
-                    <span>{row.hostname}</span>
+                    <span>{hostname}</span>
 
                 </div>}
                 className="flex-grow-1"

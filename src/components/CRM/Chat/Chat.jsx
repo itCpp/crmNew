@@ -18,7 +18,6 @@ const Chat = () => {
     const [room, setRoom] = React.useState(null);
     const [roomString, setRoomString] = React.useState(null);
     const [rooms, setRooms] = React.useState([]);
-    const [messages, setMessages] = React.useState({});
     const [placeData, setPlaceData] = React.useState(null);
     const { pushMessage } = useSetMessages({ placeData, setPlaceData });
     const [online, setOnline] = React.useState([]);
