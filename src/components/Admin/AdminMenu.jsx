@@ -218,6 +218,11 @@ function AdminMenu(props) {
                 <span>Источники</span>
             </NavLink>
 
+            <NavLink to="/admin/sourcescheck" className="admin-menu-point" onClick={changePage}>
+                <Icon name="world" />
+                <span>Проверка сайтов</span>
+            </NavLink>
+
             <NavLink to="/admin/statuses" className="admin-menu-point" onClick={changePage}>
                 <Icon name="certificate" />
                 <span>Статусы</span>

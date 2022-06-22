@@ -1,19 +1,20 @@
 import { withRouter } from "react-router";
-import Roles from './Developer/Roles/Roles';
-import Permits from './Developer/Permits/Permits';
+import Roles from "./Developer/Roles/Roles";
+import Permits from "./Developer/Permits/Permits";
 import Dashboard from "./Dashboard";
-import Users from './Users/Users';
-import UsersOnline from './Users/Online';
-import Callcenters from './Callcenters/Callcenters';
-import SourcesAndResources from './Sources/SourcesAndResources';
-import Statuses from './Statuses/Statuses';
-import Tabs from './Tabs/Tabs';
-import Calls from './Calls/Calls';
-import ActiveSip from './Calls/Sip/Active';
-import DistributionCalls from './Calls/Distributions/DistributionCalls';
-import Offices from './Offices/Offices';
-import Block from './Block';
-import Routes from './API/Routes';
+import Users from "./Users/Users";
+import UsersOnline from "./Users/Online";
+import Callcenters from "./Callcenters/Callcenters";
+import SourcesAndResources from "./Sources/SourcesAndResources";
+import Sites from "./Sources/Sites";
+import Statuses from "./Statuses/Statuses";
+import Tabs from "./Tabs/Tabs";
+import Calls from "./Calls/Calls";
+import ActiveSip from "./Calls/Sip/Active";
+import DistributionCalls from "./Calls/Distributions/DistributionCalls";
+import Offices from "./Offices/Offices";
+import Block from "./Block";
+import Routes from "./API/Routes";
 import Settings from "./Settings/Settings";
 import DataBases from "./DataBases/DataBases";
 import Gates from "./Gates";
@@ -40,6 +41,8 @@ function AdminContent(props) {
         body = <Callcenters />
     else if (page == "sources" && permits.admin_sources)
         body = <SourcesAndResources />
+    else if (page == "sourcescheck" && permits.admin_sources)
+        body = <Sites {...props} />
     else if (page == "statuses" && permits.dev_statuses)
         body = <Statuses />
     else if (page == "tabs" && permits.dev_tabs)
