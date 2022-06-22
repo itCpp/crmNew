@@ -1,12 +1,14 @@
 import React from "react";
-import { GridColumn, Header, Icon, Loader, Image } from "semantic-ui-react";
-import html2canvas from "html2canvas";
+import { GridColumn, Header, Icon, Loader, Image, Checkbox } from "semantic-ui-react";
+// import html2canvas from "html2canvas";
+import { axios } from "../../../../utils";
 
 const SiteRow = props => {
 
-    const { row } = props;
+    const { row, setRows, forCheck } = props;
     const block = React.useRef();
     const [image, setImage] = React.useState(null);
+    const [check, setCheck] = React.useState(null);
 
     React.useEffect(() => {
 
@@ -36,6 +38,34 @@ const SiteRow = props => {
 
     }, [row.check]);
 
+    React.useEffect(() => {
+
+        if (Boolean(check)) {
+
+            console.log(12);
+
+            axios.post('dev/resource/site/check', check)
+                .then(({ data }) => {
+                    setRows(prev => {
+                        const rows = [...prev];
+                        rows.forEach((row, i) => {
+                            if (row.id === data.row.id) {
+                                rows[i] = { ...row, check_site: data.row.check_site }
+                            }
+                        });
+                        return rows;
+                    })
+                })
+                .catch(e => {
+                    axios.toast(axios.getError(e));
+                })
+                .then(() => {
+                    setCheck(null);
+                });
+        }
+
+    }, [check]);
+
     return <GridColumn className="py-2">
 
         <div className="admin-content-segment my-0 py-2">
@@ -62,8 +92,19 @@ const SiteRow = props => {
                 />
 
                 {!Boolean(row.check) && <Loader size="mini" active inline indeterminate />}
+
                 {Boolean(row.check) && <div className="d-flex">
+
+                    {forCheck === true && <Checkbox
+                        title="Проверять сайт роботом для информаирования"
+                        className="mx-2"
+                        disabled={Boolean(check)}
+                        checked={row.check_site}
+                        onChange={(e, { checked }) => setCheck({ id: row.id, checked })}
+                    />}
+
                     <pre className="m-0">{row.check?.status || 0}</pre>
+
                     <Icon
                         name={row.check?.status === 200 ? "check" : "ban"}
                         color={row.check?.status === 200 ? "green" : "red"}
@@ -78,7 +119,7 @@ const SiteRow = props => {
                 {!image && <div className="icon-site opacity-10">
                     <Icon
                         name={Boolean(row.check?.error) ? "warning sign" : "world"}
-                        color={Boolean(row.check?.error) ? "red" : null}
+                        color={Boolean(row.check?.error) ? "red" : (row.check?.status === 200 ? "green" : null)}
                         size="massive"
                         fitted
                         disabled

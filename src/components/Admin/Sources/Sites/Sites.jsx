@@ -24,7 +24,7 @@ const checkSite = async id => {
     return response;
 }
 
-const checkAll = async (rows, setRows) => {
+const checkAll = async (rows, setRows, setForCheck) => {
 
     let checked = [];
 
@@ -51,13 +51,16 @@ const checkAll = async (rows, setRows) => {
             checked.push(row.name);
         }
     }
+
+    setForCheck(true);
 }
 
-const Sites = props => {
+const Sites = () => {
 
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(null);
     const [rows, setRows] = React.useState([]);
+    const [forCheck, setForCheck] = React.useState(false);
 
     React.useEffect(() => {
 
@@ -66,7 +69,7 @@ const Sites = props => {
         axios.get('dev/resource/sites')
             .then(({ data }) => {
                 setRows(data.sites);
-                checkAll(data.sites, setRows);
+                checkAll(data.sites, setRows, setForCheck);
             })
             .catch(e => {
                 setError(axios.getError(e));
@@ -101,6 +104,8 @@ const Sites = props => {
             {!loading && rows.length > 0 && rows.map(row => <SiteRow
                 key={row.id}
                 row={row}
+                setRows={setRows}
+                forCheck={forCheck}
             />)}
         </Grid>
 
