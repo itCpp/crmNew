@@ -13,11 +13,16 @@ const Menu = props => {
     const { path } = props.match;
     const permits = window.requestPermits;
     const [selectMenu, setSelectMenu] = React.useState(path);
-    const { counter } = useSelector(state => state.requests);
+    const state = useSelector(state => state);
+    const { counter } = state.requests;
+    const { userData } = state.main;
     // const { showMenu } = useSelector(state => state.main);
     const dispatch = useDispatch();
     const [showMenu, setShowMenu] = React.useState(false);
-    const [className, setClassName] = React.useState(["request-main-menu"]);
+    const [className, setClassName] = React.useState([
+        ...["request-main-menu"],
+        ...(userData.settings?.short_menu ? ["short-menu"] : []),
+    ]);
 
     // const hide = () => {
     //     props.setShowMenu(false);
@@ -80,7 +85,10 @@ const Menu = props => {
                 document.body.addEventListener('click', hide);
             }, 300);
         } else if (!showMenu && className.indexOf('slider-menu-show') >= 0) {
-            setClassName(["request-main-menu"]);
+            setClassName([
+                ...["request-main-menu"],
+                ...(userData.settings?.short_menu ? ["short-menu"] : []),
+            ]);
         }
 
         return () => {
@@ -92,82 +100,84 @@ const Menu = props => {
     return <div className={className.join(" ")} style={{ zIndex: 499 }}>
 
         <div className="nav-bar">
+
             {permits.requests_access && <MenuTabs
                 selectMenu={selectMenu}
                 push={props.history.push}
                 replace={props.history.replace}
+                shortMenu={Boolean(userData.settings?.short_menu)}
             />}
 
-            <Link to="/chat" className={`menu-list-row title ${selectMenu === "/chat" ? 'tab-list-active' : ''}`}>
+            <Link to="/chat" className={`menu-list-row title ${selectMenu === "/chat" ? 'tab-list-active' : ''}`} title="Служебный чат">
                 <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                     <span>
                         <Icon name="comments" />
-                        <span>Служебный чат</span>
+                        <span className="title-point">Служебный чат</span>
                     </span>
                     <CounterRow count={counter?.chat?.count || null} />
                 </div>
             </Link>
 
-            {permits.requests_access && <Link to="/counter" className={`menu-list-row title ${selectMenu === "/counter" ? 'tab-list-active' : ''}`}>
+            {permits.requests_access && <Link to="/counter" className={`menu-list-row title ${selectMenu === "/counter" ? 'tab-list-active' : ''}`} title="Счётчик">
                 <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                     <span>
                         <Icon name="line graph" />
-                        <span>Счётчик</span>
+                        <span className="title-point">Счётчик</span>
                     </span>
                 </div>
             </Link>}
 
-            {permits.rating_access && <Link to="/pins" className={`menu-list-row title ${selectMenu === "/pins" ? 'tab-list-active' : ''}`}>
+            {permits.rating_access && <Link to="/pins" className={`menu-list-row title ${selectMenu === "/pins" ? 'tab-list-active' : ''}`} title="Операторы">
                 <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                     <span>
                         <Icon name="user circle" />
-                        <span>Операторы</span>
+                        <span className="title-point">Операторы</span>
                     </span>
                 </div>
             </Link>}
 
-            {permits.rating_access && <Link to="/rating" className={`menu-list-row title ${selectMenu === "/rating" ? 'tab-list-active' : ''}`}>
+            {permits.rating_access && <Link to="/rating" className={`menu-list-row title ${selectMenu === "/rating" ? 'tab-list-active' : ''}`} title="Рейтинг">
                 <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                     <span>
                         <Icon name="chart bar" />
-                        <span>Рейтинг</span>
+                        <span className="title-point">Рейтинг</span>
                     </span>
                 </div>
             </Link>}
 
-            {permits.rating_access && <Link to="/charts" className={`menu-list-row title ${selectMenu === "/charts" ? 'tab-list-active' : ''}`}>
+            {permits.rating_access && <Link to="/charts" className={`menu-list-row title ${selectMenu === "/charts" ? 'tab-list-active' : ''}`} title="Графики">
                 <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                     <span>
                         <Icon name="chart area" />
-                        <span>Графики</span>
+                        <span className="title-point">Графики</span>
                     </span>
                 </div>
             </Link>}
 
-            {permits.calls_log_access && <Link to="/callslog" className={`menu-list-row title ${selectMenu === "/callslog" ? 'tab-list-active' : ''}`}>
+            {permits.calls_log_access && <Link to="/callslog" className={`menu-list-row title ${selectMenu === "/callslog" ? 'tab-list-active' : ''}`} title="Журнал вызовов">
                 <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                     <span>
                         <Icon name="call" />
-                        <span>Журнал вызовов</span>
+                        <span className="title-point">Журнал вызовов</span>
                     </span>
                 </div>
             </Link>}
 
-            <Link to="/mytests" className={`menu-list-row title ${selectMenu === "/mytests" ? 'tab-list-active' : ''}`}>
+            <Link to="/mytests" className={`menu-list-row title ${selectMenu === "/mytests" ? 'tab-list-active' : ''}`} title="Мои тестирования">
                 <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                     <span>
                         <Icon name="clipboard check" />
-                        <span>Мои тестирования</span>
+                        <span className="title-point">Мои тестирования</span>
                     </span>
                     <CounterRow count={counter?.tests || null} update={true} />
                 </div>
             </Link>
 
-            {permits.queues_access && <Link to="/queues" className={`menu-list-row title ${selectMenu === "/queues" ? 'tab-list-active' : ''}`}>
+            {permits.queues_access && <Link to="/queues" className={`menu-list-row title ${selectMenu === "/queues" ? 'tab-list-active' : ''}`} title="Очереди">
                 <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                     <span>
                         <Icon name="random" />
-                        <span>Очереди</span>
+                        <span className="title-point">Очереди</span>
                     </span>
                     <CounterRow count={counter?.queue?.count || null} />
                 </div>
@@ -177,11 +187,12 @@ const Menu = props => {
                 to="/sms"
                 className={`menu-list-row title ${selectMenu === "/sms" ? 'tab-list-active' : ''}`}
                 onClick={() => updateCounter({ type: "sms", hide: true })}
+                title="СМС сообщения"
             >
                 <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                     <span>
                         <Icon name="mail" />
-                        <span>СМС сообщения</span>
+                        <span className="title-point">СМС сообщения</span>
                     </span>
                     <CounterRow count={counter?.sms?.count || null} />
                 </div>
@@ -191,11 +202,12 @@ const Menu = props => {
                 to="/secondcalls"
                 className={`menu-list-row title ${selectMenu === "/secondcalls" ? 'tab-list-active' : ''}`}
                 onClick={() => updateCounter({ type: "secondcalls", hideNew: true })}
+                title="Вторичные звонки"
             >
                 <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                     <span>
                         <Icon name="call" />
-                        <span>Вторичные звонки</span>
+                        <span className="title-point">Вторичные звонки</span>
                     </span>
                     <CounterRow
                         count={counter?.secondcalls?.count || null}
@@ -204,38 +216,38 @@ const Menu = props => {
                 </div>
             </Link>}
 
-            {permits.clients_agreements_access && <Link to="/agreements" className={`menu-list-row title ${selectMenu === "/agreements" ? 'tab-list-active' : ''}`}>
+            {permits.clients_agreements_access && <Link to="/agreements" className={`menu-list-row title ${selectMenu === "/agreements" ? 'tab-list-active' : ''}`} title="Клиенты с договором">
                 <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                     <span>
                         <Icon name="file text" />
-                        <span>Клиенты с договором</span>
+                        <span className="title-point">Клиенты с договором</span>
                     </span>
                 </div>
             </Link>}
 
-            {/* {permits.clients_consultation_access && <Link to="/consultations" className={`menu-list-row title ${selectMenu === "/consultations" ? 'tab-list-active' : ''}`}>
+            {/* {permits.clients_consultation_access && <Link to="/consultations" className={`menu-list-row title ${selectMenu === "/consultations" ? 'tab-list-active' : ''}`} title="Клиенты с БК">
                 <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                     <span>
                         <Icon name="talk" />
-                        <span>Клиенты с БК</span>
+                        <span className="title-point">Клиенты с БК</span>
                     </span>
                 </div>
             </Link>} */}
 
-            {permits.user_fines_access && <Link to="/fines" className={`menu-list-row title ${selectMenu === "/fines" ? 'tab-list-active' : ''}`}>
+            {permits.user_fines_access && <Link to="/fines" className={`menu-list-row title ${selectMenu === "/fines" ? 'tab-list-active' : ''}`} title="Штрафы">
                 <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                     <span>
                         <Icon name="ruble" />
-                        <span>Штрафы</span>
+                        <span className="title-point">Штрафы</span>
                     </span>
                 </div>
             </Link>}
 
-            <Link to="/phoneboock" className={`menu-list-row title ${selectMenu === "/phoneboock" ? 'tab-list-active' : ''}`}>
+            <Link to="/phoneboock" className={`menu-list-row title ${selectMenu === "/phoneboock" ? 'tab-list-active' : ''}`} title="Телефоннная книга">
                 <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                     <span>
                         <Icon name="address book" />
-                        <span>Телефоннная книга</span>
+                        <span className="title-point">Телефоннная книга</span>
                     </span>
                 </div>
             </Link>

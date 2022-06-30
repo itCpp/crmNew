@@ -33,7 +33,7 @@ export const CounterRow = React.memo(props => {
 const MenuTabs = props => {
 
     const { selectMenu, setSearchRequest, requestsLoading } = props;
-    const { tabs } = props;
+    const { tabs, shortMenu } = props;
     const { select, selectTab, selectedUpdate, selectedUpdateTab } = props;
     const { counter, push, replace } = props;
 
@@ -75,11 +75,11 @@ const MenuTabs = props => {
             setSelect={setSelect}
         />
 
-        <Link to="/requests" className="menu-list-row title">
+        <Link to="/requests" className="menu-list-row title" title="Заявки">
 
             <div className="menu-list-point">
                 <Icon name="table" />
-                <span>Заявки</span>
+                <span className="title-point">Заявки</span>
             </div>
 
         </Link>
@@ -93,7 +93,7 @@ const MenuTabs = props => {
 
             return <div
                 key={tab.id}
-                title={tab.name_title || tab.name}
+                title={`${tab.name_title || tab.name} - ${counter[`tab${tab.id}`]?.count || 0}`}
                 className={className.join(" ")}
                 onClick={() => requestsLoading ? null : setSelect(tab.id)}
             >
@@ -101,9 +101,10 @@ const MenuTabs = props => {
                     <Icon
                         name="chevron right"
                         size="small"
+                        fitted={shortMenu}
                     />
                 </span>
-                <span>{tab.name}</span>
+                <span className="title-point">{tab.name}</span>
                 <CounterRow count={counter[`tab${tab.id}`]?.count || null} />
             </div>
         })}
