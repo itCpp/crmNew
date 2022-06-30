@@ -104,6 +104,7 @@ const Menu = props => {
                         <Icon name="comments" />
                         <span>Служебный чат</span>
                     </span>
+                    <CounterRow count={counter?.chat?.count || null} />
                 </div>
             </Link>
 

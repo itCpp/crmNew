@@ -127,7 +127,7 @@ const CRM = props => {
 
     const updateRequestRowForPin = React.useCallback(data => {
 
-        const { row, drop } = data;
+        const { row, drop, own } = data;
 
         if (drop) {
             axios.toast(null, {
@@ -143,7 +143,7 @@ const CRM = props => {
             time: 30000,
             title: "Новая заявка",
             type: "info",
-            description: <p>Вам назначена новая заявка <b>#{row}</b></p>
+            description: own ? <p>Заявка <b>#{row}</b> теперь Ваша</p> : <p>Вам назначена новая заявка <b>#{row}</b></p>,
         });
 
         getRowForTab(row);

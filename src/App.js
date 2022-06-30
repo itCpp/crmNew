@@ -43,6 +43,28 @@ const appUserPinEvent = data => {
 
 }
 
+/**
+ * Расшифровывет данные пользователя в Bearer токене
+ * @param {string} token JWT token
+ * @param {null|string} type 
+ * @returns {any}
+ */
+export const dataFromJwt = (token, type = null) => {
+
+    let jwt = String(token).split(".");
+
+    if (typeof jwt[1] == "undefined") return null;
+
+    let payload = Buffer.from(jwt[1], 'base64').toString('utf-8');
+    let user = JSON.parse(payload);
+
+    if (typeof user != "object") return null;
+
+    if (Boolean(type) && user[type]) return user[type];
+
+    return user;
+}
+
 function App(props) {
 
     const searchParams = new URLSearchParams(window.location.search);
@@ -123,10 +145,11 @@ function App(props) {
                 })
                 .listen('AppUserEvent', appUserEvent)
                 .listen('Users\\CloseSession', ({ user_token }) => {
+
                     let tokenKey = process.env.REACT_APP_TOKEN_KEY || "token";
                     const token = Cookies.get(tokenKey) || localStorage.getItem(tokenKey);
 
-                    if (token === user_token) {
+                    if (token === user_token || dataFromJwt(token, "token") === user_token) {
 
                         axios.toast("Ваша сессия завершена", {
                             title: "Внимание",
