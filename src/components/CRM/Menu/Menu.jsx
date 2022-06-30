@@ -1,7 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
-import { Icon } from "semantic-ui-react";
+import { Icon, Label } from "semantic-ui-react";
 import MenuTabs from "./MenuTabs";
 import { useDispatch, useSelector } from "react-redux";
 // import { setShowMenu } from "../../../store/actions";
@@ -115,6 +115,13 @@ const Menu = props => {
                         <span className="title-point">Служебный чат</span>
                     </span>
                     <CounterRow count={counter?.chat?.count || null} />
+                    {Boolean(counter?.chat?.count) && <Label
+                        circular
+                        color="orange"
+                        size="mini"
+                        empty
+                        className="update-info-buble"
+                    />}
                 </div>
             </Link>
 
@@ -170,6 +177,13 @@ const Menu = props => {
                         <span className="title-point">Мои тестирования</span>
                     </span>
                     <CounterRow count={counter?.tests || null} update={true} />
+                    {Boolean(counter?.tests) && <Label
+                        circular
+                        color="orange"
+                        size="mini"
+                        empty
+                        className="update-info-buble"
+                    />}
                 </div>
             </Link>
 
@@ -179,7 +193,17 @@ const Menu = props => {
                         <Icon name="random" />
                         <span className="title-point">Очереди</span>
                     </span>
-                    <CounterRow count={counter?.queue?.count || null} />
+                    <CounterRow
+                        count={counter?.queue?.count || null}
+                        update={counter?.queue?.update || null}
+                    />
+                    {Boolean(counter?.queue?.update) && <Label
+                        circular
+                        color="orange"
+                        size="mini"
+                        empty
+                        className="update-info-buble"
+                    />}
                 </div>
             </Link>}
 
@@ -195,6 +219,13 @@ const Menu = props => {
                         <span className="title-point">СМС сообщения</span>
                     </span>
                     <CounterRow count={counter?.sms?.count || null} />
+                    {Boolean(counter?.sms?.count) && <Label
+                        circular
+                        color="orange"
+                        size="mini"
+                        empty
+                        className="update-info-buble"
+                    />}
                 </div>
             </Link>}
 
@@ -213,6 +244,13 @@ const Menu = props => {
                         count={counter?.secondcalls?.count || null}
                         update={counter?.secondcalls?.update || null}
                     />
+                    {Boolean(counter?.secondcalls?.update) && <Label
+                        circular
+                        color="orange"
+                        size="mini"
+                        empty
+                        className="update-info-buble"
+                    />}
                 </div>
             </Link>}
 

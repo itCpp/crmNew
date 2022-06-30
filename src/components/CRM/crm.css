@@ -77,10 +77,22 @@
     top: 0rem;
 }
 
+.update-info-buble {
+    display: none !important;
+    position: absolute;
+    right: 13px;
+    bottom: 7px;
+    z-index: 10;
+}
+
 @media screen and (min-width: 1366px) {
     .request-main-menu.short-menu:not(.slider-menu-show) .menu-list-row.sub-row {
         margin-left: .1rem;
         padding: 0;
+    }
+
+    .short-menu .update-info-buble {
+        display: block !important;
     }
 
     .request-main-menu.short-menu:not(.slider-menu-show) .menu-list-row.sub-row .select-point,
@@ -88,6 +100,10 @@
         display: block;
         padding: .1rem;
         position: static;
+    }
+
+    .request-main-menu.short-menu:not(.slider-menu-show) .menu-list-row.sub-row.tab-list-active .icon {
+        color: #ffee52 !important;
     }
 
     .request-main-menu.short-menu:not(.slider-menu-show) .menu-list-point,
