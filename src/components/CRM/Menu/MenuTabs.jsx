@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { selectTab, setSearchRequest, selectedUpdateTab } from "./../../../store/requests/actions";
-import { Icon } from "semantic-ui-react";
+import { Icon, Popup } from "semantic-ui-react";
 import CounterFlash from "./CounterFlash";
 
 export const CounterRow = React.memo(props => {
@@ -91,7 +91,7 @@ const MenuTabs = props => {
             if (select === tab.id && classNames.indexOf('menu-list-block-active') >= 0)
                 className.push("tab-list-active");
 
-            return <div
+            const Row = <div
                 key={tab.id}
                 title={`${tab.name_title || tab.name} - ${counter[`tab${tab.id}`]?.count || 0}`}
                 className={className.join(" ")}
@@ -106,7 +106,20 @@ const MenuTabs = props => {
                 </span>
                 <span className="title-point">{tab.name}</span>
                 <CounterRow count={counter[`tab${tab.id}`]?.count || null} />
-            </div>
+            </div>;
+
+            return shortMenu ? <Popup
+                key={tab.id}
+                trigger={Row}
+                content={<span>{tab.name} {Boolean(counter[`tab${tab.id}`]?.count || null) && <b className="ml-2">{counter[`tab${tab.id}`]?.count || null}</b>}</span>}
+                position="right center"
+                size="mini"
+                inverted
+                style={{
+                    padding: ".25rem 1rem",
+                    opacity: ".9",
+                }}
+            /> : Row;
         })}
 
     </div>
