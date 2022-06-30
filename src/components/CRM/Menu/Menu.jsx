@@ -187,7 +187,7 @@ const Menu = props => {
                 </div>
             </Link>
 
-            {permits.queues_access && <Link to="/queues" className={`menu-list-row title ${selectMenu === "/queues" ? 'tab-list-active' : ''}`} title="Очереди">
+            {permits.queues_access && <Link to="/queues" className={`menu-list-row title ${selectMenu === "/queues" ? 'tab-list-active' : ''}`} title="Очереди" onClick={() => updateCounter({ type: "queue", hideNew: true })}>
                 <div className="menu-list-point w-100 d-flex align-items-center justify-content-between">
                     <span>
                         <Icon name="random" />
