@@ -224,7 +224,7 @@ const RequestsSearch = React.memo(props => {
 
                     <Dropdown
                         placeholder="Регион"
-                        options={[{ key: "empty", text: "Без региона", value: null }, ...cities]}
+                        options={[{ key: "empty", text: "Любой регион", value: null }, ...cities]}
                         name="region"
                         value={search.region || null}
                         onChange={onChange}
@@ -236,7 +236,7 @@ const RequestsSearch = React.memo(props => {
                     <Dropdown
                         placeholder="Тематика"
                         fluid
-                        options={[{ key: "empty", text: "Без тематики", value: null }, ...themes]}
+                        options={[{ key: "empty", text: "Любая тематика", value: null }, ...themes]}
                         name="theme"
                         value={search.theme || null}
                         onChange={onChange}
@@ -248,7 +248,7 @@ const RequestsSearch = React.memo(props => {
                     <Dropdown
                         placeholder="Источник"
                         fluid
-                        options={[{ key: "empty", text: "Без источника", value: null }, ...sources]}
+                        options={[{ key: "empty", text: "Любой источник", value: null }, ...sources]}
                         name="source"
                         value={search.source || null}
                         onChange={onChange}
@@ -260,7 +260,7 @@ const RequestsSearch = React.memo(props => {
                     <Dropdown
                         placeholder="Статус"
                         fluid
-                        options={[{ key: "empty", text: "Без статуса", value: null }, ...statuses]}
+                        options={[{ key: "empty", text: "Любой статус", value: null }, ...statuses]}
                         name="status"
                         value={search.status || null}
                         onChange={onChange}
