@@ -124,6 +124,11 @@ function Header(props) {
                                 text="Мои данные"
                                 onClick={() => props.history.push(`/user/${user.id}`)}
                             />
+                            <Dropdown.Item
+                                icon="settings"
+                                text="Настройки"
+                                onClick={() => props.history.push(`/settings`)}
+                            />
                             <Dropdown.Divider className="my-0" />
                             <Dropdown.Item
                                 icon="log out"

@@ -47,6 +47,7 @@ export default function Routes(props) {
                     <Route exact path="/counter" component={Crm} />
                     <Route exact path="/callslog" component={Crm} />
                     <Route exact path="/chat" component={Crm} />
+                    <Route exact path="/settings" component={Crm} />
 
                     <Route exact path="/admin" component={Admin} />
                     <Route exact path="/admin/:page" component={Admin} />

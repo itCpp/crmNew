@@ -12,6 +12,7 @@ const Menu = props => {
 
     const { path } = props.match;
     const permits = window.requestPermits;
+    const menu = React.useRef();
     const [selectMenu, setSelectMenu] = React.useState(path);
     const state = useSelector(state => state);
     const { counter } = state.requests;
@@ -97,7 +98,24 @@ const Menu = props => {
 
     }, [showMenu]);
 
-    return <div className={className.join(" ")} style={{ zIndex: 499 }}>
+    React.useEffect(() => {
+        setClassName(p => {
+
+            const classList = [...p];
+            let short_menu = classList.indexOf('short-menu');
+
+            if (Boolean(userData.settings?.short_menu) && short_menu < 0) {
+                classList.push('short-menu');
+            } else if (!Boolean(userData.settings?.short_menu) && short_menu > 0) {
+                classList.splice(short_menu, 1);
+                showMenu && setShowMenu(false);
+            }
+
+            return classList;
+        });
+    }, [userData.settings?.short_menu]);
+
+    return <div className={className.join(" ")} style={{ zIndex: 499 }} ref={menu}>
 
         <div className="nav-bar">
 
