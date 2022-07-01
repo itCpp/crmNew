@@ -3,6 +3,7 @@ import { connect, useSelector } from "react-redux";
 import { setUserData } from "../../../store/actions";
 import { Checkbox, Loader, Message } from "semantic-ui-react";
 import { axios } from "../../../utils";
+import Telegram from "./Settings/Telegram";
 
 const Settings = props => {
 
@@ -81,6 +82,8 @@ const Settings = props => {
                 />
 
             </div>
+
+            <Telegram user={userData} setUser={setUserData} />
 
         </>}
 
