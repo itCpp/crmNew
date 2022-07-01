@@ -48,7 +48,7 @@ const PhoneRow = props => {
             />
         </div>
         <div className="to-copy-text text-nowrap" ref={number}>
-            <a href={`callto://${phone}`} className="call-to-request">{phone}</a>
+            <a href={`callto://${client.hidden ? `+${rowId}s${client.id}` : phone}`} className="call-to-request">{phone}</a>
         </div>
     </div>
 

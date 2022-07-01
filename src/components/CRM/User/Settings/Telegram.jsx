@@ -92,7 +92,7 @@ const TelegramBind = props => {
                 {error && <div className="text-danger"><b>Ошибка:</b> {error}</div>}
 
                 {!error && <div>
-                    <div>Чтобы привязать идентификатор Телеграма, необходимо запустить бота <a href="https://t.me/crmmkabot" terget="_blank">@crmmkabot</a> и отправить ему сообщение</div>
+                    <div>Чтобы привязать идентификатор Телеграма, необходимо запустить бота <a href="tg://resolve?domain=crmmkabot">@crmmkabot</a> и отправить ему сообщение</div>
 
                     <h2 style={{ fontFamily: "monospace" }}>/bind {code}</h2>
 
