@@ -308,3 +308,7 @@
     transition: all .2s ease !important;
     z-index: 100;
 } */
+
+.settings-list>*:not(:last-child) {
+    margin-bottom: 1rem;
+}

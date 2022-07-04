@@ -128,7 +128,19 @@ export const requestsReducer = (state = defaultState, action) => {
             return { ...state, requests: list, requestsIds: getIdList(list) }
 
         case ACTION.COUNTER_UPDATE:
-            return { ...state, counter: { ...state.counter, ...action.payload } }
+
+            let counterUpdated = { ...state.counter, ...action.payload };
+
+            if (typeof action?.payload?.dropKeys == "object") {
+
+                action.payload.dropKeys.forEach(keyDrop => {
+                    if (Boolean(counterUpdated[keyDrop])) {
+                        delete (counterUpdated[keyDrop]);
+                    }
+                })
+            }
+
+            return { ...state, counter: { ...counterUpdated, ...action.payload } }
 
         case ACTION.REQUEST_EDIT_ID:
             return { ...state, requestEdit: action.payload }

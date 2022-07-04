@@ -19,6 +19,7 @@ import './header.css';
 import UserCreate from "./UserCreate";
 import AlertModal from "../CRM/Notifications/AlertModal";
 import Clock from "./Clock";
+import CounterWidjets from "./CounterWidjets";
 
 function Header(props) {
 
@@ -89,6 +90,8 @@ function Header(props) {
             <div className="header-rows">
 
                 {/* <FullScreenButton /> */}
+
+                {<CounterWidjets user={user} />}
 
                 {permits.user_create && <UserCreate />}
 

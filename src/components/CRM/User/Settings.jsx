@@ -1,18 +1,20 @@
 import React from "react";
 import { connect, useSelector } from "react-redux";
 import { setUserData } from "../../../store/actions";
+import { counterUpdate } from "../../../store/requests/actions";
 import { Checkbox, Loader, Message } from "semantic-ui-react";
 import { axios } from "../../../utils";
 import Telegram from "./Settings/Telegram";
 
 const Settings = props => {
 
-    const { userData, setUserData } = props;
+    const { userData, setUserData, counterUpdate } = props;
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
     const [settings, setSettings] = React.useState({});
+    const { counter } = useSelector(store => store.requests);
 
-    const changeHandle = React.useCallback((name, value, setLoading = null) => {
+    const changeHandle = React.useCallback((name, value, setLoading = null, callback = null) => {
 
         const load = typeof setLoading == "function";
 
@@ -28,6 +30,9 @@ const Settings = props => {
                     ...data.settings,
                 },
             });
+
+            typeof callback == "function" && callback(data);
+
         }).catch(e => {
             axios.toast(axios.getError(e));
         }).then(() => {
@@ -35,6 +40,12 @@ const Settings = props => {
         });
 
     }, []);
+
+    const setCounter = React.useCallback(data => {
+
+        counterUpdate(data.counter);
+
+    }, [counter, counterUpdate]);
 
     React.useEffect(() => {
         setSettings(userData?.settings || {});
@@ -71,7 +82,7 @@ const Settings = props => {
 
         {!loading && !error && <>
 
-            <div className="block-card mb-3">
+            <div className="block-card mb-3 settings-list">
 
                 <CheckboxBlock
                     label="Сокращенное главное меню"
@@ -79,6 +90,16 @@ const Settings = props => {
                     name="short_menu"
                     checked={Boolean(settings.short_menu)}
                     changeHandle={changeHandle}
+                />
+
+                <CheckboxBlock
+                    label="Виджет счетчика записей"
+                    toggle
+                    name="counter_widjet_records"
+                    checked={Boolean(settings.counter_widjet_records)}
+                    changeHandle={(name, checked, setLoading) => {
+                        changeHandle(name, checked, setLoading, setCounter);
+                    }}
                 />
 
             </div>
@@ -112,6 +133,6 @@ const mapStateToProps = state => ({
     userData: state.main.userData,
 });
 
-const mapDispatchToProps = { setUserData }
+const mapDispatchToProps = { setUserData, counterUpdate }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings);
