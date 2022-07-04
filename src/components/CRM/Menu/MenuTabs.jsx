@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { selectTab, setSearchRequest, selectedUpdateTab } from "./../../../store/requests/actions";
-import { Icon, Popup } from "semantic-ui-react";
+import { Icon, Popup, Label } from "semantic-ui-react";
 import CounterFlash from "./CounterFlash";
 
 export const CounterRow = React.memo(props => {
@@ -105,7 +105,17 @@ const MenuTabs = props => {
                     />
                 </span>
                 <span className="title-point">{tab.name}</span>
-                <CounterRow count={counter[`tab${tab.id}`]?.count || null} />
+                <CounterRow
+                    count={counter[`tab${tab.id}`]?.count || null}
+                    update={Boolean(counter[`tab${tab.id}`]?.update)}
+                />
+                {Boolean(counter[`tab${tab.id}`]?.update) && <Label
+                    circular
+                    color="orange"
+                    size="mini"
+                    empty
+                    className="update-info-buble"
+                />}
             </div>;
 
             return shortMenu ? <Popup

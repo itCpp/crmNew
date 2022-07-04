@@ -79,7 +79,7 @@
 
 .update-info-buble {
     display: none !important;
-    position: absolute;
+    position: absolute !important;
     right: 13px;
     bottom: 7px;
     z-index: 10;
@@ -100,6 +100,10 @@
         display: block;
         padding: .1rem;
         position: static;
+    }
+
+    .request-main-menu.short-menu:not(.slider-menu-show) .menu-list-row.sub-row .update-info-buble {
+        bottom: 1px !important;
     }
 
     .request-main-menu.short-menu:not(.slider-menu-show) .menu-list-row.sub-row.tab-list-active .icon {
