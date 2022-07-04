@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Icon, Label, Popup } from "semantic-ui-react";
 
-const CounterWidjets = props => {
+const CounterWidjets = () => {
 
     const { records, comings, drains } = useSelector(store => (store?.requests?.counter || {}));
 
@@ -11,29 +11,41 @@ const CounterWidjets = props => {
 
     return <div>
         {Boolean(records) && <CounterWidjetRecords data={records} />}
+        {Boolean(comings) && <CounterWidjetLabel
+            data={comings}
+            title="Приходы"
+            icon="child"
+            color="green"
+        />}
+        {Boolean(drains) && <CounterWidjetLabel
+            data={drains}
+            title="Сливы"
+            icon="bath"
+            color="red"
+        />}
     </div>
 }
 
-const CounterWidjetRecordsLabel = ({ data, title, icon }) => <Label
+const CounterWidjetLabel = ({ data, title, icon, color }) => <Label
+    color={color}
     content={<span>
-        <Popup
+        {icon && <Popup
             content={title}
-            trigger={<Icon name={icon || "calendar"} />}
+            trigger={<Icon name={icon} className="mr-1" />}
             size="mini"
             inverted
-            className="px-3 py-2"
-        />
-        <span className="mx-1">{data.count}</span>
+            className="px-3 py-1"
+        />}
+        <span>{data.count}</span>
         <Popup
             content={data.addrs.map(addr => (addr.office)).join(" / ")}
-            trigger={<small>{' '}{data.addrs.map(addr => (addr.count)).join("/")}</small>}
+            trigger={<small className="ml-1">{data.addrs.map(addr => (addr.count)).join("/")}</small>}
             size="mini"
             inverted
-            className="px-3 py-2"
+            className="px-3 py-1"
         />
     </span>}
-    color="yellow"
-    className="px-2 py-1 mr-1"
+    className="px-1 py-1 mr-1"
 />
 
 const CounterWidjetRecords = props => {
@@ -42,16 +54,18 @@ const CounterWidjetRecords = props => {
 
     return <>
 
-        {Number(data?.today?.count) >= 0 && <CounterWidjetRecordsLabel
+        {Number(data?.today?.count) >= 0 && <CounterWidjetLabel
             data={data.today}
             title="Записи на сегодня"
             icon="checked calendar"
+            color="yellow"
         />}
 
-        {Number(data?.tomorrow?.count) >= 0 && <CounterWidjetRecordsLabel
+        {Number(data?.tomorrow?.count) >= 0 && <CounterWidjetLabel
             data={data.tomorrow}
             title="Записи на завтра"
             icon="plus calendar"
+            color="yellow"
         />}
 
     </>

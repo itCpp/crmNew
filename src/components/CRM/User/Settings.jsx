@@ -2,7 +2,7 @@ import React from "react";
 import { connect, useSelector } from "react-redux";
 import { setUserData } from "../../../store/actions";
 import { counterUpdate } from "../../../store/requests/actions";
-import { Checkbox, Loader, Message } from "semantic-ui-react";
+import { Checkbox, Loader, Message, Icon } from "semantic-ui-react";
 import { axios } from "../../../utils";
 import Telegram from "./Settings/Telegram";
 
@@ -93,10 +93,51 @@ const Settings = props => {
                 />
 
                 <CheckboxBlock
-                    label="Виджет счетчика записей"
+                    label={<label>
+                        Виджет счетчика записей
+                        <Icon
+                            name="calendar"
+                            color="yellow"
+                            className="mr-0 ml-2"
+                        />
+                    </label>}
                     toggle
                     name="counter_widjet_records"
                     checked={Boolean(settings.counter_widjet_records)}
+                    changeHandle={(name, checked, setLoading) => {
+                        changeHandle(name, checked, setLoading, setCounter);
+                    }}
+                />
+
+                <CheckboxBlock
+                    label={<label>
+                        Виджет счетчика приходов
+                        <Icon
+                            name="child"
+                            color="green"
+                            className="mr-0 ml-2"
+                        />
+                    </label>}
+                    toggle
+                    name="counter_widjet_comings"
+                    checked={Boolean(settings.counter_widjet_comings)}
+                    changeHandle={(name, checked, setLoading) => {
+                        changeHandle(name, checked, setLoading, setCounter);
+                    }}
+                />
+
+                <CheckboxBlock
+                    label={<label>
+                        Виджет счетчика сливов
+                        <Icon
+                            name="bath"
+                            color="red"
+                            className="mr-0 ml-2"
+                        />
+                    </label>}
+                    toggle
+                    name="counter_widjet_drain"
+                    checked={Boolean(settings.counter_widjet_drain)}
                     changeHandle={(name, checked, setLoading) => {
                         changeHandle(name, checked, setLoading, setCounter);
                     }}
