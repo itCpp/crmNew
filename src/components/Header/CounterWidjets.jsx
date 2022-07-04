@@ -26,26 +26,29 @@ const CounterWidjets = () => {
     </div>
 }
 
-const CounterWidjetLabel = ({ data, title, icon, color }) => <Label
-    color={color}
-    content={<span>
-        {icon && <Popup
-            content={title}
-            trigger={<Icon name={icon} className="mr-1" />}
-            size="mini"
-            inverted
-            className="px-3 py-1"
-        />}
-        <span className="mr-1">{data.count}</span>
-        {data.addrs.length > 1 && <Popup
-            content={data.addrs.map(addr => (addr.office)).join(" / ")}
-            trigger={<small className="mr-1">{data.addrs.map(addr => (addr.count)).join("/")}</small>}
-            size="mini"
-            inverted
-            className="px-3 py-1"
-        />}
-    </span>}
-    className="px-1 py-1 mr-1"
+const CounterWidjetLabel = ({ data, title, icon, color }) => <Popup
+    content={title}
+    size="mini"
+    className="px-3 py-1"
+    position="left center"
+    trigger={<Label
+        color={color}
+        content={<span>
+            {icon && <Icon
+                name={icon}
+                className="mr-1"
+            />}
+            <span className="mr-1">{data.count}</span>
+            {data.addrs.length > 1 && <Popup
+                content={data.addrs.map(addr => (addr.office)).join(" / ")}
+                trigger={<small className="mr-1">{data.addrs.map(addr => (addr.count)).join("/")}</small>}
+                size="mini"
+                inverted
+                className="px-3 py-1"
+            />}
+        </span>}
+        className="px-1 py-1 mr-1"
+    />}
 />
 
 const CounterWidjetRecords = props => {
