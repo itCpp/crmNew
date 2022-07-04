@@ -224,6 +224,16 @@ export default function TabBasicSettings(props) {
                 disabled={loading || error}
             />
 
+            <Checkbox
+                toggle
+                name="label_counter"
+                onChange={(e, { name, checked }) => setFormdata(e, { name, value: checked })}
+                checked={row.label_counter}
+                label="Выводить индикацию наличия заявок в коротком главном меню"
+                className="permites-check d-block mb-2"
+                disabled={loading || error}
+            />
+
         </div>
 
     </div>
