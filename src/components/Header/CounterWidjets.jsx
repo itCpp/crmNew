@@ -36,14 +36,14 @@ const CounterWidjetLabel = ({ data, title, icon, color }) => <Label
             inverted
             className="px-3 py-1"
         />}
-        <span>{data.count}</span>
-        <Popup
+        <span className="mr-1">{data.count}</span>
+        {data.addrs.length > 1 && <Popup
             content={data.addrs.map(addr => (addr.office)).join(" / ")}
-            trigger={<small className="ml-1">{data.addrs.map(addr => (addr.count)).join("/")}</small>}
+            trigger={<small className="mr-1">{data.addrs.map(addr => (addr.count)).join("/")}</small>}
             size="mini"
             inverted
             className="px-3 py-1"
-        />
+        />}
     </span>}
     className="px-1 py-1 mr-1"
 />
