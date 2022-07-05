@@ -15,7 +15,16 @@ const Online = props => {
     const [rows, setRows] = React.useState([]);
 
     let tokenKey = process.env.REACT_APP_TOKEN_KEY || "token";
-    const token = Cookies.get(tokenKey) || localStorage.getItem(tokenKey);
+    const jwt_token = Cookies.get(tokenKey) || localStorage.getItem(tokenKey);
+    let token = null;
+
+    if (typeof jwt_token.split(".")[1] == "string") {
+
+        let json = JSON.parse(new Buffer(jwt_token.split(".")[1], 'base64').toString());
+
+        if (typeof json?.token == "string")
+            token = json.token;
+    }
 
     const eventProcess = React.useCallback(({ type, session_id, user_id }) => {
 
