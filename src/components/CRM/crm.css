@@ -20,6 +20,8 @@
 .request-main-menu .nav-bar {
     position: sticky;
     top: 53px;
+    overflow-y: auto !important;
+    height: calc(100vh - 53px) !important;
 }
 
 .request-main-menu.short-menu:not(.slider-menu-show) {
