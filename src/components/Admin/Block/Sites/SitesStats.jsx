@@ -1,7 +1,6 @@
 import React from "react";
-import { Dropdown, Header, Loader, Message } from "semantic-ui-react";
+import { Message } from "semantic-ui-react";
 import { axios } from "../../../../utils";
-import AdminContentSegment from "../../UI/AdminContentSegment";
 import Statistics from "./Statistics";
 
 const SitesStats = props => {
@@ -12,7 +11,7 @@ const SitesStats = props => {
     const [load, setLoad] = React.useState(true);
     const [error, setError] = React.useState(null);
     const [sites, setSites] = React.useState([]);
-    const [site, setSite] = React.useState(searchParams.get('site') || null);
+    const [site, setSite] = React.useState(Number(searchParams.get('site')));
 
     React.useEffect(() => {
 
@@ -20,7 +19,7 @@ const SitesStats = props => {
 
         axios.post('dev/databases/sites').then(({ data }) => {
             setSites(data.sites);
-            setSite(data.sites && data.sites[0]?.value);
+            site === 0 && setSite(data.sites && data.sites[0]?.value);
         }).catch(e => {
             setError(axios.getError(e));
         }).then(() => {
@@ -38,7 +37,6 @@ const SitesStats = props => {
         }
 
         {!error && <Statistics
-            site={site}
             loading={load}
             setLoading={setLoad}
             sites={sites}

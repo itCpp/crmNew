@@ -92,8 +92,12 @@ const Statistic = withRouter(props => {
                     placeholder="Выберите сайт"
                     options={sites}
                     value={site}
-                    onChange={(e, { value }) => setSite(value)}
-                    disabled={load || (error ? true : false)}
+                    onChange={(e, { value }) => {
+                        searchParams.set('site', value);
+                        props.history.replace(`?${searchParams.toString()}`);
+                        setSite(value);
+                    }}
+                    disabled={load || (error ? true : false) || (sites || []).length === 0}
                     className="ml-2"
                     style={{ zIndex: 101 }}
                 />

@@ -37,7 +37,6 @@ const DropdownSortable = props => {
         trigger={<Button
             basic
             icon="sort"
-            basic
             circular
         />}
         icon={null}
