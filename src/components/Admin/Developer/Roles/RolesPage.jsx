@@ -1,5 +1,5 @@
 import React from "react";
-import { Header, Loader, Message } from "semantic-ui-react";
+import { Button, Header, Loader, Message } from "semantic-ui-react";
 import { axios } from "../../../../utils";
 import RoleRow from "./RoleRow";
 import RoleEdit from "./RoleEdit";
@@ -88,16 +88,16 @@ const RolesPage = props => {
 
             {loading && <Loader active inline />}
 
-            {/* {!loading && <div>
+            {!loading && <div>
                 <Button
                     icon="plus"
                     color="green"
-                    title="Создать новое правило"
-                    onClick={() => setShowAdd(true)}
+                    title="Создать новую роль"
+                    onClick={() => setOpenRole(true)}
                     circular
                     basic
                 />
-            </div>} */}
+            </div>}
 
         </div>
 

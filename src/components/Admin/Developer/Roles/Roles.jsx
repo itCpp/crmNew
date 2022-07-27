@@ -1,13 +1,10 @@
-import React from 'react';
-import axios from './../../../../utils/axios-header';
-import { withRouter } from 'react-router-dom';
-
-import { Loader, Table, Header, Button, Checkbox, Dimmer } from 'semantic-ui-react';
-
-import RoleEdit from './RoleEdit';
-import RoleTabs from './RoleTabs';
-import RoleStatuses from './RoleStatuses';
-
+import React from "react";
+import axios from "./../../../../utils/axios-header";
+import { withRouter } from "react-router-dom";
+import { Loader, Table, Header, Button, Checkbox, Dimmer } from "semantic-ui-react";
+import RoleEdit from "./RoleEdit";
+import RoleTabs from "./RoleTabs";
+import RoleStatuses from "./RoleStatuses";
 import RolesPage from "./RolesPage";
 
 function Roles(props) {
@@ -168,129 +165,120 @@ function Roles(props) {
         </div>
 
 
-        {loading
-            ? <div className="text-center mt-4"><Loader inline active /></div>
-            : null
-        }
+        {loading && <div className="text-center mt-4"><Loader inline active /></div>}
 
-        {error
-            ? <div className="text-danger text-center my-3"><strong>{error}</strong></div>
-            : null
-        }
+        {error && <div className="text-danger text-center my-3"><strong>{error}</strong></div>}
 
-        {!error && !loading
-            ? <div className="d-flex justify-content-start align-items-start flex-segments">
+        {!error && !loading && <div className="d-flex justify-content-start align-items-start flex-segments">
 
-                <div className="admin-content-segment">
+            <div className="admin-content-segment">
 
-                    <div className="divider-header">
+                <div className="divider-header">
 
-                        <h3>Все роли</h3>
+                    <h3>Все роли</h3>
 
-                        <div>
-                            <Button
-                                icon="plus"
-                                title="Добавить новую роль"
-                                positive
-                                onClick={() => setOpenRole(true)}
-                                size="mini"
-                                basic
-                                circular
-                            />
-                        </div>
-
-                    </div>
-
-                    {roles.map(role => <div key={role.role} className="buttons-select">
+                    <div>
                         <Button
-                            fluid
-                            onClick={() => {
-                                if (!loadPermits) {
-                                    setSelected(role.role);
-                                    setUpdate(true);
-                                }
-                            }}
-                            content={role.name || role.role}
-                            active={selected === role.role}
-                            loading={selected === role.role && loadPermits}
-                            label={{
-                                basic: true,
-                                // color: 'red',
-                                pointing: 'left',
-                                content: role.users_count,
-                                title: "Количество пользователей",
-                                as: 'a',
-                            }}
+                            icon="plus"
+                            title="Добавить новую роль"
+                            positive
+                            onClick={() => setOpenRole(true)}
+                            size="mini"
+                            basic
+                            circular
                         />
-                    </div>)}
+                    </div>
 
                 </div>
 
-                {selected && !loading && permits.length
-                    ? <div className="admin-content-segment">
+                {roles.map(role => <div key={role.role} className="buttons-select">
+                    <Button
+                        fluid
+                        onClick={() => {
+                            if (!loadPermits) {
+                                setSelected(role.role);
+                                setUpdate(true);
+                            }
+                        }}
+                        content={role.name || role.role}
+                        active={selected === role.role}
+                        loading={selected === role.role && loadPermits}
+                        label={{
+                            basic: true,
+                            // color: 'red',
+                            pointing: 'left',
+                            content: role.users_count,
+                            title: "Количество пользователей",
+                            as: 'a',
+                        }}
+                    />
+                </div>)}
 
-                        <div className="divider-header">
-                            <Header
-                                as="h4"
-                                content={role.role}
-                                subheader={role.comment}
-                            />
-                        </div>
-
-                        <Table collapsing basic="very" className="mt-3" compact>
-
-                            <Table.Header>
-                                <Table.Row>
-                                    <Table.HeaderCell>Разрешение</Table.HeaderCell>
-                                    <Table.HeaderCell colSpan={2}>
-                                        <div className="d-flex justify-content-between align-items-center">
-                                            <span>Описание</span>
-                                            <div>
-                                                <Button
-                                                    icon="certificate"
-                                                    title="Доступные статусы заявки"
-                                                    color="orange"
-                                                    onClick={() => setOpenStatuses(role.role)}
-                                                    size="tiny"
-                                                    circular
-                                                    basic
-                                                />
-                                                <Button
-                                                    icon="table"
-                                                    title="Доступные вкладки"
-                                                    color="orange"
-                                                    onClick={() => setOpenTabs(role.role)}
-                                                    size="tiny"
-                                                    circular
-                                                    basic
-                                                />
-                                                <Button
-                                                    icon="edit"
-                                                    title="Редактировать роль"
-                                                    primary
-                                                    onClick={() => setOpenRole(role.role)}
-                                                    size="tiny"
-                                                    circular
-                                                    basic
-                                                />
-                                            </div>
-                                        </div>
-                                    </Table.HeaderCell>
-                                </Table.Row>
-                            </Table.Header>
-
-                            <Table.Body>{tbody}</Table.Body>
-
-                        </Table>
-
-                        <Dimmer active={loadPermits} inverted />
-
-                    </div>
-                    : null
-                }
             </div>
-            : null
-        }
+
+            {selected && !loading && permits.length
+                ? <div className="admin-content-segment">
+
+                    <div className="divider-header">
+                        <Header
+                            as="h4"
+                            content={role.role}
+                            subheader={role.comment}
+                        />
+                    </div>
+
+                    <Table collapsing basic="very" className="mt-3" compact>
+
+                        <Table.Header>
+                            <Table.Row>
+                                <Table.HeaderCell>Разрешение</Table.HeaderCell>
+                                <Table.HeaderCell colSpan={2}>
+                                    <div className="d-flex justify-content-between align-items-center">
+                                        <span>Описание</span>
+                                        <div>
+                                            <Button
+                                                icon="certificate"
+                                                title="Доступные статусы заявки"
+                                                color="orange"
+                                                onClick={() => setOpenStatuses(role.role)}
+                                                size="tiny"
+                                                circular
+                                                basic
+                                            />
+                                            <Button
+                                                icon="table"
+                                                title="Доступные вкладки"
+                                                color="orange"
+                                                onClick={() => setOpenTabs(role.role)}
+                                                size="tiny"
+                                                circular
+                                                basic
+                                            />
+                                            <Button
+                                                icon="edit"
+                                                title="Редактировать роль"
+                                                primary
+                                                onClick={() => setOpenRole(role.role)}
+                                                size="tiny"
+                                                circular
+                                                basic
+                                            />
+                                        </div>
+                                    </div>
+                                </Table.HeaderCell>
+                            </Table.Row>
+                        </Table.Header>
+
+                        <Table.Body>{tbody}</Table.Body>
+
+                    </Table>
+
+                    <Dimmer active={loadPermits} inverted />
+
+                </div>
+                : null
+            }
+        </div>}
 
     </div >
 
