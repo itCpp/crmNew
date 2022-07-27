@@ -37,6 +37,7 @@ const Views = props => {
             site,
             date,
             allToDay: Number(searchParams.get('allToDay')) > 0,
+            onlyOurIp: Number(searchParams.get('onlyOurIp')) > 0,
             ...params,
         }).then(({ data }) => {
 
@@ -91,20 +92,33 @@ const Views = props => {
                 className="flex-grow-1"
             />
 
+            {!loading && <div className="mr-2">
+                <Icon
+                    name="lightning"
+                    size="large"
+                    color={Number(searchParams.get('onlyOurIp')) > 0 ? "yellow" : null}
+                    link
+                    onClick={() => {
+                        searchParams.set('onlyOurIp', Number(searchParams.get('onlyOurIp')) > 0 ? 0 : 1);
+                        props.history.replace('?' + searchParams.toString());
+                    }}
+                    title="Вывести посещения с наших IP"
+                />
+            </div>}
+
             {total > 0 && !loading && <div>
-                <Label>
-                    {Number(searchParams.get('allToDay')) > 0
-                        ? <Icon
-                            name="calendar"
-                            color="green"
-                            title="Посещения только за сегодня"
-                        />
-                        : <Icon
-                            name="calendar alternate"
-                            color="blue"
-                            title="Посещения за все время"
-                        />
-                    }
+                <Label className="d-flex align-items-center">
+                    <Icon
+                        name={Number(searchParams.get('allToDay')) > 0 ? "calendar" : "calendar alternate"}
+                        color={Number(searchParams.get('allToDay')) > 0 ? "green" : "blue"}
+                        title={Number(searchParams.get('allToDay')) > 0 ? "Посещения только за сегодня" : "Посещения за все время"}
+                        size="large"
+                        link
+                        onClick={() => {
+                            searchParams.set('allToDay', Number(searchParams.get('allToDay')) > 0 ? 0 : 1);
+                            props.history.replace('?' + searchParams.toString());
+                        }}
+                    />
                     {total}
                 </Label>
             </div>}
