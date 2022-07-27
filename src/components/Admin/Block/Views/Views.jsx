@@ -1,7 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import axios from "./../../../../utils/axios-header";
-import { Header, Loader, Message, Table, Pagination, Icon, Dropdown } from "semantic-ui-react";
+import { Button, Header, Loader, Message, Table, Pagination, Icon, Dropdown, Label } from "semantic-ui-react";
 import ViewsRow from "./ViewsRow";
 
 const Views = props => {
@@ -20,6 +20,7 @@ const Views = props => {
     const [update, setUpdate] = React.useState(false);
     const [pages, setPages] = React.useState(null);
     const [date, setDate] = React.useState(null);
+    const [total, setTotal] = React.useState(0);
 
     const [sites, setSites] = React.useState([]);
     const [rows, setRows] = React.useState([]);
@@ -35,6 +36,7 @@ const Views = props => {
             ip: filterIp,
             site,
             date,
+            allToDay: Number(searchParams.get('allToDay')) > 0,
             ...params,
         }).then(({ data }) => {
 
@@ -42,6 +44,7 @@ const Views = props => {
             setStart(data.start);
             setRows(data.rows);
             setPages(data.pages);
+            setTotal(data.total);
 
             sites && sites.length === 0 && setSites(data.sites || []);
             site === 0 && setSite(data.site);
@@ -69,7 +72,7 @@ const Views = props => {
         page !== null && setUpdate(prev => !prev);
         setPage(1);
         setStart(null);
-        setRows([]);
+        setRows({});
 
     }, [props.location.key]);
 
@@ -88,6 +91,24 @@ const Views = props => {
                 className="flex-grow-1"
             />
 
+            {total > 0 && !loading && <div>
+                <Label>
+                    {Number(searchParams.get('allToDay')) > 0
+                        ? <Icon
+                            name="calendar"
+                            color="green"
+                            title="Посещения только за сегодня"
+                        />
+                        : <Icon
+                            name="calendar alternate"
+                            color="blue"
+                            title="Посещения за все время"
+                        />
+                    }
+                    {total}
+                </Label>
+            </div>}
+
             <Dropdown
                 selection
                 placeholder="Выберите сайт"
@@ -96,7 +117,10 @@ const Views = props => {
                 onChange={(e, { value }) => {
                     setPage(null);
                     setSite(value);
-                    getRows({ site: value });
+
+                    searchParams.set('site', value);
+                    props.history.replace('?' + searchParams.toString());
+                    // getRows({ site: value });
                 }}
                 disabled={loadingPage}
                 className="ml-2"
@@ -137,19 +161,33 @@ const Views = props => {
             {pages > 1 && <Table.Footer>
                 <Table.Row>
                     <Table.HeaderCell colSpan={5}>
-                        <Pagination
-                            defaultActivePage={page ?? 1}
-                            totalPages={pages}
-                            firstItem={{ content: <Icon name="angle double left" />, icon: true }}
-                            lastItem={{ content: <Icon name="angle double right" />, icon: true }}
-                            prevItem={{ content: <Icon name="angle left" />, icon: true }}
-                            nextItem={{ content: <Icon name="angle right" />, icon: true }}
-                            pageItem={{
-                                onClick: (e, { value }) => setPage(value),
-                            }}
-                            disabled={loadingPage}
-                            onPageChange={(e, { activePage }) => setPage(activePage)}
-                        />
+
+                        <div className="d-flex align-items-center">
+                            <Pagination
+                                defaultActivePage={page ?? 1}
+                                totalPages={pages}
+                                firstItem={{ content: <Icon name="angle double left" />, icon: true }}
+                                lastItem={{ content: <Icon name="angle double right" />, icon: true }}
+                                prevItem={{ content: <Icon name="angle left" />, icon: true }}
+                                nextItem={{ content: <Icon name="angle right" />, icon: true }}
+                                pageItem={{
+                                    onClick: (e, { value }) => setPage(value),
+                                }}
+                                disabled={loadingPage}
+                                onPageChange={(e, { activePage }) => setPage(activePage)}
+                            />
+
+                            <Button
+                                content={Number(searchParams.get('allToDay')) > 0 ? "За все время" : "Все сегодня"}
+                                color="blue"
+                                className="ml-2"
+                                onClick={() => {
+                                    searchParams.set('allToDay', Number(searchParams.get('allToDay')) > 0 ? 0 : 1);
+                                    props.history.replace('?' + searchParams.toString());
+                                }}
+                                disabled={loadingPage}
+                            />
+                        </div>
                     </Table.HeaderCell>
                 </Table.Row>
             </Table.Footer>}
