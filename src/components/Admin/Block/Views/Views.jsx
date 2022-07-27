@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import axios from "./../../../../utils/axios-header";
 import { Button, Header, Loader, Message, Table, Pagination, Icon, Dropdown, Label } from "semantic-ui-react";
 import ViewsRow from "./ViewsRow";
+import ViewData from "./ViewData";
 
 const Views = props => {
 
@@ -24,6 +25,7 @@ const Views = props => {
 
     const [sites, setSites] = React.useState([]);
     const [rows, setRows] = React.useState([]);
+    const [jsonData, setJsonData] = React.useState(null);
 
     const getRows = (params = {}) => {
 
@@ -82,6 +84,14 @@ const Views = props => {
     }, [page, update]);
 
     return <div>
+
+        {Boolean(jsonData) && <ViewData
+            open={Boolean(jsonData)}
+            data={jsonData}
+            close={() => {
+                setJsonData(null);
+            }}
+        />}
 
         <div className="admin-content-segment d-flex justify-content-between align-items-center">
 
@@ -169,6 +179,7 @@ const Views = props => {
                     loadingPage={loadingPage}
                     history={props.history}
                     filterIp={filterIp}
+                    setJsonData={setJsonData}
                 />)}
             </Table.Body>
 
