@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { withRouter } from "react-router-dom";
 import { Loader, Message, Table, Icon, Header, Dimmer, Placeholder } from "semantic-ui-react";
 import { axios } from "../../../../utils";
@@ -279,9 +279,10 @@ const SitesStatisticTable = props => {
                         textAlign="left"
                         content={<div className="d-flex align-items-center">
                             <span>
-                                {row.info && !row.info_check &&
-                                    <FlagIp name={row.info.country_code} title={`${row.info.region_name}, ${row.info.city}`} />
-                                }
+                                {row.info && !row.info_check && <FlagIp
+                                    name={row.info.country_code}
+                                    title={`${row.info.region_name}, ${row.info.city}`}
+                                />}
 
                                 {!row.info && !row.info_check &&
                                     <span className="unknow-flag" title="Проверить информацию" onClick={() => checkIp(row.ip)}></span>

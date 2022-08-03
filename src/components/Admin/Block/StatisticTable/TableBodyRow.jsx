@@ -5,7 +5,7 @@ import { FlagIp, getIpInfo } from "../Statistic";
 const TableBodyRow = props => {
 
     const { loading } = props;
-    const { row, setRows } = props;
+    const { row, setRows, showIpInfo } = props;
     const [infoCheck, setInfoCheck] = useState(false);
 
     const checkIp = useCallback(ip => {
@@ -37,6 +37,12 @@ const TableBodyRow = props => {
                 {row.info && !infoCheck && <FlagIp
                     name={row.info.country_code}
                     title={`${row.info.region_name}, ${row.info.city}`}
+                    onClick={() => {
+                        if (typeof showIpInfo == "function") {
+                            showIpInfo(row.ip);
+                        }
+                    }}
+                    style={{ cursor: "pointer" }}
                 />}
 
                 {row.info && !infoCheck && typeof row.info.country_code != "string" && <span

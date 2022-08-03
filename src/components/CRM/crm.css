@@ -318,3 +318,7 @@
 .settings-list>*:not(:last-child) {
     margin-bottom: 1rem;
 }
+
+.hr-list:first-child {
+    display: none !important;
+}

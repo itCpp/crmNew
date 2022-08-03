@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
-import { Dropdown, Header, Loader, Message, Dimmer } from "semantic-ui-react";
+import { Dropdown, Header, Loader, Message, Dimmer, Button } from "semantic-ui-react";
 import { axios } from "../../../../utils";
 import AdminContentSegment from "../../UI/AdminContentSegment";
 import Table from "../StatisticTable/TableData";
 import useSortable from "../StatisticTable/useSortable";
+import ExceptionHostsList from "./ExceptionHostsList";
 import { Lines } from "./Lines";
 
 const Statistic = withRouter(props => {
@@ -83,9 +84,9 @@ const Statistic = withRouter(props => {
 
             {!loading && <div className="ml-2">
 
-                <DropdownSortable
-                    disabled={load}
-                />
+                {/* <ExceptionHostsList disabled={load} site={searchParams.get('site')} /> */}
+
+                <DropdownSortable disabled={load} />
 
                 <Dropdown
                     selection

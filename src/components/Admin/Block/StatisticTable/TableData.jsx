@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Table } from "semantic-ui-react";
 import TableBodyRow from "./TableBodyRow";
 import BlockModal from "../BlockModal";
+import ShowIpInfo from "./ShowIpInfo";
 
 const TableData = props => {
 
@@ -13,6 +14,11 @@ const TableData = props => {
 
     const [top, setTop] = useState(0);
     const [block, setBlock] = useState(null);
+    const [showInfo, setShowInfo] = useState(false);
+
+    const showIpInfo = useCallback(row => {
+        setShowInfo(row);
+    }, []);
 
     useEffect(() => {
         const header = document.getElementById('header-menu');
@@ -27,6 +33,12 @@ const TableData = props => {
             close={() => setBlock(null)}
             setRows={setRows}
         />}
+
+        <ShowIpInfo
+            open={Boolean(showInfo)}
+            close={() => setShowInfo(false)}
+            ip={showInfo}
+        />
 
         <Table
             sortable
@@ -104,6 +116,7 @@ const TableData = props => {
                     block={setBlock}
                     setRows={setRows}
                     loading={loading}
+                    showIpInfo={showIpInfo}
                 />)}
 
                 {typeof rows == "object" && rows.length === 0 && <Table.Row>
