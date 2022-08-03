@@ -3,6 +3,7 @@ import { Table } from "semantic-ui-react";
 import TableBodyRow from "./TableBodyRow";
 import BlockModal from "../BlockModal";
 import ShowIpInfo from "./ShowIpInfo";
+import CommentIp from "./CommentIp";
 
 const TableData = props => {
 
@@ -15,6 +16,7 @@ const TableData = props => {
     const [top, setTop] = useState(0);
     const [block, setBlock] = useState(null);
     const [showInfo, setShowInfo] = useState(false);
+    const [comment, setComment] = useState(null);
 
     const showIpInfo = useCallback(row => {
         setShowInfo(row);
@@ -40,6 +42,12 @@ const TableData = props => {
             ip={showInfo}
         />
 
+        {Boolean(comment) && <CommentIp
+            ip={comment}
+            close={() => setComment(null)}
+            setRows={setRows}
+        />}
+
         <Table
             sortable
             compact
@@ -59,7 +67,7 @@ const TableData = props => {
                     <Table.HeaderCell
                         onClick={() => startSort('host')}
                         sorted={sortColumn.indexOf("host") >= 0 ? sort.direction : null}
-                        content="Хост"
+                        content="Хост или комментарий"
                     />
                     <Table.HeaderCell
                         onClick={() => startSort('visits')}
@@ -114,6 +122,7 @@ const TableData = props => {
                     key={row.ip}
                     row={row}
                     block={setBlock}
+                    comment={setComment}
                     setRows={setRows}
                     loading={loading}
                     showIpInfo={showIpInfo}

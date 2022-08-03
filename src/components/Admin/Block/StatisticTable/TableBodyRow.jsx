@@ -92,7 +92,17 @@ const TableBodyRow = props => {
 
             </div>
         </Table.Cell>
-        <Table.Cell textAlign="left"><small>{row.host}</small></Table.Cell>
+        <Table.Cell textAlign="left">
+            <div><small>{row.host}</small></div>
+            {Boolean(row.comment) && <div>
+                <small>
+                    <Icon
+                        name="comment"
+                    />
+                    {row.comment}
+                </small>
+            </div>}
+        </Table.Cell>
         <Table.Cell>
             <span className={`opacity-${row.visits > 0 ? 100 : 30}`}>
                 {row.visits || 0}
@@ -168,6 +178,16 @@ const TableBodyRow = props => {
                         title="Все просмотры страниц сайтов с ip"
                     />}
                 />
+
+                <span>
+                    <Icon.Group
+                        title="Добавить или изменить комментарий"
+                        onClick={() => props.comment(row.ip)}
+                    >
+                        <Icon name="comment" className="button-icon mx-1" />
+                        <Icon corner name="add" link />
+                    </Icon.Group>
+                </span>
 
             </div>
         </Table.Cell>
