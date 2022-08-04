@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Button, Checkbox, Header, Input, Icon, Placeholder } from "semantic-ui-react";
+import { Button, Checkbox, Header, Input, Icon, Placeholder, Select } from "semantic-ui-react";
 import { axios, Highlighted } from "../../../../utils";
 import AdminContentSegment from "../../UI/AdminContentSegment";
 import BlockModal from "../BlockModal";
@@ -23,6 +23,7 @@ const BlockDriveIp = () => {
     const [searchWord, setSearchWord] = useState("");
     const [search, setSearch] = useState(false);
     const [filters, setFilters] = useState({});
+    const [sites, setSites] = useState([]);
 
     const getRows = useCallback(params => {
 
@@ -33,6 +34,10 @@ const BlockDriveIp = () => {
             setRows(data.rows);
             setPages(data.pages);
             setTotal(data.total);
+            Boolean(data.sites) && setSites([
+                { key: 0, value: null, text: "Все сайты" },
+                ...data.sites
+            ]);
         }).catch(e => {
 
         }).then(() => {
@@ -100,7 +105,15 @@ const BlockDriveIp = () => {
 
             <div className="mt-3 d-flex align-items-center">
 
-                <div className="flex-grow-1">
+                <Select
+                    options={sites}
+                    disabled={loading || load}
+                    placeholder="Выберите сайт"
+                    value={filters.site || null}
+                    onChange={(e, { value }) => setFilters(prev => ({ ...prev, site: value }))}
+                />
+
+                <div className="flex-grow-1 ml-4">
                     <Checkbox
                         label="Только IPv4"
                         className="mr-4"
@@ -177,7 +190,7 @@ const BlockDriveIpRow = withRouter(props => {
         button.title = "Редактировать блокировки по сайтам";
     }
 
-    let ip = row.ip,    
+    let ip = row.ip,
         hostname = row.hostname;
 
     if (search !== "" && search) {
