@@ -39,7 +39,7 @@ const BlockDriveIp = () => {
                 ...data.sites
             ]);
         }).catch(e => {
-
+            axios.toast(axios.getError(e));
         }).then(() => {
             setLoad(false);
             setLoading(false);
@@ -110,7 +110,10 @@ const BlockDriveIp = () => {
                     disabled={loading || load}
                     placeholder="Выберите сайт"
                     value={filters.site || null}
-                    onChange={(e, { value }) => setFilters(prev => ({ ...prev, site: value }))}
+                    onChange={(e, { value }) => {
+                        setFilters(prev => ({ ...prev, site: value }));
+                        getRows({ page: 1 });
+                    }}
                 />
 
                 <div className="flex-grow-1 ml-4">
