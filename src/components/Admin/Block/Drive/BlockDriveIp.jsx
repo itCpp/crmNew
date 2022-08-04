@@ -296,6 +296,11 @@ const BlockDriveIpRow = withRouter(props => {
 
                     <span>{hostname}</span>
 
+                    {Boolean(row.comment) && <span className="ml-3">
+                        <Icon name="comment" className="mr-1" />
+                        {row.comment}
+                    </span>}
+
                 </div>}
                 className="flex-grow-1"
                 disabled={loading}
