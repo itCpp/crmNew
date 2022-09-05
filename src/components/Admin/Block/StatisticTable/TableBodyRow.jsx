@@ -92,17 +92,21 @@ const TableBodyRow = props => {
 
             </div>
         </Table.Cell>
-        <Table.Cell textAlign="left">
-            <div><small>{row.host}</small></div>
-            {Boolean(row.comment) && <div>
-                <small>
-                    <Icon
-                        name="comment"
-                    />
-                    {row.comment}
-                </small>
+        <Table.Cell
+            textAlign="left"
+            onDoubleClick={() => props.comment(row.ip)}
+            content={<div>
+                <div><small>{row.host}</small></div>
+                {Boolean(row.comment) && <div>
+                    <small>
+                        <Icon
+                            name="comment"
+                        />
+                        {row.comment}
+                    </small>
+                </div>}
             </div>}
-        </Table.Cell>
+        />
         <Table.Cell>
             <span className={`opacity-${row.visits > 0 ? 100 : 30}`}>
                 {row.visits || 0}

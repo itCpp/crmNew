@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 import { Dropdown, Header, Loader, Message, Dimmer, Button } from "semantic-ui-react";
 import { axios } from "../../../../utils";
@@ -7,6 +7,7 @@ import Table from "../StatisticTable/TableData";
 import useSortable from "../StatisticTable/useSortable";
 import ExceptionHostsList from "./ExceptionHostsList";
 import { Lines } from "./Lines";
+import DropdownFilter from "./DropdownFilter";
 
 const Statistic = withRouter(props => {
 
@@ -17,6 +18,9 @@ const Statistic = withRouter(props => {
     const [error, setError] = useState(null);
     const [rows, setRows] = useState([]);
     const [domains, setDomains] = useState([]);
+
+    const [filterUtm, setFilterUtm] = useState([]);
+    const [filters, setFilters] = useState([]);
 
     const [loadChart, setLoadChart] = useState(true);
     const [chart, setChart] = useState([]);
@@ -30,26 +34,60 @@ const Statistic = withRouter(props => {
         DropdownSortable
     } = useSortable({ setRows, ...props });
 
+    const handleFilterUtm = utm => {
+
+        setFilterUtm(p => {
+            let rows = [...p],
+                fund = filterUtm.indexOf(utm);
+
+            if (fund >= 0) rows.splice(fund, 1);
+            else rows.push(utm);
+
+            getAllStatistics({ site, utm: rows });
+
+            return rows;
+        });
+
+    }
+
+    const getAllStatistics = useCallback((params, cb) => {
+
+        setLoad(true);
+
+        axios.post("dev/block/allstatistics", params || {}).then(({ data }) => {
+
+            let column = searchParams.get('column');
+            let direction = searchParams.get('direction');
+
+            if (column && direction) {
+                data.rows.sort((a, b) => sortable(a, b, column, direction));
+                setSort({ column, direction });
+            }
+
+            setError(null);
+            setRows(data.rows);
+            setDomains(data.domains || []);
+            setFilters(data.filters || []);
+
+            if (typeof cb == "function")
+                cb(data);
+
+        }).catch(e => {
+            axios.setError(e, setError);
+        }).then(() => {
+            setLoad(false);
+            setLoading(false);
+        });
+
+    }, []);
+
     useEffect(() => {
 
         if (site) {
 
-            setLoad(true);
+            setFilterUtm([]);
 
-            axios.post("dev/block/allstatistics", { site }).then(({ data }) => {
-
-                let column = searchParams.get('column');
-                let direction = searchParams.get('direction');
-
-                if (column && direction) {
-                    data.rows.sort((a, b) => sortable(a, b, column, direction));
-                    setSort({ column, direction });
-                }
-
-                setError(null);
-                setRows(data.rows);
-                setDomains(data.domains || []);
-
+            getAllStatistics({ site }, () => {
                 axios.post('dev/block/getChartSiteOwnStat', { site }).then(({ data }) => {
                     setChart(data.chart || []);
                 }).catch(e => {
@@ -57,14 +95,7 @@ const Statistic = withRouter(props => {
                 }).then(() => {
                     setLoadChart(false);
                 });
-
-            }).catch(e => {
-                axios.setError(e, setError);
-            }).then(() => {
-                setLoad(false);
-                setLoading(false);
             });
-
         }
 
     }, [site]);
@@ -85,6 +116,16 @@ const Statistic = withRouter(props => {
             {!loading && <div className="ml-2">
 
                 {/* <ExceptionHostsList disabled={load} site={searchParams.get('site')} /> */}
+
+                <DropdownFilter
+                    site={site}
+                    filters={filters}
+                    setFilters={setFilters}
+                    disabled={load}
+                    filterUtm={filterUtm}
+                    handleFilterUtm={handleFilterUtm}
+                    load={load}
+                />
 
                 <DropdownSortable disabled={load} />
 
