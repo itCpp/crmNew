@@ -7,7 +7,6 @@ const DropdownFilter = props => {
     const { site, disabled, load } = props;
     const { filters, setFilters } = props;
     const { filterUtm, handleFilterUtm } = props;
-    const { getAllStatistics } = props;
 
     const [add, setAdd] = React.useState(false);
     const [newUtm, setNewUtm] = React.useState("");
@@ -88,6 +87,7 @@ const DropdownFilter = props => {
                 basic
                 icon="filter"
                 circular
+                color={(typeof filterUtm == "object" && filterUtm.length > 0) ? "green" : null}
             />}
             icon={null}
             simple
