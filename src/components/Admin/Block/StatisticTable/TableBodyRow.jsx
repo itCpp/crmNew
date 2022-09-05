@@ -1,12 +1,14 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Table, Icon, Placeholder } from "semantic-ui-react";
+import { axios } from "../../../../utils";
 import { FlagIp, getIpInfo } from "../Statistic";
 
 const TableBodyRow = props => {
 
     const { loading } = props;
-    const { row, setRows, showIpInfo } = props;
+    const { row, setRows, showIpInfo, site } = props;
     const [infoCheck, setInfoCheck] = useState(false);
+    const [hide, setHide] = useState(false);
 
     const checkIp = useCallback(ip => {
         setInfoCheck(true);
@@ -24,12 +26,34 @@ const TableBodyRow = props => {
         });
     }, []);
 
+    useEffect(() => {
+
+        if (hide) {
+            axios.post('dev/block/allstatistics/setHideIp', { ip: row.ip, site })
+                .then(({ data }) => {
+                    setRows(prev => {
+                        let rows = [...prev];
+                        rows.forEach((row, i) => {
+                            if (row.ip === data.ip) {
+                                rows[i].is_hide = data.is_hide;
+                            }
+                        });
+                        return rows;
+                    });
+                })
+                .catch(e => axios.toast(e))
+                .then(() => setHide(false));
+        }
+
+    }, [hide]);
+
     return <Table.Row
         negative={!row.our_ip && row.is_blocked}
         warning={!row.our_ip && !row.is_blocked && row.is_autoblock}
         positive={row.our_ip}
         textAlign="center"
         disabled={loading}
+        active={row.is_hide}
     >
         <Table.Cell textAlign="left" warning={row.is_autoblock}>
             <div className="d-flex align-items-center">
@@ -89,6 +113,18 @@ const TableBodyRow = props => {
                         title="Автоматическая блокировка"
                     />
                 </span>}
+
+                <span className="ml-1 mr-0 text-right flex-grow-1">
+                    <Icon
+                        name={row.is_hide ? "eye" : "eye slash"}
+                        color={row.is_hide ? "red" : null}
+                        link={!hide}
+                        fitted
+                        title={row.is_hide ? "Скрыть IP для вывода" : "Отобразить IP"}
+                        disabled={hide}
+                        onClick={() => setHide(true)}
+                    />
+                </span>
 
             </div>
         </Table.Cell>
@@ -152,6 +188,7 @@ const TableBodyRow = props => {
                         className="button-icon mx-1"
                         title={row.is_blocked ? "Разблокировать" : "Заблокировать ip адрес"}
                         onClick={() => props.block(row.ip)}
+                        disabled={loading}
                     />
                 </span>
 
@@ -166,6 +203,7 @@ const TableBodyRow = props => {
                         color="green"
                         className="button-icon mx-1"
                         title="Статистика по ip-адресу"
+                        disabled={loading}
                     />}
                 />
 
@@ -180,6 +218,7 @@ const TableBodyRow = props => {
                         color="black"
                         className="button-icon mx-1"
                         title="Все просмотры страниц сайтов с ip"
+                        disabled={loading}
                     />}
                 />
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Dropdown, Form, Modal } from "semantic-ui-react";
+import { Button, Dimmer, Dropdown, Form, Header, Icon, List, Loader, Modal } from "semantic-ui-react";
 import { axios } from "../../../../utils";
 
 const DropdownFilter = props => {
@@ -12,6 +12,9 @@ const DropdownFilter = props => {
     const [newUtm, setNewUtm] = React.useState("");
     const [save, setSave] = React.useState(false);
     const [error, setError] = React.useState(null);
+    const [edit, setEdit] = React.useState(false);
+    const [loadList, setLoadList] = React.useState(true);
+    const [list, setList] = React.useState([]);
 
     React.useEffect(() => {
 
@@ -25,10 +28,29 @@ const DropdownFilter = props => {
 
     React.useEffect(() => {
 
+        if (edit) {
+            setLoadList(true);
+            axios.post('dev/block/allstatistics/getutm', { site })
+                .then(({ data }) => {
+                    setList(data.filters);
+                })
+                .catch(e => setError(axios.getError(e)))
+                .then(() => setLoadList(false));
+        }
+
+        return () => {
+            setError(null);
+            setLoadList(true);
+        }
+
+    }, [edit]);
+
+    React.useEffect(() => {
+
         if (save) {
             axios.put('dev/block/allstatistics/setutm', { site, utm: newUtm })
                 .then(({ data }) => {
-                    setFilters(p => ([ data.row.utm_label, ...p]));
+                    setFilters(p => ([data.row.utm_label, ...p]));
                     handleFilterUtm(data.row.utm_label);
                     setAdd(false);
                 })
@@ -61,7 +83,7 @@ const DropdownFilter = props => {
 
                     </Form>
 
-                    {error && <div className="mt-3 text-danger" style={{ opacity: save ? "0.4" : "1"}}>
+                    {error && <div className="mt-3 text-danger" style={{ opacity: save ? "0.4" : "1" }}>
                         <strong>Ошибка{' '}</strong>
                         <span>{error}</span>
                     </div>}
@@ -79,6 +101,48 @@ const DropdownFilter = props => {
                     />
 
                 </div>
+            }}
+        />
+
+        <Modal
+            open={edit}
+            centered={false}
+            size="tiny"
+            closeIcon
+            onClose={() => setEdit(false)}
+            content={{
+                content: <div className="position-relative">
+
+                    <Header
+                        as="h5"
+                        content="Список фильтров для сайта"
+                        className="mb-4"
+                    />
+
+                    {loadList && <div>
+                        <span>&nbsp;</span>
+                        <Dimmer active inverted><Loader /></Dimmer>
+                    </div>}
+
+                    {!loadList && error && <div className="text-danger text-center">
+                        <strong>{error}</strong>
+                    </div>}
+
+                    {!loadList && !error && list.length === 0 && <div className="text-center">
+                        <span className="opacity-50">Список пуст</span>
+                    </div>}
+
+                    {!loadList && !error && list.length > 0 && <List celled verticalAlign='middle'>
+
+                        {list.map(row => <ListItem
+                            key={row.id}
+                            {...props}
+                            row={row}
+                        />)}
+
+                    </List>}
+
+                </div>,
             }}
         />
 
@@ -125,10 +189,74 @@ const DropdownFilter = props => {
                     text="Добавить UTM"
                     onClick={() => setAdd(true)}
                 />
+                <Dropdown.Item
+                    icon="pencil"
+                    text="Изменить список"
+                    onClick={() => setEdit(true)}
+                />
 
             </Dropdown.Menu>
         </Dropdown>
     </>
+}
+
+const ListItem = props => {
+
+    const { row, setFilters } = props;
+    const { filterUtm, handleFilterUtm } = props;
+    const [drop, setDrop] = React.useState(false);
+    const [deleted, setDeleted] = React.useState(false);
+
+    React.useEffect(() => {
+
+        if (drop) {
+            axios.delete('dev/block/allstatistics/droputm', { params: { id: drop } })
+                .then(({ data }) => {
+
+                    setFilters(p => {
+                        let rows = [...p],
+                            fund = p.indexOf(data.row.utm_label);
+
+                        if (fund >= 0) rows.splice(fund, 1);
+
+                        return rows;
+                    });
+
+                    let fund = filterUtm.indexOf(data.row.utm_label);
+
+                    if (fund >= 0) handleFilterUtm(data.row.utm_label);
+
+                    setDeleted(true);
+                })
+                .catch(e => axios.toast(e))
+                .then(() => setDrop(false));
+        }
+
+    }, [drop]);
+
+    return <List.Item className="position-relative" disabled={deleted}>
+
+        {!deleted && <List.Content floated="right">
+            <Icon
+                name="trash"
+                className="my-2"
+                link={!Boolean(drop)}
+                color="red"
+                onClick={() => setDrop(row.id)}
+                disabled={Boolean(drop)}
+            />
+        </List.Content>}
+
+        <List.Content>
+            <div className="my-2 px-2">{row.utm_label}</div>
+        </List.Content>
+
+        {drop && <Dimmer active inverted>
+            <Loader size="small" />
+        </Dimmer>}
+
+    </List.Item>
+
 }
 
 export default DropdownFilter;
