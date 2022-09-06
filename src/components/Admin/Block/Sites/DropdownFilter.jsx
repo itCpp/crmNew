@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Dimmer, Dropdown, Form, Header, Icon, List, Loader, Modal } from "semantic-ui-react";
+import { Button, Checkbox, Dimmer, Dropdown, Form, Header, Icon, List, Loader, Modal } from "semantic-ui-react";
 import { axios } from "../../../../utils";
 
 const DropdownFilter = props => {
@@ -181,6 +181,17 @@ const DropdownFilter = props => {
                     onClick={() => handleFilterUtm(row)}
                     disabled={load}
                 />)}
+
+                <Dropdown.Divider className="my-0" />
+
+                <Dropdown.Item>
+                    <Checkbox
+                        onChange={() => handleFilterUtm("hiden_only_e567475d1390851db6764e838dc76185")}
+                        value="hiden_only_e567475d1390851db6764e838dc76185"
+                        checked={filterUtm.indexOf("hiden_only_e567475d1390851db6764e838dc76185") >= 0}
+                        label="Только скрытые IP"
+                    />
+                </Dropdown.Item>
 
                 <Dropdown.Divider className="my-0" />
 

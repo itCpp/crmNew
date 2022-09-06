@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { Table, Icon, Placeholder } from "semantic-ui-react";
+import { Table, Icon, Placeholder, Dimmer, Loader } from "semantic-ui-react";
 import { axios } from "../../../../utils";
 import { FlagIp, getIpInfo } from "../Statistic";
 
@@ -53,7 +53,7 @@ const TableBodyRow = props => {
         positive={row.our_ip}
         textAlign="center"
         disabled={loading}
-        active={row.is_hide}
+        className={`${row.is_hide ? "hiden-ip-row" : ""}`}
     >
         <Table.Cell textAlign="left" warning={row.is_autoblock}>
             <div className="d-flex align-items-center">
@@ -114,16 +114,28 @@ const TableBodyRow = props => {
                     />
                 </span>}
 
-                <span className="ml-1 mr-0 text-right flex-grow-1">
-                    <Icon
-                        name={row.is_hide ? "eye" : "eye slash"}
-                        color={row.is_hide ? "red" : null}
-                        link={!hide}
-                        fitted
-                        title={row.is_hide ? "Скрыть IP для вывода" : "Отобразить IP"}
-                        disabled={hide}
-                        onClick={() => setHide(true)}
-                    />
+                <span className="ml-1 mr-0 flex-grow-1 d-flex align-items-center justify-content-end">
+                    <span className="position-relative">
+                        <Icon
+                            name={row.is_hide ? "eye" : "eye slash"}
+                            color={row.is_hide ? "red" : null}
+                            link={!hide}
+                            fitted
+                            title={row.is_hide ?  "Отобразить IP" : "Скрыть IP для вывода"}
+                            disabled={hide}
+                            onClick={() => setHide(true)}
+                        />
+                        {hide && <div
+                            style={{
+                                position: "absolute",
+                                top: -1,
+                                left: -1,
+                                right: 0,
+                                bottom: 0,
+                            }}
+                            children={<Loader size="mini" active inline />}
+                        />}
+                    </span>
                 </span>
 
             </div>
