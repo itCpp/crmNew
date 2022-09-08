@@ -1,20 +1,22 @@
 import React from "react";
 import { axios } from "../../../utils";
 import AdminContentSegment from "../UI/AdminContentSegment";
-import { Header, Icon, Label, Loader, Message } from "semantic-ui-react";
+import { Checkbox, Header, Icon, Label, Loader, Message } from "semantic-ui-react";
 import "highlight.js/styles/vs2015.css";
 import hljs from "highlight.js";
 import javascript from "highlight.js/lib/languages/javascript";
 
 hljs.registerLanguage('javascript', javascript);
 
-const Events = props => {
+const Events = () => {
 
     const [loading, setLoading] = React.useState(true);
     const [load, setLoad] = React.useState(true);
     const [error, setError] = React.useState(null);
-    const [params, setParams] = React.useState(null);
+    const [params, setParams] = React.useState({});
     const [data, setData] = React.useState({});
+    const [filterType, setFilterType] = React.useState({});
+    const [types, setTypes] = React.useState([]);
 
     const getEvent = React.useCallback((params = {}) => {
 
@@ -39,7 +41,10 @@ const Events = props => {
     }, []);
 
     React.useEffect(() => {
-        getEvent();
+        axios.get('dev/events/get/types')
+            .then(({ data }) => setTypes(data))
+            .catch(() => null)
+            .then(() => getEvent());
     }, []);
 
     React.useEffect(() => {
@@ -64,6 +69,22 @@ const Events = props => {
 
         {!loading && error && <Message error content={error} />}
 
+        {!loading && !error && types.length > 1 && <AdminContentSegment
+
+            content={<>
+                <div><b>Вывести только:</b></div>
+                <div className="d-flex align-items-center mt-2">
+                    {types.map(row => <Checkbox
+                        key={row}
+                        label={row}
+                        className="mr-4"
+                        checked={Boolean(params['only_' + row])}
+                        onChange={(e, { checked }) => setParams(p => ({ ...p, ['only_' + row]: checked, id: checked ? null : p?.id }))}
+                    />)}
+                </div>
+            </>}
+        />}
+
         {!loading && !error && <AdminContentSegment
             className="d-flex align-items-center justify-content-between"
             content={<>
@@ -74,7 +95,7 @@ const Events = props => {
                         fitted
                         link
                         title="Предыдущее событие"
-                        onClick={() => setParams({ id: data?.prev })}
+                        onClick={() => setParams(p => ({ ...p, id: data?.prev, session: null }))}
                         disabled={load}
                     />
                 </span>
@@ -85,7 +106,7 @@ const Events = props => {
                         fitted
                         link
                         title="Все события одного запроса"
-                        onClick={() => setParams({ session: data.session })}
+                        onClick={() => setParams(p => ({ ...p, session: data.session }))}
                         disabled={load}
                     />
                 </span>}
@@ -100,7 +121,7 @@ const Events = props => {
                         fitted
                         link
                         title="Следующее событие"
-                        onClick={() => setParams({ id: data?.next })}
+                        onClick={() => setParams(p => ({ ...p, id: data?.next, session: null }))}
                         disabled={load || data?.next === null}
                     />
                 </span>
