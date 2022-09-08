@@ -25,12 +25,12 @@ const BlockDriveIp = () => {
     const [filters, setFilters] = useState({});
     const [sites, setSites] = useState([]);
 
-    const getRows = useCallback(params => {
+    const getRows = params => {
 
         setLoad(true);
         setPage(params?.page || 1);
 
-        axios.post('dev/block/drive/ip', { ...params, ...filters }).then(({ data }) => {
+        axios.post('dev/block/drive/ip', { ...params }).then(({ data }) => {
             setRows(data.rows);
             setPages(data.pages);
             setTotal(data.total);
@@ -46,7 +46,7 @@ const BlockDriveIp = () => {
             setSearch(false);
         });
 
-    }, [page, searchWord, filters]);
+    };
 
     useEffect(() => getRows({}), []);
 
@@ -55,8 +55,8 @@ const BlockDriveIp = () => {
     // }, [page]);
 
     useEffect(() => {
-        if (search) getRows({ page: 1, search: searchWord });
-    }, [search]);
+        if (Boolean(search) || Boolean(filters)) getRows({ page: 1, search: searchWord, ...filters });
+    }, [search, filters]);
 
     return <div style={{ maxWidth: 800 }}>
 
@@ -112,7 +112,6 @@ const BlockDriveIp = () => {
                     value={filters.site || null}
                     onChange={(e, { value }) => {
                         setFilters(prev => ({ ...prev, site: value }));
-                        getRows({ page: 1 });
                     }}
                 />
 
