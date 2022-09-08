@@ -20,7 +20,9 @@ const Statistic = withRouter(props => {
     const [domains, setDomains] = useState([]);
 
     const [filterUtm, setFilterUtm] = useState([]);
+    const [filterRefferer, setFilterRefferer] = useState([]);
     const [filters, setFilters] = useState([]);
+    const [filtersRefferer, setFiltersRefferer] = useState([]);
 
     const [loadChart, setLoadChart] = useState(true);
     const [chart, setChart] = useState([]);
@@ -34,19 +36,40 @@ const Statistic = withRouter(props => {
         DropdownSortable
     } = useSortable({ setRows, ...props });
 
-    const handleFilterUtm = utm => {
+    const handleFilterUtm = (utm, refferer) => {
 
-        setFilterUtm(p => {
+        let utms = [],
+            refferers = [];
+
+        Boolean(utm) && setFilterUtm(p => {
             let rows = [...p],
                 fund = filterUtm.indexOf(utm);
 
             if (fund >= 0) rows.splice(fund, 1);
             else rows.push(utm);
 
-            getAllStatistics({ site, utm: rows });
+            utms = [...rows];
 
             return rows;
         });
+
+        Boolean(refferer) && setFilterRefferer(p => {
+            let rows = [...p],
+                fund = filterRefferer.indexOf(refferer);
+
+            if (fund >= 0) rows.splice(fund, 1);
+            else rows.push(refferer);
+
+            refferers = [...rows];
+
+            return rows;
+        });
+
+        setTimeout(() => getAllStatistics({
+            site,
+            utm: utms,
+            refferer: refferers
+        }), 500)
 
     }
 
@@ -67,7 +90,8 @@ const Statistic = withRouter(props => {
             setError(null);
             setRows(data.rows);
             setDomains(data.domains || []);
-            setFilters(data.filters || []);
+            setFilters(data.filterUtm || []);
+            setFiltersRefferer(data.filterRefferers || []);
 
             if (typeof cb == "function")
                 cb(data);
@@ -121,8 +145,11 @@ const Statistic = withRouter(props => {
                     site={site}
                     filters={filters}
                     setFilters={setFilters}
+                    filtersRefferer={filtersRefferer}
+                    setFiltersRefferer={setFiltersRefferer}
                     disabled={load}
                     filterUtm={filterUtm}
+                    filterRefferer={filterRefferer}
                     handleFilterUtm={handleFilterUtm}
                     load={load}
                 />

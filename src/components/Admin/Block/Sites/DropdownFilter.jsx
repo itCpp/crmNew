@@ -1,15 +1,17 @@
 import React from "react";
-import { Button, Checkbox, Dimmer, Dropdown, Form, Header, Icon, List, Loader, Modal } from "semantic-ui-react";
+import { Button, Checkbox, Dimmer, Dropdown, Form, Header, Icon, Label, List, Loader, Message, Modal } from "semantic-ui-react";
 import { axios } from "../../../../utils";
 
 const DropdownFilter = props => {
 
     const { site, disabled, load } = props;
     const { filters, setFilters } = props;
-    const { filterUtm, handleFilterUtm } = props;
+    const { filtersRefferer, setFiltersRefferer } = props;
+    const { filterUtm, filterRefferer, handleFilterUtm } = props;
 
     const [add, setAdd] = React.useState(false);
     const [newUtm, setNewUtm] = React.useState("");
+    const [newRefferer, setNewRefferer] = React.useState("");
     const [save, setSave] = React.useState(false);
     const [error, setError] = React.useState(null);
     const [edit, setEdit] = React.useState(false);
@@ -48,10 +50,21 @@ const DropdownFilter = props => {
     React.useEffect(() => {
 
         if (save) {
-            axios.put('dev/block/allstatistics/setutm', { site, utm: newUtm })
+            axios.put('dev/block/allstatistics/setutm', {
+                site,
+                utm: newUtm,
+                refferer: newRefferer
+            })
                 .then(({ data }) => {
-                    setFilters(p => ([data.row.utm_label, ...p]));
-                    handleFilterUtm(data.row.utm_label);
+
+                    if (Boolean(data.utm))
+                        setFilters(p => ([data.utm.utm_label, ...p]));
+
+                    if (Boolean(data.refferer))
+                        setFiltersRefferer(p => ([data.refferer.refferer_label, ...p]));
+
+                    handleFilterUtm(data?.utm?.utm_label, data?.refferer?.refferer_label);
+
                     setAdd(false);
                 })
                 .catch(e => setError(axios.getError(e)))
@@ -64,13 +77,16 @@ const DropdownFilter = props => {
 
         <Modal
             open={add}
-            header="Новый utm параметр"
+            header="Новый фильтр параметр"
             centered={false}
             size="mini"
             closeIcon
             onClose={() => setAdd(false)}
             content={{
                 content: <div>
+
+                    <Message info content="Можно вводить по отдельности каждое значение, либо одновременно и utm параметр, и реферальную ссылку. Пустое поле ввода будет проигнорировано" size="mini" />
+
                     <Form>
 
                         <Form.Input
@@ -80,6 +96,19 @@ const DropdownFilter = props => {
                             onChange={(e, { value }) => setNewUtm(value)}
                             disabled={save}
                         />
+
+                        <Form.Input
+                            label="Реферальная ссылка"
+                            placeholder="Например ex.su, http://ex.su"
+                            value={newRefferer || ""}
+                            onChange={(e, { value }) => setNewRefferer(value)}
+                            disabled={save}
+                            className="mb-0"
+                        />
+
+                        <div className="mb-3">
+                            <small>Указанная реферальная ссылка добавит в запрос вывода условие <code>`column` LIKE {`'%{$refferer}%'`}</code></small>
+                        </div>
 
                     </Form>
 
@@ -95,7 +124,7 @@ const DropdownFilter = props => {
                         icon="plus"
                         labelPosition="right"
                         color="green"
-                        disabled={String(newUtm).length === 0 || save}
+                        disabled={(String(newUtm).length === 0 && String(newRefferer).length === 0) || save}
                         onClick={() => setSave(true)}
                         loading={save}
                     />
@@ -182,6 +211,28 @@ const DropdownFilter = props => {
                     disabled={load}
                 />)}
 
+
+                <Dropdown.Divider className="my-0" />
+
+                <Dropdown.Header>Refferer фильтр</Dropdown.Header>
+
+                <Dropdown.Divider className="my-0" />
+
+                {filtersRefferer.length === 0 && <div className="text-center px-3 my-2">
+                    <small>Список пуст</small>
+                </div>}
+
+                {filtersRefferer.map((row, i) => <Dropdown.Item
+                    key={i}
+                    content={row}
+                    icon={{
+                        color: filterRefferer.indexOf(row) >= 0 ? "green" : null,
+                        name: "world",
+                    }}
+                    onClick={() => handleFilterUtm(null, row)}
+                    disabled={load}
+                />)}
+
                 <Dropdown.Divider className="my-0" />
 
                 <Dropdown.Item>
@@ -197,7 +248,7 @@ const DropdownFilter = props => {
 
                 <Dropdown.Item
                     icon="plus"
-                    text="Добавить UTM"
+                    text="Добавить фильтр"
                     onClick={() => setAdd(true)}
                 />
                 <Dropdown.Item
@@ -213,8 +264,8 @@ const DropdownFilter = props => {
 
 const ListItem = props => {
 
-    const { row, setFilters } = props;
-    const { filterUtm, handleFilterUtm } = props;
+    const { row, setFilters, setFiltersRefferer } = props;
+    const { filterUtm, filterRefferer, handleFilterUtm } = props;
     const [drop, setDrop] = React.useState(false);
     const [deleted, setDeleted] = React.useState(false);
 
@@ -224,18 +275,33 @@ const ListItem = props => {
             axios.delete('dev/block/allstatistics/droputm', { params: { id: drop } })
                 .then(({ data }) => {
 
-                    setFilters(p => {
-                        let rows = [...p],
-                            fund = p.indexOf(data.row.utm_label);
+                    if (Boolean(data.row.utm_label)) {
+                        setFilters(p => {
+                            let rows = [...p],
+                                fund = p.indexOf(data.row.utm_label);
 
-                        if (fund >= 0) rows.splice(fund, 1);
+                            if (fund >= 0) rows.splice(fund, 1);
 
-                        return rows;
-                    });
+                            return rows;
+                        });
 
-                    let fund = filterUtm.indexOf(data.row.utm_label);
+                        let fund = filterUtm.indexOf(data.row.utm_label);
+                        if (fund >= 0) handleFilterUtm(data.row.utm_label);
+                    }
 
-                    if (fund >= 0) handleFilterUtm(data.row.utm_label);
+                    if (Boolean(data.row.refferer_label)) {
+                        setFiltersRefferer(p => {
+                            let rows = [...p],
+                                fund = p.indexOf(data.row.refferer_label);
+
+                            if (fund >= 0) rows.splice(fund, 1);
+
+                            return rows;
+                        });
+
+                        let fund = filterRefferer.indexOf(data.row.refferer_label);
+                        if (fund >= 0) handleFilterUtm(null, data.row.refferer_label);
+                    }
 
                     setDeleted(true);
                 })
@@ -244,6 +310,9 @@ const ListItem = props => {
         }
 
     }, [drop]);
+
+    const utm = Boolean(row.utm_label);
+    const ref = Boolean(row.refferer_label);
 
     return <List.Item className="position-relative" disabled={deleted}>
 
@@ -259,7 +328,16 @@ const ListItem = props => {
         </List.Content>}
 
         <List.Content>
-            <div className="my-2 px-2">{row.utm_label}</div>
+            <div className="my-2 px-2">
+                {utm && <div>
+                    <Label empty circular color="yellow" size="mini" className="mr-2" />
+                    <span>{row.utm_label}</span>
+                </div>}
+                {ref && <div>
+                    <Icon name="world" color="green" />
+                    <span>{row.refferer_label}</span>
+                </div>}
+            </div>
         </List.Content>
 
         {drop && <Dimmer active inverted>
