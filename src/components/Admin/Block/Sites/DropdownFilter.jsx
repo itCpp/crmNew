@@ -180,7 +180,11 @@ const DropdownFilter = props => {
                 basic
                 icon="filter"
                 circular
-                color={(typeof filterUtm == "object" && filterUtm.length > 0) ? "green" : null}
+                color={(
+                    (typeof filterUtm == "object" && filterUtm.length > 0)
+                    || (typeof filterRefferer == "object" && filterRefferer.length > 0)
+                ) ? "green" : null
+                }
             />}
             icon={null}
             simple

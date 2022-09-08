@@ -38,12 +38,12 @@ const Statistic = withRouter(props => {
 
     const handleFilterUtm = (utm, refferer) => {
 
-        let utms = [],
-            refferers = [];
+        let utms = [...filterUtm],
+            refferers = [...filterRefferer];
 
         Boolean(utm) && setFilterUtm(p => {
             let rows = [...p],
-                fund = filterUtm.indexOf(utm);
+                fund = p.indexOf(utm);
 
             if (fund >= 0) rows.splice(fund, 1);
             else rows.push(utm);
@@ -55,7 +55,7 @@ const Statistic = withRouter(props => {
 
         Boolean(refferer) && setFilterRefferer(p => {
             let rows = [...p],
-                fund = filterRefferer.indexOf(refferer);
+                fund = p.indexOf(refferer);
 
             if (fund >= 0) rows.splice(fund, 1);
             else rows.push(refferer);
