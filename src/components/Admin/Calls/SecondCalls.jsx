@@ -54,7 +54,11 @@ const ExtensionRow = props => {
 
     const { row } = props;
 
-    return <div>{row.id}</div>
+    return <div>
+        <div>{row.extension}</div>
+        <div>{row.internal_addr}</div>
+        <div>{row.for_in}</div>
+    </div>
 }
 
 export default SecondCalls;
