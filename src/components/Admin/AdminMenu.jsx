@@ -127,6 +127,11 @@ function AdminMenu(props) {
                     <span>Звонки</span>
                 </NavLink>
 
+                <NavLink to="/admin/second-calls" className="admin-menu-point" onClick={changePage}>
+                    <Icon name="phone square" />
+                    <span>Внутренние номера</span>
+                </NavLink>
+
                 <NavLink to="/admin/events" className="admin-menu-point" onClick={changePage}>
                     <Icon name="qq" />
                     <span>Запросы событий</span>

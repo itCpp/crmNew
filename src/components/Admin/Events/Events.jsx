@@ -15,7 +15,6 @@ const Events = () => {
     const [error, setError] = React.useState(null);
     const [params, setParams] = React.useState({});
     const [data, setData] = React.useState({});
-    const [filterType, setFilterType] = React.useState({});
     const [types, setTypes] = React.useState([]);
 
     const getEvent = React.useCallback((params = {}) => {

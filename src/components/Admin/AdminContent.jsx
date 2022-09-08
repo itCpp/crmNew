@@ -21,6 +21,7 @@ import Gates from "./Gates";
 import Events from "./Events";
 import MailList from "./MailList";
 import Expenses from "./Expenses";
+import SecondCalls from "./Calls/SecondCalls";
 
 function AdminContent(props) {
 
@@ -51,6 +52,8 @@ function AdminContent(props) {
         body = <Calls {...props} />
     else if (page == "events" && permits.dev_calls)
         body = <Events {...props} />
+    else if (page == "second-calls" && permits.dev_calls)
+        body = <SecondCalls {...props} />
     else if (page == "sips" && permits.dev_calls)
         body = <ActiveSip {...props} />
     else if (page == "callsqueue" && permits.admin_callsqueue)
