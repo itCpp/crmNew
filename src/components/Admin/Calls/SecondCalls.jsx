@@ -22,7 +22,7 @@ const SecondCalls = props => {
 
     }, [props?.location?.key]);
 
-    return <div className="segment-compact">
+    return <div style={{ maxWidth: 600 }}>
 
         <ExtensionRowEdit
             show={show}
