@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Header, Loader, Message, Select } from "semantic-ui-react";
+import { Form, Header, Icon, Loader, Message, Select } from "semantic-ui-react";
 import { axios, moment } from "../../../utils";
 import AdminContentSegment from "../UI/AdminContentSegment";
 import "highlight.js/styles/vs2015.css";
@@ -61,7 +61,7 @@ const Log = props => {
                         }))}
                         value={filter.db || null}
                         onChange={(e, { value }) => {
-                            setFilter(p => ({ ...p, db: value, table: null }));
+                            setFilter(p => ({ ...p, db: value, table: null, id: null }));
                             setTableList([null, ...(tables[value] || [])].map(row => ({
                                 key: row || 0,
                                 text: row || "Все таблицы",
@@ -75,7 +75,7 @@ const Log = props => {
                         options={tableList}
                         disabled={!Boolean(filter.db)}
                         value={filter.table || null}
-                        onChange={(e, { value }) => setFilter(p => ({ ...p, table: value }))}
+                        onChange={(e, { value }) => setFilter(p => ({ ...p, table: value, id: null }))}
                     />
 
                 </Form.Group>
@@ -104,6 +104,7 @@ const DataRows = props => {
 
     const isRequestData = Object.keys(requestData).length > 0;
     const isModelData = Object.keys(modelData).length > 0;
+    const isRow = Object.keys(row).length > 0;
 
     React.useEffect(() => {
 
@@ -126,9 +127,31 @@ const DataRows = props => {
 
     return <>
 
+        <AdminContentSegment className="d-flex align-items-center justify-content-between">
+            <div>
+                <Icon
+                    name="chevron left"
+                    link={!loading}
+                    disabled={loading}
+                    onClick={() => setFilter(p => ({ ...p, id: row.id, step: "back" }))}
+                />
+            </div>
+            {row?.id && <div style={{ opacity: loading ? 0.5 : 1 }}><strong>LOG_ID:{row.id}</strong></div>}
+            <div>
+                <Icon
+                    name="chevron right"
+                    link={!loading}
+                    disabled={loading}
+                    onClick={() => setFilter(p => ({ ...p, id: row.id, step: "next" }))}
+                />
+            </div>
+        </AdminContentSegment>
+
         {loading && !isRequestData && !isModelData && <Loader active inline="centered" className="mt-3" />}
 
         {error && !loading && <Message error content={error} />}
+
+        {!error && !loading && !isRow && !isRequestData && !isModelData && <Message info content="Получается, это все данные, для того, чтобы вывести последнюю строку лога, нажмите на кнопку перехода к следующей записи еще раз" />}
 
         {Object.keys(row).length > 0 && <AdminContentSegment style={{ opacity: loading ? 0.5 : 1 }}>
 
@@ -170,6 +193,11 @@ const DataRows = props => {
                 </div>
 
             </>}
+
+            <div>
+                <strong className="mr-2">Количество изменений строки</strong>
+                <span>{row.count || 0}</span>
+            </div>
 
         </AdminContentSegment>}
 
