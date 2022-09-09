@@ -346,3 +346,13 @@
     left: 0;
     z-index: 0;
 }
+
+.extension-row {
+    padding: .25rem .5rem;
+}
+.extension-row:not(:last-child) {
+    border-bottom: 1px solid var(--border-admin-segment);
+}
+.extension-row:hover {
+    background-color: var(--border-admin-segment);
+}
