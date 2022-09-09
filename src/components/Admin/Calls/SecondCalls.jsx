@@ -41,6 +41,15 @@ const SecondCalls = props => {
                 />
 
                 {loading && <Loader active inline />}
+
+                {!loading && <Button
+                    icon="plus"
+                    basic
+                    circular
+                    color="green"
+                    onClick={() => setShow(true)}
+                />}
+
             </>}
         />
 
@@ -181,6 +190,7 @@ const ExtensionRowEdit = props => {
                         name="extension"
                         value={formdata?.extension || ""}
                         onChange={handleChange}
+                        error={Boolean(errors?.extension)}
                     />
 
                     <Form.Input
@@ -189,6 +199,7 @@ const ExtensionRowEdit = props => {
                         name="internal_addr"
                         value={formdata?.internal_addr || ""}
                         onChange={handleChange}
+                        error={Boolean(errors?.internal_addr)}
                     />
 
                     <Form.Checkbox
