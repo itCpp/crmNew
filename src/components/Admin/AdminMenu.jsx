@@ -144,6 +144,11 @@ function AdminMenu(props) {
                 <Icon name="phone volume" />
                 <span>Активность SIP</span>
             </NavLink>
+            
+            <NavLink to="/admin/logs" className="admin-menu-point" onClick={changePage}>
+                <Icon name="file text" />
+                <span>Логи</span>
+            </NavLink>
 
         </div>}
 

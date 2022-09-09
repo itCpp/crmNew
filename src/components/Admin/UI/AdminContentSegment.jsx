@@ -9,7 +9,7 @@ export default (props => {
     let classNames = ["admin-content-segment"];
     className && classNames.push(className);
 
-    return <div className={classNames.join(' ')}>
+    return <div className={classNames.join(' ')} style={props.style || {}}>
 
         {typeof header == "object" && <Header {...header} />}
 
