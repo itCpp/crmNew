@@ -139,3 +139,9 @@ export const setShowFineAdd = data => ({
     type: FINE_SHOW,
     payload: data
 });
+
+export const DROP_LOST_ID = "DROP_LOST_ID";
+export const setDropListRequest = data => ({
+    type: DROP_LOST_ID,
+    payload: data
+});

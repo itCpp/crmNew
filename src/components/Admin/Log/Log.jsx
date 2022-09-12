@@ -188,28 +188,34 @@ const DataRows = props => {
             {typeof row.user == "object" && <>
 
                 <div>
-                    <strong className="mr-2">Пользователь</strong>
+                    <strong className="mr-2">Пользователь, внёсший изменения</strong>
                     <span>{row.user.pin || "PIN"} - {row.user.name_fio || "ФИО"}</span>
                 </div>
 
             </>}
 
             <div>
-                <strong className="mr-2">Количество изменений строки</strong>
+                <strong className="mr-2">Общее количество изменений строки</strong>
                 <span>{row.count || 0}</span>
             </div>
 
         </AdminContentSegment>}
 
         {isModelData && <>
-            <div className="mb-1"><strong>Model data:</strong></div>
+            <div className="mb-1">
+                {row.to_crypt && <Icon name="lock" color={row.to_crypt_access ? "green" : "red"} title="Зашифровано" />}
+                <strong>Model data:</strong>
+            </div>
             <pre className="mt-1 mb-3" style={{ opacity: loading ? 0.5 : 1 }}>
                 <code className="json">{JSON.stringify(modelData, null, "    ")}</code>
             </pre>
         </>}
 
         {isRequestData && <>
-            <div className="mb-1"><strong>Request data:</strong></div>
+            <div className="mb-1">
+                {row.to_crypt && <Icon name="lock" color={row.to_crypt_access ? "green" : "red"} title="Зашифровано" />}
+                <strong>Request data:</strong>
+            </div>
             <pre className="mt-1 mb-3" style={{ opacity: loading ? 0.5 : 1 }}>
                 <code className="json">{JSON.stringify(requestData, null, "    ")}</code>
             </pre>

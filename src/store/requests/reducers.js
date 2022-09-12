@@ -178,6 +178,17 @@ export const requestsReducer = (state = defaultState, action) => {
         case ACTION.FINE_SHOW:
             return { ...state, showAddFine: action.payload }
 
+        case ACTION.DROP_LOST_ID:
+
+            let dropRequests = [];
+
+            state.requests.map(row => {
+                if (action.payload.indexOf(row.id) < 0)
+                    dropRequests.push(row);
+            });
+
+            return { ...state, requests: dropRequests }
+
         default:
             return state;
 

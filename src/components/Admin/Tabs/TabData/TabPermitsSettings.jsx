@@ -165,7 +165,7 @@ export default function TabBasicSettings(props) {
                 toggle
                 name="counter_hide_page"
                 onChange={(e, { name, checked }) => setFormdata(e, { name, value: checked })}
-                checked={row.counter_hide_page}
+                checked={Boolean(row.counter_hide_page)}
                 label="Скрыть график вкладки на странице счетчика"
                 className="permites-check d-block mb-2"
                 disabled={loading || error}
@@ -175,7 +175,7 @@ export default function TabBasicSettings(props) {
                 toggle
                 name="counter_next_day"
                 onChange={(e, { name, checked }) => setFormdata(e, { name, value: checked })}
-                checked={row.counter_next_day}
+                checked={Boolean(row.counter_next_day)}
                 label="Считать итоговые данные счетчика для следующего дня"
                 className="permites-check d-block mb-2"
                 disabled={loading || error}
@@ -186,7 +186,7 @@ export default function TabBasicSettings(props) {
                 toggle
                 name="counter_source"
                 onChange={(e, { name, checked }) => setFormdata(e, { name, value: checked })}
-                checked={row.counter_source}
+                checked={Boolean(row.counter_source)}
                 label="Разделять счетчик по источникам"
                 className="permites-check d-block mb-2"
                 disabled={loading || error}
@@ -196,8 +196,18 @@ export default function TabBasicSettings(props) {
                 toggle
                 name="counter_offices"
                 onChange={(e, { name, checked }) => setFormdata(e, { name, value: checked })}
-                checked={row.counter_offices}
+                checked={Boolean(row.counter_offices)}
                 label="Разделять счетчик по офисам"
+                className="permites-check d-block mb-2"
+                disabled={loading || error}
+            />
+
+            <Checkbox
+                toggle
+                name="check_lost_requests"
+                onChange={(e, { name, checked }) => setFormdata(e, { name, value: checked })}
+                checked={Boolean(row.check_lost_requests)}
+                label={<label>Производить периодическую проверку заявок, не относящихся к выбранной вкладке <code>CHECK_LOST_REQUESTS_TAB_PERIOD_TIME</code> - период времени повторения запроса в глобальных настройках</label>}
                 className="permites-check d-block mb-2"
                 disabled={loading || error}
             />
@@ -208,7 +218,7 @@ export default function TabBasicSettings(props) {
                 toggle
                 name="flash_null"
                 onChange={(e, { name, checked }) => setFormdata(e, { name, value: checked })}
-                checked={row.flash_null}
+                checked={Boolean(row.flash_null)}
                 label="Выводить индикацию неназначенных операторам заявок"
                 className="permites-check d-block mb-2"
                 disabled={loading || error}
@@ -218,7 +228,7 @@ export default function TabBasicSettings(props) {
                 toggle
                 name="flash_records_confirm"
                 onChange={(e, { name, checked }) => setFormdata(e, { name, value: checked })}
-                checked={row.flash_records_confirm}
+                checked={Boolean(row.flash_records_confirm)}
                 label="Выводить индикацию неподтвержденных записей"
                 className="permites-check d-block mb-2"
                 disabled={loading || error}
@@ -228,7 +238,7 @@ export default function TabBasicSettings(props) {
                 toggle
                 name="label_counter"
                 onChange={(e, { name, checked }) => setFormdata(e, { name, value: checked })}
-                checked={row.label_counter}
+                checked={Boolean(row.label_counter)}
                 label="Выводить индикацию наличия заявок в коротком главном меню"
                 className="permites-check d-block mb-2"
                 disabled={loading || error}

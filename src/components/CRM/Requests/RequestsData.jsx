@@ -17,6 +17,7 @@ import {
     setRequestEditPage
 } from "./../../../store/requests/actions";
 import FineAdd from "../Fines/FineAdd";
+import useCheckLostRequests from "./useCheckLostRequests";
 
 const RequestData = React.memo(props => {
 
@@ -32,6 +33,12 @@ const RequestData = React.memo(props => {
     const [pages, setPages] = React.useState(null);
     const [error, setError] = React.useState(null);
     const [period, setPeriod] = React.useState([null, null]);
+    const [tabSettings, setTabSettings] = React.useState({});
+
+    const lostRequest = useCheckLostRequests({
+        tabSettings,
+        setRequests,
+    });
 
     const search = searchRequest && Object.keys(searchRequest).length > 0;
 
@@ -64,6 +71,7 @@ const RequestData = React.memo(props => {
                 window.requestPermits = data.permits;
                 window.permits = { ...window.permits, ...data.permits }
 
+                setTabSettings(data.tab || {});
             })
             .catch(error => {
                 let message = axios.getError(error);
@@ -151,7 +159,7 @@ const RequestData = React.memo(props => {
         {props.showStoryRequest && <RequestStory row={props.showStoryRequest} />}
         {props.requestEditPage && <RequestPage row={props.requestEditPage} />}
 
-        <FineAdd />        
+        <FineAdd />
 
         <div ref={blockCard}>
 
@@ -176,12 +184,10 @@ const RequestData = React.memo(props => {
                     <Message error content={error} />
                 </div>}
 
-                {!loading && (select || select === 0) && !error &&
-                    <RequestsDataTable
-                        setPage={setPage}
-                        loadPage={loadPage}
-                    />
-                }
+                {!loading && (select || select === 0) && !error && <RequestsDataTable
+                    setPage={setPage}
+                    loadPage={loadPage}
+                />}
 
             </div>
 
