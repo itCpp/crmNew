@@ -112,8 +112,6 @@ const MaillerEdit = props => {
 
     }, [save]);
 
-    console.log(variables);
-
     return <Modal
         open={Boolean(open)}
         centered={false}

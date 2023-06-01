@@ -25,5 +25,5 @@ jobs:
         run: npm run build
       - name: Move
         run: |
-          rmdir /var/www/www-root/data/www/crm24ka.ru/build
+          rm -fr /var/www/www-root/data/www/crm24ka.ru/build
           cp -R /var/www/www-root/data/www/crm24ka.ru/dist/build /var/www/www-root/data/www/crm24ka.ru/build
