@@ -23,6 +23,7 @@ import MailList from "./MailList";
 import Expenses from "./Expenses";
 import SecondCalls from "./Calls/SecondCalls";
 import Log from "./Log";
+import Mailer from "./Mailer/Mailer";
 
 function AdminContent(props) {
 
@@ -77,6 +78,8 @@ function AdminContent(props) {
         body = <Expenses {...props} />
     else if (page == "logs")
         body = <Log {...props} />
+    else if (page == "mailer")
+        body = <Mailer {...props} />
 
     return <div className="admin-content-body">
         {body}

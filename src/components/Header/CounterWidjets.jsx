@@ -26,7 +26,7 @@ const CounterWidjets = () => {
     </div>
 }
 
-const CounterWidjetLabel = ({ data, title, icon, color }) => <Popup
+export const CounterWidjetLabel = ({ data, title, icon, color }) => <Popup
     content={title}
     size="mini"
     className="px-3 py-1"
@@ -38,8 +38,8 @@ const CounterWidjetLabel = ({ data, title, icon, color }) => <Popup
                 name={icon}
                 className="mr-1"
             />}
-            <span className="mr-1">{data.count}</span>
-            {data.addrs.length > 1 && <Popup
+            <span className="mr-1">{data?.count || 0}</span>
+            {(data?.addrs || []).length > 1 && <Popup
                 content={data.addrs.map(addr => (addr.office)).join(" / ")}
                 trigger={<small className="mr-1">{data.addrs.map(addr => (addr.count)).join("/")}</small>}
                 size="mini"

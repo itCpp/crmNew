@@ -100,19 +100,20 @@ function AdminMenu(props) {
                 <span>Рассылка</span>
             </NavLink>}
 
-            {permits.dev_roles &&
-                <NavLink to="/admin/roles" className="admin-menu-point" onClick={changePage}>
-                    <Icon name="angle right" />
-                    <span>Roles</span>
-                </NavLink>
-            }
+            {permits.dev_roles && <NavLink to="/admin/roles" className="admin-menu-point" onClick={changePage}>
+                <Icon name="angle right" />
+                <span>Roles</span>
+            </NavLink>}
 
-            {permits.dev_permits &&
-                <NavLink to="/admin/permits" className="admin-menu-point" onClick={changePage}>
-                    <Icon name="angle right" />
-                    <span>Permissions</span>
-                </NavLink>
-            }
+            {permits.dev_permits && <NavLink to="/admin/permits" className="admin-menu-point" onClick={changePage}>
+                <Icon name="angle right" />
+                <span>Permissions</span>
+            </NavLink>}
+
+            {permits.admin_mailer && <NavLink to="/admin/mailer" className="admin-menu-point" onClick={changePage}>
+                <Icon name="mail" />
+                <span>Почтовик</span>
+            </NavLink>}
 
         </div>}
 
@@ -137,14 +138,13 @@ function AdminMenu(props) {
                     <span>Запросы событий</span>
                 </NavLink>
 
-            </>
-            }
+            </>}
 
             <NavLink to="/admin/sips" className="admin-menu-point" onClick={changePage}>
                 <Icon name="phone volume" />
                 <span>Активность SIP</span>
             </NavLink>
-            
+
             <NavLink to="/admin/logs" className="admin-menu-point" onClick={changePage}>
                 <Icon name="file text" />
                 <span>Логи</span>

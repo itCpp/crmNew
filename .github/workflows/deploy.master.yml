@@ -1,0 +1,29 @@
+name: Deployment Master
+
+on:
+  push:
+    branches: [master]
+
+defaults:
+  run:
+    working-directory: /var/www/www-root/data/www/crm24ka.ru/dist
+
+jobs:
+  deploy:
+    runs-on:
+      - self-hosted
+      - crm-front-host
+    steps:
+      - name: Deployment
+        run: |
+          git checkout master
+          git pull origin master
+      - name: NPM Install
+        if: "contains(github.event.head_commit.message, 'npm install')"
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Move
+        run: |
+          rmdir /var/www/www-root/data/www/crm24ka.ru/build
+          cp -R /var/www/www-root/data/www/crm24ka.ru/dist/build /var/www/www-root/data/www/crm24ka.ru/build
