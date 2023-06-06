@@ -47,8 +47,8 @@ const PhoneRow = props => {
                 onClick={() => copyPhone(client.hidden ? `+${rowId}s${client.id}` : phone)}
             />
         </div>
-        <div className="to-copy-text text-nowrap" ref={number} style={{ fontSize: "128%", fontWeight: 900 }}>
-            <a href={`callto://${client.hidden ? `+${rowId}s${client.id}` : phone}`} className="call-to-request">{phone}</a>
+        <div className="to-copy-text text-nowrap" ref={number} style={{ fontSize: "128%" }}>
+            <a href={`callto://${client.hidden ? `+${rowId}s${client.id}` : phone}`} className="call-to-request font-weight-bold">{phone}</a>
         </div>
     </div>
 
