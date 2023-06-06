@@ -228,6 +228,37 @@ const MaillerEdit = props => {
                 /> */}
 
                 <Form.Checkbox
+                    label="Учитывать смену PIN'a оператора"
+                    name="change_pin"
+                    checked={formdata?.config?.change_pin}
+                    onChange={changeFormDataConfig}
+                    error={Boolean(errors?.config?.change_pin)}
+                    toggle
+                    disabled={Boolean(formerror)}
+                />
+
+                <div className="field mb-0">
+                    <label>PIN операторов</label>
+                </div>
+
+                <Dropdown
+                    placeholder="Укажите PIN операторов"
+                    name="pins"
+                    options={(formdata?.config?.pins || []).map((r, key) => ({ key, text: r, value: r }))}
+                    value={formdata?.config?.pins || []}
+                    onChange={changeFormDataConfig}
+                    error={Boolean(errors?.config?.pins)}
+                    search
+                    selection
+                    fluid
+                    multiple
+                    allowAdditions
+                    noResultsMessage="Начните вводить PIN"
+                    additionLabel="Добавить PIN "
+                    disabled={!Boolean(formdata?.config?.change_pin) || Boolean(formerror)}
+                />
+
+                <Form.Checkbox
                     label="Учитывать смену статусов"
                     name="change_status"
                     checked={formdata?.config?.change_status}
@@ -266,37 +297,6 @@ const MaillerEdit = props => {
                 </Form.Group>
 
                 <Message info content="Необходимо выбрать статусы по которым будет срабатывать триггер рассылки. Отсутствие какого-либо типа статуса будет считаться любым статусом, т.е. при отсутствии старого статуса триггер будет срабатывать при смене с любого статуса. Если не указывать никакого статуса, триггер сработает при любой смене статуса" size="mini" />
-
-                <Form.Checkbox
-                    label="Учитывать смену PIN'a оператора"
-                    name="change_pin"
-                    checked={formdata?.config?.change_pin}
-                    onChange={changeFormDataConfig}
-                    error={Boolean(errors?.config?.change_pin)}
-                    toggle
-                    disabled={Boolean(formerror)}
-                />
-
-                <div className="field mb-0">
-                    <label>PIN операторов</label>
-                </div>
-
-                <Dropdown
-                    placeholder="Укажите PIN операторов"
-                    name="pins"
-                    options={(formdata?.config?.pins || []).map((r, key) => ({ key, text: r, value: r }))}
-                    value={formdata?.config?.pins || []}
-                    onChange={changeFormDataConfig}
-                    error={Boolean(errors?.config?.pins)}
-                    search
-                    selection
-                    fluid
-                    multiple
-                    allowAdditions
-                    noResultsMessage="Начните вводить PIN"
-                    additionLabel="Добавить PIN "
-                    disabled={!Boolean(formdata?.config?.change_pin) || Boolean(formerror)}
-                />
 
                 <Dimmer active={formload || save} inverted>
                     <Loader />
