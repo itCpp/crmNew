@@ -29,6 +29,7 @@ const RequestsSearch = React.memo(props => {
     const [sources, setSources] = React.useState([]);
     const [statuses, setStatuses] = React.useState([]);
     const [themes, setThemes] = React.useState([]);
+    const [offices, setOffices] = React.useState([]);
 
     const close = React.useCallback(() => setOpen(false), []);
 
@@ -92,6 +93,7 @@ const RequestsSearch = React.memo(props => {
             setSources(data.sources.map(row => ({ key: row.id, text: row.name, value: row.id })));
             setStatuses(data.statuses.map(row => ({ key: row.id, text: row.name, value: row.id })));
             setThemes(data.themes.map((row, i) => ({ key: i, text: row, value: row })));
+            setOffices((data.offices || []).map(row => ({ key: row.id, text: row.name, value: row.id })));
         }).catch(() => null).then(() => {
             setLoadInfo(false);
             setLoadInfoDone(true);
@@ -267,6 +269,18 @@ const RequestsSearch = React.memo(props => {
                         selection
                         search={caseSensitiveSearch}
                         noResultsMessage="Статус не найден"
+                    />
+
+                    <Dropdown
+                        placeholder="Офис"
+                        fluid
+                        options={[{ key: "empty", text: "Все офисы", value: null }, ...offices]}
+                        name="office"
+                        value={search.office || null}
+                        onChange={onChange}
+                        selection
+                        search={caseSensitiveSearch}
+                        noResultsMessage="Офис не найден"
                     />
 
                     <Button
