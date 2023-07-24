@@ -56,7 +56,7 @@ const RequestEdit = props => {
                     text: "Не обработана",
                     value: 0,
                     id: 0,
-                    disabled: data?.permits?.request_set_null_status ? false : true,
+                    disabled: data?.permits?.requests_set_null_status ? false : true,
                 },
                 ...data.statuses
             ]);
