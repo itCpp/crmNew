@@ -41,7 +41,7 @@ export const useRequestGetRowSerialize = (data = {}) => {
                     text: "Не обработана",
                     value: 0,
                     id: 0,
-                    disabled: permits?.requests_set_null_status ? false : true,
+                    disabled: rowData.permits?.requests_set_null_status ? false : true,
                 },
                 ...rowData.statuses
             ].map((status, key) => ({
